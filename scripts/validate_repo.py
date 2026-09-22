@@ -424,6 +424,50 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
             errors.append(f"{rel}: target state applied requires project_spines")
 
 
+
+# ---------------------------------------------------------------------------
+# Prerequisite cycle validation
+# ---------------------------------------------------------------------------
+
+route_graph = {
+    cid: [
+        prereq
+        for prereq in (route["data"].get("prerequisites") or [])
+        if prereq in route_competencies
+    ]
+    for cid, route in route_competencies.items()
+}
+
+visited = set()
+active = []
+active_set = set()
+
+def visit_prerequisite(cid):
+    if cid in active_set:
+        start = active.index(cid)
+        cycle = active[start:] + [cid]
+        errors.append(
+            "curriculum prerequisite cycle: " + " -> ".join(cycle)
+        )
+        return
+
+    if cid in visited:
+        return
+
+    active.append(cid)
+    active_set.add(cid)
+
+    for prereq in route_graph.get(cid, []):
+        visit_prerequisite(prereq)
+
+    active.pop()
+    active_set.remove(cid)
+    visited.add(cid)
+
+for cid in sorted(route_graph):
+    visit_prerequisite(cid)
+
+
 # Every catalog item marked ready must have exactly one route package.
 for cid, item in catalog.items():
     if item.get("status") != "ready":
