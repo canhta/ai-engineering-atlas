@@ -296,7 +296,13 @@ competencies:
       route: curriculum/09-production-ai/versioning,
     }
   - { id: production.mlops-llmops, title: MLOps and LLMOps, domain: production-ai, status: coverage }
-  - { id: production.drift, title: Drift, domain: production-ai, status: coverage }
+  - {
+      id: production.drift,
+      title: Drift Monitoring and Response,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/drift,
+    }
 
   # Security and Governance
   - {

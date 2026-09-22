@@ -31,6 +31,7 @@ milestones:
   - streaming-delivery
   - versioned-release-candidate
   - progressive-release-and-rollback
+  - drift-monitoring
   - security-failure-work
   - incident-and-feedback
 competencies:
@@ -63,6 +64,7 @@ competencies:
   - production.streaming
   - production.versioning
   - production.release-engineering
+  - production.drift
   - security.prompt-injection
 evidence:
   - product-brief
@@ -116,6 +118,12 @@ evidence:
   - live-analysis-record
   - rollback-record
   - rollback-verification
+  - drift-contract
+  - drift-window-record
+  - drift-threshold-backtest
+  - segmented-drift-record
+  - drift-investigation-record
+  - drift-response-playbook
   - decision-records
   - traces
   - security-tests

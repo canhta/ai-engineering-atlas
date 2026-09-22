@@ -12,6 +12,7 @@ Operational practices for AI systems serving real users.
 - [Streaming](streaming/) — improve time to first useful output with an explicit event, cancellation, reconnect, partial-state, backpressure, and safety contract.
 - [Model Prompt and Retrieval Versioning](versioning/) — identify the complete behavior-defining release state so traces, evaluation, replay, incidents, and rollback refer to concrete artifacts rather than mutable aliases.
 - [AI Release Engineering](release-engineering/) — gate a concrete candidate, expose it gradually when warranted, analyze live AI and operational evidence, then promote, abort, or verify rollback.
+- [Drift Monitoring and Response](drift/) — compare version-aware reference and current populations, segment material changes, calibrate thresholds, and investigate drift without confusing it with quality degradation.
 
 ## Scope
 
@@ -24,5 +25,6 @@ Operational practices for AI systems serving real users.
 - cacheability, freshness, and cache failure handling
 - streamed delivery, cancellation, and partial-state handling
 - release gates and regression testing
+- drift monitoring, segmentation, and production response
 - reliability and graceful degradation
 - incident analysis and production feedback

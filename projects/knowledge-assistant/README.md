@@ -26,6 +26,8 @@ For latency and unit-economics work, continue with the [Performance & Economics 
 
 For caching and streamed delivery, continue with the [Delivery Mechanisms evidence contract](delivery-mechanisms/). Reuse the same latency, cost, quality, and observability baselines so these mechanisms have to earn their complexity.
 
+For post-release change detection, continue with the [Drift Monitoring evidence contract](drift-monitoring/). Drift alerts must be correlated with evaluation and release evidence before they become mitigation decisions.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -624,7 +626,31 @@ Release a concrete candidate manifest, not a moving alias.
 
 **Decision:** promote, pause, abort, roll back, or simplify the rollout process from evidence rather than deployment completion alone.
 
-## Milestone 27 — security failure work
+## Milestone 27 — drift monitoring
+
+Use the [Drift Monitoring and Response](../../curriculum/09-production-ai/drift/) route and the [Drift Monitoring evidence contract](drift-monitoring/).
+
+Monitor the released Knowledge Assistant for meaningful change without treating every distribution shift as a quality incident.
+
+**Evidence:**
+
+- monitored population/signal contract;
+- version-aware reference/current windows;
+- seasonality/sample-size rationale;
+- threshold/backtest record;
+- input/query and output/response signals where useful;
+- segmented monitor;
+- one harmless drift case;
+- one quality regression with little obvious drift;
+- data-quality failure classified separately;
+- drift-to-quality/latency/cost/release correlation;
+- investigation and response playbook;
+- one production slice added to durable evaluation/regression evidence;
+- one noisy monitor removed or rejected.
+
+**Decision:** alert and act only when the drift signal is actionable under the quality/product contract; otherwise investigate, recalibrate, or remove it.
+
+## Milestone 28 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -637,7 +663,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 28 — incident and feedback loop
+## Milestone 29 — incident and feedback loop
 
 Inject or analyze one failure:
 

@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **31** ready learning routes
-- **84** coverage-only competencies
+- **32** ready learning routes
+- **83** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -22,7 +22,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | LLM Foundations | 11 | 1 |
 | AI Engineering | 26 | 12 |
 | Agents | 9 | 9 |
-| Production AI | 11 | 8 |
+| Production AI | 11 | 9 |
 | Security & Governance | 10 | 1 |
 | Multimodal | 3 | 0 |
 | Specializations | 8 | 0 |
@@ -55,6 +55,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `agents.orchestration` — AI Workflow Orchestration | Agents | [Open route](08-agents/orchestration/) |
 | `production.model-gateway` — Model Provider and Gateway Architecture | Production AI | [Open route](09-production-ai/model-gateway/) |
 | `production.caching` — AI Caching | Production AI | [Open route](09-production-ai/caching/) |
+| `production.drift` — Drift Monitoring and Response | Production AI | [Open route](09-production-ai/drift/) |
 | `production.streaming` — Streaming | Production AI | [Open route](09-production-ai/streaming/) |
 | `production.cost` — Cost Engineering | Production AI | [Open route](09-production-ai/cost/) |
 | `production.latency` — Latency Engineering | Production AI | [Open route](09-production-ai/latency/) |

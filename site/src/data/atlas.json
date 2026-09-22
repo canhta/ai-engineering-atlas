@@ -9679,11 +9679,345 @@
       {
         "id": "production.drift",
         "title": {
-          "en": "Drift"
+          "en": "Drift Monitoring and Response"
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/drift",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "A production AI system can change behavior even when no planned release occurs: user/query mix shifts, text and retrieval distributions change, tools or upstream data evolve, provider behavior changes, and feedback loops reshape traffic. Drift monitoring compares a current population with a meaningful reference, but distribution change is only a signal—not proof of quality degradation. Engineers need to choose reference windows, signals, segments, thresholds, and response actions that find material change without creating alert fatigue."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "production.versioning"
+                },
+                {
+                  "ref": "production.release-engineering"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define drift as change relative to an explicit reference population or period rather than as any unusual request."
+                },
+                {
+                  "en": "Distinguish planned release changes from unplanned drift by linking monitoring windows to release-manifest identity."
+                },
+                {
+                  "en": "Choose a known-good reference window and current analysis window that fit the product's seasonality and traffic."
+                },
+                {
+                  "en": "Distinguish input or query drift, retrieval/data drift, output or response drift, and quality/performance degradation."
+                },
+                {
+                  "en": "Explain why input distribution drift can occur without material quality regression."
+                },
+                {
+                  "en": "Explain why quality can regress without an obvious univariate drift signal."
+                },
+                {
+                  "en": "Select text descriptors, categorical/numeric distributions, embeddings, usage patterns, or other signals only when they map to a plausible failure mechanism."
+                },
+                {
+                  "en": "Use sampled or delayed evaluation, human feedback, or business outcomes as quality evidence when labels are not immediately available."
+                },
+                {
+                  "en": "Segment monitoring by meaningful dimensions such as tenant, language, route, model, workflow, or request class."
+                },
+                {
+                  "en": "Detect cases where aggregate metrics hide drift in a smaller but important segment."
+                },
+                {
+                  "en": "Define thresholds from baseline variability, expected seasonality, sample size, and action cost instead of arbitrary constants."
+                },
+                {
+                  "en": "Backtest drift rules against historical or synthetic windows to estimate false alarms and missed changes."
+                },
+                {
+                  "en": "Separate data-quality failures such as missing fields or schema breakage from genuine distribution drift."
+                },
+                {
+                  "en": "Correlate drift signals with quality, latency, cost, error, retrieval, and release evidence before deciding on mitigation."
+                },
+                {
+                  "en": "Avoid treating drift alerts as automatic retraining or rollback triggers."
+                },
+                {
+                  "en": "Define an investigation and response playbook: inspect, segment, evaluate, refresh data/index, reroute, rollback, update policy, or take no action."
+                },
+                {
+                  "en": "Promote newly observed production slices into durable evaluation or regression sets when they expose a real gap."
+                },
+                {
+                  "en": "Remove drift monitors that are noisy, unactionable, redundant, or disconnected from product risk."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a shift in Knowledge Assistant query topics, explain what evidence would distinguish harmless traffic change from a quality problem."
+                },
+                {
+                  "en": "Choose reference and current windows for a workload with weekday/weekend seasonality and explain why a naive previous-day comparison could create false alarms."
+                },
+                {
+                  "en": "Describe a case where one tenant or language drifts while the aggregate distribution appears stable."
+                },
+                {
+                  "en": "Explain why an alerting rule based only on text or embedding drift should not automatically trigger rollback."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can design version-aware reference/current comparisons, distinguish drift from quality degradation, segment material populations, calibrate actionable thresholds, and connect alerts to an investigation and evaluation loop."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "guide.google-rules-of-ml",
+                  "locator": {
+                    "en": "Section \"Training-Serving Skew\", especially Rule #29 and Rule #37 \"Measure Training/Serving Skew\""
+                  },
+                  "purpose": {
+                    "en": "Ground production-change monitoring in actual serving data and show that pipeline/data changes and feedback loops can create harmful skew that must be measured explicitly."
+                  }
+                },
+                {
+                  "resource": "docs.google-model-monitoring-overview",
+                  "locator": {
+                    "en": "Sections \"Model Monitoring v2 overview\" and \"Monitoring objectives\""
+                  },
+                  "purpose": {
+                    "en": "Build the reference/current-window model: scheduled monitoring, distribution comparisons, explicit objectives, thresholds, and model-version-aware monitoring."
+                  }
+                },
+                {
+                  "resource": "article.evidently-text-drift",
+                  "locator": {
+                    "en": "Sections \"How does it work?\" and \"Drift detection on text data\", including reference/current comparison, text content drift, and text descriptor drift"
+                  },
+                  "purpose": {
+                    "en": "Inspect concrete ways to monitor unstructured text changes without pretending one scalar statistic completely describes an LLM application's traffic."
+                  }
+                },
+                {
+                  "resource": "article.nannyml-drift-false-alarms",
+                  "locator": {
+                    "en": "Sections \"Limitations of univariate data drift\", \"When to use data drift methods?\", and \"Conclusion\""
+                  },
+                  "purpose": {
+                    "en": "Prevent drift-first alerting from becoming noisy operational dogma: distribution shift can be real while model/product performance remains acceptable."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one week of hypothetical Knowledge Assistant traffic, define the reference/current windows, choose three drift signals and two segmentation dimensions, then write what quality evidence would be required before each alert can trigger mitigation."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Add drift monitoring to the released Knowledge Assistant, inject harmless query-distribution shift, material quality degradation, and segment-only drift, then calibrate thresholds and response actions so the system distinguishes investigation signals from release or incident decisions."
+                      },
+                      "path": "projects/knowledge-assistant/drift-monitoring/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Shift query topic or language distribution while keeping evaluation quality stable and verify the drift alert does not automatically become a rollback."
+                },
+                {
+                  "en": "Introduce a quality regression with minimal obvious univariate input drift and verify evaluation/feedback catches what drift monitoring alone misses."
+                },
+                {
+                  "en": "Create aggregate stability while one tenant, language, or workflow segment drifts and verify the segmented monitor exposes it."
+                },
+                {
+                  "en": "Compare a current window against a badly chosen seasonal reference and then against a seasonally appropriate reference to show how reference choice changes false alarms."
+                },
+                {
+                  "en": "Introduce a data-quality/schema failure and verify it is classified separately from ordinary distribution drift."
+                },
+                {
+                  "en": "Change release/model/prompt identity intentionally and verify monitoring attributes the change to a new release rather than reporting it as unexplained drift."
+                },
+                {
+                  "en": "Backtest one threshold across multiple historical or synthetic windows and record false-positive and missed-change behavior."
+                },
+                {
+                  "en": "Turn one material drift slice into a durable evaluation/regression case, then prove a later change is judged against it."
+                },
+                {
+                  "en": "Remove or disable at least one drift signal because it is noisy, redundant, or not tied to an actionable risk."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A drift contract identifies monitored populations, signals, segmentation dimensions, and the failure mechanism each signal is intended to reveal."
+                },
+                {
+                  "en": "Reference and current windows are explicit and linked to release/system identity."
+                },
+                {
+                  "en": "Reference selection accounts for known seasonality, traffic cycles, or product changes."
+                },
+                {
+                  "en": "Input/query, retrieval/data, output/response, and quality signals are distinguished where applicable."
+                },
+                {
+                  "en": "Data quality/schema checks are not mislabeled as distribution drift."
+                },
+                {
+                  "en": "Thresholds include rationale based on baseline variability, sample size, expected seasonality, or action cost."
+                },
+                {
+                  "en": "At least one segmented monitor catches a change hidden by the aggregate view."
+                },
+                {
+                  "en": "At least one harmless drift case demonstrates that drift is not equivalent to quality regression."
+                },
+                {
+                  "en": "At least one quality-regression case demonstrates that drift monitoring is not a substitute for evaluation."
+                },
+                {
+                  "en": "A false-positive or threshold-backtest record is inspectable."
+                },
+                {
+                  "en": "The monitoring record includes quality, latency, cost, error, retrieval, and release correlation when those signals matter."
+                },
+                {
+                  "en": "An investigation/playbook maps alert classes to inspect, evaluate, refresh, reroute, rollback, update, or no-action decisions."
+                },
+                {
+                  "en": "At least one real or injected production slice is added to durable evaluation/regression evidence."
+                },
+                {
+                  "en": "At least one noisy or unactionable drift monitor is rejected or removed."
+                },
+                {
+                  "en": "The final decision states what drift can detect reliably, what it cannot, and which quality signals remain authoritative."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the drift strategy for a different AI workload with different seasonality, delayed labels, user segmentation, model/retrieval dependencies, and remediation cost."
+              }
+            }
+          ]
         }
       },
       {
@@ -10726,6 +11060,9 @@
                   "en": "progressive-release-and-rollback"
                 },
                 {
+                  "en": "drift-monitoring"
+                },
+                {
                   "en": "security-failure-work"
                 },
                 {
@@ -10894,6 +11231,24 @@
                 },
                 {
                   "en": "rollback-verification"
+                },
+                {
+                  "en": "drift-contract"
+                },
+                {
+                  "en": "drift-window-record"
+                },
+                {
+                  "en": "drift-threshold-backtest"
+                },
+                {
+                  "en": "segmented-drift-record"
+                },
+                {
+                  "en": "drift-investigation-record"
+                },
+                {
+                  "en": "drift-response-playbook"
                 },
                 {
                   "en": "decision-records"
@@ -11123,6 +11478,11 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.drift"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "production.latency"
     },
     {
@@ -11343,6 +11703,11 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.drift"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "production.latency"
     },
     {
@@ -11478,6 +11843,11 @@
     {
       "type": "prerequisite",
       "from": "production.observability",
+      "to": "production.drift"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
       "to": "production.latency"
     },
     {
@@ -11494,6 +11864,16 @@
       "type": "prerequisite",
       "from": "production.observability",
       "to": "production.versioning"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.release-engineering",
+      "to": "production.drift"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.versioning",
+      "to": "production.drift"
     },
     {
       "type": "prerequisite",
@@ -11642,6 +12022,18 @@
       "author": "Malcolm Featonby, Amazon Web Services",
       "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"
     },
+    "article.evidently-text-drift": {
+      "title": "Evidently — Data quality monitoring and drift detection for text data",
+      "type": "article",
+      "author": "Evidently AI",
+      "url": "https://www.evidentlyai.com/blog/evidently-data-quality-monitoring-and-drift-detection-for-text-data"
+    },
+    "article.nannyml-drift-false-alarms": {
+      "title": "NannyML — Don't let yourself be fooled by data drift",
+      "type": "article",
+      "author": "Santiago Víquez, NannyML",
+      "url": "https://www.nannyml.com/blog/when-data-drift-does-not-affect-performance-machine-learning-models"
+    },
     "article.openai-agent-prompt-injection": {
       "title": "Designing AI agents to resist prompt injection",
       "type": "article",
@@ -11773,6 +12165,12 @@
       "type": "documentation",
       "author": "Google",
       "url": "https://adk.dev/sessions/state/"
+    },
+    "docs.google-model-monitoring-overview": {
+      "title": "Google Cloud — Model Monitoring overview",
+      "type": "documentation",
+      "author": "Google Cloud",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview"
     },
     "docs.google-sre-canarying": {
       "title": "Google SRE Workbook — Canarying Releases",
@@ -11989,6 +12387,12 @@
       "type": "documentation",
       "author": "Temporal Technologies",
       "url": "https://docs.temporal.io/"
+    },
+    "guide.google-rules-of-ml": {
+      "title": "Google — Rules of Machine Learning",
+      "type": "guide",
+      "author": "Martin Zinkevich, Google",
+      "url": "https://developers.google.com/machine-learning/guides/rules-of-ml"
     },
     "guide.openai-practical-agents": {
       "title": "A practical guide to building agents",

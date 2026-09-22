@@ -1,0 +1,116 @@
+id: production.drift
+title: "Drift Monitoring and Response"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "A production AI system can change behavior even when no planned release occurs: user/query mix shifts, text and retrieval distributions change, tools or upstream data evolve, provider behavior changes, and feedback loops reshape traffic. Drift monitoring compares a current population with a meaningful reference, but distribution change is only a signal—not proof of quality degradation. Engineers need to choose reference windows, signals, segments, thresholds, and response actions that find material change without creating alert fatigue."
+curriculum_evidence:
+  - guide.google-rules-of-ml
+  - docs.google-model-monitoring-overview
+  - article.evidently-text-drift
+  - article.nannyml-drift-false-alarms
+prerequisites:
+  - ai.evaluation
+  - production.observability
+  - production.versioning
+  - production.release-engineering
+outcomes:
+  - "Define drift as change relative to an explicit reference population or period rather than as any unusual request."
+  - "Distinguish planned release changes from unplanned drift by linking monitoring windows to release-manifest identity."
+  - "Choose a known-good reference window and current analysis window that fit the product's seasonality and traffic."
+  - "Distinguish input or query drift, retrieval/data drift, output or response drift, and quality/performance degradation."
+  - "Explain why input distribution drift can occur without material quality regression."
+  - "Explain why quality can regress without an obvious univariate drift signal."
+  - "Select text descriptors, categorical/numeric distributions, embeddings, usage patterns, or other signals only when they map to a plausible failure mechanism."
+  - "Use sampled or delayed evaluation, human feedback, or business outcomes as quality evidence when labels are not immediately available."
+  - "Segment monitoring by meaningful dimensions such as tenant, language, route, model, workflow, or request class."
+  - "Detect cases where aggregate metrics hide drift in a smaller but important segment."
+  - "Define thresholds from baseline variability, expected seasonality, sample size, and action cost instead of arbitrary constants."
+  - "Backtest drift rules against historical or synthetic windows to estimate false alarms and missed changes."
+  - "Separate data-quality failures such as missing fields or schema breakage from genuine distribution drift."
+  - "Correlate drift signals with quality, latency, cost, error, retrieval, and release evidence before deciding on mitigation."
+  - "Avoid treating drift alerts as automatic retraining or rollback triggers."
+  - "Define an investigation and response playbook: inspect, segment, evaluate, refresh data/index, reroute, rollback, update policy, or take no action."
+  - "Promote newly observed production slices into durable evaluation or regression sets when they expose a real gap."
+  - "Remove drift monitors that are noisy, unactionable, redundant, or disconnected from product risk."
+diagnostic:
+  tasks:
+    - "Given a shift in Knowledge Assistant query topics, explain what evidence would distinguish harmless traffic change from a quality problem."
+    - "Choose reference and current windows for a workload with weekday/weekend seasonality and explain why a naive previous-day comparison could create false alarms."
+    - "Describe a case where one tenant or language drifts while the aggregate distribution appears stable."
+    - "Explain why an alerting rule based only on text or embedding drift should not automatically trigger rollback."
+  pass_condition: "Skip introductory material only if the learner can design version-aware reference/current comparisons, distinguish drift from quality degradation, segment material populations, calibrate actionable thresholds, and connect alerts to an investigation and evaluation loop."
+learning_route:
+  mental_model:
+    - source: guide.google-rules-of-ml
+      locator: "Section \"Training-Serving Skew\", especially Rule #29 and Rule #37 \"Measure Training/Serving Skew\""
+      purpose: "Ground production-change monitoring in actual serving data and show that pipeline/data changes and feedback loops can create harmful skew that must be measured explicitly."
+    - source: docs.google-model-monitoring-overview
+      locator: "Sections \"Model Monitoring v2 overview\" and \"Monitoring objectives\""
+      purpose: "Build the reference/current-window model: scheduled monitoring, distribution comparisons, explicit objectives, thresholds, and model-version-aware monitoring."
+    - source: article.evidently-text-drift
+      locator: "Sections \"How does it work?\" and \"Drift detection on text data\", including reference/current comparison, text content drift, and text descriptor drift"
+      purpose: "Inspect concrete ways to monitor unstructured text changes without pretending one scalar statistic completely describes an LLM application's traffic."
+    - source: article.nannyml-drift-false-alarms
+      locator: "Sections \"Limitations of univariate data drift\", \"When to use data drift methods?\", and \"Conclusion\""
+      purpose: "Prevent drift-first alerting from becoming noisy operational dogma: distribution shift can be real while model/product performance remains acceptable."
+  guided_practice:
+    - task: "Take one week of hypothetical Knowledge Assistant traffic, define the reference/current windows, choose three drift signals and two segmentation dimensions, then write what quality evidence would be required before each alert can trigger mitigation."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/drift-monitoring/
+      task: "Add drift monitoring to the released Knowledge Assistant, inject harmless query-distribution shift, material quality degradation, and segment-only drift, then calibrate thresholds and response actions so the system distinguishes investigation signals from release or incident decisions."
+experiments:
+  - "Shift query topic or language distribution while keeping evaluation quality stable and verify the drift alert does not automatically become a rollback."
+  - "Introduce a quality regression with minimal obvious univariate input drift and verify evaluation/feedback catches what drift monitoring alone misses."
+  - "Create aggregate stability while one tenant, language, or workflow segment drifts and verify the segmented monitor exposes it."
+  - "Compare a current window against a badly chosen seasonal reference and then against a seasonally appropriate reference to show how reference choice changes false alarms."
+  - "Introduce a data-quality/schema failure and verify it is classified separately from ordinary distribution drift."
+  - "Change release/model/prompt identity intentionally and verify monitoring attributes the change to a new release rather than reporting it as unexplained drift."
+  - "Backtest one threshold across multiple historical or synthetic windows and record false-positive and missed-change behavior."
+  - "Turn one material drift slice into a durable evaluation/regression case, then prove a later change is judged against it."
+  - "Remove or disable at least one drift signal because it is noisy, redundant, or not tied to an actionable risk."
+exit_evidence:
+  - "A drift contract identifies monitored populations, signals, segmentation dimensions, and the failure mechanism each signal is intended to reveal."
+  - "Reference and current windows are explicit and linked to release/system identity."
+  - "Reference selection accounts for known seasonality, traffic cycles, or product changes."
+  - "Input/query, retrieval/data, output/response, and quality signals are distinguished where applicable."
+  - "Data quality/schema checks are not mislabeled as distribution drift."
+  - "Thresholds include rationale based on baseline variability, sample size, expected seasonality, or action cost."
+  - "At least one segmented monitor catches a change hidden by the aggregate view."
+  - "At least one harmless drift case demonstrates that drift is not equivalent to quality regression."
+  - "At least one quality-regression case demonstrates that drift monitoring is not a substitute for evaluation."
+  - "A false-positive or threshold-backtest record is inspectable."
+  - "The monitoring record includes quality, latency, cost, error, retrieval, and release correlation when those signals matter."
+  - "An investigation/playbook maps alert classes to inspect, evaluate, refresh, reroute, rollback, update, or no-action decisions."
+  - "At least one real or injected production slice is added to durable evaluation/regression evidence."
+  - "At least one noisy or unactionable drift monitor is rejected or removed."
+  - "The final decision states what drift can detect reliably, what it cannot, and which quality signals remain authoritative."
+transfer:
+  task: "Redesign the drift strategy for a different AI workload with different seasonality, delayed labels, user segmentation, model/retrieval dependencies, and remediation cost."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - guide.google-rules-of-ml
+    - docs.google-model-monitoring-overview
+    - article.evidently-text-drift
+    - article.nannyml-drift-false-alarms
+  practice:
+    - article.evidently-text-drift
+    - article.nannyml-drift-false-alarms
+  production-reference:
+    - docs.google-model-monitoring-overview
+    - guide.google-rules-of-ml
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

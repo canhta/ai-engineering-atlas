@@ -874,3 +874,81 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: guide.google-rules-of-ml
+    type: guide
+    title: Google — Rules of Machine Learning
+    author: Martin Zinkevich, Google
+    url: https://developers.google.com/machine-learning/guides/rules-of-ml
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.drift
+      - training-serving-skew
+      - serving-data
+      - monitoring
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.google-model-monitoring-overview
+    type: documentation
+    title: Google Cloud — Model Monitoring overview
+    author: Google Cloud
+    url: https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.drift
+      - reference-window
+      - current-window
+      - thresholds
+      - scheduled-monitoring
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.evidently-text-drift
+    type: article
+    title: Evidently — Data quality monitoring and drift detection for text data
+    author: Evidently AI
+    url: https://www.evidentlyai.com/blog/evidently-data-quality-monitoring-and-drift-detection-for-text-data
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - reference
+    covers:
+      - production.drift
+      - text-drift
+      - reference-current
+      - text-descriptors
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: article.nannyml-drift-false-alarms
+    type: article
+    title: NannyML — Don't let yourself be fooled by data drift
+    author: Santiago Víquez, NannyML
+    url: https://www.nannyml.com/blog/when-data-drift-does-not-affect-performance-machine-learning-models
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.drift
+      - false-alarms
+      - alert-fatigue
+      - performance-correlation
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
