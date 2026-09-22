@@ -142,7 +142,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 180
 
-- id: article.anthropic-managed-agents
+  - id: article.anthropic-managed-agents
     type: article
     title: Scaling Managed Agents — Decoupling the brain from the hands
     author: Anthropic
