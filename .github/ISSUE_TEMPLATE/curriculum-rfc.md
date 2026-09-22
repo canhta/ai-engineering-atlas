@@ -1,25 +1,47 @@
 ---
 name: Curriculum change
-about: Propose a competency, prerequisite, target level, or learning-outcome change
+about: Propose a competency, prerequisite, target level, or evidence change
 title: "Curriculum: "
 ---
 
-## Problem
+## Capability problem
 
-What is missing or incorrect in the current curriculum?
+What capability is missing, incorrectly scoped, or at the wrong depth?
 
-## Evidence
+## Curriculum evidence
 
-List the curricula, books, courses, technical requirements, or other sources supporting the change.
+Which curricula, books, courses, standards, production requirements, or representative roles support the change?
 
-## Proposal
+Include exact sections where possible.
 
-Describe the change.
+## Observable outcome
+
+What should the learner be able to do?
+
+## Prerequisites
+
+What must already be demonstrated?
+
+## Diagnostic
+
+How would we discover whether a learner already has this capability?
+
+## Learning route
+
+What exact sources and locators teach the missing mental model?
+
+## Practice and evidence
+
+What practice develops the capability, and what evidence proves it?
+
+## Transfer / retention / project integration
+
+Which of these matter for this competency and why?
 
 ## Alternatives
 
-What other options were considered?
+What other curriculum shapes or placements were considered?
 
 ## Affected competencies
 
-List existing competency IDs, if any.
+List existing IDs and downstream impact.
