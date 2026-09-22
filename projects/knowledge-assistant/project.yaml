@@ -6,6 +6,7 @@ milestones:
   - product-frame
   - lexical-baseline
   - vector-retrieval
+  - chunking-quality
   - hybrid-and-reranking
   - rag
   - evaluation-harness
@@ -20,6 +21,9 @@ competencies:
   - ai.model-selection
   - retrieval.search
   - ai.embeddings
+  - retrieval.chunking
+  - retrieval.reranking
+  - retrieval.rag-evaluation
   - ai.evaluation
   - agents.deterministic-vs-agentic
   - security.prompt-injection
@@ -28,6 +32,9 @@ evidence:
   - baseline-results
   - versioned-eval-set
   - experiment-results
+  - chunking-comparison
+  - reranking-comparison
+  - rag-evaluation-record
   - decision-records
   - traces
   - security-tests
