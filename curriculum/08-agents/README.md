@@ -9,7 +9,8 @@ Engineering systems in which models choose or sequence actions.
 - [state](state/) and [memory](memory/)
 - [planning](planning/) and task decomposition
 - [verification](verification/) and outcome checking
-- retries, idempotency, and long-running tasks
+- retries, idempotency, and [long-running tasks](long-running/)
+- [workflow orchestration](orchestration/)
 - Model Context Protocol (MCP)
 - agent traces and trajectory evaluation
 - permission boundaries and tool trust
@@ -22,6 +23,8 @@ Engineering systems in which models choose or sequence actions.
 - [Agent Memory](memory/) — add scoped cross-session memory only with explicit admission, retrieval, lifecycle, isolation, and measured benefit.
 - [Planning](planning/) — externalize task structure, persist it in state, and replan only when observed evidence invalidates the current plan.
 - [Verification](verification/) — verify actual outcomes with deterministic/environment evidence first, calibrating model graders only when needed.
+- [Long-Running Agents](long-running/) — make long-duration runs resumable, bounded, cancellable, replay-safe, and verifiably complete across process boundaries.
+- [AI Workflow Orchestration](orchestration/) — choose code-controlled, model-controlled, or hybrid flow; bound concurrency and failure propagation before considering multi-agent topology.
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 
