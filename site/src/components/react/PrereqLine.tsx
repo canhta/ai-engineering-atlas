@@ -18,7 +18,7 @@ export interface PrereqEntry {
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function PrereqLine({ lang, entries }: { lang: Lang; entries: PrereqEntry[] }) {
+export default function PrereqLine({ lang, entries, lead }: { lang: Lang; entries: PrereqEntry[]; lead?: string }) {
   const t = useTranslations(lang);
   const [progress] = useProgress();
   const parts = new Intl.ListFormat(lang, { type: "conjunction" }).formatToParts(entries.map((e) => e.ref));
@@ -26,7 +26,7 @@ export default function PrereqLine({ lang, entries }: { lang: Lang; entries: Pre
 
   return (
     <p className="prereq-line">
-      <span className="prereq-lead">{t("prereq.lead")}</span>{" "}
+      <span className="prereq-lead">{lead ?? t("prereq.lead")}</span>{" "}
       {parts.map((part, i) => {
         if (part.type === "literal") return <Fragment key={i}>{part.value}</Fragment>;
         const e = byRef.get(part.value)!;

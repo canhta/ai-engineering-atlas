@@ -46,6 +46,24 @@ const fixture: Record<string, unknown> = {
       },
     ],
   },
+  markdown: {
+    type: "text",
+    id: "brief",
+    title,
+    format: "markdown",
+    body: { en: "## Task 1\n\nOpen [cases](cases.jsonl) and [the route](../../curriculum/07-ai-engineering/evaluation/).\n\n<script>alert(1)</script>" },
+  },
+  runner: {
+    type: "runner",
+    id: "runner",
+    title,
+    step: true,
+    runtime: "pyodide",
+    editable: "starter.py",
+    run: "tests.py",
+    reference: "solution.py",
+    files: { "starter.py": "def answer():\n    raise NotImplementedError\n", "tests.py": "import starter\n", "solution.py": "def answer():\n    return 42\n" },
+  },
   data: { type: "data", id: "extra", title, value: { nested: [1, true, { en: "Localised leaf" }, { deeper: ["x"] }] } },
   unknown: { type: "timeline", id: "odd", title, entries: [{ year: 2026, note: "Unknown shape" }] },
 };
@@ -57,7 +75,15 @@ beforeAll(async () => {
 
 const render = (name: string, lang: "en" | "vi" = "en") =>
   container.renderToString(Block, {
-    props: { block: fixture[name] as BlockData, lang, itemRef: "fixture.item", target: "demonstrated", after: [], headingId: "h" },
+    props: {
+      block: fixture[name] as BlockData,
+      lang,
+      itemRef: name === "runner" ? "lab:evaluation-harness" : "fixture.item",
+      target: "demonstrated",
+      after: [],
+      headingId: "h",
+      sourcePath: "labs/evaluation-harness",
+    },
   });
 
 describe("block renderer", () => {
@@ -101,6 +127,24 @@ describe("block renderer", () => {
     const html = await render("practice");
     expect(html).toContain("/tree/main/labs/self-attention");
     expect(html).toContain("Chapter 3");
+  });
+
+  test("markdown text shifts headings, resolves relative links, and escapes raw HTML", async () => {
+    const html = await render("markdown");
+    expect(html).toContain("<h3>Task 1</h3>");
+    expect(html).toContain('href="https://github.com/canhta/ai-engineering-atlas/tree/main/labs/evaluation-harness/cases.jsonl"');
+    expect(html).toContain('href="/en/routes/ai.evaluation/"');
+    expect(html).not.toContain("<script>alert");
+  });
+
+  test("runner renders the lab workbench with the editable file and hides the reference", async () => {
+    const html = await render("runner");
+    expect(html).toContain("astro-island");
+    expect(html).toContain("starter.py");
+    expect(html).toContain("tests.py");
+    expect(html).toContain("Run tests");
+    // The reference is shipped in the props but not shown as a tab until the learner opens it.
+    expect(html).not.toMatch(/<code>solution\.py<\/code>/);
   });
 
   test("data renders nested values of any shape", async () => {

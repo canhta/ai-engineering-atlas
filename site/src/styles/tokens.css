@@ -29,6 +29,14 @@
   --state-retained: #0f6a73;
   --state-applied: #a3145a;
   --focus: var(--route);
+  /* Lab editor syntax (DESIGN.md → Labs): chart inks on the sheet; comments stay muted. */
+  --code-keyword: #6b3d9e;
+  --code-string: #2a6b3f;
+  --code-number: #8c5910;
+  --code-definition: #1b6770;
+  --code-comment: var(--ink-muted);
+  --code-selection: #1b677033;
+  --code-gutter: #15201908;
   --glass: #f6f8f4c7; /* floating nav surface under the blur */
   --scrim: #15201966; /* dims content under sheets and overlays */
 
@@ -113,6 +121,12 @@
     --state-transferred: #c9a6f5;
     --state-retained: #5fc6cc;
     --state-applied: #f28cc2;
+    --code-keyword: #c9a6f5;
+    --code-string: #7fd19c;
+    --code-number: #e8b04a;
+    --code-definition: #6cc3cc;
+    --code-selection: #5db5bf40;
+    --code-gutter: #e3e9e408;
     --glass: #151e1ac7;
     --scrim: #000000a3;
 

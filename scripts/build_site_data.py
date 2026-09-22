@@ -129,7 +129,9 @@ def raw_items(name: str, config: dict):
                 continue
             files = sorted(f.name for f in path.iterdir() if f.is_file() and not f.name.startswith("."))
             title = markdown_title(path / "README.md", path.name)
-            yield path.name, title, {}, rel(path), {"path": rel(path), "files": files}
+            content_file = path / config["content_from"] if config.get("content_from") else None
+            content = load_yaml(content_file) if content_file and content_file.exists() else {}
+            yield path.name, title, content, rel(path), {"path": rel(path), "files": files}
         elif path.suffix == ".md":
             yield path.stem, markdown_title(path, path.stem), {}, rel(path), {"path": rel(path)}
         else:
@@ -186,10 +188,11 @@ def page_matches(config: dict, fields: dict) -> bool:
 
 
 class Context:
-    def __init__(self, resources, resolver, label):
+    def __init__(self, resources, resolver, label, source_path=None):
         self.resources = resources
         self.resolver = resolver
         self.label = label
+        self.source_path = source_path
         self.used_resources: set[str] = set()
 
     def resource(self, value) -> str:
@@ -215,7 +218,14 @@ class Context:
 
 
 def block_text(spec, value, content, ctx):
-    return {"body": ctx.text(value, spec["field"])}, [spec["field"]]
+    where = spec.get("field") or spec.get("file")
+    if spec.get("format") == "markdown":
+        # The Markdown file's H1 is the item title, which the page already shows.
+        lines = str(value).lstrip("\n").splitlines()
+        if lines and lines[0].startswith("# "):
+            value = "\n".join(lines[1:]).strip("\n")
+        return {"body": ctx.text(value, where), "format": "markdown"}, [where]
+    return {"body": ctx.text(value, where)}, [where]
 
 
 def block_list(spec, value, content, ctx):
@@ -303,6 +313,42 @@ def block_practice(spec, value, content, ctx):
     return {"groups": groups}, consumed
 
 
+def block_runner(spec, value, content, ctx):
+    """A runnable lab: the files it ships (name → text) and which one the learner edits."""
+    mapping = spec["map"]
+    field = spec["field"]
+    directory = ROOT / (ctx.source_path or "")
+
+    def name(key):
+        file = value.get(mapping[key])
+        if not isinstance(file, str) or not (directory / file).is_file():
+            errors.append(f"{ctx.label}: {field}.{mapping[key]} must name a file in {ctx.source_path}")
+            return ""
+        return file
+
+    payload = {
+        "runtime": str(value.get(mapping["runtime"]) or ""),
+        "editable": name("editable"),
+        "run": name("run"),
+        "reference": name("reference"),
+    }
+    extra = value.get(mapping["files"]) or []
+    files = {}
+    for file in [payload["editable"], payload["run"], payload["reference"], *extra]:
+        if not file:
+            continue
+        path = directory / str(file)
+        if not path.is_file():
+            errors.append(f"{ctx.label}: {field}.{mapping['files']} entry '{file}' does not exist")
+            continue
+        files[str(file)] = path.read_text(encoding="utf-8")
+    payload["files"] = dict(sorted(files.items()))
+    packages = value.get(mapping["packages"]) or []
+    if packages:
+        payload["packages"] = [str(p) for p in packages]
+    return payload, [f"{field}.{k}" for k in mapping.values()]
+
+
 def block_data(spec, value, content, ctx):
     return {"value": value}, [spec["field"]]
 
@@ -314,6 +360,7 @@ BLOCK_TYPES = {
     "diagnostic": block_diagnostic,
     "sources": block_sources,
     "practice": block_practice,
+    "runner": block_runner,
     "data": block_data,
 }
 
@@ -456,6 +503,10 @@ def check_config(presentation: dict, vocabularies: dict):
             if field not in fields:
                 errors.append(f"presentation: {name} refers to undeclared field '{field}'")
         for block in config.get("blocks", []) or []:
+            if ("field" in block) == ("file" in block):
+                errors.append(f"presentation: {name} block '{block.get('id')}' needs exactly one of `field` or `file`")
+            if "file" in block and not config.get("items_from", "").endswith("/"):
+                errors.append(f"presentation: {name} block '{block.get('id')}' reads a file, but items are not directories")
             if block.get("type") not in BLOCK_TYPES:
                 errors.append(f"presentation: {name} block '{block.get('field')}' has unknown type '{block.get('type')}'")
         for relation in config.get("relations", []) or []:
@@ -529,21 +580,25 @@ def build():
 
             covered = list(base_covered)
             if page_matches(config, fields):
-                ctx = Context(resources, resolver, label)
+                ctx = Context(resources, resolver, label, source_path)
                 blocks = []
                 for spec in blocks_config:
                     handler = BLOCK_TYPES.get(spec["type"])
-                    value = get_path(content, spec["field"])
+                    if "file" in spec:
+                        file = ROOT / (source_path or "") / spec["file"]
+                        value = file.read_text(encoding="utf-8") if file.is_file() else None
+                    else:
+                        value = get_path(content, spec["field"])
                     if handler is None or value is None:
                         continue
-                    if spec["type"] in ("diagnostic", "practice") and not isinstance(value, dict):
+                    if spec["type"] in ("diagnostic", "practice", "runner") and not isinstance(value, dict):
                         errors.append(f"{label}: field '{spec['field']}' must be a mapping for a {spec['type']} block")
                         continue
                     payload, consumed = handler(spec, value, content, ctx)
                     covered += consumed
                     blocks.append({
                         "type": spec["type"],
-                        "id": spec.get("id") or slug(spec["field"]),
+                        "id": spec.get("id") or slug(spec.get("field") or spec["file"]),
                         "title": spec["title"],
                         **({"step": True} if spec.get("step") else {}),
                         **payload,

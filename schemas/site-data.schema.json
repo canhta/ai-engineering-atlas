@@ -170,11 +170,11 @@
       }
     },
     "block": {
-      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, data. Every block has type, id, and title.",
+      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, data. Every block has type, id, and title.",
       "type": "object",
       "required": ["type", "id", "title"],
       "properties": {
-        "type": {"enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "data"]},
+        "type": {"enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"]},
         "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
         "title": {"$ref": "#/$defs/l10n"},
         "step": {"const": true, "description": "The block is a learner step (the site may number it or track it)."}
@@ -186,12 +186,17 @@
         {"if": {"properties": {"type": {"const": "diagnostic"}}}, "then": {"$ref": "#/$defs/diagnosticBlock"}},
         {"if": {"properties": {"type": {"const": "sources"}}}, "then": {"$ref": "#/$defs/sourcesBlock"}},
         {"if": {"properties": {"type": {"const": "practice"}}}, "then": {"$ref": "#/$defs/practiceBlock"}},
+        {"if": {"properties": {"type": {"const": "runner"}}}, "then": {"$ref": "#/$defs/runnerBlock"}},
         {"if": {"properties": {"type": {"const": "data"}}}, "then": {"$ref": "#/$defs/dataBlock"}}
       ]
     },
     "textBlock": {
       "required": ["body"],
-      "properties": {"type": true, "id": true, "title": true, "step": true, "body": {"$ref": "#/$defs/l10n"}},
+      "properties": {
+        "type": true, "id": true, "title": true, "step": true,
+        "body": {"$ref": "#/$defs/l10n"},
+        "format": {"const": "markdown", "description": "The body is Markdown; omitted for plain paragraphs."}
+      },
       "additionalProperties": false
     },
     "listBlock": {
@@ -291,6 +296,20 @@
             }
           }
         }
+      },
+      "additionalProperties": false
+    },
+    "runnerBlock": {
+      "description": "A lab the site runs in the browser: the files it ships and which one the learner edits.",
+      "required": ["runtime", "editable", "run", "reference", "files"],
+      "properties": {
+        "type": true, "id": true, "title": true, "step": true,
+        "runtime": {"enum": ["pyodide"]},
+        "editable": {"type": "string", "minLength": 1, "description": "File the learner edits; a key of files."},
+        "run": {"type": "string", "minLength": 1, "description": "File run as __main__; a key of files."},
+        "reference": {"type": "string", "minLength": 1, "description": "Reference solution, shown only on request; a key of files."},
+        "files": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string"}, "description": "File name to text."},
+        "packages": {"type": "array", "items": {"type": "string", "minLength": 1}, "description": "Runtime packages to load before running."}
       },
       "additionalProperties": false
     },

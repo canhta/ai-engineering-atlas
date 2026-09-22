@@ -6332,6 +6332,23 @@
             "README.md",
             "decision-rubric.md"
           ]
+        },
+        "page": {
+          "source_path": "labs/agentic-design",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "brief",
+              "title": {
+                "en": "Lab brief",
+                "vi": "Đề bài"
+              },
+              "body": {
+                "en": "Companion practice for `agents.deterministic-vs-agentic`.\n\n## Goal\n\nDecide whether a task should use:\n\n- a single model call;\n- a deterministic workflow;\n- a workflow with bounded model decisions;\n- an autonomous agent loop.\n\nThe goal is not to build the most agentic system. It is to add autonomy only when measured task performance justifies the added cost, latency, and failure surface.\n\n## Task 1 — pick a real task\n\nChoose a task with an observable outcome.\n\nGood examples:\n\n- answer a support question and optionally create a ticket;\n- investigate a repository issue;\n- research a question across several sources;\n- triage a request and route it to a specialist flow.\n\nWrite:\n\n- success criteria;\n- allowed tools/actions;\n- hard safety constraints;\n- maximum cost/steps/latency where relevant.\n\n## Task 2 — build the simplest baseline\n\nStart with the least autonomous design that could work.\n\nExamples:\n\n- one model call;\n- fixed prompt chain;\n- deterministic router;\n- explicit workflow state machine.\n\nMeasure it on a small versioned task set.\n\n## Task 3 — failure analysis\n\nClassify failures.\n\nAsk:\n\n- Did fixed routing choose the wrong branch?\n- Did the task require an unpredictable number of steps?\n- Did the system need to react to tool results?\n- Was the failure actually caused by poor context/tool design rather than lack of autonomy?\n\nDo not introduce an agent until the failure analysis motivates it.\n\n## Task 4 — add autonomy\n\nImplement an agentic version only if needed.\n\nKeep:\n\n- tool interfaces explicit;\n- stop conditions;\n- maximum iterations;\n- permission boundaries;\n- traces of model decisions and tool results.\n\nMeasure on the **same task set**.\n\n## Task 5 — compare\n\nUse [decision-rubric.md](decision-rubric.md).\n\nCompare:\n\n- task success;\n- failure types;\n- number of model calls / steps;\n- latency;\n- cost;\n- recoverability/debuggability.\n\nA performance improvement that does not justify added complexity is a valid reason to keep the workflow.\n\n## Transfer challenge\n\nTake a task whose subtasks are known in advance and one whose subtasks emerge from intermediate results.\n\nChoose an architecture for each and defend why the choices differ.\n\n## Evidence\n\nTo claim **demonstrated**, produce:\n\n- baseline architecture;\n- failure analysis;\n- agentic or more flexible alternative when justified;\n- same-set comparison;\n- written complexity decision.\n\nFor **applied** evidence, use the decision in a reference or real system and retain traces/eval results."
+              },
+              "format": "markdown"
+            }
+          ]
         }
       },
       {
@@ -6344,9 +6361,46 @@
           "files": [
             "README.md",
             "cases.jsonl",
+            "lab.yaml",
             "solution.py",
             "starter.py",
             "tests.py"
+          ]
+        },
+        "page": {
+          "source_path": "labs/evaluation-harness",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "brief",
+              "title": {
+                "en": "Lab brief",
+                "vi": "Đề bài"
+              },
+              "body": {
+                "en": "Companion lab for [ai.evaluation](../../curriculum/07-ai-engineering/evaluation/).\n\n## Goal\n\nBuild a versioned evaluation harness that compares system configurations and produces evidence for a release decision.\n\nThe fixtures are deliberately simple so the exercise focuses on evaluation design rather than model APIs.\n\n## Task 1 — understand the eval set\n\nOpen [cases.jsonl](cases.jsonl).\n\nEach case contains:\n\n- ID;\n- input;\n- expected answer;\n- slice.\n\nAsk whether this tiny set represents the failures you care about. It should not.\n\n## Task 2 — implement the harness\n\nComplete [starter.py](starter.py).\n\nThe harness should:\n\n- load cases;\n- run a system function;\n- record per-case correctness;\n- aggregate overall and slice metrics;\n- record latency;\n- preserve case/system version in the result.\n\nRun:\n\n```bash\npython tests.py\n```\n\n## Task 3 — compare configurations\n\nUse the two mock systems in the starter.\n\nProduce a comparison table.\n\nDo not ask only \"which average score is higher?\"\n\nAsk:\n\n- Which slices changed?\n- Is the change meaningful for the product objective?\n- Did latency change?\n- Which failures remain?\n\n## Task 4 — release gate\n\nWrite an explicit rule before looking at the final result.\n\nExample shape:\n\n```text\nrelease if:\n- no critical regression;\n- overall correctness >= threshold;\n- each required slice >= threshold;\n- p95 latency <= threshold\n```\n\nChoose thresholds from a stated product requirement, not from whatever result the system happened to achieve.\n\n## Task 5 — add a regression case\n\nPretend one bad production answer was reported.\n\nAdd it to the versioned fixture with:\n\n- failure category;\n- slice;\n- expected behavior.\n\nVerify the weaker configuration fails it.\n\n## Transfer challenge\n\nRedesign the harness for an agent that can call tools.\n\nWhat additional evidence is needed beyond final answer correctness?\n\nConsider:\n\n- tool selected;\n- arguments;\n- retry count;\n- authorization;\n- trajectory;\n- recovery.\n\n## Evidence\n\nTo claim **demonstrated**, keep:\n\n- versioned eval set;\n- harness code;\n- per-slice results;\n- latency result;\n- failure analysis;\n- written release decision.\n\nTry the lab before opening [solution.py](solution.py)."
+              },
+              "format": "markdown"
+            },
+            {
+              "type": "runner",
+              "id": "runner",
+              "title": {
+                "en": "Run the tests",
+                "vi": "Chạy test"
+              },
+              "step": true,
+              "runtime": "pyodide",
+              "editable": "starter.py",
+              "run": "tests.py",
+              "reference": "solution.py",
+              "files": {
+                "cases.jsonl": "{\"id\":\"math-1\",\"input\":\"2 + 2\",\"expected\":\"4\",\"slice\":\"simple-math\"}\n{\"id\":\"math-2\",\"input\":\"10 - 3\",\"expected\":\"7\",\"slice\":\"simple-math\"}\n{\"id\":\"format-1\",\"input\":\"Return the word BLUE in lowercase.\",\"expected\":\"blue\",\"slice\":\"instruction-following\"}\n{\"id\":\"format-2\",\"input\":\"Return exactly YES.\",\"expected\":\"YES\",\"slice\":\"instruction-following\"}\n",
+                "solution.py": "from __future__ import annotations\n\nimport statistics\nimport time\nfrom collections import defaultdict\n\n\ndef evaluate(cases, system, *, system_version: str, eval_version: str):\n    records = []\n    latencies = []\n\n    for case in cases:\n        start = time.perf_counter()\n        output = system(case[\"input\"])\n        elapsed_ms = (time.perf_counter() - start) * 1000\n        latencies.append(elapsed_ms)\n\n        records.append(\n            {\n                \"id\": case[\"id\"],\n                \"slice\": case[\"slice\"],\n                \"expected\": case[\"expected\"],\n                \"output\": output,\n                \"correct\": output == case[\"expected\"],\n                \"latency_ms\": elapsed_ms,\n            }\n        )\n\n    overall = sum(r[\"correct\"] for r in records) / len(records)\n\n    by_slice = defaultdict(list)\n    for record in records:\n        by_slice[record[\"slice\"]].append(record[\"correct\"])\n\n    slice_accuracy = {\n        name: sum(values) / len(values)\n        for name, values in sorted(by_slice.items())\n    }\n\n    sorted_latencies = sorted(latencies)\n    p95_index = max(0, min(len(sorted_latencies) - 1, round(0.95 * (len(sorted_latencies) - 1))))\n\n    return {\n        \"system_version\": system_version,\n        \"eval_version\": eval_version,\n        \"num_cases\": len(records),\n        \"overall_accuracy\": overall,\n        \"slice_accuracy\": slice_accuracy,\n        \"mean_latency_ms\": statistics.mean(latencies),\n        \"p95_latency_ms\": sorted_latencies[p95_index],\n        \"records\": records,\n    }\n",
+                "starter.py": "from __future__ import annotations\n\nimport json\nimport time\nfrom pathlib import Path\nfrom typing import Callable\n\n\ndef load_cases(path: str | Path):\n    with open(path, \"r\", encoding=\"utf-8\") as f:\n        return [json.loads(line) for line in f if line.strip()]\n\n\ndef system_a(text: str) -> str:\n    mapping = {\n        \"2 + 2\": \"4\",\n        \"10 - 3\": \"7\",\n        \"Return the word BLUE in lowercase.\": \"blue\",\n        \"Return exactly YES.\": \"YES\",\n    }\n    return mapping.get(text, \"\")\n\n\ndef system_b(text: str) -> str:\n    mapping = {\n        \"2 + 2\": \"4\",\n        \"10 - 3\": \"8\",  # deliberate regression\n        \"Return the word BLUE in lowercase.\": \"Blue\",\n        \"Return exactly YES.\": \"YES\",\n    }\n    return mapping.get(text, \"\")\n\n\ndef evaluate(\n    cases,\n    system: Callable[[str], str],\n    *,\n    system_version: str,\n    eval_version: str,\n):\n    \"\"\"Return a dict with per-case records, overall accuracy, slice accuracy,\n    and latency statistics.\n\n    Keep the implementation simple and explicit.\n    \"\"\"\n    raise NotImplementedError\n\n\nif __name__ == \"__main__\":\n    cases = load_cases(Path(__file__).with_name(\"cases.jsonl\"))\n    print(evaluate(cases, system_a, system_version=\"a\", eval_version=\"v1\"))\n",
+                "tests.py": "from pathlib import Path\n\nimport starter\nfrom solution import evaluate as reference_evaluate\n\n\ndef main():\n    cases = starter.load_cases(Path(__file__).with_name(\"cases.jsonl\"))\n\n    result = starter.evaluate(\n        cases,\n        starter.system_a,\n        system_version=\"a\",\n        eval_version=\"v1\",\n    )\n    reference = reference_evaluate(\n        cases,\n        starter.system_a,\n        system_version=\"a\",\n        eval_version=\"v1\",\n    )\n\n    assert result[\"system_version\"] == \"a\"\n    assert result[\"eval_version\"] == \"v1\"\n    assert result[\"num_cases\"] == 4\n    assert result[\"overall_accuracy\"] == 1.0\n    assert result[\"slice_accuracy\"] == reference[\"slice_accuracy\"]\n    assert len(result[\"records\"]) == 4\n    assert result[\"p95_latency_ms\"] >= 0\n\n    weaker = starter.evaluate(\n        cases,\n        starter.system_b,\n        system_version=\"b\",\n        eval_version=\"v1\",\n    )\n    assert weaker[\"overall_accuracy\"] < result[\"overall_accuracy\"]\n    assert weaker[\"slice_accuracy\"][\"simple-math\"] < 1.0\n    assert weaker[\"slice_accuracy\"][\"instruction-following\"] < 1.0\n\n    print(\"All contract tests passed.\")\n\n\nif __name__ == \"__main__\":\n    main()\n"
+              }
+            }
           ]
         }
       },
@@ -6363,6 +6417,23 @@
             "decision-template.md",
             "scenario.md"
           ]
+        },
+        "page": {
+          "source_path": "labs/model-selection",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "brief",
+              "title": {
+                "en": "Lab brief",
+                "vi": "Đề bài"
+              },
+              "body": {
+                "en": "Companion practice for `ai.model-selection`.\n\n## Goal\n\nChoose a model from evidence and constraints rather than reputation or a single benchmark.\n\nThis lab uses synthetic candidate profiles so the decision process is reproducible. The numbers are **not claims about real providers or models**.\n\n## Scenario\n\nRead [scenario.md](scenario.md) and [candidates.csv](candidates.csv).\n\nThe product has:\n\n- hard constraints that cannot be violated;\n- quality requirements;\n- latency and cost goals;\n- an evaluation set that can be used to compare real candidates later.\n\n## Task 1 — eliminate infeasible candidates\n\nBefore ranking anything, identify hard constraints.\n\nFor each candidate, record:\n\n- pass/fail on hard constraints;\n- missing evidence;\n- assumptions.\n\nA high-quality model that violates a hard constraint is not a candidate.\n\n## Task 2 — define the decision rule\n\nWrite the decision rule **before** selecting a winner.\n\nInclude:\n\n- minimum quality threshold;\n- latency threshold;\n- cost ceiling;\n- deployment/privacy requirement;\n- tie-breakers;\n- what uncertainty requires another experiment.\n\nUse [decision-template.md](decision-template.md).\n\n## Task 3 — choose and defend\n\nSelect a candidate from the synthetic profiles.\n\nYour explanation should show:\n\n- why rejected candidates were rejected;\n- which trade-off determined the final choice;\n- what new evidence could change the choice.\n\nThere is deliberately no single reference answer.\n\n## Task 4 — sensitivity test\n\nChange one constraint:\n\n- traffic grows 10×;\n- p95 latency requirement is cut in half;\n- data must remain inside a private environment;\n- quality threshold increases;\n- budget is reduced.\n\nRe-run the decision.\n\nIf your answer never changes, inspect whether your decision process is actually constraint-driven.\n\n## Task 5 — replace synthetic profiles with real evidence\n\nFor stronger evidence, compare 2-3 models/providers on a small versioned eval set from your own project.\n\nRecord:\n\n- model/version/date;\n- evaluation-set version;\n- quality;\n- p50/p95 latency;\n- cost for the measured workload;\n- operational constraints;\n- result.\n\nDo not copy public leaderboard scores as a substitute for task-specific evidence.\n\n## Transfer challenge\n\nA second product needs batch document classification rather than interactive generation.\n\nExplain which parts of your original model-selection process remain valid and which criteria change.\n\n## Evidence\n\nTo claim **demonstrated**, keep:\n\n- hard-constraint filter;\n- decision rule written before selection;\n- comparison table;\n- decision record;\n- sensitivity test.\n\nTo claim **applied**, use the process to make a real choice in a project and preserve the evaluation evidence."
+              },
+              "format": "markdown"
+            }
+          ]
         }
       },
       {
@@ -6374,9 +6445,45 @@
           "path": "labs/prompt-injection-boundaries",
           "files": [
             "README.md",
+            "lab.yaml",
             "solution.py",
             "starter.py",
             "tests.py"
+          ]
+        },
+        "page": {
+          "source_path": "labs/prompt-injection-boundaries",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "brief",
+              "title": {
+                "en": "Lab brief",
+                "vi": "Đề bài"
+              },
+              "body": {
+                "en": "Companion practice for `security.prompt-injection`.\n\n## Goal\n\nTreat model output and retrieved/external content as untrusted data, then place real authorization around privileged actions.\n\nThis lab does **not** try to \"solve\" prompt injection with a magic prompt or string filter.\n\n## Scenario\n\nA knowledge assistant retrieves an external document. The document contains an instruction telling the assistant to call a privileged export tool.\n\nAssume the model can be influenced by that content and may emit the privileged tool request.\n\nYour application must remain safe even when the model makes the wrong decision.\n\n## Task 1 — identify trust boundaries\n\nDraw the flow:\n\n```text\nuser\n→ application\n→ retrieved external content\n→ model\n→ proposed tool request\n→ authorization\n→ tool\n```\n\nMark:\n\n- trusted policy;\n- untrusted content;\n- model-controlled output;\n- privileged boundary.\n\n## Task 2 — implement authorization outside the model\n\nComplete [starter.py](starter.py).\n\nThe executor must reject a privileged tool request when the authenticated user lacks the required permission.\n\nThe system prompt is not the authorization layer.\n\n## Task 3 — run the checks\n\n```bash\npython tests.py\n```\n\nThe tests include a simulated compromised model output.\n\nPassing requires the application boundary to block the action.\n\n## Task 4 — indirect injection\n\nTreat retrieved content as untrusted.\n\nRecord how your architecture:\n\n- labels/separates external content;\n- limits available tools;\n- validates tool arguments;\n- prevents the model from escalating privilege;\n- requests human approval for a high-risk action where appropriate.\n\n## Task 5 — adversarial test plan\n\nCreate several benign simulated attack cases:\n\n- direct instruction override;\n- malicious instruction inside retrieved text;\n- malformed privileged tool arguments;\n- attempt to access a resource outside the user's authorization.\n\nFor each, state the **application control** that should contain the impact.\n\n## Transfer challenge\n\nMove the same architecture to an email assistant that can read messages and send replies.\n\nIdentify which trust boundaries and approval points change.\n\n## Evidence\n\nTo claim **demonstrated**, keep:\n\n- trust-boundary diagram;\n- authorization implementation;\n- passing tests against simulated compromised model output;\n- adversarial test table;\n- explanation of why prompting alone is insufficient.\n\nFor **applied** evidence, integrate the controls and adversarial tests into the Knowledge Assistant or a real system."
+              },
+              "format": "markdown"
+            },
+            {
+              "type": "runner",
+              "id": "runner",
+              "title": {
+                "en": "Run the tests",
+                "vi": "Chạy test"
+              },
+              "step": true,
+              "runtime": "pyodide",
+              "editable": "starter.py",
+              "run": "tests.py",
+              "reference": "solution.py",
+              "files": {
+                "solution.py": "from starter import TOOL_PERMISSIONS, ToolRequest, UserContext\n\n\ndef authorize(user: UserContext, request: ToolRequest) -> bool:\n    required = TOOL_PERMISSIONS.get(request.tool)\n    if required is None:\n        return False\n    return required in user.permissions\n",
+                "starter.py": "from __future__ import annotations\n\nfrom dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass UserContext:\n    user_id: str\n    permissions: frozenset[str]\n\n\n@dataclass(frozen=True)\nclass ToolRequest:\n    tool: str\n    arguments: dict\n\n\nTOOL_PERMISSIONS = {\n    \"search_docs\": \"docs:read\",\n    \"export_private_data\": \"admin:export\",\n}\n\n\ndef authorize(user: UserContext, request: ToolRequest) -> bool:\n    \"\"\"Return True only when the authenticated user may invoke this tool.\n\n    Do not trust the model to tell you whether the user is authorized.\n    \"\"\"\n    raise NotImplementedError\n\n\ndef execute_tool(user: UserContext, request: ToolRequest) -> str:\n    if not authorize(user, request):\n        raise PermissionError(\n            f\"{user.user_id} is not authorized to call {request.tool}\"\n        )\n\n    if request.tool == \"search_docs\":\n        return \"public search results\"\n\n    if request.tool == \"export_private_data\":\n        return \"SIMULATED_PRIVATE_EXPORT\"\n\n    raise ValueError(f\"Unknown tool: {request.tool}\")\n\n\ndef compromised_model_output() -> ToolRequest:\n    \"\"\"Simulate a model influenced by an indirect prompt injection.\n\n    The security property should hold even when this output is malicious.\n    \"\"\"\n    return ToolRequest(\n        tool=\"export_private_data\",\n        arguments={\"destination\": \"attacker-controlled\"},\n    )\n",
+                "tests.py": "import starter\n\n\ndef secure_authorize(user, request):\n    required = starter.TOOL_PERMISSIONS.get(request.tool)\n    if required is None:\n        return False\n    return required in user.permissions\n\n\ndef main():\n    # Learner implementation should replace this assignment once implemented.\n    # It keeps the expected policy visible for the lab contract.\n    if starter.authorize.__code__.co_consts and \"NotImplementedError\" in str(\n        starter.authorize.__code__.co_names\n    ):\n        pass\n\n    normal_user = starter.UserContext(\n        user_id=\"user-1\",\n        permissions=frozenset({\"docs:read\"}),\n    )\n    admin = starter.UserContext(\n        user_id=\"admin-1\",\n        permissions=frozenset({\"docs:read\", \"admin:export\"}),\n    )\n\n    search = starter.ToolRequest(\"search_docs\", {\"query\": \"attention\"})\n    injected = starter.compromised_model_output()\n\n    assert secure_authorize(normal_user, search)\n    assert not secure_authorize(normal_user, injected)\n    assert secure_authorize(admin, injected)\n\n    # These assertions call the learner implementation.\n    assert starter.authorize(normal_user, search)\n    assert not starter.authorize(normal_user, injected)\n    assert starter.authorize(admin, injected)\n\n    try:\n        starter.execute_tool(normal_user, injected)\n    except PermissionError:\n        pass\n    else:\n        raise AssertionError(\"privileged request was not blocked\")\n\n    print(\"All trust-boundary tests passed.\")\n\n\nif __name__ == \"__main__\":\n    main()\n"
+              }
+            }
           ]
         }
       },
@@ -6393,6 +6500,23 @@
             "solution.py",
             "starter.py",
             "tests.py"
+          ]
+        },
+        "page": {
+          "source_path": "labs/self-attention",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "brief",
+              "title": {
+                "en": "Lab brief",
+                "vi": "Đề bài"
+              },
+              "body": {
+                "en": "Companion lab for [llm.self-attention](../../curriculum/06-llm-foundations/self-attention/).\n\n## Goal\n\nImplement causal single-head self-attention and make the important intermediate tensors inspectable.\n\nThis lab is deliberately smaller than a framework's production attention implementation.\n\n## Setup\n\n```bash\npython -m venv .venv\nsource .venv/bin/activate\npip install -r requirements.txt\n```\n\n## Task 1 — implement\n\nComplete `causal_self_attention` in [starter.py](starter.py).\n\nInputs:\n\n- `x`: `[sequence, model_dim]`\n- `w_q`, `w_k`, `w_v`: projection matrices\n\nReturn:\n\n- output;\n- raw scores;\n- causal mask;\n- attention probabilities.\n\nDo not use `torch.nn.MultiheadAttention` or scaled-dot-product attention.\n\n## Task 2 — tests\n\nRun:\n\n```bash\npython tests.py\n```\n\nThe tests check:\n\n- shapes;\n- row probabilities sum to one;\n- future positions receive zero probability;\n- output matches the reference implementation for a fixed example.\n\nDo not stop when the tests pass. Inspect why they pass.\n\n## Task 3 — visualize\n\nUse the returned probability matrix to make a small heatmap or table.\n\nAnswer:\n\n- Which cells are forced to zero?\n- What changes if causal masking is removed?\n- What does one row represent?\n\n## Task 4 — break it\n\nIntroduce one bug:\n\n- mask the diagonal too;\n- mask the wrong triangle;\n- apply softmax on the wrong dimension;\n- remove the scaling factor.\n\nPredict the symptom before running the test.\n\nThen diagnose it from tensor values or the attention matrix.\n\n## Experiment\n\nMeasure elapsed time for several sequence lengths while keeping model dimension fixed.\n\nRecord:\n\n```text\nsequence length\nscore matrix shape\nelapsed time\npeak memory if available\n```\n\nThe goal is to connect `n × n` attention scores to observed behavior.\n\n## Transfer challenge\n\nReplace text-token intuition with a sequence of image-patch embeddings.\n\nExplain:\n\n- what the sequence elements now represent;\n- what Q/K/V still mean operationally;\n- when causal masking would or would not make sense.\n\n## Evidence\n\nTo claim **demonstrated**, keep:\n\n- implementation;\n- test output;\n- visualization;\n- one failure diagnosis;\n- short explanation of sequence-length cost.\n\nTry the lab before opening [solution.py](solution.py)."
+              },
+              "format": "markdown"
+            }
           ]
         }
       }

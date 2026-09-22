@@ -66,6 +66,14 @@ jobs:
       - name: Typecheck, unit tests, lint, i18n, contrast, headers, icons, build
         run: pnpm run check
 
+      # Browser labs must behave as `python tests.py` does locally (site/scripts/test-labs.mjs).
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Browser labs under Pyodide match CPython
+        run: pnpm run test:labs
+
       - name: Install Chromium for browser tests
         run: pnpm exec playwright install --with-deps chromium
 
