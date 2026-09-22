@@ -437,3 +437,192 @@ L4 specialist depth
 ~~~
 
 Retention and applied evidence are tracked separately because a learner may demonstrate L2 today and still fail delayed retrieval later.
+
+
+---
+
+# Content sourcing contract
+
+AI Engineering Atlas should curate learning routes through existing high-quality material. It should not create authoritative course content from model memory.
+
+Every important competency should distinguish five source roles.
+
+## 1. Curriculum evidence
+
+Answers:
+
+> Why is this competency in the roadmap, and at what depth?
+
+Examples:
+
+- established CS/ML curricula;
+- university course learning objectives;
+- respected textbooks;
+- recurring production requirements;
+- representative AI engineering roles;
+- security or industry standards.
+
+## 2. Teaching source
+
+Answers:
+
+> What is the best source for building the mental model?
+
+Prefer a specific chapter, section, lecture, or module rather than an entire book or course.
+
+## 3. Visual source
+
+Answers:
+
+> Is there a diagram, animation, interactive explanation, or notebook that makes the mechanism easier to understand?
+
+Visualization is selected only when it improves the mental model.
+
+## 4. Practice source
+
+Answers:
+
+> Where can the learner practice the actual skill?
+
+Examples:
+
+- assignment;
+- problem set;
+- notebook exercise;
+- implementation task;
+- benchmark;
+- debugging exercise.
+
+## 5. Assessment / production evidence
+
+Answers:
+
+> What can prove the learner can use the competency?
+
+This may come from:
+
+- exam or assignment rubrics;
+- project requirements;
+- benchmark tasks;
+- realistic failure cases;
+- production engineering practices.
+
+A single source may fill more than one role.
+
+---
+
+# Source granularity
+
+Avoid mappings such as:
+
+~~~yaml
+resource: Stanford CS336
+covers:
+  - transformers
+~~~
+
+Prefer mappings precise enough that a learner can start immediately:
+
+~~~yaml
+learn:
+  source: Stanford CS336
+  lecture: "..."
+  sections:
+    - "..."
+
+practice:
+  source: "..."
+  assignment: "..."
+  tasks:
+    - "..."
+
+visual:
+  source: "..."
+  segment: "..."
+~~~
+
+The roadmap should route learners to material, not merely list resources.
+
+---
+
+# Resource selection
+
+A resource is not included merely because it is popular.
+
+Consider:
+
+- alignment with the competency outcome;
+- depth;
+- instructional quality;
+- quality of practice;
+- availability;
+- maintenance and freshness where the subject changes quickly;
+- whether a better primary source already exists;
+- whether the material is visual, conceptual, practical, or reference-oriented.
+
+Prefer **one primary route** and a small number of complementary resources over a long list.
+
+---
+
+# Project spines
+
+Small exercises should connect to larger systems so the learner repeatedly revisits earlier competencies under new constraints.
+
+The Atlas should develop three project spines.
+
+## Foundation spine
+
+Purpose: expose model internals.
+
+Possible progression:
+
+~~~text
+numerical operations
+→ autograd
+→ small neural network
+→ tokenizer
+→ attention
+→ transformer
+→ decoding
+→ simple inference measurements
+~~~
+
+## AI system spine
+
+Purpose: build an increasingly capable AI application.
+
+Possible progression:
+
+~~~text
+keyword search
+→ embeddings
+→ vector search
+→ hybrid retrieval
+→ reranking
+→ RAG
+→ evaluation
+→ tool use
+→ agent workflow
+→ multimodal input
+~~~
+
+## Production spine
+
+Purpose: turn AI code into a reliable service.
+
+Possible progression:
+
+~~~text
+API
+→ model/provider abstraction
+→ structured logging
+→ tracing
+→ eval gates
+→ caching/routing
+→ security boundaries
+→ deployment
+→ incident simulation
+→ production feedback loop
+~~~
+
+The spines are not three mandatory mega-projects. They are persistent contexts into which competencies can be integrated.
