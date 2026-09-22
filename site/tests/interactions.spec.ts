@@ -174,6 +174,76 @@ test("diagnostic: one task per card, then the pass condition, record a gap", asy
   await expect(rail(page).getByText("Result recorded")).toBeVisible();
 });
 
+test("a due delayed-retrieval check reuses the diagnostic and updates the review queue (ts-fsrs)", async ({ page }) => {
+  const todayIso = new Date().toISOString().slice(0, 10);
+  // A pre-FSRS-style progress.yaml: review_on but no `review` card (site/src/lib/review.ts seeds one
+  // on the next evidence). Due today, so it appears in the queue right after import.
+  const fixture = `version: 2
+updated_at: "${todayIso}"
+competencies:
+  ${ROUTE_REF}:
+    current_state: demonstrated
+    target_state: retained
+    evidence:
+      - id: implementation-seed-1
+        kind: implementation
+        supports_state: demonstrated
+        recorded_at: "2026-01-01"
+        note: "Tool contract with validation and idempotent retries."
+        independence: independent
+        review_method: self
+    state_history:
+      - state: demonstrated
+        recorded_at: "2026-01-01"
+        reason: "Exit evidence recorded."
+        evidence_refs:
+          - implementation-seed-1
+    next_action: "Run a delayed retrieval check without reopening the sources, or attempt the transfer task."
+    review_on: "${todayIso}"
+`;
+
+  await open(page, "/en/progress/");
+  const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Import progress.yaml" }).click();
+  await (await chooser).setFiles({ name: "progress.yaml", mimeType: "application/yaml", buffer: Buffer.from(fixture) });
+  await page.getByRole("button", { name: "Replace" }).click();
+  await expect(page.getByText("Imported.")).toBeVisible();
+
+  const dueCount = page.locator(".queue-counts span", { hasText: "Due today" }).locator("strong");
+  await expect(dueCount).toHaveText("1");
+  const queueRow = page.locator(".queue-rows li").filter({ hasText: "Tool Calling" });
+  await expect(queueRow).toBeVisible();
+  await queueRow.getByRole("link", { name: "Start review" }).click();
+  await expect(page).toHaveURL(/\/en\/routes\/ai\.tool-calling\/#diagnostic$/);
+  await hydrated(page);
+
+  // Same diagnostic tasks as a first attempt, but this submission is a review: it records
+  // `kind: retrieval`, not `kind: diagnostic` (recordEvidence in src/lib/progress.ts).
+  await expect(page.getByText(`Task 1 of ${TASKS}`)).toBeVisible();
+  await page.getByRole("textbox", { name: "Your answer to task 1" }).fill("answer 1");
+  for (let n = 1; n < TASKS; n++) {
+    await page.getByRole("button", { name: "Next task" }).click();
+    await expect(page.getByText(`Task ${n + 1} of ${TASKS}`)).toBeVisible();
+    await page.getByRole("textbox", { name: `Your answer to task ${n + 1}` }).fill(`answer ${n + 1}`);
+  }
+  await page.getByRole("button", { name: "Compare with the pass condition" }).click();
+  await page.getByText("Meets the pass condition").click();
+  await page.getByRole("button", { name: "Record diagnostic result" }).click();
+
+  // A pass on a demonstrated competency reaches "retained" (docs/LEARNING_MODEL.md: retrieved
+  // successfully after a delay), and the confirmation names the newly scheduled date, not a link.
+  await expect(page.getByText(/^Recorded\. Next check /)).toBeVisible();
+  await expect(fieldLog(page).locator(".state-badge").first()).toHaveText("retained");
+  const nextReview = await fieldLog(page).locator(".log-facts time").last().getAttribute("datetime");
+  expect(nextReview).toBeTruthy();
+  expect(nextReview! > todayIso).toBe(true);
+
+  // A pass lengthens the interval (site/src/lib/review.ts), so the item leaves the due queue —
+  // it may still show under "Next 7 days" rather than disappearing outright.
+  await open(page, "/en/progress/");
+  await expect(dueCount).toHaveText("0");
+});
+
 test("opening a source is a personal mark and leaves the state unchanged", async ({ page }) => {
   await open(page, ROUTE);
   const opened = page.getByRole("checkbox", { name: /^Opened / }).first();

@@ -80,6 +80,8 @@
   "diag.record": "Record diagnostic result",
   "diag.recorded.meets": "Recorded. Skip the introductory sources and go to",
   "diag.recorded.gap": "Recorded. Start with",
+  "diag.review.recorded.meets": "Recorded. Next check {date}.",
+  "diag.review.recorded.sooner": "Recorded. The next check moved sooner, to {date}.",
   "diag.edit": "Edit answers",
   "sources.col.resource": "Source",
   "sources.col.locator": "Read or inspect exactly",

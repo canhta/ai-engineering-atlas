@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Label, RadioButton, RadioField, RadioGroup, TextArea, TextField } from "react-aria-components";
 import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
-import { recordEvidence, type TargetState, today } from "../../lib/progress";
+import { formatDate } from "../../lib/dates";
+import { recordEvidence, retrievalOutcome, stateOf, type TargetState, today } from "../../lib/progress";
 import { useDraft, useProgress } from "../../lib/progress-store";
 import { Icon } from "./Icon";
 
@@ -41,6 +42,13 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
   };
   const moved = useRef(false);
 
+  // Once a competency has ever reached a reviewed state, this same diagnostic is the delayed-
+  // retrieval prompt (RFC → Phase 2), so a submission is a review, not a first attempt — see record()
+  // below. `review_on` is the signal, not `review` (the FSRS card): a `progress.yaml` written before
+  // FSRS has the former but not the latter, and still needs to be read as due for review.
+  const entry = progress?.competencies[itemRef];
+  const isReview = Boolean(entry?.review_on);
+
   const answers = tasks.map((_, i) => draft?.[i] ?? "");
   const complete = answers.every((a) => a.trim().length > 0);
   const hydrated = draft !== null && progress !== null;
@@ -67,15 +75,24 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
       recordEvidence(
         progress,
         itemRef,
-        {
-          kind: "diagnostic",
-          // Meeting the pass condition skips introductory material; only exit evidence demonstrates.
-          supports_state: result === "meets" ? "learning" : "gap",
-          independence: "independent",
-          review_method: "self",
-          note: `Diagnostic self-assessed as "${result}" against the pass condition.`,
-        },
-        target,
+        isReview
+          ? {
+              kind: "retrieval",
+              supports_state: retrievalOutcome(stateOf(progress, itemRef), result),
+              independence: "independent",
+              review_method: "self",
+              note: `Delayed retrieval self-assessed as "${result}" against the pass condition.`,
+              retrieval_result: result,
+            }
+          : {
+              kind: "diagnostic",
+              // Meeting the pass condition skips introductory material; only exit evidence demonstrates.
+              supports_state: result === "meets" ? "learning" : "gap",
+              independence: "independent",
+              review_method: "self",
+              note: `Diagnostic self-assessed as "${result}" against the pass condition.`,
+            },
+        entry?.target_state ?? target,
         today(),
       ),
     );
@@ -127,6 +144,8 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
   }
 
   const nextLink = recorded === "meets" ? next.meets : next.gap;
+  // Re-read after recording: entry.review_on is the freshly scheduled (possibly shortened) date.
+  const nextReviewOn = progress?.competencies[itemRef]?.review_on;
   return (
     <div className="diag">
       <section className="diag-card" aria-labelledby="diag-pass">
@@ -187,7 +206,14 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
           )}
         </div>
         <p role="status" className="live-message">
-          {recorded && (
+          {recorded && isReview && (
+            <>
+              {t(recorded === "meets" ? "diag.review.recorded.meets" : "diag.review.recorded.sooner", {
+                date: nextReviewOn ? formatDate(nextReviewOn, lang) : "",
+              })}
+            </>
+          )}
+          {recorded && !isReview && (
             <>
               {t(recorded === "meets" ? "diag.recorded.meets" : "diag.recorded.gap")}{" "}
               {nextLink && (

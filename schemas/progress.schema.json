@@ -57,6 +57,10 @@
                 },
                 "review_note": {
                   "type": "string"
+                },
+                "retrieval_result": {
+                  "description": "For kind \"retrieval\" only: the diagnostic result the learner reported, mapped to an FSRS rating by site/src/lib/review.ts.",
+                  "enum": ["meets", "partial", "notYet"]
                 }
               },
               "additionalProperties": true
@@ -95,7 +99,32 @@
             "minLength": 1
           },
           "review_on": {
-            "type": "string"
+            "type": "string",
+            "description": "Calendar date the next delayed-retrieval check is due, computed by site/src/lib/review.ts (ts-fsrs). Same field as before FSRS; only how it is computed changed."
+          },
+          "review": {
+            "description": "FSRS card state (site/src/lib/review.ts), under one key so a pre-FSRS file (review_on only, no card) stays valid; it is read as a fresh card and seeded on the next evidence. Field names and grain follow ts-fsrs's Card.",
+            "type": "object",
+            "properties": {
+              "due": {
+                "type": "string",
+                "description": "ISO instant the card is next due (full FSRS precision; review_on is its calendar date)."
+              },
+              "stability": { "type": "number" },
+              "difficulty": { "type": "number" },
+              "elapsed_days": { "type": "number" },
+              "scheduled_days": { "type": "number" },
+              "learning_steps": { "type": "integer" },
+              "reps": { "type": "integer" },
+              "lapses": { "type": "integer" },
+              "state": {
+                "enum": ["new", "learning", "review", "relearning"]
+              },
+              "last_review": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
           }
         },
         "additionalProperties": true

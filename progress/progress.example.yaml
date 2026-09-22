@@ -39,7 +39,20 @@ competencies:
           - attention-explain-20260922
 
     next_action: "Run delayed retrieval check without reopening the source."
-    review_on: 2026-09-29
+    # review_on and review are computed by site/src/lib/review.ts (ts-fsrs) from the evidence above,
+    # which stood in for the first successful check; review_on is review.due's calendar date.
+    review_on: 2026-09-25
+    review:
+      due: "2026-09-25T00:00:00.000Z"
+      stability: 2.3065
+      difficulty: 2.11810397
+      elapsed_days: 0
+      scheduled_days: 3
+      learning_steps: 0
+      reps: 1
+      lapses: 0
+      state: review
+      last_review: "2026-09-22T00:00:00.000Z"
 
   ai.evaluation:
     current_state: gap

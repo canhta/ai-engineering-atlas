@@ -51,6 +51,7 @@ Two workflows: **CI** (`ci.yml`) runs on every push and decides whether a commit
 - Progress follows [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md): a state changes only through an evidence record. Opening a source, scrolling, or AI output leaves state unchanged.
 - Progress lives in the browser and exports as `progress.yaml` valid against [schemas/progress.schema.json](../schemas/progress.schema.json). Use the schema's existing enum values (`independence: reference-open` for a revealed solution).
 - The next-step rules live only in `src/lib/recommend.ts` (pure, deterministic, tested in `recommend.test.ts`). Pages pass it the graph from `nextGraph()`; the recommendation is advice and never changes a state.
+- Delayed-retrieval scheduling (when the next check is due) lives only in `src/lib/review.ts`, the one module that imports `ts-fsrs`; `progress.ts` calls it and no longer holds fixed review intervals. FSRS decides _when_ to check, never a state: `recordEvidence` still moves `current_state` from the reported evidence alone.
 
 ## Bilingual
 

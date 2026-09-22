@@ -306,7 +306,7 @@ A small lab proves a local skill. A project exposes interactions, constraints, a
 
 Important knowledge should be recalled after a delay rather than only tested immediately after study.
 
-The exact schedule is configurable. A reasonable default for important competencies is to revisit them after roughly:
+The web atlas computes the review date from the learner's own retrieval results, so it lengthens after a successful check and shortens after a failed one, rather than following one fixed schedule for every learner. A reasonable rough sense of the cadence for an important competency is still roughly:
 
 - one day;
 - one week;
