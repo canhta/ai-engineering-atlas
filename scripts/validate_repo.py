@@ -294,12 +294,44 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
             errors.append(f"{rel}: invalid target state '{value}'")
 
     prerequisites = data.get("prerequisites") or []
+    prerequisite_support = data.get("prerequisite_support") or {}
+
     for prereq in prerequisites:
         if prereq == cid:
             errors.append(f"{rel}: competency cannot depend on itself")
-        elif prereq not in catalog:
+            continue
+        if prereq not in catalog:
             errors.append(
                 f"{rel}: prerequisite '{prereq}' is not registered in curriculum/catalog.yaml"
+            )
+            continue
+
+        if data.get("status") == "ready" and catalog[prereq].get("status") != "ready":
+            bridge = prerequisite_support.get(prereq)
+            if not isinstance(bridge, dict):
+                errors.append(
+                    f"{rel}: ready route prerequisite '{prereq}' is coverage-only "
+                    "and requires prerequisite_support"
+                )
+                continue
+
+            for field in ["diagnostic", "source", "locator", "purpose"]:
+                if not bridge.get(field):
+                    errors.append(
+                        f"{rel}: prerequisite_support.{prereq} missing '{field}'"
+                    )
+
+            if bridge.get("source"):
+                check_resource_ref(
+                    bridge["source"],
+                    f"{rel}: prerequisite_support.{prereq}",
+                    require_verified=True,
+                )
+
+    for bridge_id in prerequisite_support:
+        if bridge_id not in prerequisites:
+            errors.append(
+                f"{rel}: prerequisite_support contains non-prerequisite '{bridge_id}'"
             )
 
     diagnostic = data.get("diagnostic") or {}

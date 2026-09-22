@@ -50,3 +50,14 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: course.made-with-ml-testing
+    type: course
+    title: Made With ML — Testing Machine Learning Systems
+    author: Goku Mohandas
+    url: https://madewithml.com/courses/mlops/testing/
+    roles: [teaching, practice, production-reference]
+    covers: [software.testing, ml-systems-testing]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180

@@ -22,6 +22,15 @@ curriculum_evidence:
 prerequisites:
   - existing.catalog-id
 
+# Required for a ready route when a prerequisite is still coverage-only.
+# This bridge is a targeted patch, not a substitute for a future full route.
+prerequisite_support:
+  existing.catalog-id:
+    diagnostic: Quick check that reveals whether this prerequisite is actually missing.
+    source: source.id
+    locator: Exact source section used to patch the prerequisite
+    purpose: The minimum prerequisite capability needed for this route.
+
 outcomes:
   - State an observable capability using an action verb.
   - Include debugging/design evidence when the competency requires it.

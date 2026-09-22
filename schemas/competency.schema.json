@@ -21,10 +21,25 @@
     "metadata"
   ],
   "properties": {
-    "id": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
-    "title": { "type": "string", "minLength": 1 },
-    "domain": { "type": "string", "minLength": 1 },
-    "status": { "enum": ["incomplete", "seeded", "ready"] },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9.-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "incomplete",
+        "seeded",
+        "ready"
+      ]
+    },
     "competency_types": {
       "type": "array",
       "minItems": 1,
@@ -40,70 +55,159 @@
         ]
       }
     },
-    "target_level": { "type": "string", "pattern": "^L[0-4]$" },
+    "target_level": {
+      "type": "string",
+      "pattern": "^L[0-4]$"
+    },
     "target_states": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "enum": ["demonstrated", "transferred", "retained", "applied"]
+        "enum": [
+          "demonstrated",
+          "transferred",
+          "retained",
+          "applied"
+        ]
       }
     },
-    "why": { "type": "string", "minLength": 1 },
+    "why": {
+      "type": "string",
+      "minLength": 1
+    },
     "curriculum_evidence": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "prerequisites": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "uniqueItems": true
     },
     "outcomes": {
       "type": "array",
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "minItems": 1
     },
     "diagnostic": {
       "type": "object",
-      "required": ["tasks", "pass_condition"],
+      "required": [
+        "tasks",
+        "pass_condition"
+      ],
       "properties": {
         "tasks": {
           "type": "array",
           "minItems": 1,
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "pass_condition": { "type": "string", "minLength": 1 }
+        "pass_condition": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "learning_route": {
       "type": "object",
-      "required": ["mental_model", "independent_practice"],
+      "required": [
+        "mental_model",
+        "independent_practice"
+      ],
       "properties": {
-        "mental_model": { "type": "array", "minItems": 1 },
-        "guided_practice": { "type": "array" },
-        "independent_practice": { "type": "array", "minItems": 1 },
-        "visual": { "type": "array" }
+        "mental_model": {
+          "type": "array",
+          "minItems": 1
+        },
+        "guided_practice": {
+          "type": "array"
+        },
+        "independent_practice": {
+          "type": "array",
+          "minItems": 1
+        },
+        "visual": {
+          "type": "array"
+        }
       }
     },
-    "experiments": { "type": "array" },
+    "experiments": {
+      "type": "array"
+    },
     "exit_evidence": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
-    "transfer": { "type": "object" },
-    "review": { "type": "object" },
+    "transfer": {
+      "type": "object"
+    },
+    "review": {
+      "type": "object"
+    },
     "project_spines": {
       "type": "array",
       "uniqueItems": true,
-      "items": { "enum": ["foundation", "ai-system", "production"] }
+      "items": {
+        "enum": [
+          "foundation",
+          "ai-system",
+          "production"
+        ]
+      }
     },
-    "resources": { "type": "object" },
+    "resources": {
+      "type": "object"
+    },
     "metadata": {
       "type": "object",
-      "required": ["last_reviewed", "evidence_required"]
+      "required": [
+        "last_reviewed",
+        "evidence_required"
+      ]
+    },
+    "prerequisite_support": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "diagnostic",
+          "source",
+          "locator",
+          "purpose"
+        ],
+        "properties": {
+          "diagnostic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": true

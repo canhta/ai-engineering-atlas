@@ -17,6 +17,22 @@ prerequisites:
   - math.dot-product
   - dl.embeddings
   - dl.softmax
+prerequisite_support:
+  math.dot-product:
+    diagnostic: Given two short vectors, compute their dot product and explain how a larger aligned dot product changes a similarity score.
+    source: book.raschka-llm-from-scratch
+    locator: Chapter 3, section 3.3 simple self-attention examples where attention scores are computed with dot products.
+    purpose: Patch the vector dot-product operation needed to follow QK^T attention scores.
+  dl.embeddings:
+    diagnostic: Explain the difference between a token ID and its learned embedding vector, including the embedding tensor shape for a short sequence.
+    source: book.raschka-llm-from-scratch
+    locator: Chapter 2, section 2.7 "Creating token embeddings".
+    purpose: Patch the learned-vector representation needed before Q/K/V projections.
+  dl.softmax:
+    diagnostic: Given three scalar scores, explain what softmax changes and why the outputs can be interpreted as normalized positive weights.
+    source: book.raschka-llm-from-scratch
+    locator: Chapter 3, section 3.3 simple self-attention examples where attention scores are normalized with softmax.
+    purpose: Patch the normalization operation used to convert attention scores into mixing weights.
 outcomes:
   - Explain queries, keys, values, scaling, and causal masking.
   - Trace tensor shapes through a single-head attention calculation.

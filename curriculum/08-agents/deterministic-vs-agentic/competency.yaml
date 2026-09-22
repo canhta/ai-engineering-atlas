@@ -17,6 +17,17 @@ prerequisites:
   - ai.evaluation
   - ai.tool-calling
   - software.testing
+prerequisite_support:
+  ai.tool-calling:
+    diagnostic: Describe a tool schema, what the model chooses versus what application code executes, and one validation boundary for tool arguments.
+    source: article.anthropic-building-effective-agents
+    locator: "Building block: The augmented LLM" and Appendix 2 "Prompt engineering your tools".
+    purpose: Patch the model-to-tool interface needed before comparing agentic control strategies.
+  software.testing:
+    diagnostic: Explain how a regression test differs from a happy-path example and where an end-to-end agent test belongs relative to unit tests.
+    source: course.made-with-ml-testing
+    locator: Testing lesson sections "Types of tests" and system/regression testing discussion.
+    purpose: Patch the testing discipline required to compare workflow and agent failures on the same task set.
 outcomes:
   - Distinguish workflows with predefined code paths from agents that dynamically direct their process and tool use.
   - Start from the simplest viable architecture and use failure analysis to justify additional autonomy.

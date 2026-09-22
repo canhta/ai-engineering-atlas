@@ -15,6 +15,12 @@ curriculum_evidence:
 prerequisites:
   - ai.product-framing
   - ai.evaluation
+prerequisite_support:
+  ai.product-framing:
+    diagnostic: State the target user, pain, measurable value proposition, hard constraints, and simplest non-AI or simpler-AI alternative for one feature.
+    source: course.made-with-ml-product-design
+    locator: Product Design lesson sections covering users, pain points, value proposition, objectives, constraints, and feasibility.
+    purpose: Patch the product constraints that make model selection a decision rather than a benchmark lookup.
 outcomes:
   - Translate product requirements into hard constraints and evaluation criteria.
   - Eliminate infeasible models before optimizing soft preferences.

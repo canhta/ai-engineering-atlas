@@ -18,6 +18,17 @@ curriculum_evidence:
 prerequisites:
   - ml.experimental-design
   - software.testing
+prerequisite_support:
+  ml.experimental-design:
+    diagnostic: Explain how you would compare two system configurations without changing the evaluation data or success criteria after seeing the results.
+    source: course.made-with-ml-evaluation
+    locator: Evaluation lesson sections covering overall evaluation, per-class evaluation, slices, behavioral testing, and online evaluation.
+    purpose: Patch the experiment-design discipline needed to make system comparisons meaningful.
+  software.testing:
+    diagnostic: Distinguish a unit test, integration test, system test, and regression test using one AI application example.
+    source: course.made-with-ml-testing
+    locator: Testing lesson sections "Types of tests" and "How should we test?".
+    purpose: Patch the testing vocabulary and regression mindset used by the evaluation harness.
 outcomes:
   - Define evaluation criteria from a product or system objective.
   - Evaluate system components separately from end-to-end behavior.
