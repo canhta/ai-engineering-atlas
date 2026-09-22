@@ -1,0 +1,56 @@
+id: ai.product-framing
+title: AI Product and Problem Framing
+domain: ai-engineering
+status: ready
+competency_types:
+  - design-judgment
+target_level: L3
+target_states: [demonstrated, transferred, applied]
+why: AI features fail when teams jump from a vague user pain to a model or framework without defining the job, simplest baseline, constraints, success evidence, and acceptable failure behavior.
+curriculum_evidence:
+  - course.made-with-ml-product-design
+  - book.chip-huyen-ai-engineering
+prerequisites: []
+outcomes:
+  - Turn a user workflow and pain into a concrete product objective.
+  - Define a non-AI or simpler-system baseline that the proposed AI feature must beat.
+  - Separate product success criteria from model or system implementation choices.
+  - State constraints, out-of-scope behavior, unacceptable failures, and operational trade-offs before architecture selection.
+  - Produce an evaluation contract and milestone plan that make later architecture changes falsifiable.
+diagnostic:
+  tasks:
+    - Given a request to build an AI knowledge assistant, write the user, pain, value proposition, baseline, success criteria, constraints, and unacceptable failures before naming a model or framework.
+    - Explain what evidence would cause you to reject AI entirely or keep a lexical/manual workflow.
+    - Identify which decisions belong to product framing and which belong to later system design.
+  pass_condition: Skip guided material only if the learner produces a concrete, measurable frame whose success criteria and baseline can drive later evaluation and architecture decisions.
+learning_route:
+  mental_model:
+    - source: course.made-with-ml-product-design
+      locator: Product Design lesson sections "Background", "Value proposition", "Objectives", "Solution", and "Feasibility"
+      purpose: Build the product-first sequence from user pain through objectives, alternatives, constraints, out-of-scope behavior, and feasibility.
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 1 "Planning AI Applications", especially "Use Case Evaluation", "Setting Expectations", "Milestone Planning", and "Maintenance" (pp. 28-34)
+      purpose: Connect product framing to foundation-model suitability, expectations, milestones, and lifecycle cost.
+  guided_practice:
+    - task: Rewrite one vague "build an AI assistant" request into a one-page frame without choosing a model, vector database, or agent framework.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/
+      task: Produce the Knowledge Assistant product brief, baseline definition, versioned representative query set, constraints, unacceptable failures, and first evaluation contract.
+experiments:
+  - Remove the AI assumption and test whether a simpler search/manual workflow already satisfies the objective.
+  - Change one constraint such as latency, permissions, freshness, or cost and record which architecture assumptions become invalid.
+exit_evidence:
+  - A product brief names a concrete user, workflow, pain, value proposition, and objective.
+  - The brief defines a baseline to beat rather than assuming AI is necessary.
+  - Success criteria are observable and separated from implementation choices.
+  - Constraints, alternatives, out-of-scope behavior, and unacceptable failures are explicit.
+  - The evaluation contract and milestones are defined before model or retrieval architecture selection.
+transfer:
+  task: Frame a different AI feature such as support-ticket triage or structured document extraction, including a plausible non-AI baseline and evidence that would stop the project.
+project_spines: [ai-system]
+resources:
+  teaching: [course.made-with-ml-product-design, book.chip-huyen-ai-engineering]
+  production-reference: [course.made-with-ml-product-design]
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
