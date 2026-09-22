@@ -32,7 +32,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 90
 
-- id: article.anthropic-context-engineering
+  - id: article.anthropic-context-engineering
     type: article
     title: Effective context engineering for AI agents
     author: Anthropic Applied AI team
