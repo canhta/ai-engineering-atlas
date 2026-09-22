@@ -1,0 +1,79 @@
+id: ai.context-engineering
+title: Context Engineering
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Model behavior depends on the full inference context, not only prompt wording. Useful systems must select, organize, trim, retrieve, and compact instructions, examples, external data, tool information, history, and state under a finite attention budget.
+curriculum_evidence:
+  - article.anthropic-context-engineering
+  - article.openai-harness-engineering
+prerequisites:
+  - ai.evaluation
+  - ai.prompt-engineering
+prerequisite_support:
+  ai.prompt-engineering:
+    diagnostic: Given a vague system prompt, rewrite it with a clear task, separated instructions and supplied context, and one justified example; explain what failure the change is meant to fix.
+    source: book.chip-huyen-ai-engineering
+    locator: Chapter 5 "Prompt Engineering" — "Introduction to Prompting" (p. 212), "System Prompt and User Prompt" (p. 215), and "Prompt Engineering Best Practices" (from p. 220)
+    purpose: Patch only the instruction-design skill needed to distinguish prompt wording from broader context selection and management.
+outcomes:
+  - Inventory the context presented to a model call, including instructions, task input, examples, retrieved data, tool definitions/results, history, and persisted state.
+  - Identify context that is necessary, redundant, stale, conflicting, low-signal, or too expensive.
+  - Define a context budget and selection policy from product and evaluation requirements rather than maximum context-window size.
+  - Compare up-front context loading with just-in-time or progressive retrieval.
+  - Design trimming, summarization, or compaction while preserving goals, constraints, decisions, and unresolved state.
+  - Measure quality, latency, token/cost, and failure behavior under controlled context ablations.
+  - Version context inputs and selection rules so regressions can be reproduced.
+diagnostic:
+  tasks:
+    - For a RAG assistant, list every context component that reaches the model and identify which components can become stale, noisy, conflicting, or oversized.
+    - Design an ablation that tests whether more retrieved/history context improves or hurts the same evaluation set.
+    - Explain the difference between prompt engineering, retrieval, context engineering, context-window mechanics, and memory.
+  pass_condition: Skip introductory material only if the learner can design a controlled context experiment, explain the boundary with adjacent competencies, and make an evidence-based context-selection decision.
+learning_route:
+  mental_model:
+    - source: article.anthropic-context-engineering
+      locator: Sections "Context engineering vs. prompt engineering", "The anatomy of effective context", "Context retrieval and agentic search", and "Context engineering for long-horizon tasks"
+      purpose: Establish context as the full inference state and introduce high-signal selection, just-in-time retrieval, and compaction under a finite attention budget.
+    - source: article.openai-harness-engineering
+      locator: Section "We made repository knowledge the system of record"
+      purpose: Study a production pattern that keeps a small stable map in context while moving deeper knowledge into navigable external sources.
+  guided_practice:
+    - task: Take one failing Knowledge Assistant query and create a context inventory, then predict which single context component should be removed, added, or loaded later before running the experiment.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/context-and-tools/
+      task: Compare at least three context configurations on the same Knowledge Assistant evaluation set, including one minimal high-signal configuration, one broad/noisy configuration, and one dynamically selected or compacted configuration.
+experiments:
+  - Add stale or distracting retrieved/history context and measure whether quality degrades.
+  - Remove one context component at a time to identify which information is actually causal for success.
+  - Compare always-loaded context with just-in-time retrieval or progressive disclosure.
+  - Compact a long conversation/state record and verify whether goals, constraints, decisions, and unresolved work survive.
+exit_evidence:
+  - A versioned context inventory records component source, selection rule, and approximate size.
+  - At least three context configurations are compared on a fixed evaluation contract.
+  - Quality is reported alongside token/context size and latency/cost where measurable.
+  - At least one stale, distracting, conflicting, or long-history failure is tested.
+  - The decision records what context is deliberately excluded, loaded just in time, or compacted and why.
+transfer:
+  task: Redesign the context policy for a different application such as support triage, coding assistance, or document analysis where the source mix, freshness, history, and tool context differ.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-context-engineering
+    - article.openai-harness-engineering
+    - book.chip-huyen-ai-engineering
+  production-reference:
+    - article.anthropic-context-engineering
+    - article.openai-harness-engineering
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
