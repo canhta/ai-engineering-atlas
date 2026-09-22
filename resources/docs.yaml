@@ -108,3 +108,36 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+- id: article.openai-structured-outputs
+    type: article
+    title: Introducing Structured Outputs in the API
+    author: OpenAI
+    url: https://openai.com/index/introducing-structured-outputs-in-the-api/
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [ai.structured-outputs, json-schema, constrained-decoding]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.google-structured-outputs
+    type: documentation
+    title: Google Gemini API — Structured outputs
+    author: Google
+    url: https://ai.google.dev/gemini-api/docs/structured-output
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [ai.structured-outputs, json-schema]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.json-schema-object
+    type: documentation
+    title: JSON Schema — Object
+    author: JSON Schema
+    url: https://json-schema.org/understanding-json-schema/reference/object
+    roles: [teaching, practice, reference]
+    covers: [ai.structured-outputs, json-schema]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
