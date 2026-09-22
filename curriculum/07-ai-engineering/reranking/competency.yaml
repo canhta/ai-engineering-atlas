@@ -1,0 +1,67 @@
+id: retrieval.reranking
+title: Reranking
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: First-stage retrieval is optimized for candidate generation and scale, while a more expensive query-document scorer can improve ordering on a smaller candidate set. Reranking only helps if the needed evidence was retrieved in the first place and the quality gain justifies added latency and cost.
+curriculum_evidence:
+  - docs.sentence-transformers-retrieve-rerank
+  - book.stanford-ir
+prerequisites:
+  - retrieval.search
+  - ai.evaluation
+outcomes:
+  - Separate candidate generation from final ranking and explain the different constraints on each stage.
+  - Explain why first-stage candidate recall creates an upper bound on what a reranker can recover.
+  - Add a more expensive query-document scorer to a real candidate set without changing the evaluation contract.
+  - Measure ranking improvement and end-to-end retrieval latency across candidate-set sizes and query slices.
+  - Decide whether reranking is justified and diagnose failures it cannot fix.
+diagnostic:
+  tasks:
+    - Explain why scoring every document with a cross-encoder-style model is usually impractical for a large corpus.
+    - Given top-100 candidates with poor top-5 ordering, design a reranking experiment and select ranking/latency evidence.
+    - Explain what a reranker can do when the relevant document is absent from the candidate set.
+  pass_condition: Skip introductory material only if the learner can design a two-stage retrieval experiment, reason about candidate recall, and evaluate ranking gain against operational cost.
+learning_route:
+  mental_model:
+    - source: docs.sentence-transformers-retrieve-rerank
+      locator: Sections "Retrieve & Re-Rank Pipeline", "Retrieval: Bi-Encoder", and "Re-Ranker: Cross-Encoder"
+      purpose: Make the two-stage candidate-generation versus expensive pair-scoring architecture concrete while showing that the first stage may be lexical or dense.
+    - source: book.stanford-ir
+      locator: Chapter 8 "Evaluation in information retrieval", especially ranked-retrieval evaluation
+      purpose: Ground reranking decisions in ranking evidence rather than visual inspection of a few examples.
+  guided_practice:
+    - task: Inspect ten queries where a relevant item is present in the first-stage candidates but ranked too low; predict which can plausibly be fixed by reranking.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/retrieval-quality/
+      task: Add a reranking stage to the Knowledge Assistant, preserve the first-stage candidate list, sweep candidate-set size, and compare ranking quality plus end-to-end retrieval latency.
+experiments:
+  - Sweep candidate-set size and measure candidate recall, final ranking quality, and latency.
+  - Compare at least one slice where reranking helps with one where it cannot recover a first-stage miss.
+  - Remove reranking and verify whether the observed quality gain is large enough to justify the extra stage.
+exit_evidence:
+  - The first-stage retriever/version and candidate-set size are recorded.
+  - Candidate recall and final ranking quality are measured separately.
+  - Ranking improvement is reported with latency/cost impact and query slices.
+  - At least one unrecoverable first-stage miss is identified.
+  - The decision to keep, change, or remove reranking is justified from evidence.
+transfer:
+  task: Apply the same two-stage reasoning to a different candidate generator such as lexical, dense, or hybrid retrieval and explain how the first-stage error profile changes the reranking experiment.
+project_spines:
+  - ai-system
+resources:
+  teaching:
+    - docs.sentence-transformers-retrieve-rerank
+    - book.stanford-ir
+  practice:
+    - docs.sentence-transformers-retrieve-rerank
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
