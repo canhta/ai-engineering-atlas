@@ -14,7 +14,6 @@ export default defineConfig({
     defaultLocale: "en",
     routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
   },
-  redirects: { "/": "/en/" },
   // Per-page hashes for Astro's inline scripts/styles. Pyodide (Phase 1b) will
   // add 'wasm-unsafe-eval' to script-src.
   security: {
@@ -33,30 +32,31 @@ export default defineConfig({
       styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
     },
   },
+  // DESIGN.md → Type. Variable families: Hubot Sans (wght + wdth), Newsreader (wght + opsz).
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: "IBM Plex Sans",
+      name: "Hubot Sans",
       cssVariable: "--font-sans",
-      weights: [400, 500, 600],
+      weights: ["200 900"],
       styles: ["normal"],
       subsets,
       fallbacks: ["system-ui", "sans-serif"],
     },
     {
       provider: fontProviders.fontsource(),
-      name: "Source Serif 4",
-      cssVariable: "--font-serif",
-      weights: [400, 600],
-      styles: ["normal", "italic"],
+      name: "Newsreader",
+      cssVariable: "--font-reading",
+      weights: ["200 800"],
+      styles: ["normal"],
       subsets,
       fallbacks: ["Georgia", "serif"],
     },
     {
       provider: fontProviders.fontsource(),
-      name: "IBM Plex Mono",
+      name: "JetBrains Mono",
       cssVariable: "--font-mono",
-      weights: [400, 500],
+      weights: ["100 800"],
       styles: ["normal"],
       subsets,
       fallbacks: ["ui-monospace", "monospace"],
