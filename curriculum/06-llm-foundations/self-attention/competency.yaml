@@ -1,0 +1,40 @@
+id: llm.self-attention
+title: Self-Attention
+domain: llm-foundations
+status: seeded
+target_level: L2
+why: Understand the information-mixing mechanism used by transformers and its context-length cost.
+prerequisites:
+  - math.dot-product
+  - dl.embeddings
+  - dl.softmax
+outcomes:
+  - Explain queries, keys, values, scaling, and causal masking.
+  - Implement simplified causal self-attention.
+  - Visualize an attention matrix.
+  - Relate sequence length to compute and memory cost.
+diagnostic:
+  - Can explain Q, K, and V without relying only on the phrase "focus on important words."
+  - Can explain why causal masking is required for autoregressive language models.
+  - Can describe how the attention matrix grows with sequence length.
+practice:
+  labs:
+    - labs/attention-from-scratch
+  experiments:
+    - experiments/attention-sequence-length
+  visuals:
+    - visuals/attention-matrix
+exit_criteria:
+  - explain-qkv-and-scaling
+  - implement-causal-attention
+  - interpret-attention-matrix
+  - diagnose-causal-mask
+resources:
+  primary:
+    - book.raschka-llm-from-scratch
+  visual:
+    - visual.jay-alammar-illustrated-transformer
+    - visual.3blue1brown-attention
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
