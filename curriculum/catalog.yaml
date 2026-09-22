@@ -215,7 +215,6 @@ competencies:
   - { id: ai.human-ai-ux, title: Human-AI Interaction and AI UX, domain: ai-engineering, status: coverage }
 
   # Agents
-  - { id: agents.fundamentals, title: Agent Fundamentals, domain: agents, status: coverage }
   - {
       id: agents.deterministic-vs-agentic,
       title: Deterministic vs Agentic Design,

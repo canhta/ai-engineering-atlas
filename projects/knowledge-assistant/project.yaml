@@ -21,6 +21,7 @@ milestones:
   - verification-loop
   - long-running-runtime
   - orchestrated-flow
+  - multi-agent-decision
   - service-and-observability
   - release-gate
   - security-failure-work
@@ -45,6 +46,7 @@ competencies:
   - agents.verification
   - agents.long-running
   - agents.orchestration
+  - agents.multi-agent
   - security.prompt-injection
 evidence:
   - product-brief
@@ -65,6 +67,9 @@ evidence:
   - verification-experiment
   - long-running-experiment
   - orchestration-experiment
+  - agent-contract
+  - multi-agent-experiment
+  - multi-agent-decision
   - decision-records
   - traces
   - security-tests

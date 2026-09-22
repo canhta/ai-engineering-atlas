@@ -4284,16 +4284,6 @@
         }
       },
       {
-        "id": "agents.fundamentals",
-        "title": {
-          "en": "Agent Fundamentals"
-        },
-        "fields": {
-          "domain": "agents",
-          "status": "coverage"
-        }
-      },
-      {
         "id": "agents.deterministic-vs-agentic",
         "title": {
           "en": "Deterministic vs Agentic Design"
@@ -7435,6 +7425,9 @@
                   "en": "orchestrated-flow"
                 },
                 {
+                  "en": "multi-agent-decision"
+                },
+                {
                   "en": "service-and-observability"
                 },
                 {
@@ -7510,6 +7503,15 @@
                 },
                 {
                   "en": "orchestration-experiment"
+                },
+                {
+                  "en": "agent-contract"
+                },
+                {
+                  "en": "multi-agent-experiment"
+                },
+                {
+                  "en": "multi-agent-decision"
                 },
                 {
                   "en": "decision-records"
@@ -7655,6 +7657,11 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "agents.memory"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "agents.multi-agent"
     },
     {
       "type": "member",

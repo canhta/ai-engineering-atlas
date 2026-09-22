@@ -16,6 +16,8 @@ For adaptive decomposition and outcome checking, continue with the [Planning and
 
 For work that spans waits, restarts, routing, or parallel branches, continue with the [Runtime and Orchestration evidence contract](runtime-and-orchestration/). First make the run durable; then add orchestration only where routing or concurrency measurably improves the same task lineage.
 
+For tasks where independent specialist contexts might create measurable value, continue with the [Multi-Agent evidence contract](multi-agent/). Preserve the single-agent orchestration baseline and keep the multi-agent topology only if specialization earns its coordination cost.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -383,7 +385,28 @@ Keep a simpler single-flow baseline.
 
 **Decision:** keep single flow, use orchestration, or defer multi-agent architecture.
 
-## Milestone 17 — service and observability
+## Milestone 17 — multi-agent decision
+
+Use the [Multi-Agent Systems](../../curriculum/08-agents/multi-agent/) route.
+
+Do not add agents because the architecture diagram looks more capable. Start from the same single-agent orchestration baseline and identify a measured limitation that independent roles or context windows may solve.
+
+**Experiment:**
+
+- define each agent boundary and why it cannot be a simpler tool/prompt branch;
+- record manager, handoff, or orchestrator-worker ownership;
+- make context/state/tool/permission sharing explicit;
+- bound per-agent and total work;
+- inject duplicated delegation or a coverage gap;
+- inject conflicting specialist conclusions;
+- inject one subagent failure or timeout;
+- verify the aggregate result;
+- compare quality, latency, token/cost, tool calls, and coordination overhead;
+- remove or merge one agent as a topology ablation.
+
+**Decision:** keep the multi-agent topology, simplify it, or return to single-agent orchestration.
+
+## Milestone 18 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -399,7 +422,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 18 — release gate
+## Milestone 19 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -412,7 +435,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 19 — security failure work
+## Milestone 20 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -425,7 +448,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 20 — incident and feedback loop
+## Milestone 21 — incident and feedback loop
 
 Inject or analyze one failure:
 

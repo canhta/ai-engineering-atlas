@@ -5,7 +5,7 @@ resources:
     author: Anthropic
     url: https://www.anthropic.com/engineering/building-effective-agents
     roles: [curriculum-evidence, teaching, production-reference]
-    covers: [agents.deterministic-vs-agentic, agents.fundamentals, agents.orchestration]
+    covers: [agents.deterministic-vs-agentic, agents.orchestration]
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
@@ -16,7 +16,7 @@ resources:
     author: Anthropic
     url: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
     roles: [teaching, assessment, production-reference]
-    covers: [ai.evaluation, agents.fundamentals]
+    covers: [ai.evaluation]
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
@@ -39,6 +39,17 @@ resources:
     url: https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/
     roles: [curriculum-evidence, teaching, reference]
     covers: [agents.planning, agents.verification, agents.orchestration]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.anthropic-multi-agent-research-system
+    type: article
+    title: How we built our multi-agent research system
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/multi-agent-research-system
+    roles: [curriculum-evidence, teaching, assessment, production-reference]
+    covers: [agents.multi-agent, agents.orchestration]
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90

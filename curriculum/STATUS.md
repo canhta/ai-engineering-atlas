@@ -4,9 +4,9 @@
 
 ## Summary
 
-- **116** catalog competencies
+- **115** catalog competencies
 - **21** ready learning routes
-- **95** coverage-only competencies
+- **94** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -21,7 +21,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | Deep Learning | 5 | 0 |
 | LLM Foundations | 11 | 1 |
 | AI Engineering | 26 | 12 |
-| Agents | 10 | 7 |
+| Agents | 9 | 7 |
 | Production AI | 11 | 0 |
 | Security & Governance | 10 | 1 |
 | Multimodal | 3 | 0 |

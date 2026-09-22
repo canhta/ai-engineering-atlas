@@ -1,0 +1,96 @@
+id: agents.multi-agent
+title: Multi-Agent Systems
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Multi-agent systems can create value when independent specialist roles or context windows solve a measured limitation in a single-agent orchestration baseline, but they also add delegation, coordination, conflict, reliability, and cost overhead that must be justified experimentally.
+curriculum_evidence:
+  - article.anthropic-multi-agent-research-system
+  - docs.openai-agent-orchestration
+  - article.anthropic-building-effective-agents
+prerequisites:
+  - agents.orchestration
+outcomes:
+  - Identify a measured limitation in a single-agent orchestrated baseline before adding agents.
+  - Explain why each specialist should be an independent agent rather than a tool, prompt branch, or deterministic stage.
+  - Choose manager, handoff, orchestrator-worker, or another topology from task ownership and context needs.
+  - Define each agent's objective, inputs, outputs, tools, permissions, and execution budget.
+  - Define what context and state is shared across agents and what remains isolated.
+  - Write delegation contracts that reduce duplicated work and coverage gaps.
+  - Bound the number of agents and total delegated work.
+  - Define termination conditions for parent and child agents and prevent recursive or runaway delegation.
+  - Aggregate outputs with provenance back to the contributing agent and evidence.
+  - Detect and resolve conflicting specialist conclusions.
+  - Contain one subagent timeout or failure without silently corrupting the aggregate result.
+  - Evaluate final outcomes without requiring one fixed multi-agent trajectory.
+  - Compare quality, latency, token or cost, tool calls, and coordination failures against the single-agent orchestration baseline.
+  - Remove or collapse the topology when specialization does not justify its overhead.
+diagnostic:
+  tasks:
+    - Given a single-agent orchestrated Knowledge Assistant task, identify whether its bottleneck is breadth, specialization, context isolation, tool permissions, or something that does not require multiple agents.
+    - For a proposed specialist, explain why it should be an independent agent instead of an agent-as-tool, ordinary tool, prompt branch, or deterministic worker.
+    - Compare manager, handoff, and orchestrator-worker ownership for the same task.
+    - Define one coordination failure and one metric that would prove the multi-agent topology is worse than the baseline.
+  pass_condition: Skip introductory material only if the learner can justify agent boundaries from measured task structure, define ownership and coordination contracts, and design an ablation that can remove the topology.
+learning_route:
+  mental_model:
+    - source: article.anthropic-multi-agent-research-system
+      locator: 'Sections "Benefits of a multi-agent system", "Architecture overview for Research", "Prompt engineering and evaluations for research agents", "Effective evaluation of agents", and "Production reliability and engineering challenges"'
+      purpose: Study a production multi-agent system that gains breadth from parallel specialist contexts while exposing token, delegation, evaluation, and reliability costs.
+    - source: docs.openai-agent-orchestration
+      locator: 'Sections "Core SDK patterns", "Orchestrating via LLM", and "Orchestrating via code", especially agents-as-tools versus handoffs'
+      purpose: Compare manager ownership, handoff ownership, and code-controlled versus model-controlled delegation without treating one SDK as the competency.
+    - source: article.anthropic-building-effective-agents
+      locator: 'Sections "Workflow: Orchestrator-workers", "Agents", "Combining and customizing these patterns", and "Summary"'
+      purpose: Keep multi-agent topology downstream of simpler workflow patterns and require measurable benefit before adding coordination complexity.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant orchestration and propose one specialist boundary, then argue both for and against making it an independent agent.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/multi-agent/
+      task: Compare a single-agent orchestration baseline with one justified multi-agent topology, inject coordination failures, verify the aggregate result, and perform a topology ablation.
+experiments:
+  - Split a breadth-first research task across independent specialists and compare coverage, quality, latency, token use, and duplicate work with the single-agent baseline.
+  - Merge one specialist back into the manager and measure whether the topology still earns its cost.
+  - Inject overlapping delegation and a coverage gap to test delegation-contract quality.
+  - Inject conflicting specialist conclusions and preserve provenance through resolution.
+  - Fail or time out one specialist and verify containment, fallback, or degradation behavior.
+  - Attempt recursive delegation beyond the configured budget and verify it is stopped.
+exit_evidence:
+  - A single-agent orchestration baseline is preserved on the same task set.
+  - A topology diagram records manager, handoff, or orchestrator-worker ownership.
+  - Every agent boundary has an explicit task/context/permission justification.
+  - Per-agent objective, input, output, tools, permissions, and execution budget are inspectable.
+  - Context and state sharing or isolation is explicit.
+  - Delegation traces include duplicated-work or coverage-gap failure work.
+  - Conflicting specialist conclusions are tested and resolved with provenance.
+  - At least one subagent timeout or failure is contained.
+  - Runaway or recursive delegation is bounded.
+  - Aggregate outcome verification is preserved.
+  - Quality, latency, token or cost, model/tool calls, and coordination overhead are compared with the baseline.
+  - One topology ablation merges or removes an agent.
+  - The final decision records whether to keep, simplify, or remove the multi-agent architecture.
+transfer:
+  task: Redesign the topology for a task with different parallelism, context-sharing, specialization, or permission constraints and justify why the agent boundaries change.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-multi-agent-research-system
+    - docs.openai-agent-orchestration
+    - article.anthropic-building-effective-agents
+  assessment:
+    - article.anthropic-multi-agent-research-system
+  production-reference:
+    - article.anthropic-multi-agent-research-system
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
