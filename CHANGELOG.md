@@ -7,13 +7,16 @@ Curriculum changes are tracked separately from routine documentation and reposit
 ### Added
 
 - Learner onboarding in [START_HERE.md](START_HERE.md).
-- Broad baseline scan and evidence rubric.
+- Broad baseline scan, evidence rubric, and periodic portfolio review.
 - Learner progress/profile format and schema.
 - Applied AI Engineer reference path.
 - Tiny Transformer and Knowledge Assistant reference systems.
 - Hands-on Self-Attention and Evaluation Harness labs with starter code, tests, and solutions.
 - Canonical [competency catalog](curriculum/catalog.yaml) with stable IDs for audited coverage.
+- Generated [curriculum status](curriculum/STATUS.md) with drift checking.
 - Catalog, project, progress, competency, and resource schemas.
+- Source review policy and review intervals for actively used sources.
+- Lifecycle-based competency and lab authoring templates.
 - Internal Markdown link validation in CI.
 
 ### Changed
@@ -27,7 +30,7 @@ Curriculum changes are tracked separately from routine documentation and reposit
 - Turned project spines into evolving systems with baselines, metrics, failures, release decisions, and feedback.
 - Added canonical prerequisite validation to eliminate orphan/ghost competency IDs.
 - Aligned AI-agent and contribution rules with the catalog-first lifecycle.
-- CI now validates curriculum contracts, projects, progress references, source roles, and internal links.
+- CI now validates curriculum/catalog contracts, projects, progress references, source roles/freshness, generated status, and internal links.
 
 ## 0.1.0 — 2026-09-22
 
