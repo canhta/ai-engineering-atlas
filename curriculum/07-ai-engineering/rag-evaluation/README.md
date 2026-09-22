@@ -4,6 +4,18 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [RAGAS — Automated Evaluation of Retrieval Augmented Generation](https://aclanthology.org/2024.eacl-demo.16/) | Abstract and framework sections describing retrieval context relevance/focus, generation faithfulness, and generation quality as distinct evaluation dimensions | Establish component decomposition for RAG evaluation rather than collapsing the pipeline into one end-to-end score. |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 4 "Evaluate AI Systems" → "Design Your Evaluation Pipeline" (pp. 200-207), especially evaluating all components, guidelines, methods, and data | Apply the repository's general evaluation discipline to each RAG component and the full system. |
+| [Ragas — RAG Evaluation Metrics](https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/) | RAG evaluation metrics documentation for context/retrieval and generation-oriented metrics | Inspect concrete metric definitions as examples while keeping metric choice tied to the product/evaluation contract rather than the framework. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 A bad RAG answer does not tell you what failed.
