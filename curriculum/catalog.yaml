@@ -68,7 +68,7 @@ competencies:
   - {id: ai.model-selection, title: Model Selection, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/model-selection}
   - {id: ai.prompt-engineering, title: Prompt Engineering, domain: ai-engineering, status: coverage}
   - {id: ai.context-engineering, title: Context Engineering, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/context-engineering}
-  - {id: ai.structured-outputs, title: Structured Outputs, domain: ai-engineering, status: coverage}
+  - {id: ai.structured-outputs, title: Structured Outputs, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/structured-outputs}
   - {id: ai.tool-calling, title: Tool Calling, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/tool-calling}
   - {id: ai.embeddings, title: Embeddings for AI Applications, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/embeddings}
   - {id: retrieval.search, title: Search and Retrieval, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/search-retrieval}
@@ -82,7 +82,7 @@ competencies:
   - {id: retrieval.data-lifecycle, title: Retrieval Data Lifecycle, domain: ai-engineering, status: coverage}
   - {id: ai.evaluation, title: AI Evaluation and Experimentation, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/evaluation}
   - {id: ai.evaluation-reliability, title: Evaluation Reliability and Statistical Discipline, domain: ai-engineering, status: coverage}
-  - {id: ai.uncertainty-abstention-trust, title: Uncertainty Abstention and Trust, domain: ai-engineering, status: coverage}
+  - {id: ai.uncertainty-abstention-trust, title: Uncertainty Abstention and Trust, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/uncertainty-abstention-trust}
   - {id: ai.finetuning, title: Fine-Tuning Decisions, domain: ai-engineering, status: coverage}
   - {id: ai.sft, title: Supervised Fine-Tuning, domain: ai-engineering, status: coverage}
   - {id: ai.peft-lora, title: PEFT and LoRA, domain: ai-engineering, status: coverage}
