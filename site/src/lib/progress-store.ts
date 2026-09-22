@@ -85,6 +85,34 @@ export function useDraft(routeId: string): [string[] | null, (answers: string[])
   return [draft, save];
 }
 
+const CODE_PREFIX = "atlas.lab-code.v1.";
+const REFERENCE_KEY = "atlas.lab-reference.v1";
+
+/** The learner's code for one lab, or null (no draft yet, or before hydration). */
+export function useLabCode(labRef: string): [string | null, (code: string | null) => void] {
+  const key = CODE_PREFIX + labRef;
+  const code = useSyncExternalStore(
+    subscribe,
+    () => read<string | null>(key, null),
+    () => null,
+  );
+  const save = useCallback((next: string | null) => write(key, next), [key]);
+  return [code, save];
+}
+
+/** Labs whose reference solution the learner opened; evidence recorded afterwards says so. */
+export function useReferenceOpened(labRef: string): [boolean | null, () => void] {
+  const opened = useSyncExternalStore(
+    subscribe,
+    () => read<Record<string, boolean>>(REFERENCE_KEY, {})[labRef] ?? false,
+    () => null,
+  );
+  const open = useCallback(() => {
+    write(REFERENCE_KEY, { ...read<Record<string, boolean>>(REFERENCE_KEY, {}), [labRef]: true });
+  }, [labRef]);
+  return [opened, open];
+}
+
 let storageProbe: boolean | undefined;
 function storageWorks(): boolean {
   if (storageProbe === undefined) {

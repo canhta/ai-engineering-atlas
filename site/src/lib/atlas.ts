@@ -47,6 +47,8 @@ interface BlockBase {
 export interface TextBlock extends BlockBase {
   type: "text";
   body: L10n;
+  /** Markdown body; omitted for plain paragraphs. */
+  format?: "markdown";
 }
 export interface ListBlock extends BlockBase {
   type: "list";
@@ -88,12 +90,31 @@ export interface PracticeBlock extends BlockBase {
   type: "practice";
   groups: { label: L10n; items: PracticeItem[] }[];
 }
+export interface RunnerBlock extends BlockBase {
+  type: "runner";
+  runtime: "pyodide";
+  /** File the learner edits, the file run as `__main__`, and the reference solution: keys of `files`. */
+  editable: string;
+  run: string;
+  reference: string;
+  /** File name → text. */
+  files: Record<string, string>;
+  packages?: string[];
+}
 export interface DataBlock extends BlockBase {
   type: "data";
   value: unknown;
 }
-export type Block = TextBlock | ListBlock | PrerequisitesBlock | DiagnosticBlock | SourcesBlock | PracticeBlock | DataBlock;
-export const BLOCK_TYPES = ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "data"] as const;
+export type Block =
+  | TextBlock
+  | ListBlock
+  | PrerequisitesBlock
+  | DiagnosticBlock
+  | SourcesBlock
+  | PracticeBlock
+  | RunnerBlock
+  | DataBlock;
+export const BLOCK_TYPES = ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"] as const;
 
 export interface Item {
   id: string;
@@ -178,6 +199,11 @@ export const pagedItems = (c: Collection) => itemsOf(c.id).filter(hasPage);
 
 /** Collections with `page_when` publish their pages as routes; the others under their own id. */
 export const pageSegment = (c: Collection) => (c.page_when ? "routes" : c.id);
+
+/** The item whose page comes from a repository path, for links inside Markdown bodies. */
+const byPath = new Map<string, string>();
+for (const [ref, { item }] of byRef) if (item.page) byPath.set(item.page.source_path.replace(/\/$/, ""), ref);
+export const refAtPath = (path: string) => byPath.get(path.replace(/\/$/, ""));
 
 export function itemUrl(lang: Lang, ref: string): string | undefined {
   const found = resolveRef(ref);
@@ -268,6 +294,17 @@ export function targetOf(c: Collection, item: Item): string | undefined {
 
 export const relationsTo = (type: string, ref: string) => relations.filter((r) => r.type === type && r.to === ref);
 export const relationsFrom = (type: string, ref: string) => relations.filter((r) => r.type === type && r.from === ref);
+
+/** Tracked items (with a page) that point at this item through any relation, e.g. the competencies a lab practises. */
+export function trackedItemsPointingAt(ref: string): Item[] {
+  const seen = new Set<string>();
+  return relations
+    .filter((r) => r.to === ref)
+    .map((r) => resolveRef(r.from))
+    .filter((found): found is { collection: Collection; item: Item } => Boolean(found && found.collection.id === trackedCollection.id && found.item.page))
+    .map((found) => found.item)
+    .filter((item) => !seen.has(item.id) && Boolean(seen.add(item.id)));
+}
 
 // ---------------------------------------------------------------------------------------------
 // Resources and repository links

@@ -1,3 +1,6 @@
+# `schemas` and `labs` are also directory names; without .PHONY make skips them as up to date.
+.PHONY: schemas validate status learning-sources links labs site-data agent-docs site-check check
+
 schemas:
 	python scripts/validate_schemas.py
 
@@ -24,6 +27,6 @@ agent-docs:
 
 # Web atlas (Node 26 + pnpm). Separate from `check` so curriculum work needs only Python.
 site-check:
-	cd site && pnpm install --frozen-lockfile && pnpm run check && pnpm run test:e2e
+	cd site && pnpm install --frozen-lockfile && pnpm run check && pnpm run test:labs && pnpm run test:e2e
 
 check: schemas validate status learning-sources links labs site-data agent-docs

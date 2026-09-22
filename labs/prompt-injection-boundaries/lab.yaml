@@ -1,0 +1,8 @@
+# Browser contract: the web atlas runs this lab in Pyodide (rfcs/0000-interactive-web-atlas.md → In-browser labs).
+# Checked by scripts/validate_labs.py; site/scripts/test-labs.mjs runs it under Pyodide and CPython.
+browser:
+  runtime: pyodide
+  editable: starter.py
+  run: tests.py
+  reference: solution.py
+  files: []

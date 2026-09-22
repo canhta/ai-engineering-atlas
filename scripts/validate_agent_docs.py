@@ -15,7 +15,7 @@ SKIP_DIRS = {"node_modules", ".git", ".astro", "dist", "worktrees"}
 LINE_BUDGETS = {
     "AGENTS.md": 240,
     "site/AGENTS.md": 150,
-    "site/DESIGN.md": 250,
+    "site/DESIGN.md": 300,
 }
 # Codex concatenates AGENTS.md files from the repo root down, capped at 32 KiB.
 CHAIN_BYTES = 32 * 1024

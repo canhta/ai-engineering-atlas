@@ -52,6 +52,9 @@ jobs:
       - name: Site checks and build
         run: pnpm run check
 
+      - name: Browser labs under Pyodide match CPython
+        run: pnpm run test:labs
+
       - name: Browser tests
         run: pnpm exec playwright install --with-deps chromium && pnpm run test:e2e
 

@@ -2,6 +2,7 @@
 // icon means the same thing everywhere (DESIGN.md → Icons). Library: Phosphor, light
 // weight. Hand-written SVG is rejected by scripts/check-icons.mjs outside src/components/plate/.
 import {
+  ArrowCounterClockwiseIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
   ArrowUpRightIcon,
@@ -11,7 +12,9 @@ import {
   CircleDashedIcon,
   CircleHalfIcon,
   ClockCounterClockwiseIcon,
+  CodeIcon,
   DownloadSimpleIcon,
+  EyeIcon,
   GridFourIcon,
   LinkSimpleIcon,
   ListIcon,
@@ -19,7 +22,9 @@ import {
   PlayIcon,
   PlusIcon,
   StopIcon,
+  TimerIcon,
   UploadSimpleIcon,
+  WarningCircleIcon,
   WrenchIcon,
   XCircleIcon,
   XIcon,
@@ -55,6 +60,12 @@ export const icons = {
   // Lab results
   pass: CheckCircleIcon,
   fail: XCircleIcon,
+  error: WarningCircleIcon,
+  timeout: TimerIcon,
+  // Labs
+  code: CodeIcon,
+  reveal: EyeIcon,
+  reset: ArrowCounterClockwiseIcon,
 } as const;
 
 export type IconName = keyof typeof icons;

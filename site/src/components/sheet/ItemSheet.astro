@@ -21,6 +21,8 @@ import {
   stateLabels,
   targetOf,
   text,
+  trackedCollection,
+  trackedItemsPointingAt,
   type Collection,
   type Item,
 } from "../../lib/atlas";
@@ -41,8 +43,8 @@ const page = item.page!;
 const ref = refOf(c, item);
 const title = text(item.title, lang);
 
-// The first text block is the subtitle; every other block renders in content order.
-const subtitleBlock = page.blocks.find((b) => b.type === "text");
+// The first plain text block is the subtitle; every other block renders in content order.
+const subtitleBlock = page.blocks.find((b) => b.type === "text" && !b.format);
 const subtitle = subtitleBlock?.type === "text" ? text(subtitleBlock.body, lang) : undefined;
 const blocks = page.blocks.filter((b) => b !== subtitleBlock);
 const untranslated = lang !== "en" && (title.lang !== lang || (subtitle && subtitle.lang !== lang));
@@ -81,6 +83,18 @@ const prereqs: PrereqEntry[] =
 // Next-step line in the field log: the whole graph (ranking needs it) and links for this item's prerequisites.
 const graph = target ? nextGraph() : [];
 const adviceLinks = nextLinks(lang, (graph.find((g) => g.id === ref)?.needs ?? []).map((n) => n.id));
+
+// Tracked items that point at this one (the competencies a lab practises), with their state glyph.
+const practisedBy: PrereqEntry[] = trackedItemsPointingAt(ref).map((i) => ({
+  ref: refOf(trackedCollection, i),
+  title: text(i.title, lang),
+  url: itemUrl(lang, refOf(trackedCollection, i)),
+}));
+
+// A page with a runner is a workbench (DESIGN.md → Labs): the other blocks read in one column,
+// the runner sits beside them; there is no rail.
+const runner = blocks.find((b) => b.type === "runner");
+const reading = blocks.filter((b) => b !== runner);
 
 let stepNumber = 0;
 const railEntries: RailEntry[] = blocks.map((b) => {
@@ -143,33 +157,69 @@ const railEntries: RailEntry[] = blocks.map((b) => {
         </div>
       </div>
       {prereqs.length > 0 && <PrereqLine client:idle lang={lang} entries={prereqs} />}
-    </header>
-
-    <div class="sheet-grid">
-      <StepRail client:load lang={lang} itemRef={ref} entries={railEntries} />
-      <div class="sheet-content">
-        {
-          blocks.map((b, i) => (
-            <section id={b.id} class:list={["block", `block-${b.type}`, { step: b.step }]} aria-labelledby={`${b.id}-title`}>
-              <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
-                {railEntries[i].step && (
-                  <span class="block-step tabular" aria-hidden="true">
-                    {railEntries[i].step}
-                  </span>
-                )}
-                {text(b.title, lang).value}
-              </h2>
-              <Block block={b} lang={lang} itemRef={ref} target={target} after={blocks.slice(i + 1)} headingId={`${b.id}-title`} />
-            </section>
-          ))
-        }
-      </div>
+      {practisedBy.length > 0 && <PrereqLine client:idle lang={lang} entries={practisedBy} lead={t("lab.practises")} />}
       {
-        target && (
-          <FieldLog client:load lang={lang} itemRef={ref} target={target} stateLabels={stateLabels(lang)} graph={graph} links={adviceLinks} />
+        runner && (
+          <a class="button-quiet bench-jump" href={`#${runner.id}`}>
+            <Icon name="code" />
+            {t("lab.toCode")}
+          </a>
         )
       }
-    </div>
+    </header>
+
+    {
+      runner ? (
+        <div class="bench-grid">
+          <div class="sheet-content">
+            {reading.map((b) => (
+              <section id={b.id} class:list={["block", `block-${b.type}`]} aria-labelledby={`${b.id}-title`}>
+                <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
+                  {text(b.title, lang).value}
+                </h2>
+                <Block block={b} lang={lang} itemRef={ref} target={target} after={[]} headingId={`${b.id}-title`} sourcePath={page.source_path} />
+              </section>
+            ))}
+          </div>
+          <section id={runner.id} class="bench" aria-labelledby={`${runner.id}-title`}>
+            <h2 id={`${runner.id}-title`} class="bench-title" lang={langAttr(text(runner.title, lang), lang)}>
+              {text(runner.title, lang).value}
+            </h2>
+            <Block block={runner} lang={lang} itemRef={ref} target={target} after={[]} headingId={`${runner.id}-title`} sourcePath={page.source_path} />
+          </section>
+        </div>
+      ) : (
+        <div class="sheet-grid">
+          <StepRail client:load lang={lang} itemRef={ref} entries={railEntries} />
+          <div class="sheet-content">
+            {blocks.map((b, i) => (
+              <section id={b.id} class:list={["block", `block-${b.type}`, { step: b.step }]} aria-labelledby={`${b.id}-title`}>
+                <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
+                  {railEntries[i].step && (
+                    <span class="block-step tabular" aria-hidden="true">
+                      {railEntries[i].step}
+                    </span>
+                  )}
+                  {text(b.title, lang).value}
+                </h2>
+                <Block
+                  block={b}
+                  lang={lang}
+                  itemRef={ref}
+                  target={target}
+                  after={blocks.slice(i + 1)}
+                  headingId={`${b.id}-title`}
+                  sourcePath={page.source_path}
+                />
+              </section>
+            ))}
+          </div>
+          {target && (
+            <FieldLog client:load lang={lang} itemRef={ref} target={target} stateLabels={stateLabels(lang)} graph={graph} links={adviceLinks} />
+          )}
+        </div>
+      )
+    }
   </article>
 </Base>
 
@@ -261,6 +311,35 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     margin-bottom: var(--space-5);
   }
 
+  /* Workbench pages (DESIGN.md → Labs): brief | bench, the bench sticky under the nav. */
+  .bench-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-10);
+    align-items: start;
+  }
+
+  .bench-grid .sheet-content {
+    grid-area: auto;
+  }
+
+  .bench {
+    position: sticky;
+    top: calc(var(--nav-offset) + var(--nav-height) + var(--space-4));
+    max-height: calc(100vh - var(--nav-offset) - var(--nav-height) - var(--space-8));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .bench-title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-h3);
+  }
+
+  .bench-jump {
+    display: none;
+  }
+
   .block-step {
     display: inline-grid;
     place-items: center;
@@ -286,6 +365,23 @@ const railEntries: RailEntry[] = blocks.map((b) => {
 
     .sheet:not(.tracked) .sheet-grid {
       grid-template-areas: "rail" "content";
+    }
+
+    .bench-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-8);
+    }
+
+    .bench {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      scroll-margin-top: calc(var(--nav-offset) + var(--nav-height));
+    }
+
+    .bench-jump {
+      display: inline-flex;
+      margin-top: var(--space-4);
     }
   }
 

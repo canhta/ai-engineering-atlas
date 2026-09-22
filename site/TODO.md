@@ -70,14 +70,18 @@ Last updated: 2026-09-22
 
 ### Phase 1b: in-browser labs
 
-- [ ] Pyodide in a Web Worker; Stop via `SharedArrayBuffer`; add `'wasm-unsafe-eval'` to `script-src`
-- [ ] Editor (CodeMirror) and results panel grouped by `task_id` (pass / fail / error)
-- [ ] Lab browser contract (`lab.yaml`) checked by `scripts/validate_labs.py`
-- [ ] `evaluation-harness` and `prompt-injection-boundaries` in the browser
+- [x] Pyodide (self-hosted from npm, loaded on first Run) in a Web Worker; Stop via `SharedArrayBuffer`; 20 s limit recreates the worker; `'wasm-unsafe-eval'` and `worker-src 'self'` in the CSP
+- [x] Editor (CodeMirror 6, token theme, drafts per lab, Reset behind a confirm) and results panel (pass / fail / error / stopped / timeout)
+- [ ] Results grouped by `task_id`: the lab tests are plain asserts in one `main()`, so a run has one result; grouping needs the tests split by task, which is a lab change with its own review
+- [x] Lab browser contract (`lab.yaml`) checked by `scripts/validate_labs.py`
+- [x] `evaluation-harness` and `prompt-injection-boundaries` in the browser; every lab has a README page at `/{lang}/labs/<id>/`
+- [x] Reference solution behind a confirmed reveal, remembered per lab as `independence: reference-open`; automated `implementation` evidence with the code's SHA-256
+- [ ] Owner review of the lab UI and its Vietnamese strings
+- [ ] Host Pyodide packages (wheels) if a lab needs more than the standard library; `browser.packages` is rejected until then
 - [ ] `self-attention`: port to NumPy in place, or keep PyTorch local-only (owner decision; no parallel variant)
 - [ ] `agentic-design` and `model-selection` as rubric forms
 - [ ] Help ladder and reviewed feedback keys (en/vi); highest step recorded as `independence`
-- [ ] CI job running each browser lab's tests under Pyodide (Node)
+- [x] CI step running each browser lab under Pyodide (Node) against CPython `python tests.py` (`pnpm run test:labs`, in `make site-check`, `validate.yml`, and `deploy.yml`)
 
 ### Phase 2: diagnostics, next step, AI tutor
 

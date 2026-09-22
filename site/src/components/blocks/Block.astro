@@ -2,9 +2,21 @@
 // Block registry (rfcs/0000-content-model.md → Blocks): one component per block type; an
 // unknown type renders as `data`, so content never disappears silently.
 import type { Lang } from "../../i18n";
-import { BLOCK_TYPES, resolveResource, text, type Block, type Localized } from "../../lib/atlas";
-import type { TargetState } from "../../lib/progress";
+import { refOf } from "../../lib/refs";
+import {
+  BLOCK_TYPES,
+  resolveResource,
+  stateLabels,
+  targetOf,
+  text,
+  trackedCollection,
+  trackedItemsPointingAt,
+  type Block,
+  type Localized,
+} from "../../lib/atlas";
+import { TARGET_STATES, type TargetState } from "../../lib/progress";
 import Diagnostic, { type NextLink } from "../react/Diagnostic";
+import LabRunner, { type LabCompetency } from "../react/LabRunner";
 import SourceTable from "../react/SourceTable";
 import DataBlock from "./DataBlock.astro";
 import ListBlock from "./ListBlock.astro";
@@ -21,9 +33,11 @@ interface Props {
   /** Following blocks, for the diagnostic's next-step links. */
   after: Block[];
   headingId: string;
+  /** Repository path of the item, for relative links in Markdown text. */
+  sourcePath: string;
 }
 
-const { block, lang, itemRef, target, after, headingId } = Astro.props;
+const { block, lang, itemRef, target, after, headingId, sourcePath } = Astro.props;
 const known = (BLOCK_TYPES as readonly string[]).includes(block.type);
 const link = (b: Block | undefined): NextLink | undefined => (b ? { id: b.id, title: text(b.title, lang) } : undefined);
 const sourceRows =
@@ -36,9 +50,39 @@ const sourceRows =
       }))
     : [];
 const tasks: Localized[] = block.type === "diagnostic" ? block.tasks.map((prompt) => text(prompt, lang)) : [];
+// A runner records evidence against the tracked items that point at this item.
+const competencies: LabCompetency[] =
+  block.type === "runner"
+    ? trackedItemsPointingAt(itemRef).map((item) => {
+        const title = text(item.title, lang);
+        const declared = targetOf(trackedCollection, item);
+        return {
+          ref: refOf(trackedCollection, item),
+          title: title.value,
+          lang: title.lang === lang ? undefined : title.lang,
+          target: (TARGET_STATES as readonly string[]).includes(declared ?? "") ? (declared as TargetState) : "demonstrated",
+        };
+      })
+    : [];
 ---
 
-{block.type === "text" && <TextBlock block={block} lang={lang} />}
+{block.type === "text" && <TextBlock block={block} lang={lang} sourcePath={sourcePath} />}
+{
+  block.type === "runner" && (
+    <LabRunner
+      client:load
+      lang={lang}
+      labRef={itemRef}
+      files={block.files}
+      editable={block.editable}
+      run={block.run}
+      reference={block.reference}
+      packages={block.packages}
+      competencies={competencies}
+      stateLabels={stateLabels(lang)}
+    />
+  )
+}
 {block.type === "list" && <ListBlock block={block} lang={lang} />}
 {block.type === "prerequisites" && <PrerequisitesBlock block={block} lang={lang} />}
 {block.type === "practice" && <PracticeBlock block={block} lang={lang} />}

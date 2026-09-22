@@ -1,17 +1,85 @@
 ---
+// Plain paragraphs, or Markdown when the block says so (rendered at build time).
 import type { Lang } from "../../i18n";
 import { langAttr, text, type TextBlock } from "../../lib/atlas";
+import { renderMarkdown } from "../../lib/markdown";
 
 interface Props {
   block: TextBlock;
   lang: Lang;
+  /** Repository path of the item, for relative links in Markdown. */
+  sourcePath: string;
 }
 
-const { block, lang } = Astro.props;
+const { block, lang, sourcePath } = Astro.props;
 const body = text(block.body, lang);
-const paragraphs = body.value.split(/\n\s*\n/).filter((p) => p.trim());
+const paragraphs = block.format === "markdown" ? [] : body.value.split(/\n\s*\n/).filter((p) => p.trim());
+const html = block.format === "markdown" ? renderMarkdown(body.value, sourcePath, lang) : "";
 ---
 
-<div class="text-block" lang={langAttr(body, lang)}>
-  {paragraphs.map((p) => <p class="reading">{p}</p>)}
-</div>
+{
+  block.format === "markdown" ? (
+    <div class="text-block markdown reading" lang={langAttr(body, lang)} set:html={html} />
+  ) : (
+    <div class="text-block" lang={langAttr(body, lang)}>
+      {paragraphs.map((p) => (
+        <p class="reading">{p}</p>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .markdown {
+    max-width: var(--measure);
+  }
+
+  .markdown :global(h3) {
+    margin: var(--space-8) 0 var(--space-3);
+    font-size: var(--text-h3);
+  }
+
+  .markdown :global(h4) {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--text-ui);
+  }
+
+  .markdown :global(p),
+  .markdown :global(ul),
+  .markdown :global(ol) {
+    margin: 0 0 var(--space-4);
+  }
+
+  .markdown :global(ul),
+  .markdown :global(ol) {
+    padding-left: var(--space-6);
+  }
+
+  .markdown :global(li + li) {
+    margin-top: var(--space-1);
+  }
+
+  .markdown :global(li::marker) {
+    color: var(--ink-muted);
+  }
+
+  .markdown :global(pre) {
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    overflow-x: auto;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--sheet);
+    font-size: var(--text-small);
+    line-height: var(--leading-ui);
+  }
+
+  .markdown :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  .markdown > :global(:first-child) {
+    margin-top: 0;
+  }
+</style>
