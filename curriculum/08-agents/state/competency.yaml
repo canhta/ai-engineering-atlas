@@ -1,7 +1,7 @@
 id: agents.state
 title: Agent State
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation
