@@ -69,7 +69,7 @@ Use the project to inspect mechanisms, not to become an LLM researcher.
 
 Build capability in:
 
-- problem framing and baselines;
+- [problem framing and baselines](../curriculum/07-ai-engineering/product-framing/);
 - model selection;
 - prompting;
 - context engineering;
@@ -80,6 +80,11 @@ Build capability in:
 The learner should be able to justify why a chosen pattern is simpler or better than an alternative.
 
 ## Phase E — retrieval and RAG
+
+Ready foundations:
+
+- [Search and Retrieval](../curriculum/07-ai-engineering/search-retrieval/)
+- [Embeddings for AI Applications](../curriculum/07-ai-engineering/embeddings/)
 
 Build in roughly this dependency order:
 
