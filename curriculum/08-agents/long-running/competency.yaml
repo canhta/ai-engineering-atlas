@@ -1,0 +1,102 @@
+id: agents.long-running
+title: Long-Running Agents
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Long-running agent work must survive waits, crashes, worker replacement, retries, and human pauses without losing accepted progress or replaying unsafe side effects. The runtime needs explicit lifecycle, budget, cancellation, ownership, and completion semantics.
+curriculum_evidence:
+  - article.anthropic-long-running-harnesses
+  - article.anthropic-managed-agents
+  - docs.temporal-overview
+  - docs.openai-agents-running
+  - docs.openai-agents-results
+prerequisites:
+  - agents.state
+  - agents.verification
+  - agents.deterministic-vs-agentic
+outcomes:
+  - Define a durable run identity and explicit lifecycle states for work that spans model turns, waits, and process boundaries.
+  - Distinguish the lifetime of a model turn, worker process, session, and durable job or workflow.
+  - Persist accepted progress outside ephemeral model or worker processes.
+  - Define pause and resume behavior for external waits or human approval.
+  - Define retryable, non-retryable, and ambiguous-commit failure handling.
+  - Identify replay-safe versus unsafe recovery boundaries and protect external side effects.
+  - Set explicit execution budgets for time, turns, model calls, tool calls, or cost.
+  - Define timeout, cancellation, and escalation behavior.
+  - Prevent concurrent workers from resuming or owning the same run unsafely.
+  - Preserve partial-progress artifacts that let a fresh worker or context continue without reconstructing everything.
+  - Verify task completion from external criteria rather than treating loop termination as success.
+  - Compare a simple synchronous baseline with a durable long-running runtime and justify the added complexity.
+diagnostic:
+  tasks:
+    - Design a lifecycle for a workflow that pauses for approval and resumes in a different process.
+    - Explain what happens if a side effect succeeds but persistence of the following state transition fails.
+    - Define a runtime budget and what terminal behavior occurs when it is exhausted.
+    - Explain how you would prevent two workers from resuming the same run concurrently.
+  pass_condition: Skip introductory material only if the learner can design a durable lifecycle, recover safely across process loss, bound execution, and distinguish replay-safe from unsafe terminal boundaries.
+learning_route:
+  mental_model:
+    - source: article.anthropic-long-running-harnesses
+      locator: 'Sections "The long-running agent problem", "Incremental progress", "Getting up to speed", and "Future work"'
+      purpose: Study why context compaction alone is insufficient and how durable progress artifacts let fresh sessions continue long-horizon work.
+    - source: article.anthropic-managed-agents
+      locator: 'Sections "Decouple the brain from the hands", "Recovering from harness failure", "Many brains, many hands", and "Conclusion"'
+      purpose: Separate durable session state from replaceable harness and execution processes and examine recovery after runtime failure.
+    - source: docs.temporal-overview
+      locator: 'Documentation overview of durable execution and resuming workflows after crashes, network failures, or infrastructure outages'
+      purpose: Ground long-duration runtime semantics in a production durable-execution model without requiring Temporal.
+    - source: docs.openai-agents-running
+      locator: 'Sections covering the agent loop and turn limits, state/conversation management, human-in-the-loop pause/resume, durable execution integrations, and exceptions'
+      purpose: Inspect concrete runtime controls for bounded runs, interruptions, persisted state, and durable waits.
+    - source: docs.openai-agents-results
+      locator: 'Section "Interruptions and run state", including serialization/resume, failed resumed-session write recovery, and unrecoverable terminal-state boundaries'
+      purpose: Study resumable snapshots together with explicit cases where replay after terminal effects is unsafe.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant workflow and define a durable lifecycle with a real pause point, execution budget, and explicit replay-safe boundary.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/runtime-and-orchestration/
+      task: Run one Knowledge Assistant workflow across a wait and worker restart, then prove safe resume, bounded execution, cancellation or timeout, and final verification.
+experiments:
+  - Pause a run for approval or external data, stop the worker, and resume it from serialized durable state.
+  - Fail persistence immediately after a side effect and verify the recovery contract does not duplicate the effect.
+  - Attempt a concurrent or duplicate resume and verify ownership protection.
+  - Exhaust one runtime budget and observe timeout, cancellation, or escalation behavior.
+  - Mark one terminal state unrecoverable and prove later replay is rejected or routed to operator recovery.
+exit_evidence:
+  - A versioned lifecycle contract defines durable run states and terminal states.
+  - The run has explicit execution budgets and timeout, cancellation, or escalation behavior.
+  - A wait or pause is resumed after worker or process replacement.
+  - Retryable and non-retryable failures are distinguished.
+  - External side effects have replay/idempotency evidence where relevant.
+  - Concurrent or duplicate resume is prevented or safely rejected.
+  - Partial progress is persisted outside the ephemeral worker/context.
+  - One unsafe replay or terminal recovery boundary is documented and tested.
+  - Final completion is verified independently of run termination.
+  - A synchronous baseline is compared with the durable runtime on task success, recovery behavior, latency, cost, and operational complexity.
+transfer:
+  task: Redesign the runtime lifecycle for a different long-duration workflow with different wait conditions, side effects, budgets, and cancellation requirements.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-long-running-harnesses
+    - article.anthropic-managed-agents
+    - docs.temporal-overview
+    - docs.openai-agents-running
+    - docs.openai-agents-results
+  production-reference:
+    - docs.temporal-overview
+    - article.anthropic-managed-agents
+    - docs.openai-agents-results
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
