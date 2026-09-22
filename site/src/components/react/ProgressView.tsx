@@ -12,6 +12,7 @@ import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
 import { Icon } from "./Icon";
 import { StateBadge } from "./StateBadge";
+import { StorageNote } from "./StorageNote";
 
 interface Props {
   lang: Lang;
@@ -216,7 +217,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
       <p role="status" className="live-message">
         {message}
       </p>
-      <p className="muted small">{t("log.localNote")}</p>
+      <StorageNote lang={lang} />
     </div>
   );
 }

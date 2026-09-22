@@ -50,11 +50,10 @@
   "sheet.copy": "Sao chép link",
   "sheet.copied": "Đã sao chép link.",
   "prereq.lead": "Chưa sẵn sàng? Nên học trước",
-  "prereq.bridgeOne": "(có phần bổ trợ ngay trên trang)",
-  "prereq.bridgeMany": "({count} phần bổ trợ ngay trên trang)",
   "prereq.none": "Không cần học gì trước.",
   "prereq.ready": "có lộ trình",
   "prereq.mapped": "chưa có lộ trình",
+  "prereq.bridge": "(có phần bổ trợ ngay trên trang)",
   "prereq.bridgeLabel": "Nếu bài kiểm tra cho thấy bạn còn thiếu phần này",
   "rail.label": "Trong trang",
   "rail.stepOf": "Bước {n}/{total}",
@@ -150,7 +149,6 @@
   "legend.label": "Chú giải",
   "legend.mapped": "chưa có lộ trình",
   "legend.ready": "có lộ trình",
-  "legend.partial": "còn thiếu hoặc đang học",
   "legend.full": "đã làm được trở lên",
   "plate.tileName": "{title}, {maturity}, trạng thái: {state}",
   "plate.tileNameMapped": "{title}, {maturity}",
@@ -167,7 +165,6 @@
   "drawer.contribute": "Cách đóng góp lộ trình",
   "drawer.more": "Thêm",
   "drawer.less": "Thu gọn",
-  "drawer.bridge": "(có phần bổ trợ trong trang)",
   "drawer.sources": "{count} tài liệu",
   "drawer.sourceOne": "1 tài liệu",
   "drawer.tasks": "Kiểm tra đầu vào, {count} câu",
@@ -178,5 +175,8 @@
   "progress.nextWeek": "7 ngày tới",
   "progress.dueOn": "hạn {date}",
   "progress.startReview": "Ôn lại",
-  "progress.queueEmpty": "Chưa có gì cần ôn. Lịch ôn bắt đầu khi bạn đã làm được một kỹ năng."
+  "progress.queueEmpty": "Chưa có gì cần ôn. Lịch ôn bắt đầu khi bạn đã làm được một kỹ năng.",
+  "drawer.missingTitle": "Không tìm thấy",
+  "drawer.missing": "Không có kỹ năng nào có id {id}. Có thể id đã đổi; hãy tìm trong atlas.",
+  "storage.blocked": "Trình duyệt đang chặn lưu trữ, tiến độ chỉ còn tới khi bạn rời trang. Xuất file ở trang Tiến độ để giữ lại."
 }

@@ -179,24 +179,18 @@
   background: currentcolor;
 }
 
+/* Fill encodes the stage (half, three-quarter, full); hue tells the seven states apart. */
+.tile-most::after {
+  content: "";
+  position: absolute;
+  inset: 0 28% 0 0;
+  background: currentcolor;
+}
+
 .tile-half,
+.tile-most,
 .tile-full {
   border-color: currentcolor;
-}
-
-.tile-state-gap,
-.tile-state-learning {
-  color: var(--state-gap);
-}
-
-.tile-state-demonstrated {
-  color: var(--state-demonstrated);
-}
-
-.tile-state-transferred,
-.tile-state-retained,
-.tile-state-applied {
-  color: var(--state-beyond);
 }
 
 .state-badge {
@@ -212,18 +206,33 @@
 }
 
 .state-gap,
-.state-learning {
+.tile-state-gap {
   color: var(--state-gap);
 }
 
-.state-demonstrated {
+.state-learning,
+.tile-state-learning {
+  color: var(--state-learning);
+}
+
+.state-demonstrated,
+.tile-state-demonstrated {
   color: var(--state-demonstrated);
 }
 
 .state-transferred,
+.tile-state-transferred {
+  color: var(--state-transferred);
+}
+
 .state-retained,
-.state-applied {
-  color: var(--state-beyond);
+.tile-state-retained {
+  color: var(--state-retained);
+}
+
+.state-applied,
+.tile-state-applied {
+  color: var(--state-applied);
 }
 
 .live-message:empty {
@@ -826,6 +835,8 @@
 }
 
 .prereq-note {
+  margin-right: var(--space-1);
+  font-size: var(--text-small);
   color: var(--ink-muted);
 }
 
@@ -1065,7 +1076,8 @@
   border-color: var(--line-strong);
 }
 
-.tile.tile-half::after {
+.tile.tile-half::after,
+.tile.tile-most::after {
   border-radius: var(--radius-small) 0 0 var(--radius-small);
 }
 
@@ -1745,4 +1757,12 @@
   .ready-state {
     min-width: 0;
   }
+}
+
+.storage-blocked {
+  max-width: var(--measure);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--state-gap);
+  border-radius: var(--radius-card);
+  color: var(--ink);
 }

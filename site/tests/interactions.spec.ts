@@ -222,6 +222,88 @@ test("the root page opens the remembered language", async ({ page }) => {
   await expect(page).toHaveURL(/\/vi\/$/);
 });
 
+// ---------------------------------------------------------------- States (DESIGN.md → States every surface handles)
+
+test("an unknown ?item= opens the drawer with a not-found message", async ({ page }) => {
+  await open(page, "/en/map/?item=nope.missing");
+  await expect(drawer(page).getByRole("heading", { name: "Not found" })).toBeVisible();
+  await expect(drawer(page).getByText("No competency has the id nope.missing.")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(drawer(page)).toBeHidden();
+  await expect(page).not.toHaveURL(/item=/);
+});
+
+test("progress with no evidence shows the empty review queue and the start action", async ({ page }) => {
+  await open(page, "/en/progress/");
+  await expect(page.getByText("Nothing to review yet.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Find your starting point" })).toHaveAttribute("href", "/en/map/?ready=1");
+});
+
+test("an invalid progress.yaml is rejected with reasons listed inline", async ({ page }) => {
+  await open(page, "/en/progress/");
+  const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "Import progress.yaml" }).click();
+  await (await chooser).setFiles({
+    name: "progress.yaml",
+    mimeType: "application/yaml",
+    buffer: Buffer.from("version: 2\ncompetencies:\n  x:\n    current_state: mastered\n"),
+  });
+  const alert = page.getByRole("alert");
+  await expect(alert).toContainText("The file was not imported:");
+  await expect(alert).toContainText("current_state is not a known state");
+});
+
+test("with storage blocked, recording still works for the page and the page says so", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      get() {
+        throw new DOMException("The operation is insecure.", "SecurityError");
+      },
+    });
+  });
+  await open(page, ROUTE);
+  await expect(fieldLog(page).getByRole("note")).toContainText("This browser blocks storage");
+  await recordEvidence(page, "Works without storage.");
+  await expect(fieldLog(page).getByText("Saved. Your state is now demonstrated.")).toBeVisible();
+  await expect(fieldLog(page).locator(".state-badge").first()).toHaveText("demonstrated");
+});
+
+test("without JavaScript the plate tiles are links into the atlas", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/en/");
+  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute("href", "/en/map/?item=ai.tool-calling");
+  await page.goto("/en/progress/");
+  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute("href", "/en/map/?item=ai.tool-calling");
+  await page.goto(ROUTE);
+  await expect(page.getByRole("heading", { level: 1, name: "Tool Calling" })).toBeVisible();
+  await context.close();
+});
+
+test("with reduced motion the Home plate appears at once", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await open(page, "/en/");
+  const timing = await page
+    .locator(".plate-region")
+    .last()
+    .evaluate((el) => [getComputedStyle(el).animationDuration, getComputedStyle(el).animationDelay]);
+  expect(timing).toEqual(["0s", "0s"]);
+});
+
+test("the seven states have distinct glyphs or colours in the progress legend", async ({ page }) => {
+  await open(page, "/en/progress/");
+  const legend = page.getByRole("list", { name: "Legend" });
+  const looks = await legend.locator("li").evaluateAll((items) =>
+    items.map((li) => {
+      const glyph = li.querySelector(".tile-glyph")!;
+      const fill = [...glyph.classList].find((c) => /^tile-(ready|half|most|full)$/.test(c));
+      return `${fill}|${getComputedStyle(glyph).color}|${li.querySelector("svg") ? "icon" : ""}`;
+    }),
+  );
+  expect(looks).toHaveLength(7);
+  expect(new Set(looks).size).toBe(7);
+});
+
 // ---------------------------------------------------------------- Mobile (390px)
 
 test("@mobile the field log opens as a sheet from the bottom bar", async ({ page }) => {

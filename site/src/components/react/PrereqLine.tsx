@@ -23,7 +23,6 @@ export default function PrereqLine({ lang, entries }: { lang: Lang; entries: Pre
   const [progress] = useProgress();
   const parts = new Intl.ListFormat(lang, { type: "conjunction" }).formatToParts(entries.map((e) => e.ref));
   const byRef = new Map(entries.map((e) => [e.ref, e]));
-  const bridges = entries.filter((e) => e.bridgeAnchor).length;
 
   return (
     <p className="prereq-line">
@@ -39,17 +38,19 @@ export default function PrereqLine({ lang, entries }: { lang: Lang; entries: Pre
             <span lang={langOf(e.title, lang)}>{e.title.value}</span>
           </>
         );
-        return href ? (
-          <a key={i} className="prereq-item" href={href}>
-            {label}
-          </a>
-        ) : (
-          <span key={i} className="prereq-item">
-            {label}
-          </span>
+        return (
+          <Fragment key={i}>
+            {href ? (
+              <a className="prereq-item" href={href}>
+                {label}
+              </a>
+            ) : (
+              <span className="prereq-item">{label}</span>
+            )}
+            {e.bridgeAnchor && <span className="prereq-note">{t("prereq.bridge")}</span>}
+          </Fragment>
         );
       })}
-      {bridges > 0 && <span className="prereq-note"> {bridges === 1 ? t("prereq.bridgeOne") : t("prereq.bridgeMany", { count: bridges })}</span>}
     </p>
   );
 }

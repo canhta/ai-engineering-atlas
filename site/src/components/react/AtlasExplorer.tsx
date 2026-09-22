@@ -77,6 +77,7 @@ export default function AtlasExplorer(props: Props) {
   const [related, setRelated] = useState<string[]>(() => relatedFacets.map(() => "any"));
   const [stateFilter, setStateFilter] = useState<StateFilter>("any");
   const [selected, setSelected] = useState<string | null>(null);
+  const [missing, setMissing] = useState<string | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [expanded, setExpanded] = useState<Set<Key>>(() => new Set(regions.filter((r) => r.tiles.some((tile) => tile.href)).map((r) => r.value)));
@@ -88,6 +89,7 @@ export default function AtlasExplorer(props: Props) {
     if (params.get("view") === "list") setView("list");
     const item = params.get("item");
     if (item && details[item]) setSelected(item);
+    else if (item) setMissing(item);
     const g = params.get("group");
     if (g && regions.some((r) => r.value === g)) {
       setGroup(g);
@@ -96,6 +98,7 @@ export default function AtlasExplorer(props: Props) {
   }, [details, regions]);
 
   const select = (ref: string | null) => {
+    setMissing(null);
     setSelected(ref);
     setParam("item", ref);
   };
@@ -242,7 +245,7 @@ export default function AtlasExplorer(props: Props) {
         )}
       </div>
 
-      <PlateLegend lang={lang} />
+      <PlateLegend lang={lang} stateLabels={stateLabels} />
 
       {shown === 0 && (
         <div className="empty">
@@ -350,6 +353,7 @@ export default function AtlasExplorer(props: Props) {
       <ItemDrawer
         lang={lang}
         detail={selected ? (details[selected] ?? null) : null}
+        missing={missing}
         details={details}
         stateLabels={stateLabels}
         contributeUrl={contributeUrl}

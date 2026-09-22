@@ -18,6 +18,7 @@ import {
 import { useProgress } from "../../lib/progress-store";
 import { Icon } from "./Icon";
 import { StateBadge } from "./StateBadge";
+import { StorageNote } from "./StorageNote";
 
 const REVIEWERS = ["self", "peer"] as const;
 
@@ -248,7 +249,7 @@ function LogPanel({
           </DisclosurePanel>
         </Disclosure>
       )}
-      <p className="small muted log-note">{t("log.localNote")}</p>
+      <StorageNote lang={lang} className="log-note" />
     </div>
   );
 }

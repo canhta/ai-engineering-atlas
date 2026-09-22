@@ -50,11 +50,10 @@
   "sheet.copy": "Copy link",
   "sheet.copied": "Link copied.",
   "prereq.lead": "Not feeling ready? Needs",
-  "prereq.bridgeOne": "(a bridge is on this page)",
-  "prereq.bridgeMany": "({count} bridges are on this page)",
   "prereq.none": "Nothing is needed first.",
   "prereq.ready": "ready route",
   "prereq.mapped": "mapped, no route",
+  "prereq.bridge": "(bridge on the route page)",
   "prereq.bridgeLabel": "If the diagnostic shows this gap",
   "rail.label": "On this page",
   "rail.stepOf": "Step {n} of {total}",
@@ -150,7 +149,6 @@
   "legend.label": "Legend",
   "legend.mapped": "mapped",
   "legend.ready": "ready",
-  "legend.partial": "gap or learning",
   "legend.full": "demonstrated or beyond",
   "plate.tileName": "{title}, {maturity}, your state: {state}",
   "plate.tileNameMapped": "{title}, {maturity}",
@@ -167,7 +165,6 @@
   "drawer.contribute": "How to contribute a route",
   "drawer.more": "More",
   "drawer.less": "Less",
-  "drawer.bridge": "(bridge on the route page)",
   "drawer.sources": "{count} sources",
   "drawer.sourceOne": "1 source",
   "drawer.tasks": "Diagnostic, {count} tasks",
@@ -178,5 +175,8 @@
   "progress.nextWeek": "Next 7 days",
   "progress.dueOn": "due {date}",
   "progress.startReview": "Start review",
-  "progress.queueEmpty": "Nothing to review yet. Reviews are scheduled once you demonstrate a competency."
+  "progress.queueEmpty": "Nothing to review yet. Reviews are scheduled once you demonstrate a competency.",
+  "drawer.missingTitle": "Not found",
+  "drawer.missing": "No competency has the id {id}. It may have been renamed; search the atlas instead.",
+  "storage.blocked": "This browser blocks storage, so your progress lasts only until you leave this page. Export it from Progress to keep it."
 }

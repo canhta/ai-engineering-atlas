@@ -57,7 +57,7 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
     <div class="plate-head">
       <h2 id="plate-title" class="visually-hidden">{t("home.plate")}</h2>
       <p class="muted tabular">{t("home.counts", { ready, mapped: tiles.length - ready })}</p>
-      <PlateLegend lang={lang} />
+      <PlateLegend lang={lang} stateLabels={stateLabels(lang)} />
     </div>
     <Plate client:load lang={lang} mode="overview" regions={regions} stateLabels={stateLabels(lang)} atlasUrl={mapUrl(lang)} regionHeading="h3" reveal />
   </section>

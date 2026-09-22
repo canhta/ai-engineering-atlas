@@ -15,6 +15,8 @@ import { StateBadge } from "./StateBadge";
 interface Props {
   lang: Lang;
   detail: ItemDetail | null;
+  /** An unknown `?item=` reference: the drawer says so instead of failing silently. */
+  missing?: string | null;
   details: Record<string, ItemDetail>;
   stateLabels: Record<string, string>;
   contributeUrl: string;
@@ -23,12 +25,33 @@ interface Props {
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function ItemDrawer({ lang, detail, details, stateLabels, contributeUrl, onClose }: Props) {
+export default function ItemDrawer({ lang, detail, missing, details, stateLabels, contributeUrl, onClose }: Props) {
+  const t = useTranslations(lang);
   return (
-    <ModalOverlay className="drawer-overlay" isDismissable isOpen={detail !== null} onOpenChange={(open) => !open && onClose()}>
+    <ModalOverlay
+      className="drawer-overlay"
+      isDismissable
+      isOpen={detail !== null || Boolean(missing)}
+      onOpenChange={(open) => !open && onClose()}
+    >
       <Modal className="drawer">
         <Dialog className="drawer-dialog" aria-labelledby="drawer-title">
           {detail && <DrawerBody key={detail.ref} {...{ lang, detail, details, stateLabels, contributeUrl, onClose }} />}
+          {!detail && missing && (
+            <div className="drawer-body">
+              <div className="drawer-head">
+                <span />
+                <Button className="button-quiet drawer-close" onPress={onClose}>
+                  {t("nav.close")}
+                  <Icon name="close" />
+                </Button>
+              </div>
+              <h2 id="drawer-title" className="drawer-title">
+                {t("drawer.missingTitle")}
+              </h2>
+              <p>{t("drawer.missing", { id: missing })}</p>
+            </div>
+          )}
         </Dialog>
       </Modal>
     </ModalOverlay>
@@ -122,7 +145,7 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
                       ) : (
                         <span lang={langOf(need.title, lang)}>{need.title.value}</span>
                       )}
-                      {need.bridged && <span className="muted small">{t("drawer.bridge")}</span>}
+                      {need.bridged && <span className="muted small">{t("prereq.bridge")}</span>}
                       {!need.href && !need.bridged && details[need.ref] && <span className="muted small">{details[need.ref].maturity}</span>}
                     </li>
                   );

@@ -84,3 +84,22 @@ export function useDraft(routeId: string): [string[] | null, (answers: string[])
   const save = useCallback((answers: string[]) => write(key, answers), [key]);
   return [draft, save];
 }
+
+let storageProbe: boolean | undefined;
+function storageWorks(): boolean {
+  if (storageProbe === undefined) {
+    try {
+      window.localStorage.setItem("atlas.probe", "1");
+      window.localStorage.removeItem("atlas.probe");
+      storageProbe = true;
+    } catch {
+      storageProbe = false;
+    }
+  }
+  return storageProbe;
+}
+
+/** Whether browser storage works; null during server render. When false, progress lasts for this page only. */
+export function useStorageAvailable(): boolean | null {
+  return useSyncExternalStore(subscribe, storageWorks, () => null);
+}

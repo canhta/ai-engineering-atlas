@@ -1,25 +1,29 @@
-// Plate legend (DESIGN.md → The plate): the four encodings, or in progress mode one entry per
-// learner state with its count.
+// Plate legend (DESIGN.md → The plate): the encodings, or in progress mode one entry per learner
+// state with its count. Beyond demonstrated, the state's icon tells the full tiles apart.
 import { useTranslations, type Lang } from "../../i18n";
 import { STATES, type State } from "../../lib/progress";
+import { Icon } from "../react/Icon";
 import { TileGlyph, tileFill } from "./TileGlyph";
+
+const BEYOND: readonly State[] = ["transferred", "retained", "applied"];
 
 interface Props {
   lang: Lang;
-  /** Progress mode: count per state (labels from the state vocabulary). */
+  stateLabels: Record<string, string>;
+  /** Progress mode: count per state. */
   counts?: Record<State, number> | null;
-  stateLabels?: Record<string, string>;
 }
 
-export default function PlateLegend({ lang, counts, stateLabels }: Props) {
+export default function PlateLegend({ lang, stateLabels, counts }: Props) {
   const t = useTranslations(lang);
-  if (counts && stateLabels) {
+  if (counts) {
     return (
       <ul className="legend" aria-label={t("legend.label")}>
         {STATES.map((s) => (
-          <li key={s}>
+          <li key={s} className={`state-${s}`}>
             <TileGlyph fill={tileFill(true, s)} state={s} />
-            <span>{stateLabels[s]}</span>
+            {BEYOND.includes(s) && <Icon name={s} />}
+            <span className="legend-label">{stateLabels[s]}</span>
             <span className="legend-count tabular">{counts[s]}</span>
           </li>
         ))}
@@ -38,7 +42,11 @@ export default function PlateLegend({ lang, counts, stateLabels }: Props) {
       </li>
       <li>
         <TileGlyph fill="half" state="gap" />
-        <span>{t("legend.partial")}</span>
+        <span>{stateLabels.gap}</span>
+      </li>
+      <li>
+        <TileGlyph fill="most" state="learning" />
+        <span>{stateLabels.learning}</span>
       </li>
       <li>
         <TileGlyph fill="full" state="demonstrated" />
