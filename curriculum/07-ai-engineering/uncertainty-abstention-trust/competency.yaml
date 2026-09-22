@@ -1,0 +1,93 @@
+id: ai.uncertainty-abstention-trust
+title: Uncertainty Abstention and Trust
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: A reliable AI system must decide when evidence is sufficient to answer and when it should abstain, fall back, or escalate. Useful trust decisions require validated signals, held-out threshold selection, and explicit risk–coverage trade-offs rather than model self-reported confidence alone.
+curriculum_evidence:
+  - paper.selectivenet
+  - paper.calibration-modern-neural-networks
+  - paper.language-models-know
+prerequisites:
+  - ai.evaluation
+  - math.probability
+prerequisite_support:
+  math.probability:
+    diagnostic: Given confidence bins and observed accuracies, explain whether the scores are calibrated, why one example cannot establish calibration, and why threshold selection belongs on validation rather than test data.
+    source: paper.calibration-modern-neural-networks
+    locator: Section 2 "Definitions" plus the reliability-diagram and Expected Calibration Error discussion
+    purpose: Patch only the probability and calibration reasoning needed to interpret confidence or risk signals and select policies without test leakage.
+outcomes:
+  - Define what abstention means for the product and what fallback or escalation follows it.
+  - Define answer risk, coverage, and the cost of a wrong answer versus an unnecessary abstention.
+  - Choose candidate uncertainty or evidence signals from observed failure modes.
+  - Validate whether a signal separates safer from riskier cases on held-out data.
+  - Select a threshold or policy on validation data rather than the final test set.
+  - Produce a risk–coverage curve or equivalent threshold-sweep evidence.
+  - Measure false abstention, unsafe answered cases, fallback success, and important slices.
+  - Test the policy under distribution, freshness, retrieval, or evidence shift.
+  - Treat model self-evaluation as a candidate signal to validate rather than a calibrated probability by default.
+  - Make a release or architecture decision from the measured trade-off.
+diagnostic:
+  tasks:
+    - Given a Knowledge Assistant with a confidence-like score, design evidence that would show whether the score is useful for answer versus abstain decisions.
+    - Explain why a policy that abstains on almost every case can have low answered-case error while still being a poor product.
+    - Describe how validation and held-out test data should be used when selecting an abstention threshold.
+    - Define at least two candidate signals and one fallback behavior for insufficient evidence.
+  pass_condition: Skip introductory material only if the learner can design a selective-answer policy, preserve validation/test separation, evaluate risk and coverage together, and reject unvalidated confidence signals.
+learning_route:
+  mental_model:
+    - source: paper.selectivenet
+      locator: Sections 1 "Introduction", 2 "Selective Prediction Problem Formulation", and 5 "Coverage Accuracy"
+      purpose: Establish the reject-option formulation, coverage, selective risk, and the risk–coverage trade-off without requiring the SelectiveNet model itself.
+    - source: paper.calibration-modern-neural-networks
+      locator: Section 2 "Definitions", "Reliability Diagrams", and "Expected Calibration Error (ECE)"
+      purpose: Distinguish predictive accuracy from calibration and learn how empirical reliability is inspected over groups of comparable cases.
+    - source: paper.language-models-know
+      locator: Calibration results and Section 3 "From Calibration to Knowing What You Know", including P(True) self-evaluation experiments
+      purpose: Treat model self-evaluation as a measurable signal whose calibration and task transfer must be validated rather than trusted by label.
+  guided_practice:
+    - task: Label a small slice of existing Knowledge Assistant cases as answerable, insufficient-evidence, or needs-review, then predict which available signals should separate the groups before computing results.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/output-and-trust/
+      task: Compare at least two answerability or risk signals, select an answer/abstain/fallback policy on validation data, and evaluate the chosen policy once on a held-out test set.
+experiments:
+  - Sweep a threshold and report coverage together with answered-case risk or quality.
+  - Compare at least two candidate signals or policies rather than assuming a self-reported confidence score is meaningful.
+  - Create an insufficient-evidence, stale, or shifted slice and inspect whether the selected policy still behaves safely.
+  - Measure false or unnecessary abstention and unsafe answered cases at the selected operating point.
+  - Exercise the fallback or escalation path and measure whether it actually resolves the abstained cases.
+exit_evidence:
+  - Evaluation data includes versioned answerability or risk labels and a documented validation/test split.
+  - The no-abstention baseline is preserved.
+  - Candidate signals and their provenance are recorded.
+  - Threshold or policy selection uses validation data and does not tune on the final test set.
+  - Risk and coverage are reported together through a curve or equivalent sweep.
+  - False or unnecessary abstention, unsafe answered cases, and fallback outcome are measured.
+  - At least one shifted, stale, or insufficient-evidence slice is analyzed.
+  - At least two candidate signals or policies are compared.
+  - The release or architecture decision explains the chosen trade-off and what evidence would change it.
+transfer:
+  task: Redesign the answer-versus-abstain policy for a domain with different error costs or fallback options, such as support triage, compliance review, or code change approval.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - paper.selectivenet
+    - paper.calibration-modern-neural-networks
+    - paper.language-models-know
+  assessment:
+    - paper.selectivenet
+    - paper.calibration-modern-neural-networks
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
