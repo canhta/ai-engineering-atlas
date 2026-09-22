@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+from datetime import date, timedelta
 import sys
 import yaml
 
@@ -147,6 +148,7 @@ RESOURCE_REQUIRED = {
     "last_checked",
 }
 resource_map = {}
+ready_source_ids = set()
 
 for path in sorted((ROOT / "resources").glob("*.yaml")):
     try:
@@ -196,8 +198,10 @@ def check_resource_ref(ref, context, *, require_verified=False):
         errors.append(f"{context}: unknown resource id '{ref}'")
         return
 
-    if require_verified and resource_map[ref].get("source_verified") is not True:
-        errors.append(f"{context}: resource '{ref}' is not verified")
+    if require_verified:
+        ready_source_ids.add(ref)
+        if resource_map[ref].get("source_verified") is not True:
+            errors.append(f"{context}: resource '{ref}' is not verified")
 
 
 # ---------------------------------------------------------------------------
@@ -485,6 +489,47 @@ if progress_path.exists():
             errors.append(
                 f"progress/progress.example.yaml: {cid} requires next_action"
             )
+
+
+# ---------------------------------------------------------------------------
+# Source freshness for ready routes
+# ---------------------------------------------------------------------------
+
+today = date.today()
+
+for rid in sorted(ready_source_ids):
+    item = resource_map[rid]
+    raw_checked = item.get("last_checked")
+    interval = item.get("review_interval_days")
+
+    if isinstance(raw_checked, date):
+        checked = raw_checked
+    else:
+        try:
+            checked = date.fromisoformat(str(raw_checked))
+        except Exception:
+            errors.append(
+                f"resource '{rid}' has invalid last_checked '{raw_checked}'"
+            )
+            continue
+
+    if checked > today:
+        errors.append(
+            f"resource '{rid}' last_checked is in the future: {checked.isoformat()}"
+        )
+
+    if not isinstance(interval, int) or interval <= 0:
+        errors.append(
+            f"resource '{rid}' is used by a ready route and requires "
+            "positive review_interval_days"
+        )
+        continue
+
+    if checked + timedelta(days=interval) < today:
+        errors.append(
+            f"resource '{rid}' is stale for a ready route: "
+            f"checked {checked.isoformat()}, interval {interval} days"
+        )
 
 
 # ---------------------------------------------------------------------------
