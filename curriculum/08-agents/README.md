@@ -14,7 +14,7 @@ Engineering systems in which models choose or sequence actions.
 - Model Context Protocol (MCP)
 - agent traces and trajectory evaluation
 - permission boundaries and tool trust
-- multi-agent patterns where they provide measurable value
+- [multi-agent systems](multi-agent/) where they provide measurable value
 
 ## Ready routes
 
@@ -25,6 +25,7 @@ Engineering systems in which models choose or sequence actions.
 - [Verification](verification/) — verify actual outcomes with deterministic/environment evidence first, calibrating model graders only when needed.
 - [Long-Running Agents](long-running/) — make long-duration runs resumable, bounded, cancellable, replay-safe, and verifiably complete across process boundaries.
 - [AI Workflow Orchestration](orchestration/) — choose code-controlled, model-controlled, or hybrid flow; bound concurrency and failure propagation before considering multi-agent topology.
+- [Multi-Agent Systems](multi-agent/) — introduce independent agent roles only when they measurably outperform or simplify the single-agent orchestration baseline.
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 

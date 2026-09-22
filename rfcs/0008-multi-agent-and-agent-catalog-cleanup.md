@@ -513,22 +513,37 @@ No MCP content change in this RFC.
 
 A subsequent RFC should use the current `2026-07-28` MCP specification rather than older session-oriented assumptions.
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- Removed the redundant `agents.fundamentals` coverage node after confirming it had no prerequisite, project, progress, or ready-route dependents.
+- Removed `agents.fundamentals` from the two resource `covers` lists that referenced the umbrella label.
+- `agents.multi-agent` promoted to `ready` at L3 with `agents.orchestration` as its hard prerequisite.
+- Multi-Agent remains downstream of a measured single-agent orchestration baseline; every independent agent boundary requires explicit task, context, tool, permission, and budget justification.
+- The route requires duplicate/gap delegation failure work, conflicting-result handling, subagent timeout/failure containment, runaway-delegation limits, aggregate verification, cost/token/latency comparison, and topology ablation.
+- The Knowledge Assistant now includes a `multi-agent/` evidence package in the same project lineage.
+- Added Anthropic's production multi-agent research system as curriculum evidence and reused the existing OpenAI orchestration and Anthropic effective-agent sources.
+- `agents.mcp` remains `coverage` for a separate current-spec protocol RFC.
+- Generated learner sources, curriculum status, and content-model data were synchronized from the source contracts and validated by CI.
+- Repository status is now 115 catalog competencies, 22 ready routes, and 93 coverage-only competencies; Agents has 9 competencies and 8 ready routes.
+
 ## Review checklist
 
-- [ ] `agents.fundamentals` is confirmed redundant and safe to remove.
-- [ ] Removal does not break prerequisites, projects, progress, or routes.
-- [ ] Multi-Agent is distinct from Orchestration.
-- [ ] Multi-Agent target depth L3 is appropriate.
-- [ ] A single-agent orchestration baseline is mandatory.
-- [ ] Each agent boundary requires measurable justification.
-- [ ] Context/state/tool/permission ownership is explicit.
-- [ ] Delegation duplication/gaps are evaluated.
-- [ ] Conflicting outputs are evaluated.
-- [ ] Subagent failures/timeouts are evaluated.
-- [ ] Agent-count/work budgets prevent runaway delegation.
-- [ ] Aggregate outcome verification is required.
-- [ ] Cost/token/latency overhead is measured.
-- [ ] A topology ablation can conclude that multi-agent should be removed.
-- [ ] MCP remains separate and coverage-only.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before implementation.
+- [x] `agents.fundamentals` is confirmed redundant and safe to remove.
+- [x] Removal does not break prerequisites, projects, progress, or routes.
+- [x] Multi-Agent is distinct from Orchestration.
+- [x] Multi-Agent target depth L3 is appropriate.
+- [x] A single-agent orchestration baseline is mandatory.
+- [x] Each agent boundary requires measurable justification.
+- [x] Context/state/tool/permission ownership is explicit.
+- [x] Delegation duplication/gaps are evaluated.
+- [x] Conflicting outputs are evaluated.
+- [x] Subagent failures/timeouts are evaluated.
+- [x] Agent-count/work budgets prevent runaway delegation.
+- [x] Aggregate outcome verification is required.
+- [x] Cost/token/latency overhead is measured.
+- [x] A topology ablation can conclude that multi-agent should be removed.
+- [x] MCP remains separate and coverage-only.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before implementation.

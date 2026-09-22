@@ -140,6 +140,7 @@ Learn:
 - [planning](../curriculum/08-agents/planning/) and [verification](../curriculum/08-agents/verification/);
 - retries and [long-running tasks](../curriculum/08-agents/long-running/);
 - [workflow orchestration](../curriculum/08-agents/orchestration/);
+- [multi-agent systems](../curriculum/08-agents/multi-agent/);
 - MCP;
 - trajectory/tool-use evaluation.
 
@@ -147,7 +148,7 @@ Default rule:
 
 > Start deterministic. Introduce agentic choice only when flexibility creates measurable value.
 
-Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, verify real environment outcomes instead of trusting agent narration, then make long-duration runs bounded and resumable before adding orchestration complexity.
+Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, verify real environment outcomes instead of trusting agent narration, then make long-duration runs bounded and resumable before adding orchestration complexity. Add a multi-agent topology only when independent specialist roles or context windows measurably earn their coordination cost.
 
 ## Phase H — production and security
 

@@ -28,12 +28,14 @@ Curriculum changes are tracked separately from routine documentation and reposit
 
 ### Changed
 
+- Removed the redundant `agents.fundamentals` umbrella coverage node; the concrete Agent routes now carry the capability graph.
+
 - Reworked the repository around a full learner lifecycle instead of topic completion.
 - Separated roadmap **coverage** from **ready learning routes**.
 - Added learner evidence states: demonstrated, transferred, retained, and applied.
 - Added competency types with matching assessment evidence.
 - Added precise learning-route and source-role rules.
-- Promoted Self-Attention, Product Framing, Model Selection, Context Engineering, Structured Outputs, Tool Calling, Search and Retrieval, Embeddings, Chunking, Reranking, RAG Evaluation, AI Evaluation, Uncertainty Abstention and Trust, Deterministic vs Agentic Design, Agent State, Agent Memory, Planning, Verification, Long-Running Agents, AI Workflow Orchestration, and Prompt Injection / Trust Boundaries to ready routes with verified source locators and practice.
+- Promoted Self-Attention, Product Framing, Model Selection, Context Engineering, Structured Outputs, Tool Calling, Search and Retrieval, Embeddings, Chunking, Reranking, RAG Evaluation, AI Evaluation, Uncertainty Abstention and Trust, Deterministic vs Agentic Design, Agent State, Agent Memory, Planning, Verification, Long-Running Agents, AI Workflow Orchestration, Multi-Agent Systems, and Prompt Injection / Trust Boundaries to ready routes with verified source locators and practice.
 - Turned project spines into evolving systems with baselines, metrics, failures, release decisions, and feedback.
 - Added canonical prerequisite validation to eliminate orphan/ghost competency IDs.
 - Aligned AI-agent and contribution rules with the catalog-first lifecycle.

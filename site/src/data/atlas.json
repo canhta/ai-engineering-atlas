@@ -5721,7 +5721,295 @@
         },
         "fields": {
           "domain": "agents",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/08-agents/multi-agent",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Multi-agent systems can create value when independent specialist roles or context windows solve a measured limitation in a single-agent orchestration baseline, but they also add delegation, coordination, conflict, reliability, and cost overhead that must be justified experimentally."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "agents.orchestration"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "ordered": false,
+              "items": [
+                {
+                  "en": "Identify a measured limitation in a single-agent orchestrated baseline before adding agents."
+                },
+                {
+                  "en": "Explain why each specialist should be an independent agent rather than a tool, prompt branch, or deterministic stage."
+                },
+                {
+                  "en": "Choose manager, handoff, orchestrator-worker, or another topology from task ownership and context needs."
+                },
+                {
+                  "en": "Define each agent's objective, inputs, outputs, tools, permissions, and execution budget."
+                },
+                {
+                  "en": "Define what context and state is shared across agents and what remains isolated."
+                },
+                {
+                  "en": "Write delegation contracts that reduce duplicated work and coverage gaps."
+                },
+                {
+                  "en": "Bound the number of agents and total delegated work."
+                },
+                {
+                  "en": "Define termination conditions for parent and child agents and prevent recursive or runaway delegation."
+                },
+                {
+                  "en": "Aggregate outputs with provenance back to the contributing agent and evidence."
+                },
+                {
+                  "en": "Detect and resolve conflicting specialist conclusions."
+                },
+                {
+                  "en": "Contain one subagent timeout or failure without silently corrupting the aggregate result."
+                },
+                {
+                  "en": "Evaluate final outcomes without requiring one fixed multi-agent trajectory."
+                },
+                {
+                  "en": "Compare quality, latency, token or cost, tool calls, and coordination failures against the single-agent orchestration baseline."
+                },
+                {
+                  "en": "Remove or collapse the topology when specialization does not justify its overhead."
+                }
+              ]
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a single-agent orchestrated Knowledge Assistant task, identify whether its bottleneck is breadth, specialization, context isolation, tool permissions, or something that does not require multiple agents."
+                },
+                {
+                  "en": "For a proposed specialist, explain why it should be an independent agent instead of an agent-as-tool, ordinary tool, prompt branch, or deterministic worker."
+                },
+                {
+                  "en": "Compare manager, handoff, and orchestrator-worker ownership for the same task."
+                },
+                {
+                  "en": "Define one coordination failure and one metric that would prove the multi-agent topology is worse than the baseline."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can justify agent boundaries from measured task structure, define ownership and coordination contracts, and design an ablation that can remove the topology."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "article.anthropic-multi-agent-research-system",
+                  "locator": {
+                    "en": "Sections \"Benefits of a multi-agent system\", \"Architecture overview for Research\", \"Prompt engineering and evaluations for research agents\", \"Effective evaluation of agents\", and \"Production reliability and engineering challenges\""
+                  },
+                  "purpose": {
+                    "en": "Study a production multi-agent system that gains breadth from parallel specialist contexts while exposing token, delegation, evaluation, and reliability costs."
+                  }
+                },
+                {
+                  "resource": "docs.openai-agent-orchestration",
+                  "locator": {
+                    "en": "Sections \"Core SDK patterns\", \"Orchestrating via LLM\", and \"Orchestrating via code\", especially agents-as-tools versus handoffs"
+                  },
+                  "purpose": {
+                    "en": "Compare manager ownership, handoff ownership, and code-controlled versus model-controlled delegation without treating one SDK as the competency."
+                  }
+                },
+                {
+                  "resource": "article.anthropic-building-effective-agents",
+                  "locator": {
+                    "en": "Sections \"Workflow: Orchestrator-workers\", \"Agents\", \"Combining and customizing these patterns\", and \"Summary\""
+                  },
+                  "purpose": {
+                    "en": "Keep multi-agent topology downstream of simpler workflow patterns and require measurable benefit before adding coordination complexity."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one existing Knowledge Assistant orchestration and propose one specialist boundary, then argue both for and against making it an independent agent."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Compare a single-agent orchestration baseline with one justified multi-agent topology, inject coordination failures, verify the aggregate result, and perform a topology ablation."
+                      },
+                      "path": "projects/knowledge-assistant/multi-agent/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "ordered": false,
+              "items": [
+                {
+                  "en": "Split a breadth-first research task across independent specialists and compare coverage, quality, latency, token use, and duplicate work with the single-agent baseline."
+                },
+                {
+                  "en": "Merge one specialist back into the manager and measure whether the topology still earns its cost."
+                },
+                {
+                  "en": "Inject overlapping delegation and a coverage gap to test delegation-contract quality."
+                },
+                {
+                  "en": "Inject conflicting specialist conclusions and preserve provenance through resolution."
+                },
+                {
+                  "en": "Fail or time out one specialist and verify containment, fallback, or degradation behavior."
+                },
+                {
+                  "en": "Attempt recursive delegation beyond the configured budget and verify it is stopped."
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "ordered": false,
+              "items": [
+                {
+                  "en": "A single-agent orchestration baseline is preserved on the same task set."
+                },
+                {
+                  "en": "A topology diagram records manager, handoff, or orchestrator-worker ownership."
+                },
+                {
+                  "en": "Every agent boundary has an explicit task/context/permission justification."
+                },
+                {
+                  "en": "Per-agent objective, input, output, tools, permissions, and execution budget are inspectable."
+                },
+                {
+                  "en": "Context and state sharing or isolation is explicit."
+                },
+                {
+                  "en": "Delegation traces include duplicated-work or coverage-gap failure work."
+                },
+                {
+                  "en": "Conflicting specialist conclusions are tested and resolved with provenance."
+                },
+                {
+                  "en": "At least one subagent timeout or failure is contained."
+                },
+                {
+                  "en": "Runaway or recursive delegation is bounded."
+                },
+                {
+                  "en": "Aggregate outcome verification is preserved."
+                },
+                {
+                  "en": "Quality, latency, token or cost, model/tool calls, and coordination overhead are compared with the baseline."
+                },
+                {
+                  "en": "One topology ablation merges or removes an agent."
+                },
+                {
+                  "en": "The final decision records whether to keep, simplify, or remove the multi-agent architecture."
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the topology for a task with different parallelism, context-sharing, specialization, or permission constraints and justify why the agent boundaries change."
+              }
+            }
+          ]
         }
       },
       {
@@ -7800,6 +8088,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "agents.orchestration",
+      "to": "agents.multi-agent"
+    },
+    {
+      "type": "prerequisite",
       "from": "agents.planning",
       "to": "agents.orchestration"
     },
@@ -8055,6 +8348,12 @@
       "type": "article",
       "author": "Anthropic",
       "url": "https://www.anthropic.com/engineering/managed-agents"
+    },
+    "article.anthropic-multi-agent-research-system": {
+      "title": "How we built our multi-agent research system",
+      "type": "article",
+      "author": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/multi-agent-research-system"
     },
     "article.anthropic-writing-tools": {
       "title": "Writing effective tools for agents — with agents",

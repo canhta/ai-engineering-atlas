@@ -60,11 +60,11 @@ For each, record detection and recovery behavior.
 
 ## Baseline comparison
 
-| Variant | Quality | Coverage | Latency | Tokens / cost | Model/tool calls | Coordination failures |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Single-agent orchestration | | | | | | |
-| Multi-agent topology | | | | | | |
-| Ablated topology | | | | | | |
+| Variant                    | Quality | Coverage | Latency | Tokens / cost | Model/tool calls | Coordination failures |
+| -------------------------- | ------: | -------: | ------: | ------------: | ---------------: | --------------------: |
+| Single-agent orchestration |         |          |         |               |                  |                       |
+| Multi-agent topology       |         |          |         |               |                  |                       |
+| Ablated topology           |         |          |         |               |                  |                       |
 
 ## Topology ablation
 
