@@ -135,7 +135,7 @@ Exit at L3 when you can:
 Learn:
 
 - deterministic versus agentic control;
-- state and memory;
+- [state](../curriculum/08-agents/state/) and [memory](../curriculum/08-agents/memory/);
 - tool schemas and permission boundaries;
 - planning and verification;
 - retries and long-running tasks;
@@ -145,6 +145,8 @@ Learn:
 Default rule:
 
 > Start deterministic. Introduce agentic choice only when flexibility creates measurable value.
+
+Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured.
 
 ## Phase H — production and security
 
