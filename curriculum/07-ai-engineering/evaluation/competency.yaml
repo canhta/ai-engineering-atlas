@@ -1,0 +1,34 @@
+id: ai.evaluation
+title: AI Evaluation and Experimentation
+domain: ai-engineering
+status: seeded
+target_level: L3
+why: AI system changes require repeatable measurement of quality, failures, latency, and cost.
+prerequisites:
+  - ml.experimental-design
+  - software.testing
+outcomes:
+  - Build versioned evaluation datasets.
+  - Separate deterministic, semantic, retrieval, and agent evaluation.
+  - Measure repeated-run variance for stochastic systems.
+  - Analyze failure categories and production regressions.
+  - Define release gates using explicit thresholds.
+diagnostic:
+  - Can distinguish a benchmark improvement from measurement noise.
+  - Can design a regression set from production failures.
+practice:
+  labs:
+    - labs/eval-harness
+  experiments:
+    - experiments/model-comparison
+exit_criteria:
+  - build-versioned-eval-set
+  - compare-two-systems
+  - analyze-failures
+  - define-release-gate
+resources:
+  primary:
+    - book.chip-huyen-ai-engineering
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
