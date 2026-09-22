@@ -20,3 +20,36 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 365
+
+- id: paper.selectivenet
+    type: paper
+    title: SelectiveNet — A Deep Neural Network with an Integrated Reject Option
+    author: Yonatan Geifman and Ran El-Yaniv
+    url: https://proceedings.mlr.press/v97/geifman19a.html
+    roles: [curriculum-evidence, teaching, assessment, reference]
+    covers: [ai.uncertainty-abstention-trust, selective-prediction, abstention]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
+
+  - id: paper.calibration-modern-neural-networks
+    type: paper
+    title: On Calibration of Modern Neural Networks
+    author: Chuan Guo, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger
+    url: https://proceedings.mlr.press/v70/guo17a.html
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [ai.uncertainty-abstention-trust, calibration]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
+
+  - id: paper.language-models-know
+    type: paper
+    title: Language Models (Mostly) Know What They Know
+    author: Saurav Kadavath et al.
+    url: https://arxiv.org/abs/2207.05221
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [ai.uncertainty-abstention-trust, llm-self-evaluation, calibration]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
