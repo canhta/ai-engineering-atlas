@@ -504,18 +504,33 @@ Rejected. LangGraph is useful as a concrete checkpointer/store distinction, but 
 - catalog/generated status:
   - **no promotion before review and seeded validation**
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- `agents.state` promoted to `ready` at L3.
+- `agents.memory` promoted to `ready` at L3.
+- Agent State explicitly separates durable execution state from current model context, event history, observability, environment state, and long-term memory.
+- State evidence requires interruption/restart recovery, replay-safe side effects, and one state-schema migration decision.
+- Agent Memory follows State and requires explicit scope, provenance, freshness, admission/write policy, retrieval policy, correction/update, deletion/forgetting, and isolation.
+- Memory evidence preserves a no-memory baseline and measures harmful or irrelevant recall as well as benefit.
+- The Knowledge Assistant now includes a `state-and-memory/` evidence package in the same project lineage.
+- Exact learner-facing source links are generated from the competency/resource contracts.
+- Seeded-state validation passed before promotion.
+- Prerequisite-cycle validation passed with Memory depending on ready State.
+
 ## Review checklist
 
-- [ ] Evidence is traceable and source locators are specific enough to author routes.
-- [ ] State is distinct from model context, memory, environment state, and observability.
-- [ ] Memory is distinct from run/session state and ordinary RAG corpus retrieval.
-- [ ] Proposed prerequisite graph is acyclic.
-- [ ] State evidence includes injected interruption and successful resume.
-- [ ] State evidence prevents duplicate side effects after resume.
-- [ ] Memory evidence includes a no-memory baseline.
-- [ ] Memory has explicit scope, provenance, freshness, write, read, update, and deletion rules.
-- [ ] Harmful/stale/conflicting memory is evaluated, not only successful recall.
-- [ ] Cross-user or tenant isolation is tested where identities exist.
-- [ ] Framework examples do not redefine the competencies.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before promotion.
+- [x] Evidence is traceable and source locators are specific enough to author routes.
+- [x] State is distinct from model context, memory, environment state, and observability.
+- [x] Memory is distinct from run/session state and ordinary RAG corpus retrieval.
+- [x] Proposed prerequisite graph is acyclic.
+- [x] State evidence includes injected interruption and successful resume.
+- [x] State evidence prevents duplicate side effects after resume.
+- [x] Memory evidence includes a no-memory baseline.
+- [x] Memory has explicit scope, provenance, freshness, write, read, update, and deletion rules.
+- [x] Harmful/stale/conflicting memory is evaluated, not only successful recall.
+- [x] Cross-user or tenant isolation is tested where identities exist.
+- [x] Framework examples do not redefine the competencies.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before promotion.
