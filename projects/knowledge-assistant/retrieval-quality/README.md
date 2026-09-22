@@ -18,6 +18,12 @@ existing lexical + embedding baselines
 
 Keep the corpus, query set, relevance judgments, and evaluation definitions versioned. Change one major variable at a time when comparing retrieval choices.
 
+Routes in this slice:
+
+- [Chunking](../../../curriculum/07-ai-engineering/chunking/)
+- [Reranking](../../../curriculum/07-ai-engineering/reranking/)
+- [RAG Evaluation](../../../curriculum/07-ai-engineering/rag-evaluation/)
+
 ## 1. Chunking experiment
 
 Start from [experiment-record.template.md](experiment-record.template.md).
