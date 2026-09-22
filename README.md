@@ -4,6 +4,8 @@ A structured roadmap for software engineers learning modern AI engineering.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+**Start here:** [Curriculum](curriculum/) · [Learning method](LEARNING_METHOD.md) · [Contributing](CONTRIBUTING.md)
+
 ## Contents
 
 - [Summary](#summary)
@@ -48,20 +50,20 @@ The roadmap is intentionally broad. It is not expected that every learner studie
 
 | Area | Topics |
 | --- | --- |
-| Software Engineering | Programming, testing, architecture, operating systems, networking, databases |
-| Systems | Distributed systems, reliability, performance, cloud, observability |
-| Data Engineering | Data modeling, pipelines, batch and streaming systems, quality, lineage |
-| ML Foundations | Probability, statistics, classical machine learning, experimentation |
-| Deep Learning | Neural networks, optimization, backpropagation, representation learning |
-| LLM Foundations | Tokenization, transformers, attention, inference, context |
-| AI Engineering | Model selection, prompting, retrieval, context engineering, evaluation, adaptation |
-| Agents | Tool use, workflows, state, memory, orchestration, MCP |
-| Production AI | Serving, gateways, tracing, reliability, latency, cost, release practices |
-| Security & Governance | Prompt injection, permissions, privacy, supply-chain risk, governance |
-| Multimodal | Vision, audio, voice, document AI, multimodal interaction |
-| Specializations | LLM systems, post-training, reasoning, search, AI platforms |
+| [Software Engineering](curriculum/01-software-engineering/) | Programming, testing, architecture, operating systems, networking, databases |
+| [Systems](curriculum/02-systems/) | Distributed systems, reliability, performance, cloud, observability |
+| [Data Engineering](curriculum/03-data-engineering/) | Data modeling, pipelines, batch and streaming systems, quality, lineage |
+| [ML Foundations](curriculum/04-ml-foundations/) | Probability, statistics, classical machine learning, experimentation |
+| [Deep Learning](curriculum/05-deep-learning/) | Neural networks, optimization, backpropagation, representation learning |
+| [LLM Foundations](curriculum/06-llm-foundations/) | Tokenization, transformers, attention, inference, context |
+| [AI Engineering](curriculum/07-ai-engineering/) | Model selection, prompting, retrieval, context engineering, evaluation, adaptation |
+| [Agents](curriculum/08-agents/) | Tool use, workflows, state, memory, orchestration, MCP |
+| [Production AI](curriculum/09-production-ai/) | Serving, gateways, tracing, reliability, latency, cost, release practices |
+| [Security & Governance](curriculum/10-security-governance/) | Prompt injection, permissions, privacy, supply-chain risk, governance |
+| [Multimodal](curriculum/11-multimodal/) | Vision, audio, voice, document AI, multimodal interaction |
+| [Specializations](curriculum/12-specializations/) | LLM systems, post-training, reasoning, search, AI platforms |
 
-The detailed curriculum and topic pages will be added progressively as resources, labs, and assessments are reviewed.
+Browse the [curriculum index](curriculum/) for domain pages and seeded competencies.
 
 ## Learning units
 
@@ -84,9 +86,9 @@ Diagnose → Learn → Implement → Visualize → Experiment → Explain → Ex
 
 Resources are kept separate from the competency itself so that books, courses, papers, or repositories can be replaced without changing the learning objective.
 
-## Repository structure
+See [LEARNING_METHOD.md](LEARNING_METHOD.md) for the study workflow and review method.
 
-The repository is being organized around the following directories:
+## Repository structure
 
 ```text
 curriculum/      topic and competency definitions
@@ -101,7 +103,7 @@ schemas/         machine-readable curriculum and resource schemas
 scripts/         validation and maintenance tools
 ```
 
-Rules for AI agents working on the repository are in [AGENTS.md](AGENTS.md).
+Curriculum conventions are documented in [CURRICULUM.md](CURRICULUM.md). Rules for AI agents working on the repository are in [AGENTS.md](AGENTS.md).
 
 ## Contributing
 
