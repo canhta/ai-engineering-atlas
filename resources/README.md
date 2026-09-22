@@ -56,6 +56,7 @@ A learner should know exactly where to begin and why that source is there.
 
 - [books.yaml](books.yaml)
 - [courses.yaml](courses.yaml)
+- [docs.yaml](docs.yaml)
 - [repos.yaml](repos.yaml)
 - [roadmaps.yaml](roadmaps.yaml)
 - [visuals.yaml](visuals.yaml)
