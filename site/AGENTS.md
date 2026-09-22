@@ -15,7 +15,7 @@ Run from `site/` unless noted.
 | `pnpm run check` | Typecheck, unit tests (`node --test` for logic, Vitest for the block renderer), style lint, i18n parity, token contrast, headers, icons, content coupling, build |
 | `pnpm run test:e2e` | Browser tests against the built site (starts `pnpm run preview`): desktop at 1440px; tests tagged `@mobile` at 390px |
 | `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
-| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route by default; en/vi × light/dark × 390/1440), axe, header and overflow checks |
+| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route by default; en/vi × light/dark × 390/1440), axe, header and overflow checks. `CAPTURE_PROGRESS=<progress.yaml>` seeds learner progress |
 | `make site-check` | From the repository root: what CI runs for the site |
 
 Deploys run only through the manual **Deploy site** workflow (`.github/workflows/deploy.yml`, Actions → Run workflow). It runs every check and the browser tests before `wrangler deploy`. Do not deploy from a local machine or an agent session.
@@ -43,6 +43,7 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 
 - Progress follows [LEARNING_MODEL.md](../LEARNING_MODEL.md): a state changes only through an evidence record. Opening a source, scrolling, or AI output leaves state unchanged.
 - Progress lives in the browser and exports as `progress.yaml` valid against [schemas/progress.schema.json](../schemas/progress.schema.json). Use the schema's existing enum values (`independence: reference-open` for a revealed solution).
+- The next-step rules live only in `src/lib/recommend.ts` (pure, deterministic, tested in `recommend.test.ts`). Pages pass it the graph from `nextGraph()`; the recommendation is advice and never changes a state.
 
 ## Bilingual
 

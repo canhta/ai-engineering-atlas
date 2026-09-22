@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import ProgressView from "../../../components/react/ProgressView";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
 import { stateLabels } from "../../../lib/atlas";
-import { itemDetails, plateRegions } from "../../../lib/summaries";
+import { itemDetails, nextGraph, nextLinks, plateRegions } from "../../../lib/summaries";
 import { mapUrl } from "../../../lib/urls";
 
 export const getStaticPaths = langPaths;
@@ -15,5 +15,14 @@ const t = useTranslations(lang);
 <Base lang={lang} title={t("progress.title")} section="progress">
   <h1 class="display">{t("progress.title")}</h1>
   <p class="lead">{t("progress.intro")}</p>
-  <ProgressView client:load lang={lang} atlasUrl={mapUrl(lang)} regions={plateRegions(lang)} details={itemDetails(lang)} stateLabels={stateLabels(lang)} />
+  <ProgressView
+    client:load
+    lang={lang}
+    atlasUrl={mapUrl(lang)}
+    regions={plateRegions(lang)}
+    details={itemDetails(lang)}
+    stateLabels={stateLabels(lang)}
+    graph={nextGraph()}
+    links={nextLinks(lang)}
+  />
 </Base>

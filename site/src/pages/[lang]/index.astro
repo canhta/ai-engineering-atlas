@@ -8,7 +8,8 @@ import PlateLegend from "../../components/plate/PlateLegend";
 import ReadyRows, { type ReadyGroup } from "../../components/react/ReadyRows";
 import { langPaths, useTranslations, type Lang } from "../../i18n";
 import { langAttr, site, stateLabels, text } from "../../lib/atlas";
-import { itemDetails, plateRegions } from "../../lib/summaries";
+import NextSteps from "../../components/react/NextSteps";
+import { itemDetails, nextGraph, nextLinks, plateRegions } from "../../lib/summaries";
 import { mapUrl } from "../../lib/urls";
 
 export const getStaticPaths = langPaths;
@@ -40,18 +41,21 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
 ---
 
 <Base lang={lang}>
-  <section class="hero" aria-labelledby="home-title">
-    <h1 id="home-title" class="display home-title" lang={langAttr(title, lang)}>{title.value}</h1>
-    <p class="subtitle home-subtitle" lang={langAttr(tagline, lang)}>{tagline.value}</p>
-    <p class="muted">{t("home.method")}</p>
-    <div class="hero-actions">
-      <a class="pill pill-primary" href={`${mapUrl(lang)}?ready=1`}>
-        {t("home.start")}
-        <span class="pill-icon"><Icon name="forward" /></span>
-      </a>
-      <a class="button-quiet" href="#how">{t("home.how")}</a>
-    </div>
-  </section>
+  <div class="hero-row">
+    <section class="hero" aria-labelledby="home-title">
+      <h1 id="home-title" class="display home-title" lang={langAttr(title, lang)}>{title.value}</h1>
+      <p class="subtitle home-subtitle" lang={langAttr(tagline, lang)}>{tagline.value}</p>
+      <p class="muted">{t("home.method")}</p>
+      <div class="hero-actions">
+        <a class="pill pill-primary" href={`${mapUrl(lang)}?ready=1`}>
+          {t("home.start")}
+          <span class="pill-icon"><Icon name="forward" /></span>
+        </a>
+        <a class="button-quiet" href="#how">{t("home.how")}</a>
+      </div>
+    </section>
+    <NextSteps client:load lang={lang} graph={nextGraph()} links={nextLinks(lang)} limit={3} onlyWithEvidence />
+  </div>
 
   <section class="home-plate" aria-labelledby="plate-title">
     <div class="plate-head">
@@ -86,9 +90,24 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
 </Base>
 
 <style>
+  /* Hero, and the learner's next steps beside it once they have evidence (DESIGN.md → Next step). */
+  .hero-row {
+    display: grid;
+    grid-template-columns: minmax(0, 56rem) minmax(0, 22rem);
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-8) var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
   .hero {
     max-width: 56rem;
-    margin-bottom: var(--space-12);
+  }
+
+  @media (width < 1024px) {
+    .hero-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .home-title {

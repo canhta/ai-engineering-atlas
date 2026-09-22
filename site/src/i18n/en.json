@@ -179,5 +179,15 @@
   "drawer.missingTitle": "Not found",
   "drawer.missing": "No competency has the id {id}. It may have been renamed; search the atlas instead.",
   "storage.blocked": "This browser blocks storage, so your progress lasts only until you leave this page. Export it from Progress to keep it.",
-  "progress.localNote": "Stored only in this browser. Export to keep a copy or move to another device."
+  "progress.localNote": "Stored only in this browser. Export to keep a copy or move to another device.",
+  "next.title": "Next for you",
+  "next.reason.due": "Check due {date}: redo the diagnostic without the sources.",
+  "next.reason.continue": "You started this: finish the route and record evidence.",
+  "next.reason.start": "Ready to start: nothing needs learning first.",
+  "next.reason.transfer": "Demonstrated: try the transfer task next.",
+  "next.reason.apply": "Use it in a project next.",
+  "next.recommended": "Recommended next ({n} of {total}).",
+  "next.blocked": "Learn first:",
+  "next.note": "Worked out from prerequisites and the states you recorded. It is advice and never changes a state.",
+  "next.empty": "Nothing to suggest: every route is at its target or waiting for its check."
 }

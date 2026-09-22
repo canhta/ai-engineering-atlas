@@ -7,10 +7,12 @@ import { useTranslations, type Lang } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { fromYaml, isDemonstrated, reviewQueue, STATES, today, toYaml, type Progress, type State } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import type { ItemDetail, RegionData } from "../../lib/summaries";
+import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
+import type { ItemDetail, NextLink, RegionData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
 import { Icon } from "./Icon";
+import NextSteps from "./NextSteps";
 import { StateBadge } from "./StateBadge";
 import { StorageNote } from "./StorageNote";
 
@@ -20,11 +22,13 @@ interface Props {
   regions: RegionData[];
   details: Record<string, ItemDetail>;
   stateLabels: Record<string, string>;
+  graph: GraphItem[];
+  links: Record<string, NextLink>;
 }
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function ProgressView({ lang, atlasUrl, regions, details, stateLabels }: Props) {
+export default function ProgressView({ lang, atlasUrl, regions, details, stateLabels, graph, links }: Props) {
   const t = useTranslations(lang);
   const [progress, saveProgress] = useProgress();
   const [pending, setPending] = useState<Progress | null>(null);
@@ -85,7 +89,9 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           <p className="muted small">{t("progress.mappedNote")}</p>
         </div>
 
-        <section className="progress-queue" aria-labelledby="queue-title">
+        <div className="progress-side">
+          <NextSteps lang={lang} graph={graph} links={links} limit={NEXT_LIMIT} />
+          <section className="progress-queue" aria-labelledby="queue-title">
           <h2 id="queue-title">{t("progress.queue")}</h2>
           <p className="queue-counts tabular">
             <span>
@@ -124,7 +130,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           ) : (
             <p className="muted">{t("progress.queueEmpty")}</p>
           )}
-        </section>
+          </section>
+        </div>
       </div>
 
       <h2>{t("progress.withEvidence")}</h2>

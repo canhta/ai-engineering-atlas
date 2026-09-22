@@ -81,7 +81,7 @@ Last updated: 2026-09-22
 
 ### Phase 2: diagnostics, next step, AI tutor
 
-- [ ] Deterministic next-step recommendation from prerequisites and states, with tests
+- [x] Deterministic next-step recommendation from prerequisites and states, with tests (`src/lib/recommend.ts`; Home, Progress, field log)
 - [ ] Replace fixed review intervals with `ts-fsrs`
 - [ ] Worker `/api/*`: SSO (GitHub, Google), HttpOnly session, D1 users and usage counters
 - [ ] AI proxy with the project key as a Worker secret; per-user and global budgets

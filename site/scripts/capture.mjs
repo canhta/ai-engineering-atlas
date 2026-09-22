@@ -1,9 +1,13 @@
 // Screenshot pages across languages, themes, and widths; run axe; check isolation headers.
 // Usage: node scripts/capture.mjs [baseUrl] [outDir] [path ...]
 // Serve the build first (`pnpm run preview`), since `_headers` apply only there.
-import { mkdirSync } from "node:fs";
+// CAPTURE_PROGRESS=<progress.yaml> seeds that learner progress into every page (learner-state surfaces).
+import { mkdirSync, readFileSync } from "node:fs";
 import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { parse } from "yaml";
+
+const seeded = process.env.CAPTURE_PROGRESS ? JSON.stringify(parse(readFileSync(process.env.CAPTURE_PROGRESS, "utf8"))) : null;
 
 const [baseUrl = "http://127.0.0.1:8787", outDir = "ui-review", ...paths] = process.argv.slice(2);
 const pages = paths.length
@@ -20,6 +24,7 @@ const problems = [];
 for (const scheme of schemes) {
   for (const width of widths) {
     const context = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 900 } });
+    if (seeded) await context.addInitScript((value) => localStorage.setItem("atlas.progress.v2", value), seeded);
     const page = await context.newPage();
     for (const lang of langs) {
       for (const template of pages) {

@@ -1,0 +1,44 @@
+# Progress fixture for the next-step browser tests (tests/next-step.spec.ts).
+# ai.evaluation has a long-overdue check, so it is the first recommendation on any date after 2026-01-01.
+version: 2
+updated_at: 2025-12-01
+
+competencies:
+  ai.evaluation:
+    current_state: demonstrated
+    target_state: applied
+    evidence:
+      - id: implementation-20251201-1
+        kind: implementation
+        supports_state: demonstrated
+        recorded_at: 2025-12-01
+        note: "Built a versioned evaluation harness with component and end-to-end checks."
+        independence: independent
+        review_method: self
+    state_history:
+      - state: demonstrated
+        recorded_at: 2025-12-01
+        reason: "Exit evidence recorded."
+        evidence_refs:
+          - implementation-20251201-1
+    next_action: "Run a delayed retrieval check without reopening the sources, or attempt the transfer task."
+    review_on: 2026-01-01
+
+  ai.product-framing:
+    current_state: gap
+    target_state: applied
+    evidence:
+      - id: diagnostic-20251201-1
+        kind: diagnostic
+        supports_state: gap
+        recorded_at: 2025-12-01
+        note: "Could not state a measurable product objective."
+        independence: independent
+        review_method: self
+    state_history:
+      - state: gap
+        recorded_at: 2025-12-01
+        reason: "Diagnostic found a gap."
+        evidence_refs:
+          - diagnostic-20251201-1
+    next_action: "Work through the learning route, then the practice."

@@ -16,7 +16,10 @@ import {
   type TargetState,
 } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
+import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
+import type { NextLink } from "../../lib/summaries";
 import { Icon } from "./Icon";
+import { RouteAdvice } from "./NextSteps";
 import { StateBadge } from "./StateBadge";
 import { StorageNote } from "./StorageNote";
 
@@ -28,6 +31,9 @@ interface Props {
   target: TargetState;
   /** Labels of the state vocabulary in this language. */
   stateLabels: Record<string, string>;
+  /** The next-step graph and item links, for the recommendation line (src/lib/recommend.ts). */
+  graph: GraphItem[];
+  links: Record<string, NextLink>;
 }
 
 export default function FieldLog(props: Props) {
@@ -87,6 +93,8 @@ function LogPanel({
   itemRef,
   target,
   stateLabels,
+  graph,
+  links,
   idPrefix,
   formInitiallyOpen = false,
 }: Props & { idPrefix: string; formInitiallyOpen?: boolean }) {
@@ -143,6 +151,7 @@ function LogPanel({
         </div>
       </dl>
       {progress && <p className="log-next">{t(`log.next.${state}`)}</p>}
+      {progress && <RouteAdvice lang={lang} itemRef={itemRef} graph={graph} links={links} limit={NEXT_LIMIT} progress={progress} />}
 
       {!formOpen && (
         <Button className="pill pill-primary log-record" isDisabled={!progress} onPress={() => setFormOpen(true)}>

@@ -157,15 +157,21 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
  Progress
  Your states come only from evidence you recorded. Stored in this browser until you export it.
  3 of 19 ready routes demonstrated or beyond              legend with a count per state
- ╭──── plate (progress) ────╮     Review   Due today 1   Next 7 days 2
- │                           │     Tool calling   due 29 Sep   ( Start review (↗) )
- ╰───────────────────────────╯
+ ╭──── plate (progress) ────╮     Next for you   1 ■ AI evaluation  Check due …   (up to 5)
+ │                           │     Review   Due today 1   Next 7 days 2
+ ╰───────────────────────────╯     Tool calling   due 29 Sep   ( Start review (↗) )
  Evidence by competency: rows (title, state, target, evidence count, last recorded, next review)
  Your data   ( Export progress.yaml )   ( Import progress.yaml )   confirmation and errors inline
 ```
 
-- Mapped items stay in the plate with the note "Mapped items do not count toward progress."
-- Empty: every ready tile unassessed, and "Start with a diagnostic on any ready route" with the CTA.
+- Mapped items stay in the plate with the note "Mapped items do not count toward progress." Empty: every ready tile unassessed, and "Start with a diagnostic on any ready route" with the CTA.
+
+### Next step
+
+- Computed by `src/lib/recommend.ts` from prerequisites, states, and review dates; advice only, never a state change. Ranked: check due, continue (gap, learning), start (prerequisites demonstrated or bridged), transfer, apply.
+- Home: once the learner has evidence, "Next for you" (up to 3) sits beside the hero on desktop and below it on mobile; the start CTA stays. Progress: the same list (up to 5) above the review queue.
+- Rows: rank number in `route`, tile glyph and title link (a due check links to the diagnostic), the reason as one muted line. Hairline rows, no cards.
+- Field log: one line under "Next:": "Recommended next (n of 5)." with the reason, or "Learn first:" with the blocking prerequisites.
 
 ### States every surface handles
 
@@ -215,8 +221,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ### Icons
 
-- One library with thin strokes: Phosphor (`light` weight), imported only in `src/lib/icons.ts` under semantic names. Astro uses `<Icon name=…>`; islands import the registry.
-- Every icon sits beside a text label and is `aria-hidden`.
+- One library with thin strokes: Phosphor (`light` weight), imported only in `src/lib/icons.ts` under semantic names. Astro uses `<Icon name=…>`; islands import the registry. Every icon sits beside a text label and is `aria-hidden`.
 - The plate and its prerequisite lines are data visualisation drawn from `relations` in `src/components/plate/`, the only folder allowed to emit SVG, and only from data.
 - `pnpm run check:icons` enforces this.
 
