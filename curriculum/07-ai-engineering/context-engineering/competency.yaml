@@ -1,7 +1,7 @@
 id: ai.context-engineering
 title: Context Engineering
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
