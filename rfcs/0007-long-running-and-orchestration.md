@@ -1,8 +1,10 @@
 # RFC: Long-Running Agents and Orchestration Slice
 
-- Status: Draft
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
+- Reviewed: 2026-09-22
+- Review decision: Approved by repository owner
 
 ## Problem
 
