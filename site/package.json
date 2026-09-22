@@ -10,7 +10,6 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "wrangler dev --ip 127.0.0.1 --port 8787",
-    "deploy": "astro build && wrangler deploy",
     "lint:styles": "stylelint \"src/**/*.{css,astro}\"",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",

@@ -17,6 +17,10 @@ For work under `site/` (web atlas, Cloudflare Worker), read [site/AGENTS.md](sit
 
 Do not create content merely because a directory or schema field exists.
 
+## One version of everything
+
+Each doc, schema, content model, page, component, and lab exists in one version. A change replaces the old version in place and updates every caller in the same change: no `v1`/`v2` side by side, no legacy or deprecated copies, no compatibility shims, no parallel variants. History lives in git.
+
 ## Core principle
 
 The repository is organized around **demonstrated capability and the learner lifecycle**, not around collecting topics or generating lessons.

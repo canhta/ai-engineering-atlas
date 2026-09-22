@@ -25,7 +25,7 @@ Decisions already made by the repository owner:
 - hosting is Cloudflare;
 - AI features use a project-owned API key and require SSO sign-in; the rest of the site works without an account;
 - the repository owner reviews Vietnamese translations;
-- `self-attention` gets a NumPy variant so it can run in the browser.
+- `self-attention` runs in the browser; under the one-version rule (root AGENTS.md) its lab is either ported to NumPy in place or stays local-only (open decision).
 
 ## Evidence
 
@@ -72,7 +72,7 @@ Repository facts that shape the design:
   |---|---|---|
   | `evaluation-harness` | Python stdlib, `cases.jsonl` | Yes, Pyodide, unchanged |
   | `prompt-injection-boundaries` | Python stdlib | Yes, Pyodide, unchanged |
-  | `self-attention` | `torch>=2.2` | Not as written (Pyodide has no PyTorch build); a NumPy variant is planned |
+  | `self-attention` | `torch>=2.2` | Not as written (Pyodide has no PyTorch build); port to NumPy in place, or keep local-only (open decision) |
   | `agentic-design`, `model-selection` | None (written decision labs) | Yes, as a structured form with rubric; no execution |
 
 ## Proposal
@@ -118,7 +118,7 @@ The curriculum contracts stay in English and remain canonical. Sources keep thei
 - **Files:** the data build copies each lab's `starter.py`, `tests.py`, and fixtures into the lab bundle. `solution.py` is shipped only because `tests.py` imports it as a reference; the UI hides it behind an explicit "show reference solution" step, recorded in the evidence item as `independence: reference-open` (existing schema value).
 - **Evidence:** a passing run creates an `implementation` evidence item with `review_method: automated`, stored in local progress with the test output and the learner's code hash.
 - **Decision labs:** `agentic-design` and `model-selection` render their templates as structured forms; the learner self-reviews against the rubric (`review_method: self`). The written answer is exported with progress.
-- **`self-attention`:** add a NumPy variant (`starter_numpy.py`, `solution_numpy.py`, `tests_numpy.py`) covering the same tasks, shapes, and causal-mask checks, runnable under Pyodide. The PyTorch version stays for local work. CI runs both test files against their solutions, and the lab README states that the two variants assess the same outcome. This changes a lab and gets its own review in the implementing PR.
+- **`self-attention`:** the one-version rule rules out a NumPy copy next to the PyTorch lab. Options: port the lab to NumPy in place (one lab, runnable locally and in Pyodide), or keep it PyTorch and local-only. Owner decision; the port changes a lab and gets its own review.
 - **Test-to-task mapping:** each browser run returns an Exercism-style result (`pass` / `fail` / `error`, per-test `task_id`), so the UI can show which lab task a failure belongs to.
 - **Feedback keys:** known mistakes map to reviewed, parameterized message keys in `en` and `vi` (typed `essential` / `actionable` / `informative`, following Exercism), shown before any AI help. These are written per lab and reviewed like curriculum content.
 - **Help ladder:** targeted message → small hint → pointer to the failing assertion → AI lab coach → reference solution. The highest level used is recorded on the evidence item (`independence`: `independent` → `minimal-hints` → `guided` → `reference-open`). Help is never blocked; its use is visible in the evidence.
@@ -209,7 +209,7 @@ Exit: every ready route is reachable from the map in both languages, every sourc
 
 - Pyodide worker, editor, run-tests button, test output panel.
 - `evaluation-harness` and `prompt-injection-boundaries` runnable in the browser.
-- `self-attention` NumPy variant, runnable in the browser alongside the local PyTorch version.
+- `self-attention` in the browser if the owner chooses the in-place NumPy port.
 - `agentic-design` and `model-selection` as rubric forms.
 - Lab runs recorded as evidence in local progress.
 
@@ -254,7 +254,7 @@ This phase extends the Phase 2 Worker with stored evidence and is out of scope f
 
 - affected competencies: none; no curriculum content changes.
 - resource changes: none; resource URLs are read, not edited.
-- new files: `site/`, `worker/`, `scripts/build_site_data.py`, NumPy variant files in `labs/self-attention/`, `schemas/site-data.schema.json`, `schemas/competency-translation.schema.json`, per-lab browser metadata and feedback keys, tutor prompt config and eval set.
+- new files: `site/`, `worker/`, `scripts/build_site_data.py`, `schemas/site-data.schema.json`, `schemas/competency-translation.schema.json`, per-lab browser metadata and feedback keys, tutor prompt config and eval set.
 - modified files: `Makefile`, `.github/workflows/validate.yml`, `scripts/validate_labs.py`, `README.md` (link to the site), `CONTRIBUTING.md` (translation and browser-lab rules).
 - generated-document impact: `site/src/data/atlas.json` becomes a checked generated file.
 

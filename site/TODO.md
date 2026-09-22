@@ -40,7 +40,8 @@ Last updated: 2026-09-22
 - [x] First green run of the `site` CI job on GitHub (run 35696021496)
 - [x] Deploy the Worker `ai-engineering-atlas` with `wrangler deploy`
 - [x] Custom domain `ai-eng.canhta.com`; production passes `capture.mjs` (headers, axe, overflow)
-- [ ] Deploy from CI on push to `main` (Cloudflare API token as a GitHub secret)
+- [x] Manual deploy workflow (`workflow_dispatch`) with checks and browser tests before deploy
+- [ ] Owner: add repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit, Workers Routes: Edit, Zone read on canhta.com) and `CLOUDFLARE_ACCOUNT_ID`; create the `production` environment
 - [ ] Link the site from the root `README.md`
 
 ### Content-driven site (next, owner request)
@@ -67,7 +68,7 @@ Last updated: 2026-09-22
 - [ ] Editor (CodeMirror) and results panel grouped by `task_id` (pass / fail / error)
 - [ ] Lab browser contract (`lab.yaml`) checked by `scripts/validate_labs.py`
 - [ ] `evaluation-harness` and `prompt-injection-boundaries` in the browser
-- [ ] `self-attention` NumPy variant alongside the PyTorch version
+- [ ] `self-attention`: port to NumPy in place, or keep PyTorch local-only (owner decision; no parallel variant)
 - [ ] `agentic-design` and `model-selection` as rubric forms
 - [ ] Help ladder and reviewed feedback keys (en/vi); highest step recorded as `independence`
 - [ ] CI job running each browser lab's tests under Pyodide (Node)
@@ -104,3 +105,4 @@ Last updated: 2026-09-22
 - Budgets: questions per user per day, global monthly cap
 - Show `seeded` routes with a draft label, or hide until ready
 - Should decision-lab answers ever leave the browser before Phase 3
+- `self-attention` lab: port to NumPy in place (runs in the browser) or keep PyTorch local-only
