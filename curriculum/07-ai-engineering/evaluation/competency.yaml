@@ -1,7 +1,7 @@
 id: ai.evaluation
 title: AI Evaluation and Experimentation
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
@@ -14,7 +14,7 @@ target_states:
 why: AI system changes are difficult to reason about without repeatable evidence for quality, failures, variance, latency, and cost.
 curriculum_evidence:
   - book.chip-huyen-ai-engineering
-  - repo.made-with-ml
+  - course.made-with-ml-evaluation
 prerequisites:
   - ml.experimental-design
   - software.testing
@@ -30,22 +30,23 @@ outcomes:
 diagnostic:
   tasks:
     - Design an evaluation plan for a prompt, retrieval, or model change without relying only on average answer quality.
-    - Explain how you would separate retrieval failure from generation failure in a RAG system.
-    - Explain when an LLM judge needs calibration and what you would calibrate it against.
+    - Explain how to separate retrieval failure from generation failure in a RAG system.
+    - Explain when an LLM judge needs calibration and what it should be calibrated against.
     - Decide what evidence would block a release.
   pass_condition: Skip introductory evaluation material only if the learner can produce a concrete evaluation design with component metrics, representative data, failure analysis, repeated runs when needed, and release criteria.
 learning_route:
   mental_model:
     - source: book.chip-huyen-ai-engineering
-      locator: Chapter 3 (Evaluation Methodology) and Chapter 4 section "Design Your Evaluation Pipeline"
-      purpose: Learn evaluation methods, model/system criteria, component evaluation, guidelines, methods, and data.
-    - source: repo.made-with-ml
-      locator: Evaluation lesson
-      purpose: Connect overall metrics to per-class, slicing, behavioral testing, and online evaluation.
+      locator: Chapter 3 "Evaluation Methodology" and Chapter 4 section "Design Your Evaluation Pipeline"
+      purpose: Learn exact/model-based/comparative evaluation and connect evaluation criteria, methods, data, and system components.
+    - source: course.made-with-ml-evaluation
+      locator: Evaluation lesson; overall, per-class, slices, behavioral testing, and online evaluation sections
+      purpose: Connect aggregate metrics to failure analysis and production evaluation.
   guided_practice:
-    - task: Take one existing AI feature and write an evaluation matrix covering objective, unit of evaluation, dataset, metric, failure categories, latency, cost, and release threshold.
+    - task: Create an evaluation matrix for one existing AI feature covering objective, unit, dataset, metric, failure categories, latency, cost, and release threshold.
   independent_practice:
-    - task: Build a small evaluation harness that compares two system configurations and stores versioned results.
+    - artifact: labs/evaluation-harness/
+      task: Complete the evaluation-harness lab and produce a versioned comparison plus release decision.
 experiments:
   - Run the same stochastic system multiple times and measure outcome variance.
   - Compare aggregate metrics with slice-level or failure-category analysis.
@@ -67,9 +68,10 @@ project_spines:
   - ai-system
   - production
 resources:
-  primary:
+  teaching:
     - book.chip-huyen-ai-engineering
-  reference:
+    - course.made-with-ml-evaluation
+  production-reference:
     - repo.made-with-ml
 metadata:
   last_reviewed: 2026-09-22
