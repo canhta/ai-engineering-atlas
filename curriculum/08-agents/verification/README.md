@@ -4,6 +4,28 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Demystifying Evals for AI Agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) | Sections "The structure of an evaluation", "Types of graders for agents", "Design the eval harness and graders", and guidance on transcript versus final environment outcome | Separate trajectory from outcome and choose deterministic, model-based, or human graders based on the property being checked. |
+| [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) | Sections "Workflow: Prompt chaining", "Workflow: Evaluator-optimizer", "Agents", and "Appendix 1: Coding agents" | Connect intermediate checks, evaluator-optimizer loops, environment feedback, and objective tests to agent execution. |
+| [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) | Sections "Frontend design: making subjective quality gradable", "Scaling to full-stack coding" → "The architecture" (Evaluator), and "Removing the sprint construct" | Study explicit grading criteria, Playwright/environment verification, evaluator calibration, and ablation of evaluator overhead. |
+| [CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/abs/2305.11738) | Abstract and method framing comparing unsupported self-correction with tool-interactive critique | Reinforce that external feedback can provide stronger correction evidence than unconstrained self-critique. |
+| [SWE-bench: Can Language Models Resolve Real-World GitHub Issues?](https://arxiv.org/abs/2310.06770) | Abstract and benchmark formulation using real repository issues and test suites to grade patches | Ground verification in outcome artifacts and executable environment checks rather than plausible-looking trajectories. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `software.testing` | [Made With ML — Testing Machine Learning Systems](https://madewithml.com/courses/mlops/testing/) | Testing lesson sections "Types of tests" and system/regression testing discussion | Patch only the testing discipline needed to design deterministic verification and reproduce failures without requiring the full software-testing route. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 An agent saying "done" is not proof that the task is done.
