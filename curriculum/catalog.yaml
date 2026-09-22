@@ -96,8 +96,8 @@ competencies:
   - {id: agents.deterministic-vs-agentic, title: Deterministic vs Agentic Design, domain: agents, status: ready, route: curriculum/08-agents/deterministic-vs-agentic}
   - {id: agents.state, title: Agent State, domain: agents, status: ready, route: curriculum/08-agents/state}
   - {id: agents.memory, title: Agent Memory, domain: agents, status: ready, route: curriculum/08-agents/memory}
-  - {id: agents.planning, title: Planning, domain: agents, status: coverage}
-  - {id: agents.verification, title: Verification, domain: agents, status: coverage}
+  - {id: agents.planning, title: Planning, domain: agents, status: ready, route: curriculum/08-agents/planning}
+  - {id: agents.verification, title: Verification, domain: agents, status: ready, route: curriculum/08-agents/verification}
   - {id: agents.multi-agent, title: Multi-Agent Systems, domain: agents, status: coverage}
   - {id: agents.long-running, title: Long-Running Agents, domain: agents, status: coverage}
   - {id: agents.mcp, title: Model Context Protocol, domain: agents, status: coverage}
