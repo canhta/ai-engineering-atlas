@@ -67,7 +67,7 @@ Verified sections include:
 - **Server identity in result `_meta`; `clientInfo` demoted to SHOULD**
 - **Multi-round-trip requests**
 - **`subscriptions/listen`**
-- **Mcp-Param-* and standard headers**
+- _*Mcp-Param-* and standard headers_*
 - **Cache fields and cache hints**
 
 This is important evidence that the modern protocol is not just "old MCP without a session ID."
@@ -297,14 +297,14 @@ The learner should be able to:
 
 The learner must explicitly compare:
 
-| Concern | Legacy era | Modern `2026-07-28` |
-| --- | --- | --- |
-| startup | `initialize` handshake | `server/discover` |
-| protocol version | session-negotiated | per request |
-| capabilities | session-negotiated | per request |
-| session ID | may use MCP session | no core session |
-| server → client interaction | server-to-client request channel | multi-round-trip `input_required` |
-| change notifications | legacy notification/session patterns | `subscriptions/listen` model |
+| Concern                     | Legacy era                           | Modern `2026-07-28`               |
+| --------------------------- | ------------------------------------ | --------------------------------- |
+| startup                     | `initialize` handshake               | `server/discover`                 |
+| protocol version            | session-negotiated                   | per request                       |
+| capabilities                | session-negotiated                   | per request                       |
+| session ID                  | may use MCP session                  | no core session                   |
+| server → client interaction | server-to-client request channel     | multi-round-trip `input_required` |
+| change notifications        | legacy notification/session patterns | `subscriptions/listen` model      |
 
 The learner does not need to implement every legacy behavior.
 

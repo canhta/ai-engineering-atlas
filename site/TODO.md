@@ -94,6 +94,18 @@ Last updated: 2026-09-22
 - [ ] Privacy page (en/vi)
 - [ ] First two experiment playgrounds, each naming its `experiments` entry
 
+### Screens to add (from the roadmap.sh teardown, 2026-09-22)
+
+roadmap.sh gives every collection an index, a maintenance signal, and a shareable profile. We have item pages but nothing that lists them: `/en/labs/` is a 404 today.
+
+- [ ] Collection index pages `/{lang}/labs/`, `/{lang}/projects/`, `/{lang}/paths/`: generic, from the content model's collections (label, items, which have pages), so a new collection needs no new page
+- [ ] Path as a screen: an ordered sequence of routes with the learner's state against each, the way a role roadmap reads. `paths/applied-ai-engineer.md` is prose today, so this is a curriculum change first (structured path list) and needs an RFC
+- [ ] Sources library `/{lang}/sources/`: every resource with the routes that use it and the exact locators, so a learner can see which book or course actually earns its place
+- [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
+- [ ] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back). Home carries four steps; the model deserves a page
+- [ ] Public profile `/{lang}/u/<handle>/`: opt-in, shareable, the prerequisite for any ranking. Needs Phase 2 accounts
+- [ ] Search across everything (routes, labs, projects, sources), not just the Atlas list
+
 ### Community and motivation (owner request)
 
 - [ ] Public ranking: leaderboards by day, week, month, and all time, from recorded evidence. Three things to settle first: (a) progress is local-first and private today, so publishing is opt-in per learner and needs an account (Phase 2 SSO); (b) self-reported evidence is gameable, so a public ranking is only meaningful on verified evidence (Phase 3) or on counts that cannot be inflated (lab runs passing in CI, review streaks); (c) rank what the learning model values — evidence recorded, routes demonstrated, review streaks kept — not time spent or pages opened. Needs an RFC before implementation.
