@@ -4,6 +4,26 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 3 "Evaluation Methodology" and Chapter 4 section "Design Your Evaluation Pipeline" | Learn exact/model-based/comparative evaluation and connect evaluation criteria, methods, data, and system components. |
+| [Made With ML — Evaluation](https://madewithml.com/courses/mlops/evaluation/) | Evaluation lesson; overall, per-class, slices, behavioral testing, and online evaluation sections | Connect aggregate metrics to failure analysis and production evaluation. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `ml.experimental-design` | [Made With ML — Evaluation](https://madewithml.com/courses/mlops/evaluation/) | Evaluation lesson sections covering overall evaluation, per-class evaluation, slices, behavioral testing, and online evaluation. | Patch the experiment-design discipline needed to make system comparisons meaningful. |
+| `software.testing` | [Made With ML — Testing Machine Learning Systems](https://madewithml.com/courses/mlops/testing/) | Testing lesson sections "Types of tests" and "How should we test?". | Patch the testing vocabulary and regression mindset used by the evaluation harness. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 AI systems are probabilistic and compound. A single average score rarely tells you whether a change is better, which component failed, or whether the system is safe to release.
