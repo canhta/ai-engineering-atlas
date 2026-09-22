@@ -43,19 +43,19 @@ diagnostic:
 learning_route:
   mental_model:
     - source: docs.google-adk-session-state-memory
-      locator: Section "Core Concepts", especially Session, State, and Memory
+      locator: 'Section "Core Concepts", especially Session, State, and Memory'
       purpose: Establish the distinction between single-thread history/state and searchable information spanning past sessions.
     - source: docs.google-adk-memory
-      locator: Sections "Memory: Long-term knowledge with MemoryService" and "The MemoryService role"
+      locator: 'Sections "Memory: Long-term knowledge with MemoryService" and "The MemoryService role"'
       purpose: Study explicit memory ingestion and later search as a concrete cross-session memory interface.
     - source: article.anthropic-context-engineering
-      locator: Section "Context engineering for long-horizon tasks", especially "Structured note-taking"
+      locator: 'Section "Context engineering for long-horizon tasks", especially "Structured note-taking"'
       purpose: Separate persistent external notes or memory from the smaller subset loaded into the current context.
     - source: docs.langgraph-persistence
-      locator: Persistence overview and the "Checkpointer vs. store" distinction
+      locator: 'Persistence overview and the "Checkpointer vs. store" distinction'
       purpose: Compare thread-scoped checkpoint state with application-defined storage that can span threads.
     - source: paper.memgpt
-      locator: Sections 1 "Introduction", 2 "MemGPT (MemoryGPT)", 2.1 "Main context (prompt tokens)", 2.2 "Queue Manager", 3.1 "MemGPT for conversational agents", and 3.1.1 "Deep memory retrieval task"
+      locator: 'Sections 1 "Introduction", 2 "MemGPT (MemoryGPT)", 2.1 "Main context (prompt tokens)", 2.2 "Queue Manager", 3.1 "MemGPT for conversational agents", and 3.1.1 "Deep memory retrieval task"'
       purpose: Study finite current context versus persistent external storage and the need to evaluate retrieval of older information without adopting the architecture as a default.
   guided_practice:
     - task: Review ten pieces of information from the Knowledge Assistant and decide which should be forgotten, remain session-local, enter product corpus storage, or become a scoped long-term memory; justify each admission decision.
