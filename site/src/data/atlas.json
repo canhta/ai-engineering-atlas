@@ -11388,9 +11388,6 @@
                   "ref": "ai.tool-calling"
                 },
                 {
-                  "ref": "agents.mcp"
-                },
-                {
                   "ref": "agents.deterministic-vs-agentic"
                 }
               ]
@@ -13021,11 +13018,6 @@
     {
       "type": "prerequisite",
       "from": "agents.deterministic-vs-agentic",
-      "to": "security.tool-permissions"
-    },
-    {
-      "type": "prerequisite",
-      "from": "agents.mcp",
       "to": "security.tool-permissions"
     },
     {

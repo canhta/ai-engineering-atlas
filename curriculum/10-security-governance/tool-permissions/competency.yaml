@@ -19,7 +19,6 @@ curriculum_evidence:
   - docs.mcp-authorization-security-2026
 prerequisites:
   - ai.tool-calling
-  - agents.mcp
   - agents.deterministic-vs-agentic
 outcomes:
   - "Inventory every tool or extension exposed to the model and remove functionality the product does not need."

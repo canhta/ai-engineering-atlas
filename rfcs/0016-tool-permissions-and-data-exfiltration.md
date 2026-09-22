@@ -18,7 +18,7 @@ No catalog node is added or removed.
 The dependency order deliberately avoids a cycle:
 
 ```text
-ai.tool-calling + agents.mcp
+ai.tool-calling + deterministic-vs-agentic design
             │
             ▼
 security.tool-permissions
@@ -170,7 +170,7 @@ The integrated milestone reuses the existing prompt-injection route and proves t
 
 - [x] existing catalog IDs are reused;
 - [x] prerequisite graph has no cycle;
-- [x] tool permissions has no coverage-only prerequisite;
+- [x] tool permissions has no coverage-only prerequisite and does not depend on `agents.mcp`, avoiding the existing MCP → prompt-injection dependency path;
 - [x] data exfiltration depends only on ready routes after this batch;
 - [x] least functionality and least privilege are explicit;
 - [x] user/resource-scoped authorization is enforced outside the model;
