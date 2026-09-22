@@ -176,7 +176,8 @@
       "properties": {
         "type": {"enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "data"]},
         "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
-        "title": {"$ref": "#/$defs/l10n"}
+        "title": {"$ref": "#/$defs/l10n"},
+        "step": {"const": true, "description": "The block is a learner step (the site may number it or track it)."}
       },
       "allOf": [
         {"if": {"properties": {"type": {"const": "text"}}}, "then": {"$ref": "#/$defs/textBlock"}},
@@ -190,13 +191,13 @@
     },
     "textBlock": {
       "required": ["body"],
-      "properties": {"type": true, "id": true, "title": true, "body": {"$ref": "#/$defs/l10n"}},
+      "properties": {"type": true, "id": true, "title": true, "step": true, "body": {"$ref": "#/$defs/l10n"}},
       "additionalProperties": false
     },
     "listBlock": {
       "required": ["items", "ordered"],
       "properties": {
-        "type": true, "id": true, "title": true,
+        "type": true, "id": true, "title": true, "step": true,
         "items": {"type": "array", "items": {"$ref": "#/$defs/l10n"}},
         "ordered": {"type": "boolean"}
       },
@@ -205,7 +206,7 @@
     "prerequisitesBlock": {
       "required": ["items"],
       "properties": {
-        "type": true, "id": true, "title": true,
+        "type": true, "id": true, "title": true, "step": true,
         "items": {
           "type": "array",
           "items": {
@@ -234,7 +235,7 @@
     "diagnosticBlock": {
       "required": ["tasks", "pass_condition"],
       "properties": {
-        "type": true, "id": true, "title": true,
+        "type": true, "id": true, "title": true, "step": true,
         "tasks": {"type": "array", "items": {"$ref": "#/$defs/l10n"}},
         "pass_condition": {"$ref": "#/$defs/l10n"}
       },
@@ -243,7 +244,7 @@
     "sourcesBlock": {
       "required": ["rows"],
       "properties": {
-        "type": true, "id": true, "title": true,
+        "type": true, "id": true, "title": true, "step": true,
         "rows": {
           "type": "array",
           "items": {
@@ -263,7 +264,7 @@
     "practiceBlock": {
       "required": ["groups"],
       "properties": {
-        "type": true, "id": true, "title": true,
+        "type": true, "id": true, "title": true, "step": true,
         "groups": {
           "type": "array",
           "items": {
@@ -295,7 +296,7 @@
     },
     "dataBlock": {
       "required": ["value"],
-      "properties": {"type": true, "id": true, "title": true, "value": true},
+      "properties": {"type": true, "id": true, "title": true, "step": true, "value": true},
       "additionalProperties": false
     }
   }

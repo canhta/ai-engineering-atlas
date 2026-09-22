@@ -902,6 +902,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Explain Q, K, and V without using only the phrase \"focus on important words.\""
@@ -930,6 +931,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.raschka-llm-from-scratch",
@@ -949,6 +951,7 @@
                 "en": "Visual explanation",
                 "vi": "Giải thích trực quan"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "visual.3blue1brown-attention",
@@ -977,6 +980,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -1039,6 +1043,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Explain Q, K, V, scaling, and causal masking from memory."
@@ -1065,6 +1070,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Given a non-text sequence such as image patches, explain what self-attention operates on, what remains the same, and whether causal masking is required."
               }
@@ -1216,6 +1222,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a request to build an AI knowledge assistant, write the user, pain, value proposition, baseline, success criteria, constraints, and unacceptable failures before naming a model or framework."
@@ -1238,6 +1245,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "course.made-with-ml-product-design",
@@ -1266,6 +1274,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -1321,6 +1330,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A product brief names a concrete user, workflow, pain, value proposition, and objective."
@@ -1347,6 +1357,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Frame a different AI feature such as support-ticket triage or structured document extraction, including a plausible non-AI baseline and evidence that would stop the project."
               }
@@ -1450,6 +1461,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given several model candidates, explain what evidence is needed before choosing one."
@@ -1475,6 +1487,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.chip-huyen-ai-engineering",
@@ -1494,6 +1507,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -1549,6 +1563,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Produce a hard-constraint filter before ranking candidates."
@@ -1575,6 +1590,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Re-run the selection process for a different workload, such as batch classification or an offline/private deployment, and explain which criteria change."
               }
@@ -1692,6 +1708,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "For a RAG assistant, list every context component that reaches the model and identify which components can become stale, noisy, conflicting, or oversized."
@@ -1714,6 +1731,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "article.anthropic-context-engineering",
@@ -1742,6 +1760,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -1803,6 +1822,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned context inventory records component source, selection rule, and approximate size."
@@ -1829,6 +1849,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the context policy for a different application such as support triage, coding assistance, or document analysis where the source mix, freshness, history, and tool context differ."
               }
@@ -1924,6 +1945,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Design a response schema for a cited Knowledge Assistant answer and explain which properties belong in the schema versus deterministic semantic validation."
@@ -1946,6 +1968,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "article.openai-structured-outputs",
@@ -1983,6 +2006,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -2044,6 +2068,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned schema is tied to a concrete downstream consumer requirement."
@@ -2073,6 +2098,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the response contract for a different consumer such as a UI card, workflow API, or batch export and explain which fields, invariants, and compatibility rules change."
               }
@@ -2187,6 +2213,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Design one tool contract for a Knowledge Assistant workflow, including schema, validation, authorization boundary, result/error shapes, timeout, and retry behavior."
@@ -2212,6 +2239,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "docs.anthropic-tool-use",
@@ -2267,6 +2295,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -2334,6 +2363,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned tool contract defines purpose, schema, parameter semantics, validation, result/error shapes, timeout, retry, and idempotency where required."
@@ -2363,6 +2393,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the tool boundary for a different external system with different permission, latency, failure, and side-effect characteristics."
               }
@@ -2465,6 +2496,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Explain the difference between embedding two similar sentences and embedding a short query against a longer document corpus."
@@ -2490,6 +2522,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.chip-huyen-ai-engineering",
@@ -2527,6 +2560,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -2585,6 +2619,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "The learner can explain the query/document embedding and similarity path from text to ranked results."
@@ -2611,6 +2646,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Evaluate embedding retrieval on a new corpus whose queries differ in length or domain from the first project, and justify whether the same model, encoding strategy, and similarity function still fit."
               }
@@ -2697,6 +2733,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a document collection and ten queries, describe a lexical baseline, relevance labels, ranking metric, and failure-analysis process."
@@ -2719,6 +2756,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.stanford-ir",
@@ -2747,6 +2785,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -2802,6 +2841,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A reproducible lexical retrieval baseline exists over a versioned corpus and query set."
@@ -2828,6 +2868,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Design the lexical baseline and evaluation for a different corpus with different constraints, such as support tickets with IDs/error codes or policy documents with metadata filters."
               }
@@ -2930,6 +2971,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given long technical documents and a fixed retriever, design a fair experiment comparing three chunking strategies."
@@ -2952,6 +2994,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.chip-huyen-ai-engineering",
@@ -2980,6 +3023,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -3038,6 +3082,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Exact splitter configurations and corpus/query-set versions are recorded."
@@ -3064,6 +3109,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the chunking experiment for a structurally different corpus such as API docs, support tickets, or legal/policy documents and explain which assumptions from the first corpus no longer hold."
               }
@@ -3163,6 +3209,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Explain why scoring every document with a cross-encoder-style model is usually impractical for a large corpus."
@@ -3185,6 +3232,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "docs.sentence-transformers-retrieve-rerank",
@@ -3213,6 +3261,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -3271,6 +3320,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "The first-stage retriever/version and candidate-set size are recorded."
@@ -3297,6 +3347,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Apply the same two-stage reasoning to a different candidate generator such as lexical, dense, or hybrid retrieval and explain how the first-stage error profile changes the reranking experiment."
               }
@@ -3407,6 +3458,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a wrong RAG answer, design evidence that distinguishes retrieval failure from generation failure."
@@ -3429,6 +3481,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "paper.ragas-evaluation",
@@ -3466,6 +3519,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -3524,6 +3578,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned evaluation set and system configuration are recorded."
@@ -3553,6 +3608,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the evaluation for a different RAG domain with different relevance, citation, freshness, or abstention requirements and explain which metrics or labels must change."
               }
@@ -3686,6 +3742,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Design an evaluation plan for a prompt, retrieval, or model change without relying only on average answer quality."
@@ -3711,6 +3768,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "book.chip-huyen-ai-engineering",
@@ -3739,6 +3797,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -3797,6 +3856,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Produce a versioned evaluation set and rationale for its coverage."
@@ -3823,6 +3883,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the evaluation for an agent workflow with tool calls, including trajectory or tool-use evidence rather than only final-answer quality."
               }
@@ -3950,6 +4011,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a Knowledge Assistant with a confidence-like score, design evidence that would show whether the score is useful for answer versus abstain decisions."
@@ -3975,6 +4037,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "paper.selectivenet",
@@ -4012,6 +4075,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -4076,6 +4140,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Evaluation data includes versioned answerability or risk labels and a documented validation/test split."
@@ -4114,6 +4179,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the answer-versus-abstain policy for a domain with different error costs or fallback options, such as support triage, compliance review, or code change approval."
               }
@@ -4313,6 +4379,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a task, decide whether one model call, a deterministic workflow, or an agent is appropriate and explain why."
@@ -4338,6 +4405,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "article.anthropic-building-effective-agents",
@@ -4357,6 +4425,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -4412,6 +4481,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Produce a simple baseline architecture before introducing an agent."
@@ -4441,6 +4511,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Compare one task with known fixed subtasks and one whose subtasks depend on intermediate environment/tool results; choose and defend a different architecture when appropriate."
               }
@@ -4546,6 +4617,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "For a multi-step Knowledge Assistant workflow, classify each piece of information as execution state, event history, current model context, observability data, external environment state, or long-term memory."
@@ -4571,6 +4643,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "docs.google-adk-session-state-memory",
@@ -4626,6 +4699,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -4690,6 +4764,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned state schema distinguishes persisted, derived, and intentionally unstored values."
@@ -4728,6 +4803,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the state and recovery contract for a different interruptible workflow whose side effects and checkpoint costs differ from the Knowledge Assistant."
               }
@@ -4836,6 +4912,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Classify examples such as current workflow step, user preference, retrieved document chunk, durable project convention, and raw transcript as state, memory candidate, context candidate, corpus data, or neither."
@@ -4861,6 +4938,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "docs.google-adk-session-state-memory",
@@ -4916,6 +4994,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -4983,6 +5062,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned memory schema defines scope, provenance, timestamps or freshness, and content type."
@@ -5024,6 +5104,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the memory policy for a different application whose retention, scope, privacy, or freshness requirements differ materially."
               }
@@ -5134,6 +5215,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a Knowledge Assistant task, decide whether direct execution, a static plan, or adaptive planning is appropriate and explain what task property justifies the choice."
@@ -5159,6 +5241,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "article.anthropic-building-effective-agents",
@@ -5196,6 +5279,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -5257,6 +5341,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "A versioned plan schema records goals, constraints, success criteria, dependencies or steps, status, assumptions, and replanning triggers."
@@ -5289,6 +5374,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the planning strategy for a task with a different dependency structure and uncertainty profile, then justify a different plan granularity or no-plan decision if appropriate."
               }
@@ -5415,6 +5501,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Given a claimed Knowledge Assistant outcome, identify which facts can be checked against environment state, executable tests, authoritative data, a model grader, or human review."
@@ -5440,6 +5527,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "article.anthropic-agent-evals",
@@ -5495,6 +5583,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -5559,6 +5648,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Versioned success criteria exist before execution."
@@ -5600,6 +5690,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Redesign the verification hierarchy for a task where correctness is more subjective or where environment checks are expensive, and justify where model or human grading becomes necessary."
               }
@@ -5882,6 +5973,7 @@
                 "en": "Diagnostic",
                 "vi": "Chẩn đoán"
               },
+              "step": true,
               "tasks": [
                 {
                   "en": "Explain direct and indirect prompt injection using one realistic system example each."
@@ -5907,6 +5999,7 @@
                 "en": "Learning route",
                 "vi": "Lộ trình học"
               },
+              "step": true,
               "rows": [
                 {
                   "resource": "standard.owasp-llm01-prompt-injection",
@@ -5935,6 +6028,7 @@
                 "en": "Practice",
                 "vi": "Thực hành"
               },
+              "step": true,
               "groups": [
                 {
                   "label": {
@@ -5990,6 +6084,7 @@
                 "en": "Exit evidence",
                 "vi": "Bằng chứng đầu ra"
               },
+              "step": true,
               "items": [
                 {
                   "en": "Explain direct and indirect prompt injection."
@@ -6016,6 +6111,7 @@
                 "en": "Transfer",
                 "vi": "Chuyển giao"
               },
+              "step": true,
               "body": {
                 "en": "Threat-model an email assistant that can read messages and send replies; identify indirect-injection paths, privileged actions, approval points, and deterministic controls."
               }

@@ -75,7 +75,7 @@ Item references use `<ref_prefix>:<id>` (`lab:`, `project:`, `path:`); competenc
 
 ### Blocks
 
-Every block has `type`, `id` (stable anchor), and `title: L10n`. The renderer keeps one component per type; unknown types render as `data`.
+Every block has `type`, `id` (stable anchor), and `title: L10n`, and may have `step: true` when it is something the learner does (diagnostic, sources, practice, exit evidence, transfer); the flag is omitted otherwise and set per block in `presentation.yaml`. The renderer keeps one component per type; unknown types render as `data`.
 
 | type | payload | interactive behaviour |
 |---|---|---|
@@ -129,15 +129,15 @@ collections:
       - { id: prerequisites, field: prerequisites, type: prerequisites, support: prerequisite_support,
           bridge: {diagnostic: diagnostic, resource: source, locator: locator, purpose: purpose}, title: L10n }
       - { id: outcomes, field: outcomes, type: list, title: L10n }
-      - { id: diagnostic, field: diagnostic, type: diagnostic, map: {tasks: tasks, pass_condition: pass_condition}, title: L10n }
-      - { id: sources, field: learning_route.mental_model, type: sources, row: {resource: source, locator: locator, purpose: purpose}, title: L10n }
-      - { id: visual, field: learning_route.visual, type: sources, row: {…}, title: L10n }
-      - { id: practice, field: learning_route, type: practice,
+      - { id: diagnostic, step: true, field: diagnostic, type: diagnostic, map: {tasks: tasks, pass_condition: pass_condition}, title: L10n }
+      - { id: sources, step: true, field: learning_route.mental_model, type: sources, row: {resource: source, locator: locator, purpose: purpose}, title: L10n }
+      - { id: visual, step: true, field: learning_route.visual, type: sources, row: {…}, title: L10n }
+      - { id: practice, step: true, field: learning_route, type: practice,
           groups: [{field: guided_practice, label: L10n}, {field: independent_practice, label: L10n}],
           item: {text: task, path: artifact, resource: source, locator: locator}, title: L10n }
       - { id: experiments, field: experiments, type: list, title: L10n }
-      - { id: exit-evidence, field: exit_evidence, type: list, title: L10n }
-      - { id: transfer, field: transfer.task, type: text, title: L10n }
+      - { id: exit-evidence, step: true, field: exit_evidence, type: list, title: L10n }
+      - { id: transfer, step: true, field: transfer.task, type: text, title: L10n }
     ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
   labs:     { label: L10n, ref_prefix: lab, items_from: "labs/*/", fields: {path: …, files: …} }
   projects: { label: L10n, ref_prefix: project, items_from: "projects/*/project.yaml", title: title,

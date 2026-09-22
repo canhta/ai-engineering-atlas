@@ -545,6 +545,7 @@ def build():
                         "type": spec["type"],
                         "id": spec.get("id") or slug(spec["field"]),
                         "title": spec["title"],
+                        **({"step": True} if spec.get("step") else {}),
                         **payload,
                     })
                 for path, values in sorted(unmapped(content, covered).items()):

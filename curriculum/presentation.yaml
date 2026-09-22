@@ -77,21 +77,25 @@ collections:
         title: {en: Prerequisites, vi: Điều kiện tiên quyết}
       - {id: outcomes, field: outcomes, type: list, title: {en: Outcomes, vi: Kết quả đầu ra}}
       - id: diagnostic
+        step: true
         field: diagnostic
         type: diagnostic
         map: {tasks: tasks, pass_condition: pass_condition}
         title: {en: Diagnostic, vi: Chẩn đoán}
       - id: sources
+        step: true
         field: learning_route.mental_model
         type: sources
         row: {resource: source, locator: locator, purpose: purpose}
         title: {en: Learning route, vi: Lộ trình học}
       - id: visual
+        step: true
         field: learning_route.visual
         type: sources
         row: {resource: source, locator: locator, purpose: purpose}
         title: {en: Visual explanation, vi: Giải thích trực quan}
       - id: practice
+        step: true
         field: learning_route
         type: practice
         groups:
@@ -100,8 +104,8 @@ collections:
         item: {text: task, path: artifact, resource: source, locator: locator}
         title: {en: Practice, vi: Thực hành}
       - {id: experiments, field: experiments, type: list, title: {en: Experiments, vi: Thí nghiệm}}
-      - {id: exit-evidence, field: exit_evidence, type: list, title: {en: Exit evidence, vi: Bằng chứng đầu ra}}
-      - {id: transfer, field: transfer.task, type: text, title: {en: Transfer, vi: Chuyển giao}}
+      - {id: exit-evidence, step: true, field: exit_evidence, type: list, title: {en: Exit evidence, vi: Bằng chứng đầu ra}}
+      - {id: transfer, step: true, field: transfer.task, type: text, title: {en: Transfer, vi: Chuyển giao}}
     ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
 
   labs:
