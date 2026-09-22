@@ -109,7 +109,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 180
 
-- id: article.openai-structured-outputs
+  - id: article.openai-structured-outputs
     type: article
     title: Introducing Structured Outputs in the API
     author: OpenAI
