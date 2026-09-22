@@ -16,7 +16,10 @@ milestones:
   - security-failure-work
   - incident-and-feedback
 competencies:
+  - ai.product-framing
   - ai.model-selection
+  - retrieval.search
+  - ai.embeddings
   - ai.evaluation
   - agents.deterministic-vs-agentic
   - security.prompt-injection
