@@ -18,7 +18,7 @@ Decisions already made by the repository owner:
 
 - the site is public;
 - it lives in this repository under `site/`;
-- it is published at `aie.canhta.com`;
+- it is published at `ai-eng.canhta.com`;
 - the interface is bilingual (English / Vietnamese);
 - labs run in the browser;
 - the site needs strong interactivity and AI support, not a static reader;
@@ -93,13 +93,13 @@ curriculum/catalog.yaml       ├─ scripts/build_site_data.py ─→ site/src/
 resources/*.yaml              │                                        │
 paths/*.md, labs/*            ┘                                        ▼
                                         site/ (Astro, static) ─┐
-                                        worker/ (/api/*: SSO, AI proxy, budgets) ─┴─→ Cloudflare Worker ─→ aie.canhta.com
+                                        worker/ (/api/*: SSO, AI proxy, budgets) ─┴─→ Cloudflare Worker ─→ ai-eng.canhta.com
 ```
 
 - **Data build:** `scripts/build_site_data.py` (Python, reusing the existing loaders and validators) emits one JSON file: nodes, declared edges, routes with resolved source URLs, labs, paths. `--check` mode fails if the committed JSON is stale, following `render_learning_sources.py`.
 - **Site:** Astro with React islands only where interaction is needed (map, diagnostic, progress). Static output; no server.
 - **Map:** React Flow with ELK layout, grouped by domain lanes, filterable by path (`paths/applied-ai-engineer.md` as the first path).
-- **Hosting:** one Cloudflare Worker with static assets serves the built site and the `/api/*` routes on the same origin, custom domain `aie.canhta.com`. Whether to use Workers static assets or Pages is confirmed against current Cloudflare docs at setup; both support `_headers`. Cloudflare over GitHub Pages because in-browser labs need `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers: Pyodide can interrupt runaway code only through [`SharedArrayBuffer`](https://pyodide.org/en/stable/usage/keyboard-interrupts.html), which requires them, and GitHub Pages cannot set custom headers. Cloudflare sets them through a `_headers` file, does not meter static bandwidth (Pyodide downloads are large), and runs the AI proxy in the same deployment.
+- **Hosting:** one Cloudflare Worker with static assets serves the built site and the `/api/*` routes on the same origin, custom domain `ai-eng.canhta.com`. Whether to use Workers static assets or Pages is confirmed against current Cloudflare docs at setup; both support `_headers`. Cloudflare over GitHub Pages because in-browser labs need `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers: Pyodide can interrupt runaway code only through [`SharedArrayBuffer`](https://pyodide.org/en/stable/usage/keyboard-interrupts.html), which requires them, and GitHub Pages cannot set custom headers. Cloudflare sets them through a `_headers` file, does not meter static bandwidth (Pyodide downloads are large), and runs the AI proxy in the same deployment.
 - **Security headers:** strict Content-Security-Policy and no third-party scripts, so the session cookie and learner input are not exposed to injected code.
 
 ### Bilingual content
@@ -168,7 +168,7 @@ Interaction rules taken from the systems above:
 Access model:
 
 - **Project key, server-side.** The repository owner provides the provider API key as a Worker secret. It never reaches the browser.
-- **SSO required for AI.** Learners sign in (OAuth; GitHub and Google as the default providers) before any AI action. Sessions use an HttpOnly cookie on `aie.canhta.com`. Browsing, diagnostics, labs, and local progress work without signing in.
+- **SSO required for AI.** Learners sign in (OAuth; GitHub and Google as the default providers) before any AI action. Sessions use an HttpOnly cookie on `ai-eng.canhta.com`. Browsing, diagnostics, labs, and local progress work without signing in.
 - **Worker responsibilities:** build the prompt server-side from the route contract (the browser sends only the action, route ID, and learner input); enforce per-user and global budgets; block bots before sign-in; stream responses.
 - **Storage:** Cloudflare D1 for user records and usage counters only. Learner answers and code are sent to the model provider to produce feedback and are not stored by the site, except messages the learner explicitly reports as wrong. A privacy page states this in both languages.
 - **Guardrails are enforceable** because the server owns the prompt. AI output still does not change learner states in this RFC; whether `ai-assisted` or `human-and-ai` evidence may count is decided later from tutor-eval results.

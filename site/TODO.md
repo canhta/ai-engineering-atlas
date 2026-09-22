@@ -1,0 +1,96 @@
+# Web atlas: progress and todo
+
+Tracks delivery of the [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Mark an item done in the same change that finishes it, and add new work here before starting it.
+
+Last updated: 2026-09-22
+
+## Done
+
+### Phase 0: data
+
+- [x] `scripts/build_site_data.py` compiles catalog, routes, resources, labs, projects, and paths into `src/data/atlas.json`; `make check` fails when stale
+- [x] `schemas/site-data.schema.json`
+
+### Harness
+
+- [x] UI/UX research: [rfcs/0000-ui-ux-research.md](../rfcs/0000-ui-ux-research.md)
+- [x] Agent-doc research: [rfcs/0000-agent-harness-research.md](../rfcs/0000-agent-harness-research.md)
+- [x] [DESIGN.md](DESIGN.md), [AGENTS.md](AGENTS.md), `CLAUDE.md` imports, root pointer
+- [x] `scripts/validate_agent_docs.py`: imports, size budgets, commands exist, skill frontmatter
+- [x] Hook blocking edits to generated files; CODEOWNERS; PR checkbox
+- [x] `atlas-ui-review` skill with seeded-defect evaluations (3/3 pass)
+
+### Phase 1: atlas and interactive core
+
+- [x] Astro 7 static site, Node 26, pnpm, Cloudflare Workers static assets config
+- [x] `/en/` and `/vi/` routes; 145 UI strings in both languages
+- [x] Tokens (sand + indigo, light/dark), IBM Plex Sans / Source Serif 4 / IBM Plex Mono with Vietnamese subsets
+- [x] Carbon icons through `src/lib/icons.ts`
+- [x] Home, map, route pages (fixed section order), progress page
+- [x] Map: search, ready-only, learner-state and project filters, live count, keyboard disclosures
+- [x] Route: learner panel with Record evidence and timeline; diagnostic workspace; per-source Opened checklist
+- [x] Progress: counts by state, review queue, import/export `progress.yaml` validated against the schema
+- [x] Enforcement: stylelint design rules, token contrast, i18n parity, headers, icons, unit tests, Playwright e2e under real CSP
+- [x] CI job `site` (Node 26, pnpm, Playwright)
+
+## Next
+
+### Launch
+
+- [ ] First green run of the `site` CI job on GitHub
+- [ ] Deploy the Worker `ai-engineering-atlas` with `wrangler deploy`
+- [ ] Custom domain `ai-eng.canhta.com` (needs the `canhta.com` zone in the Cloudflare account)
+- [ ] Deploy from CI on push to `main` (Cloudflare API token as a GitHub secret)
+- [ ] Link the site from the root `README.md`
+
+### Phase 1 follow-ups
+
+- [ ] Graph view (React Flow + ELK): ready routes and declared prerequisites only, zoom buttons, `ariaLabelConfig` in both languages
+- [ ] Remember the language choice; `/` currently always redirects to `/en/`
+- [ ] Scroll hint for wide tables on mobile (review finding)
+- [ ] Home ready-route rows wrap unevenly at 375px (review finding)
+- [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)
+
+### Phase 1b: in-browser labs
+
+- [ ] Pyodide in a Web Worker; Stop via `SharedArrayBuffer`; add `'wasm-unsafe-eval'` to `script-src`
+- [ ] Editor (CodeMirror) and results panel grouped by `task_id` (pass / fail / error)
+- [ ] Lab browser contract (`lab.yaml`) checked by `scripts/validate_labs.py`
+- [ ] `evaluation-harness` and `prompt-injection-boundaries` in the browser
+- [ ] `self-attention` NumPy variant alongside the PyTorch version
+- [ ] `agentic-design` and `model-selection` as rubric forms
+- [ ] Help ladder and reviewed feedback keys (en/vi); highest step recorded as `independence`
+- [ ] CI job running each browser lab's tests under Pyodide (Node)
+
+### Phase 2: diagnostics, next step, AI tutor
+
+- [ ] Deterministic next-step recommendation from prerequisites and states, with tests
+- [ ] Replace fixed review intervals with `ts-fsrs`
+- [ ] Worker `/api/*`: SSO (GitHub, Google), HttpOnly session, D1 users and usage counters
+- [ ] AI proxy with the project key as a Worker secret; per-user and global budgets
+- [ ] Tutor roles from the RFC (diagnostic interviewer, source guide, lab coach, evidence reviewer, review partner, next-step explainer)
+- [ ] Tutor evaluation set in CI (give-away rate, held-out independent correctness, no passing code from the coach)
+- [ ] Privacy page (en/vi)
+- [ ] First two experiment playgrounds, each naming its `experiments` entry
+
+### Phase 3
+
+- [ ] Separate RFC for verified evidence (lab CI on forks, peer review, progress sync)
+
+### Bilingual content
+
+- [ ] Owner review of `src/i18n/vi.json`
+- [ ] `competency.vi.yaml` format, schema, and source-hash staleness check; render reviewed translations
+
+### Harness upkeep
+
+- [ ] Root `AGENTS.md` is 232 lines (Claude recommends <200); prune in a separate change
+- [ ] Owner decision on updating the global `writing-for-agents` skill (differences listed in the agent-harness research)
+
+## Owner decisions still open
+
+- Model provider and model IDs for the project key
+- SSO providers beyond GitHub and Google
+- Budgets: questions per user per day, global monthly cap
+- Show `seeded` routes with a draft label, or hide until ready
+- Should decision-lab answers ever leave the browser before Phase 3

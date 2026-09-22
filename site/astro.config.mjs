@@ -5,7 +5,7 @@ import react from "@astrojs/react";
 const subsets = ["latin", "vietnamese"];
 
 export default defineConfig({
-  site: "https://aie.canhta.com",
+  site: "https://ai-eng.canhta.com",
   output: "static",
   trailingSlash: "always",
   integrations: [react()],

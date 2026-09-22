@@ -1,6 +1,6 @@
 # site/AGENTS.md
 
-Guidance for work under `site/` (the web atlas at aie.canhta.com) and its Cloudflare Worker. The repository-wide rules in the root [AGENTS.md](../AGENTS.md) still apply.
+Guidance for work under `site/` (the web atlas at ai-eng.canhta.com) and its Cloudflare Worker. The repository-wide rules in the root [AGENTS.md](../AGENTS.md) still apply.
 
 Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Stack: Astro (static output) with React Aria islands, Node 26, pnpm, Cloudflare Workers static assets.
 
@@ -21,6 +21,8 @@ Run from `site/` unless noted.
 `astro check` needs TypeScript 6; TypeScript 7 lacks the API it uses. Keep `typescript` on `^6` until Astro supports 7.
 
 ## Before you change anything
+
+- **Any site work** → check [TODO.md](TODO.md) for status and open decisions; mark items done, or add new ones, in the same change.
 
 - **UI, styles, layout, copy, or i18n strings** → read [DESIGN.md](DESIGN.md) first. It is the design source of truth; token values live in [src/styles/tokens.css](src/styles/tokens.css), and `stylelint.config.mjs` rejects literal colours, gradients, blur, shadows, and non-token fonts, radii, and durations elsewhere.
 - **Anything the site shows about a competency** → change the curriculum YAML at the repository root, then regenerate the data. The site renders contracts; it does not own curriculum content.
