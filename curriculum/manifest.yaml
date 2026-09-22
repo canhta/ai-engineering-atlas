@@ -46,7 +46,7 @@ domains:
     path: curriculum/09-production-ai
     target: L3
   - id: security-governance
-    title: {en: "Security & Governance", vi: "Bảo mật & quản trị"}
+    title: {en: "Security & Governance", vi: "Bảo mật và quản trị"}
     path: curriculum/10-security-governance
     target: L2
   - id: multimodal

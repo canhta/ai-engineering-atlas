@@ -15,6 +15,8 @@ The learning model takes precedence over folder conventions.
 
 For work under `site/` (web atlas, Cloudflare Worker), read [site/AGENTS.md](site/AGENTS.md) first.
 
+For any Vietnamese text, follow [VIETNAMESE_STYLE.md](VIETNAMESE_STYLE.md).
+
 Do not create content merely because a directory or schema field exists.
 
 ## One version of everything
