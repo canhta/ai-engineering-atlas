@@ -141,3 +141,36 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+- id: article.anthropic-managed-agents
+    type: article
+    title: Scaling Managed Agents — Decoupling the brain from the hands
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/managed-agents
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [agents.state, agents.long-running, agent-runtime, session-state]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.anthropic-long-running-harnesses
+    type: article
+    title: Effective harnesses for long-running agents
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents
+    roles: [curriculum-evidence, teaching, practice, production-reference]
+    covers: [agents.state, agents.memory, agents.long-running, agent-harness]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.langgraph-persistence
+    type: documentation
+    title: LangGraph — Persistence
+    author: LangChain
+    url: https://docs.langchain.com/oss/python/langgraph/persistence
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [agents.state, agents.memory, persistence, checkpoints]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
