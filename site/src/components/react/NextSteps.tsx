@@ -6,7 +6,7 @@ import { useTranslations, type Lang } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { stateOf, today, type Progress } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import { adviceFor, hasEvidence, plan, type GraphItem, type Recommendation } from "../../lib/recommend";
+import { adviceFor, hasEvidence, plan, recommend, type GraphItem, type Recommendation } from "../../lib/recommend";
 import type { NextLink } from "../../lib/summaries";
 import { TileGlyph, tileFill } from "../plate/TileGlyph";
 
@@ -24,15 +24,17 @@ interface ListProps {
   limit: number;
   /** Home shows the list only once the learner has recorded evidence; Progress always does. */
   onlyWithEvidence?: boolean;
+  /** Include items whose check is due; Progress leaves them to the review queue beside it. */
+  due?: boolean;
 }
 
 /** Ranked next steps, each linking to its route (or to the diagnostic when a check is due). */
-export default function NextSteps({ lang, graph, links, limit, onlyWithEvidence = false }: ListProps) {
+export default function NextSteps({ lang, graph, links, limit, onlyWithEvidence = false, due = true }: ListProps) {
   const t = useTranslations(lang);
   const reason = useReason(lang);
   const [progress] = useProgress();
   if (!progress || (onlyWithEvidence && !hasEvidence(progress))) return null;
-  const next = plan(graph, progress, today()).next.slice(0, limit);
+  const next = recommend(graph, progress, today(), limit, { due });
 
   return (
     <section className="next-steps" aria-labelledby="next-title">

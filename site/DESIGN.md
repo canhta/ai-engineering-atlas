@@ -157,7 +157,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
  Progress
  Your states come only from evidence you recorded. Stored in this browser until you export it.
  3 of 19 ready routes demonstrated or beyond              legend with a count per state
- ╭──── plate (progress) ────╮     Next for you   1 ■ AI evaluation  Check due …   (up to 5)
+ ╭──── plate (progress) ────╮     Next for you   1 ◧ Product framing  You started this… (up to 5)
  │                           │     Review   Due today 1   Next 7 days 2
  ╰───────────────────────────╯     Tool calling   due 29 Sep   ( Start review (↗) )
  Evidence by competency: rows (title, state, target, evidence count, last recorded, next review)
@@ -169,7 +169,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 ### Next step
 
 - Computed by `src/lib/recommend.ts` from prerequisites, states, and review dates; advice only, never a state change. Ranked: check due, continue (gap, learning), start (prerequisites demonstrated or bridged), transfer, apply.
-- Home: once the learner has evidence, "Next for you" (up to 3) sits beside the hero on desktop and below it on mobile; the start CTA stays. Progress: the same list (up to 5) above the review queue.
+- Home: once the learner has evidence, "Next for you" (up to 3) sits beside the hero on desktop and below it on mobile; the start CTA stays. Progress: the same list (up to 5) above the review queue, without due checks (the queue shows them).
 - Rows: rank number in `route`, tile glyph and title link (a due check links to the diagnostic), the reason as one muted line. Hairline rows, no cards.
 - Field log: one line under "Next:": "Recommended next (n of 5)." with the reason, or "Learn first:" with the blocking prerequisites.
 

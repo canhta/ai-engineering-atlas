@@ -79,6 +79,18 @@ test("a due review outranks everything, earliest first", () => {
   );
 });
 
+test("{ due: false } leaves items with a due check out entirely, and changes nothing else", () => {
+  const p = withStates({ a: "demonstrated", b: "gap", c: "demonstrated" }, "2026-08-01");
+  p.competencies.a.review_on = "2026-09-20";
+  p.competencies.c.review_on = "2026-12-01";
+  const all = plan(GRAPH, p, DAY);
+  const without = plan(GRAPH, p, DAY, { due: false });
+  assert.equal(all.next[0].id, "a");
+  assert.deepEqual(without.next, all.next.filter((r) => r.id !== "a"));
+  assert.deepEqual(without.blocked, all.blocked);
+  assert.deepEqual(ids(recommend(GRAPH, p, DAY, 2, { due: false })), ["b", "e"]);
+});
+
 test("a due review is listed even at target; otherwise items at target are excluded", () => {
   const p = withStates({ c: "transferred" }, "2026-08-01");
   assert.equal(plan(GRAPH, p, "2026-08-02").next.find((r) => r.id === "c"), undefined);

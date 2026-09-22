@@ -12,9 +12,16 @@
 //   4. transfer  demonstrated, below target: attempt the transfer task.
 //   5. apply     transferred or retained, target applied: use it in a project.
 // Items without a page, and items at or above their target (outside rule 1), are never listed.
-// Ties within a rule follow the content model's item order.
+// Ties within a rule follow the content model's item order. With `{ due: false }` (Progress, where
+// the review queue sits beside the list) items with a due check are left out entirely.
 import type { Collection, Item, Relation } from "./atlas.ts";
 import { isDemonstrated, rank, type Progress, type State } from "./progress.ts";
+import { refOf } from "./refs.ts";
+
+export interface PlanOptions {
+  /** List items whose check is due (rule 1). Default true. */
+  due?: boolean;
+}
 
 export type Reason = "due" | "continue" | "start" | "transfer" | "apply";
 export const REASONS: readonly Reason[] = ["due", "continue", "start", "transfer", "apply"];
@@ -39,9 +46,8 @@ export interface GraphItem {
  */
 export function graphOf(c: Collection, items: readonly Item[], relations: readonly Relation[]): GraphItem[] {
   const targetField = c.progress?.target_field;
-  const refOf = (item: Item) => (c.ref_prefix ? `${c.ref_prefix}:${item.id}` : item.id);
   return items.map((item, order) => {
-    const id = refOf(item);
+    const id = refOf(c, item);
     const bridged = new Set(
       (item.page?.blocks ?? []).flatMap((b) => (b.type === "prerequisites" ? b.items.filter((p) => p.bridge).map((p) => p.ref) : [])),
     );
@@ -82,7 +88,7 @@ export const NEXT_LIMIT = 5;
 
 const stateIn = (progress: Progress | null, id: string): State => progress?.competencies[id]?.current_state ?? "unassessed";
 
-export function plan(graph: readonly GraphItem[], progress: Progress | null, today: string): Plan {
+export function plan(graph: readonly GraphItem[], progress: Progress | null, today: string, options: PlanOptions = {}): Plan {
   const items = [...graph].sort((a, b) => a.order - b.order || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const orderOf = new Map(items.map((item) => [item.id, item.order]));
   const byOrder = (a: string, b: string) =>
@@ -104,7 +110,7 @@ export function plan(graph: readonly GraphItem[], progress: Progress | null, tod
     const target = entry?.target_state ?? item.target ?? "demonstrated";
 
     if (entry?.review_on && entry.review_on <= today) {
-      buckets.due.push({ id: item.id, reason: "due", prerequisites: [], due: entry.review_on });
+      if (options.due ?? true) buckets.due.push({ id: item.id, reason: "due", prerequisites: [], due: entry.review_on });
       continue;
     }
     if (rank(state) >= rank(target as State)) continue;
@@ -128,8 +134,13 @@ export function plan(graph: readonly GraphItem[], progress: Progress | null, tod
 }
 
 /** The first `limit` recommendations. */
-export const recommend = (graph: readonly GraphItem[], progress: Progress | null, today: string, limit = NEXT_LIMIT) =>
-  plan(graph, progress, today).next.slice(0, limit);
+export const recommend = (
+  graph: readonly GraphItem[],
+  progress: Progress | null,
+  today: string,
+  limit = NEXT_LIMIT,
+  options: PlanOptions = {},
+) => plan(graph, progress, today, options).next.slice(0, limit);
 
 /** What the plan says about one item: a recommendation, what blocks it, or nothing. */
 export function adviceFor(result: Plan, id: string): { next?: Recommendation; blocked?: Blocked } {

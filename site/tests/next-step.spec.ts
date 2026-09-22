@@ -37,20 +37,23 @@ test("Home has no next list before any evidence; the start flow stays", async ({
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
 });
 
-test("an imported progress.yaml puts the due check first on Progress, Home, and the route", async ({ page }) => {
+test("an imported progress.yaml: Home leads with the due check, Progress leaves it to the review queue", async ({ page }) => {
   await importFixture(page);
 
+  // Progress: the due check sits in the review queue beside the list, not in the list.
   const rows = nextList(page).getByRole("listitem");
   await expect(rows).toHaveCount(5);
-  await expect(rows.first()).toContainText("AI Evaluation and Experimentation");
-  await expect(rows.first()).toContainText("Check due 2026-01-01");
-  await expect(rows.first().getByRole("link")).toHaveAttribute("href", "/en/routes/ai.evaluation/#diagnostic");
-  await expect(rows.nth(1)).toContainText("You started this");
+  await expect(rows.first()).toContainText("AI Product and Problem Framing");
+  await expect(rows.first()).toContainText("You started this");
+  await expect(nextList(page)).not.toContainText("AI Evaluation and Experimentation");
+  await expect(page.getByRole("region", { name: "Review" })).toContainText("AI Evaluation and Experimentation");
 
   await open(page, "/en/");
   const home = nextList(page).getByRole("listitem");
   await expect(home).toHaveCount(3);
   await expect(home.first()).toContainText("AI Evaluation and Experimentation");
+  await expect(home.first()).toContainText("Check due 2026-01-01");
+  await expect(home.first().getByRole("link")).toHaveAttribute("href", "/en/routes/ai.evaluation/#diagnostic");
   await expect(home.nth(1).getByRole("link")).toHaveAttribute("href", "/en/routes/ai.product-framing/");
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
 
@@ -65,7 +68,7 @@ test("an imported progress.yaml puts the due check first on Progress, Home, and 
 
 test("@mobile the next list reads as a single column on Home and Progress", async ({ page }) => {
   await importFixture(page);
-  await expect(nextList(page).getByRole("listitem").first()).toContainText("AI Evaluation and Experimentation");
+  await expect(nextList(page).getByRole("listitem").first()).toContainText("AI Product and Problem Framing");
 
   await open(page, "/vi/");
   const first = page.getByRole("region", { name: "Tiếp theo cho bạn" }).getByRole("listitem").first();

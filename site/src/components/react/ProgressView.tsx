@@ -90,7 +90,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
         </div>
 
         <div className="progress-side">
-          <NextSteps lang={lang} graph={graph} links={links} limit={NEXT_LIMIT} />
+          <NextSteps lang={lang} graph={graph} links={links} limit={NEXT_LIMIT} due={false} />
           <section className="progress-queue" aria-labelledby="queue-title">
           <h2 id="queue-title">{t("progress.queue")}</h2>
           <p className="queue-counts tabular">

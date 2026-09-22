@@ -9,7 +9,7 @@ import { parse } from "yaml";
 
 const seeded = process.env.CAPTURE_PROGRESS ? JSON.stringify(parse(readFileSync(process.env.CAPTURE_PROGRESS, "utf8"))) : null;
 
-const [baseUrl = "http://127.0.0.1:8787", outDir = "ui-review", ...paths] = process.argv.slice(2);
+const [baseUrl = `http://127.0.0.1:${process.env.ATLAS_PORT ?? 8787}`, outDir = "ui-review", ...paths] = process.argv.slice(2);
 const pages = paths.length
   ? paths
   : ["/{lang}/", "/{lang}/map/", "/{lang}/map/?item=ai.tool-calling", "/{lang}/progress/", "/{lang}/routes/ai.tool-calling/"];

@@ -9,7 +9,6 @@ import {
   headerChips,
   itemUrl,
   itemsOf,
-  refOf,
   relations,
   relationsTo,
   resolveRef,
@@ -21,6 +20,7 @@ import {
   vocabularyValues,
   type Localized,
 } from "./atlas";
+import { refOf, refPrefix } from "./refs";
 import { graphOf, type GraphItem } from "./recommend";
 
 export interface TileData {
@@ -102,7 +102,7 @@ export function plateRegions(lang: Lang): RegionData[] {
         maturity: maturityOf(item, lang),
         needs: relationsTo("prerequisite", ref).map((r) => r.from),
         values: Object.fromEntries(Object.keys(c.fields).map((f) => [f, fieldChips(c, item, f, lang).map((chip) => chip.value)])),
-        relatedTo: relations.filter((r) => r.to === ref && others.has(r.from.split(":")[0])).map((r) => r.from),
+        relatedTo: relations.filter((r) => r.to === ref && others.has(refPrefix(r.from))).map((r) => r.from),
         list: (c.list_fields ?? []).map((f) =>
           fieldChips(c, item, f, lang)
             .map((chip) => chip.label.value)
