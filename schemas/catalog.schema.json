@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/catalog.schema.json",
+  "title": "AI Engineering Atlas competency catalog",
+  "type": "object",
+  "required": ["version", "last_reviewed", "competencies"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "last_reviewed": { "type": "string" },
+    "description": { "type": "string" },
+    "competencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "domain", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+          "title": { "type": "string", "minLength": 1 },
+          "domain": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["coverage", "ready"] },
+          "route": { "type": "string", "minLength": 1 }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "ready" } } },
+            "then": { "required": ["route"] }
+          }
+        ],
+        "additionalProperties": true
+      }
+    }
+  }
+}
