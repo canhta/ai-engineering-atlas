@@ -57,5 +57,5 @@ Run from `site/` unless noted.
 ## Done means
 
 - `make check` and `make site-check` pass.
-- For UI changes: `node scripts/capture.mjs` reports no problems, and you have looked at the screenshots against [DESIGN.md](DESIGN.md).
+- For UI changes: `node scripts/capture.mjs` reports no problems, and you have looked at the screenshots against [DESIGN.md](DESIGN.md). In Claude Code, the `atlas-ui-review` skill runs this review.
 - Any command, token, or convention you changed is updated in this file or DESIGN.md in the same change.

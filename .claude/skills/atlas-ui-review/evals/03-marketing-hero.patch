@@ -1,0 +1,12 @@
+diff --git a/site/src/i18n/en.json b/site/src/i18n/en.json
+index 701f5c3..dabcfc0 100644
+--- a/site/src/i18n/en.json
++++ b/site/src/i18n/en.json
+@@ -1,6 +1,6 @@
+ {
+   "site.name": "AI Engineering Atlas",
+-  "site.tagline": "A gap-driven roadmap for software engineers learning modern AI engineering.",
++  "site.tagline": "🚀 Master AI engineering and unlock your future — the ultimate roadmap to become a 10x AI engineer! ✨",
+   "site.method": "You do not need to study every topic. Diagnose first, learn the smallest meaningful gap, produce evidence, and revisit important skills in larger systems.",
+   "nav.label": "Main",
+   "nav.home": "Atlas",

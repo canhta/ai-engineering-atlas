@@ -1,0 +1,13 @@
+diff --git a/site/src/styles/tokens.css b/site/src/styles/tokens.css
+index 360bf0b..71cfbeb 100644
+--- a/site/src/styles/tokens.css
++++ b/site/src/styles/tokens.css
+@@ -99,7 +99,7 @@
+   --border: var(--gray-6);
+   --border-strong: var(--gray-9);
+   --text: var(--gray-12);
+-  --text-muted: var(--gray-11);
++  --text-muted: var(--gray-9);
+   --link: var(--accent-11);
+   --focus: var(--accent-9);
+   --action-bg: var(--accent-9);

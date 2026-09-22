@@ -1,0 +1,25 @@
+diff --git a/site/src/i18n/vi.json b/site/src/i18n/vi.json
+index 7addd19..e16e962 100644
+--- a/site/src/i18n/vi.json
++++ b/site/src/i18n/vi.json
+@@ -4,7 +4,7 @@
+   "site.method": "Bạn không cần học mọi chủ đề. Hãy chẩn đoán trước, học khoảng trống nhỏ nhất có ý nghĩa, tạo bằng chứng, và quay lại các kỹ năng quan trọng trong những hệ thống lớn hơn.",
+   "nav.label": "Chính",
+   "nav.home": "Atlas",
+-  "nav.map": "Bản đồ",
++  "nav.map": "Bản đồ năng lực kỹ thuật AI đầy đủ theo từng lĩnh vực chuyên môn",
+   "lang.label": "Ngôn ngữ",
+   "home.counts": "{ready} lộ trình sẵn sàng · {mapped} mục đã lập bản đồ, chưa có lộ trình · {labs} bài lab",
+   "home.start": "Mở bản đồ",
+diff --git a/site/src/layouts/Base.astro b/site/src/layouts/Base.astro
+index e267a0b..522464d 100644
+--- a/site/src/layouts/Base.astro
++++ b/site/src/layouts/Base.astro
+@@ -112,6 +112,7 @@ const navItems = [
+ 
+   .site-header ul {
+     display: flex;
++    white-space: nowrap;
+     gap: var(--space-4);
+     list-style: none;
+     margin: 0;
