@@ -1,6 +1,7 @@
 ---
 // Catalog maturity: ready routes carry the accent marker; coverage stays quiet.
 import { useTranslations, type Lang } from "../i18n";
+import Icon from "./Icon.astro";
 
 interface Props {
   status: "ready" | "coverage";
@@ -12,7 +13,7 @@ const t = useTranslations(lang);
 ---
 
 <span class:list={["status", status]}>
-  {status === "ready" && <span class="marker" aria-hidden="true" />}
+  {status === "ready" && <span class="marker"><Icon name="ready" /></span>}
   {t(status === "ready" ? "status.ready" : "status.coverage")}
 </span>
 
@@ -29,9 +30,7 @@ const t = useTranslations(lang);
   }
 
   .marker {
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--ready-marker);
-    border-radius: var(--radius);
+    display: inline-flex;
+    color: var(--ready-marker);
   }
 </style>

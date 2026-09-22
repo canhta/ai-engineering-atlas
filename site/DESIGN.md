@@ -60,8 +60,7 @@ Why → Prerequisites (with bridges) → Diagnostic → Learning route → Pract
 
 ### Progress
 
-- Each state has a glyph, a text label, and a colour, so no state depends on colour alone:
-  `○ unassessed` `◐ gap` `◐ learning` `● demonstrated` `●→ transferred` `●↻ retained` `■ applied`.
+- Each state has an icon, a text label, and a colour, so no state depends on colour alone. Icons are the registry names of the same state (`unassessed`, `gap`, `learning`, `demonstrated`, `transferred`, `retained`, `applied`).
 - Per competency: evidence timeline (date, kind, `review_method`, `independence`, link).
 - Review queue header: "Due today: 3 · Next 7 days: 5". After answering, show the next due date.
 - Path summaries count demonstrated-or-better only. Each state gets its own count; mixed percentages are not used.
@@ -108,6 +107,13 @@ Role-based 12-step scales (Radix structure) for light and dark themes:
 - Under `prefers-reduced-motion: reduce`, map pan and zoom and focus auto-pan are instant.
 - Content appears in place; scrolling triggers nothing.
 
+## Icons
+
+- One library: IBM Carbon (`@carbon/icons-react`), drawn for IBM Plex. It is imported only in `src/lib/icons.ts`, which maps semantic names (`external`, `ready`, `gap`, `run`, …) to icons. Astro pages use `<Icon name=…>`; React islands import the registry.
+- One name, one icon everywhere. A new meaning gets a new registry name.
+- Every icon sits beside a text label and is `aria-hidden`; an icon never carries meaning alone. Sizes: 16 inline, 20 in toolbars.
+- `pnpm run check:icons` rejects inline `<svg>`, SVG files and data URIs, direct icon-package imports, and emoji or symbols used as icons.
+
 ## Components
 
 - Static pages: plain Astro and CSS.
@@ -140,7 +146,7 @@ When reviewing a page, each tell on the left is replaced by the pattern on the r
 | Gradient, mesh, or glass background | Flat gray 1–2 background, border structure |
 | Marketing hero headline | Counts (ready / mapped) and a "Start with a diagnostic" link |
 | Grid of icon + title + blurb cards | Rows or a table that expose status and locators |
-| Sparkle icon, floating chat bubble, mascot | Text-labelled action attached to its object |
+| Sparkle icon, floating chat bubble, mascot, emoji | Text-labelled action attached to its object; registry icon beside text |
 | Streak, XP, confetti, % read, padlock | Evidence state, timeline, due counts |
 | Large soft shadows, 12px+ radii | 1px border, 4–6px radius |
 | Scroll-triggered animation | Content in place |

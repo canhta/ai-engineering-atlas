@@ -15,10 +15,12 @@
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:headers": "node scripts/check-headers.mjs",
-    "check": "astro check && pnpm run lint:styles && pnpm run check:i18n && pnpm run check:contrast && pnpm run check:headers && astro build"
+    "check": "astro check && pnpm run lint:styles && pnpm run check:i18n && pnpm run check:contrast && pnpm run check:headers && pnpm run check:icons && astro build",
+    "check:icons": "node scripts/check-icons.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",
+    "@carbon/icons-react": "^11.88.0",
     "astro": "^7.3.3",
     "react": "^19.3.0",
     "react-aria-components": "^1.21.1",

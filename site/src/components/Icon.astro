@@ -1,0 +1,15 @@
+---
+// Renders a Carbon icon as static SVG (no client JavaScript). Decorative by default:
+// every icon sits next to a text label (DESIGN.md → Icons).
+import { icons, type IconName } from "../lib/icons";
+
+interface Props {
+  name: IconName;
+  size?: 16 | 20 | 24;
+}
+
+const { name, size = 16 } = Astro.props;
+const Component = icons[name];
+---
+
+<Component size={size} aria-hidden="true" focusable="false" className="icon" />

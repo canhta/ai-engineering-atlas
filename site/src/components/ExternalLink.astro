@@ -2,6 +2,7 @@
 // External source link: shows the host and says it leaves the site (DESIGN.md → Route page).
 import { useTranslations, type Lang } from "../i18n";
 import { resolveSource } from "../lib/atlas";
+import Icon from "./Icon.astro";
 
 interface Props {
   source: string;
@@ -19,7 +20,7 @@ const { title, url, host } = resolveSource(source);
       {title}
       <span class="host">
         {host}
-        <span aria-hidden="true">↗</span>
+        <Icon name="external" />
       </span>
       <span class="visually-hidden">({t("link.external")})</span>
     </a>
@@ -35,6 +36,9 @@ const { title, url, host } = resolveSource(source);
   }
 
   .host {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
     font-size: var(--text-small);
     color: var(--text-muted);
   }

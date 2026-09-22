@@ -1,3 +1,5 @@
 allowBuilds:
+  '@carbon/icon-helpers': set this to true or false
+  '@carbon/icons-react': set this to true or false
   esbuild: true
   workerd: true
