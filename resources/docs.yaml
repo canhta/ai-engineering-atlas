@@ -230,14 +230,3 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 90
 
-  - id: article.anthropic-long-running-agent-harness
-    type: article
-    title: Effective harnesses for long-running agents
-    author: Anthropic
-    url: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents
-    roles: [curriculum-evidence, teaching, production-reference, reference]
-    covers: [agents.state, agents.memory, long-running-agents]
-    source_verified: true
-    last_checked: 2026-09-22
-    review_interval_days: 90
-
