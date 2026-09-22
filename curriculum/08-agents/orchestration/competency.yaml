@@ -1,7 +1,7 @@
 id: agents.orchestration
 title: AI Workflow Orchestration
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation
