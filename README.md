@@ -1,129 +1,118 @@
 # AI Engineering Atlas
 
-> An evidence-backed, executable, gap-driven curriculum for becoming a strong AI Engineer.
+A structured roadmap for software engineers learning modern AI engineering.
 
-**AI Engineering Atlas** is **not** an awesome-list and **not** a linear course. It is a competency graph that combines:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-- strong Software Engineering foundations,
-- Systems and Data Engineering,
-- ML / Deep Learning / LLM foundations,
-- Applied AI Engineering,
-- Evaluation and experimentation,
-- Agents and orchestration,
-- Production AI, security, governance, and multimodal systems.
+## Contents
 
-The core rule is simple:
+- [Summary](#summary)
+- [Who this is for](#who-this-is-for)
+- [How to use it](#how-to-use-it)
+- [Curriculum](#curriculum)
+- [Learning units](#learning-units)
+- [Repository structure](#repository-structure)
+- [Contributing](#contributing)
 
-> **Diagnose → learn only the gap → practice → measure → explain → pass the exit test → move on.**
+## Summary
 
-## Why this repo exists
+AI Engineering Atlas organizes the knowledge and practice needed to build, evaluate, and operate AI systems.
 
-Most AI roadmaps optimize for breadth or tool familiarity. This project instead treats AI Engineering as a layered engineering discipline and keeps the curriculum grounded in explicit competencies, curated sources, diagnostics, labs, and exit criteria.
+The curriculum covers software and systems fundamentals, data, machine learning, deep learning, language models, retrieval, evaluation, agents, production AI, security, multimodal systems, and advanced specializations.
 
-The curriculum design borrows the strongest patterns from:
+It is designed for non-linear study. If you already know a topic, assess it and move on. If you find a gap, use the linked material and complete the practice needed to close it.
 
-- **OSSU** — curriculum governance and versioning,
-- **Microsoft learning repos** — self-contained lesson packaging,
-- **Made With ML** — notebook → code → test → production discipline,
-- **roadmap.sh** — visual competency maps and progress-oriented learning UX.
+## Who this is for
+
+This roadmap is primarily for software engineers moving deeper into AI engineering.
+
+It can also be used by ML engineers, data engineers, platform engineers, and applied AI developers who want to review areas outside their current specialty.
+
+A working knowledge of programming is assumed. Prior AI experience is useful but not required for every section.
 
 ## How to use it
 
-1. Open the [master roadmap](ROADMAP.md).
-2. Run the diagnostic for a domain or competency.
-3. If you already pass the exit criteria, **skip it**.
-4. Otherwise use one primary source plus one visual source.
-5. Complete the smallest useful lab or experiment.
-6. Add the artifact and your findings.
-7. Move on only when the exit criteria are satisfied.
+For each topic:
 
-See [LEARNING_METHOD.md](LEARNING_METHOD.md) for the full learning loop.
+1. Check the prerequisites.
+2. Try the diagnostic before studying.
+3. Skip or review the topic if you already meet the exit criteria.
+4. Use the primary learning resource for the missing concepts.
+5. Add a visual explanation where the mechanism is easier to understand graphically.
+6. Implement or experiment with the concept.
+7. Move on when you can explain it, apply it, and diagnose common failures.
 
-## Repository model
+The roadmap is intentionally broad. It is not expected that every learner studies every section to the same depth.
 
-```mermaid
-flowchart TD
-    C[Canonical Curriculum] --> K[Competencies]
-    C --> R[Curated Resources]
-    C --> A[Assessments]
-    K --> L[Labs / Experiments]
-    K --> V[Visuals]
-    K --> P[Projects]
-    R --> T[AI Tutor / Learning Assistant]
-    A --> T
-    K --> T
-    T --> X[Explain / Quiz / Review / Visualize]
-    X --> G[Progress / Gap State]
-    G --> K
+## Curriculum
+
+| Area | Topics |
+| --- | --- |
+| Software Engineering | Programming, testing, architecture, operating systems, networking, databases |
+| Systems | Distributed systems, reliability, performance, cloud, observability |
+| Data Engineering | Data modeling, pipelines, batch and streaming systems, quality, lineage |
+| ML Foundations | Probability, statistics, classical machine learning, experimentation |
+| Deep Learning | Neural networks, optimization, backpropagation, representation learning |
+| LLM Foundations | Tokenization, transformers, attention, inference, context |
+| AI Engineering | Model selection, prompting, retrieval, context engineering, evaluation, adaptation |
+| Agents | Tool use, workflows, state, memory, orchestration, MCP |
+| Production AI | Serving, gateways, tracing, reliability, latency, cost, release practices |
+| Security & Governance | Prompt injection, permissions, privacy, supply-chain risk, governance |
+| Multimodal | Vision, audio, voice, document AI, multimodal interaction |
+| Specializations | LLM systems, post-training, reasoning, search, AI platforms |
+
+The detailed curriculum and topic pages will be added progressively as resources, labs, and assessments are reviewed.
+
+## Learning units
+
+A topic can include:
+
+- prerequisites
+- learning outcomes
+- a short diagnostic
+- primary learning material
+- visual material
+- implementation or lab work
+- experiments
+- an exit test
+
+The usual study loop is:
+
+```text
+Diagnose → Learn → Implement → Visualize → Experiment → Explain → Exit test
 ```
 
-AI may help explain, quiz, review, visualize, or propose changes, but **AI-generated content is not curriculum truth**. Curriculum changes require evidence and review.
+Resources are kept separate from the competency itself so that books, courses, papers, or repositories can be replaced without changing the learning objective.
 
-## Canonical sources
+## Repository structure
 
-- `curriculum/` — competency graph and learning units
-- `resources/` — curated external evidence / learning resources
-- `schemas/` — machine-readable contracts
-- `rfcs/` — proposed curriculum changes
+The repository is being organized around the following directories:
 
-`README.md` and generated docs are presentation layers, not the canonical curriculum.
+```text
+curriculum/      topic and competency definitions
+resources/       books, courses, papers, repositories, and visual references
+assessments/     diagnostics and exit tests
+labs/            focused implementation exercises
+experiments/     comparisons, ablations, and measurements
+projects/        larger end-to-end work
+visuals/         diagrams and interactive learning material
+rfcs/            proposals for substantial curriculum changes
+schemas/         machine-readable curriculum and resource schemas
+scripts/         validation and maintenance tools
+```
 
-## Competency package
+Rules for AI agents working on the repository are in [AGENTS.md](AGENTS.md).
 
-Each important competency should answer:
+## Contributing
 
-- What must I know?
-- Why does it matter?
-- What are the prerequisites?
-- How do I diagnose whether I already know it?
-- What source should I learn from?
-- What should I build or experiment with?
-- What should I visualize?
-- How do I prove competence?
-- What does this unlock next?
+The project is still being assembled. Contributions should keep curriculum topics separate from the resources used to teach them, and substantial curriculum changes should include supporting evidence.
 
-Example: [`Self-Attention`](curriculum/06-llm-foundations/self-attention/README.md).
+Contribution guidelines and issue templates will be added as the curriculum structure is filled in.
 
-## Curriculum domains
+## Acknowledgements
 
-| Domain | Purpose |
-|---|---|
-| Software Engineering | Programming, OS, networking, databases, testing, architecture |
-| Systems | Distributed systems, reliability, cloud, observability |
-| Data Engineering | Data pipelines, modeling, quality, lineage |
-| ML Foundations | Math, statistics, classical ML |
-| Deep Learning | Optimization, backprop, embeddings, representation learning |
-| LLM Foundations | Tokenization, transformers, inference, context |
-| AI Engineering | Model selection, context, retrieval, evals, adaptation |
-| Agents | Tool use, state, memory, orchestration, MCP |
-| Production AI | Gateways, tracing, releases, latency, cost |
-| Security & Governance | Prompt injection, permissions, privacy, supply-chain risk |
-| Multimodal | Vision, audio, voice, document AI |
-| Specializations | LLM systems, post-training, reasoning, search, platform |
-
-## Resource roles
-
-Resources are tagged by purpose rather than dumped into a single list:
-
-- `primary` — main source for learning a competency
-- `visual` — intuition / interactive explanation
-- `practice` — exercises, notebooks, assignments
-- `reference` — deeper or supplementary material
-
-## Governance
-
-Curriculum and resource changes are versioned differently:
-
-- **MAJOR** — changes the competency graph or required outcomes
-- **MINOR** — changes recommended resources or practice while preserving competencies
-- **PATCH** — metadata, wording, broken links, presentation fixes
-
-Substantial curriculum changes should start as an RFC. See [`rfcs/0000-template.md`](rfcs/0000-template.md).
-
-## Status
-
-This repository is intentionally seeded with the structure and a few example competencies first. Resources, labs, assessments, visualizations, and projects can be added progressively without changing the overall information architecture.
+The repository structure and learning workflow draw on patterns used by [OSSU Computer Science](https://github.com/ossu/computer-science), [Microsoft learning repositories](https://github.com/microsoft/generative-ai-for-beginners), [Made With ML](https://github.com/GokuMohandas/Made-With-ML), [roadmap.sh](https://roadmap.sh/), and [LLM Course](https://github.com/mlabonne/llm-course).
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT
