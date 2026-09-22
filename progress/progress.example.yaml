@@ -1,25 +1,64 @@
-version: 1
+version: 2
 updated_at: 2026-09-22
 
 competencies:
   llm.self-attention:
-    state: demonstrated
+    current_state: demonstrated
     target_state: retained
+
     evidence:
-      - kind: implementation
+      - id: attention-impl-20260922
+        kind: implementation
+        supports_state: demonstrated
+        recorded_at: 2026-09-22
         uri: "path-or-url-to-artifact"
         note: "Implemented causal single-head attention and masking tests."
-      - kind: explanation
+        independence: minimal-hints
+        review_method: automated-and-self
+
+      - id: attention-explain-20260922
+        kind: explanation
+        supports_state: demonstrated
+        recorded_at: 2026-09-22
         uri: "path-or-url-to-note"
         note: "Explained tensor shapes and sequence-length cost without notes."
-    independence: "minimal hints"
-    next_action: "Run delayed retrieval check."
+        independence: independent
+        review_method: self
+
+    state_history:
+      - state: gap
+        recorded_at: 2026-09-22
+        reason: "Diagnostic showed implementation and masking gaps."
+        evidence_refs: []
+
+      - state: demonstrated
+        recorded_at: 2026-09-22
+        reason: "Exit evidence satisfied."
+        evidence_refs:
+          - attention-impl-20260922
+          - attention-explain-20260922
+
+    next_action: "Run delayed retrieval check without reopening the source."
     review_on: 2026-09-29
 
   ai.evaluation:
-    state: gap
+    current_state: gap
     target_state: applied
+
     evidence:
-      - kind: diagnostic
-        note: "Can compare model outputs but did not separate component and end-to-end evaluation."
-    next_action: "Follow evaluation learning route and build a versioned harness."
+      - id: eval-diagnostic-20260922
+        kind: diagnostic
+        supports_state: gap
+        recorded_at: 2026-09-22
+        note: "Could compare outputs but did not separate component and end-to-end evaluation."
+        independence: independent
+        review_method: self
+
+    state_history:
+      - state: gap
+        recorded_at: 2026-09-22
+        reason: "Baseline diagnostic exposed component-evaluation gap."
+        evidence_refs:
+          - eval-diagnostic-20260922
+
+    next_action: "Follow the evaluation route and build a versioned harness."

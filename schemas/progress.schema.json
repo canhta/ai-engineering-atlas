@@ -2,39 +2,168 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "AI Engineering Atlas learner progress",
   "type": "object",
-  "required": ["version", "updated_at", "competencies"],
+  "required": [
+    "version",
+    "updated_at",
+    "competencies"
+  ],
   "properties": {
-    "version": { "type": "integer", "minimum": 1 },
-    "updated_at": { "type": "string" },
+    "version": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "updated_at": {
+      "type": "string"
+    },
     "competencies": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
-        "required": ["state", "target_state", "evidence", "next_action"],
+        "required": [
+          "current_state",
+          "target_state",
+          "evidence",
+          "state_history",
+          "next_action"
+        ],
         "properties": {
-          "state": {
-            "enum": ["unassessed", "gap", "learning", "demonstrated", "transferred", "retained", "applied"]
+          "current_state": {
+            "enum": [
+              "unassessed",
+              "gap",
+              "learning",
+              "demonstrated",
+              "transferred",
+              "retained",
+              "applied"
+            ]
           },
           "target_state": {
-            "enum": ["demonstrated", "transferred", "retained", "applied"]
+            "enum": [
+              "demonstrated",
+              "transferred",
+              "retained",
+              "applied"
+            ]
           },
           "evidence": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["kind"],
+              "required": [
+                "id",
+                "kind",
+                "supports_state",
+                "recorded_at",
+                "independence",
+                "review_method"
+              ],
               "properties": {
-                "kind": { "type": "string" },
-                "uri": { "type": "string" },
-                "note": { "type": "string" }
-              }
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "supports_state": {
+                  "enum": [
+                    "gap",
+                    "learning",
+                    "demonstrated",
+                    "transferred",
+                    "retained",
+                    "applied"
+                  ]
+                },
+                "recorded_at": {
+                  "type": "string"
+                },
+                "uri": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                },
+                "independence": {
+                  "enum": [
+                    "independent",
+                    "minimal-hints",
+                    "guided",
+                    "reference-open",
+                    "unknown"
+                  ]
+                },
+                "review_method": {
+                  "enum": [
+                    "self",
+                    "peer",
+                    "automated",
+                    "automated-and-self",
+                    "ai-assisted",
+                    "human-and-ai"
+                  ]
+                },
+                "review_note": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
             }
           },
-          "independence": { "type": "string" },
-          "next_action": { "type": "string", "minLength": 1 },
-          "review_on": { "type": "string" }
-        }
+          "state_history": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "state",
+                "recorded_at",
+                "reason",
+                "evidence_refs"
+              ],
+              "properties": {
+                "state": {
+                  "enum": [
+                    "unassessed",
+                    "gap",
+                    "learning",
+                    "demonstrated",
+                    "transferred",
+                    "retained",
+                    "applied"
+                  ]
+                },
+                "recorded_at": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "next_action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "review_on": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
       }
     }
-  }
+  },
+  "additionalProperties": true
 }

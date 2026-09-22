@@ -527,18 +527,22 @@ if progress_path.exists():
         progress = {}
         errors.append(f"progress/progress.example.yaml: YAML parse error: {exc}")
 
+    if (progress.get("version") or 0) < 2:
+        errors.append("progress/progress.example.yaml: progress version must be >= 2")
+
     for cid, entry in (progress.get("competencies") or {}).items():
         if cid not in catalog:
             errors.append(
                 f"progress/progress.example.yaml: unknown catalog competency '{cid}'"
             )
 
-        state = entry.get("state")
+        current_state = entry.get("current_state")
         target = entry.get("target_state")
 
-        if state not in VALID_STATES:
+        if current_state not in VALID_STATES:
             errors.append(
-                f"progress/progress.example.yaml: invalid state '{state}' for {cid}"
+                f"progress/progress.example.yaml: invalid current_state "
+                f"'{current_state}' for {cid}"
             )
 
         if target not in VALID_TARGET_STATES:
@@ -546,10 +550,73 @@ if progress_path.exists():
                 f"progress/progress.example.yaml: invalid target_state '{target}' for {cid}"
             )
 
-        if state != "unassessed" and not entry.get("evidence"):
+        evidence = entry.get("evidence") or []
+        evidence_ids = set()
+
+        for item in evidence:
+            eid = item.get("id")
+            if not eid:
+                errors.append(
+                    f"progress/progress.example.yaml: {cid} evidence item missing id"
+                )
+                continue
+            if eid in evidence_ids:
+                errors.append(
+                    f"progress/progress.example.yaml: {cid} duplicate evidence id '{eid}'"
+                )
+            evidence_ids.add(eid)
+
+            supported = item.get("supports_state")
+            if supported not in VALID_STATES - {"unassessed"}:
+                errors.append(
+                    f"progress/progress.example.yaml: {cid} evidence '{eid}' has "
+                    f"invalid supports_state '{supported}'"
+                )
+
+        history = entry.get("state_history") or []
+        if not history:
             errors.append(
-                f"progress/progress.example.yaml: {cid} state '{state}' requires evidence"
+                f"progress/progress.example.yaml: {cid} requires state_history"
             )
+        else:
+            last_state = history[-1].get("state")
+            if last_state != current_state:
+                errors.append(
+                    f"progress/progress.example.yaml: {cid} current_state "
+                    f"'{current_state}' does not match last history state '{last_state}'"
+                )
+
+        for event in history:
+            state = event.get("state")
+            refs = event.get("evidence_refs") or []
+
+            if state not in VALID_STATES:
+                errors.append(
+                    f"progress/progress.example.yaml: {cid} history has "
+                    f"invalid state '{state}'"
+                )
+
+            for ref in refs:
+                if ref not in evidence_ids:
+                    errors.append(
+                        f"progress/progress.example.yaml: {cid} history references "
+                        f"unknown evidence '{ref}'"
+                    )
+
+            if state in {"demonstrated", "transferred", "retained", "applied"}:
+                if not refs:
+                    errors.append(
+                        f"progress/progress.example.yaml: {cid} state '{state}' "
+                        "requires evidence_refs"
+                    )
+                elif not any(
+                    item.get("id") in refs and item.get("supports_state") == state
+                    for item in evidence
+                ):
+                    errors.append(
+                        f"progress/progress.example.yaml: {cid} state '{state}' "
+                        "requires referenced evidence supporting the same state"
+                    )
 
         if not entry.get("next_action"):
             errors.append(
