@@ -9,7 +9,33 @@
       "en": "A gap-driven roadmap for software engineers learning modern AI engineering.",
       "vi": "Lộ trình AI engineering cho kỹ sư phần mềm, học đúng phần mình còn thiếu."
     },
-    "repository": "https://github.com/canhta/ai-engineering-atlas"
+    "repository": "https://github.com/canhta/ai-engineering-atlas",
+    "links": [
+      {
+        "kind": "github",
+        "url": "https://github.com/canhta"
+      },
+      {
+        "kind": "email",
+        "url": "mailto:hello@canhta.com"
+      },
+      {
+        "kind": "whatsapp",
+        "url": "https://wa.me/84825252599"
+      },
+      {
+        "kind": "zalo",
+        "url": "https://zalo.me/84825252599"
+      },
+      {
+        "kind": "x",
+        "url": "https://x.com/canh_builds"
+      },
+      {
+        "kind": "linkedin",
+        "url": "https://www.linkedin.com/in/canhta"
+      }
+    ]
   },
   "locales": [
     "en",

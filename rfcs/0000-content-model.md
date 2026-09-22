@@ -35,7 +35,7 @@ curriculum/*.yaml         scripts/build_site_data.py              schemas/site-d
 
 ```yaml
 version: 2
-site:        { title: L10n, tagline: L10n, repository: url }
+site:        { title: L10n, tagline: L10n, repository: url, links?: [{kind, url}] }   # kind: github|email|whatsapp|zalo|x|linkedin
 locales:     [en, vi]
 vocabularies:                   # every enumerated value the UI labels
   <name>:
@@ -96,7 +96,7 @@ Every block has `type`, `id` (stable anchor), and `title: L10n`, and may have `s
 
 ```yaml
 version: 1
-site: { title: L10n, tagline: L10n, repository: url }
+site: { title: L10n, tagline: L10n, repository: url, links: [{kind, url}] }
 locales: [en, vi]
 vocabularies:
   domain: { from: "curriculum/manifest.yaml#domains", key: id, label: title }   # list: key and label fields

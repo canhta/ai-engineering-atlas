@@ -28,6 +28,16 @@ const tabs = [
   { id: "progress", href: progressUrl(lang), label: t("nav.progress") },
 ] as const;
 const langs = Object.entries(languages) as [Lang, string][];
+// Owner links are content (site.links), so adding one is a presentation.yaml change.
+const linkLabels = {
+  github: "GitHub",
+  email: "Email",
+  whatsapp: "WhatsApp",
+  zalo: "Zalo",
+  x: "X",
+  linkedin: "LinkedIn",
+} as const;
+const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.kind] }));
 ---
 
 <!doctype html>
@@ -78,6 +88,10 @@ const langs = Object.entries(languages) as [Lang, string][];
             </li>
           ))}
         </ul>
+        <a class="nav-repo" href={site.repository} rel="noopener">
+          <Icon name="github" size={20} />
+          <span class="visually-hidden">{t("footer.repository")}</span>
+        </a>
         <button class="menu-button" type="button" aria-haspopup="dialog" aria-controls="site-menu" data-menu-open>
           {t("nav.menu")}
           <Icon name="menu" />
@@ -109,7 +123,14 @@ const langs = Object.entries(languages) as [Lang, string][];
           </li>
         ))}
       </ul>
-      <ul class="menu-langs" aria-label={t("lang.label")} style={`--i: ${tabs.length + 1}`}>
+      <ul class="menu-links menu-repo" style={`--i: ${tabs.length + 1}`}>
+        <li>
+          <a href={site.repository} rel="noopener">
+            {t("footer.repository")}
+          </a>
+        </li>
+      </ul>
+      <ul class="menu-langs" aria-label={t("lang.label")} style={`--i: ${tabs.length + 2}`}>
         {langs.map(([l, name]) => (
           <li>
             {l === lang ? (
@@ -132,12 +153,26 @@ const langs = Object.entries(languages) as [Lang, string][];
 
     <footer class="footer">
       <div class="footer-inner">
-        <p class="footer-title">{siteTitle}</p>
-        <ul>
-          <li>
-            <a href={site.repository}>{t("footer.repository")}</a>
-          </li>
-          <li>{t("footer.license")}</li>
+        <div class="footer-brand">
+          <p class="footer-title">{siteTitle}</p>
+          <p class="footer-license">{t("footer.license")}</p>
+        </div>
+        <a class="pill footer-star" href={`${site.repository}/stargazers`} rel="noopener">
+          <span class="pill-icon">
+            <Icon name="star" />
+          </span>
+          {t("footer.star")}
+        </a>
+        <ul class="footer-links" aria-label={t("footer.contact")}>
+          {ownerLinks.map((link) => (
+            <li>
+              <a href={link.url} rel="noopener">
+                {/* Zalo's mark is a wordmark inside the same square box, so it needs the larger size to read. */}
+                <Icon name={link.kind} size={link.kind === "zalo" ? 24 : 20} />
+                <span class="visually-hidden">{link.label}</span>
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </footer>
@@ -425,7 +460,7 @@ const langs = Object.entries(languages) as [Lang, string][];
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-6);
     max-width: var(--page-max);
     margin: 0 auto;
     padding: var(--space-8) var(--gutter) var(--space-12);
@@ -437,11 +472,62 @@ const langs = Object.entries(languages) as [Lang, string][];
     color: var(--ink);
   }
 
+  .footer-license {
+    margin: 0;
+  }
+
   .footer ul {
     display: flex;
     gap: var(--space-6);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  /* Star first, then the owner's links: one row that wraps to its own line on a phone. */
+  .footer-star {
+    font-size: var(--text-small);
+    padding-block: var(--space-2);
+  }
+
+  .footer-links {
+    gap: var(--space-3);
+    margin-inline-start: auto;
+  }
+
+  .footer-links a,
+  .nav-repo {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-pill);
+    color: var(--ink-muted);
+    transition:
+      color var(--duration-control) var(--ease),
+      background-color var(--duration-control) var(--ease);
+  }
+
+  .footer-links a:hover,
+  .nav-repo:hover {
+    color: var(--ink);
+    background: var(--tray);
+  }
+
+  /* The pill nav has no room for the repository icon on a phone; the menu overlay carries it. */
+  @media (width < 640px) {
+    .nav-repo {
+      display: none;
+    }
+  }
+
+  @media (width < 640px) {
+    .footer-inner {
+      justify-content: flex-start;
+    }
+
+    .footer-links {
+      margin-inline-start: 0;
+    }
   }
 </style>

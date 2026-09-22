@@ -11,6 +11,8 @@
   "lang.label": "Language",
   "footer.repository": "Source on GitHub",
   "footer.license": "MIT License",
+  "footer.star": "Star on GitHub",
+  "footer.contact": "Contact",
   "link.external": "opens external site",
   "link.repository": "opens the repository on GitHub",
   "translation.missing": "chưa dịch / not yet translated",

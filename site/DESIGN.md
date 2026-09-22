@@ -19,6 +19,8 @@ Proven patterns, reused rather than invented:
 | "Not feeling ready? …" prerequisite line                                                 | Khan Academy, master.dev         | Route prerequisite line                         |
 | Labelled AI actions inside the item panel                                                | roadmap.sh node panel            | Phase 2 tutor actions                           |
 
+Footer: site name and licence on the left, a "Star on GitHub" pill in the middle, and the owner's links as icon buttons on the right (`site.links` in the content model: GitHub, email, WhatsApp, Zalo, X, LinkedIn). Each icon carries a visually hidden name. The nav keeps a repository icon on desktop; below 640px it moves into the menu overlay, where the pill has no room.
+
 ## Principles
 
 1. **Evidence, not completion.** The UI shows what a learner demonstrated. Opening, reading, or scrolling never changes a state.

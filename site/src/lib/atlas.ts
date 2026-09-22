@@ -140,7 +140,12 @@ export interface Resource {
 
 interface Model {
   version: number;
-  site: { title: L10n; tagline: L10n; repository: string };
+  site: {
+    title: L10n;
+    tagline: L10n;
+    repository: string;
+    links?: { kind: "github" | "email" | "whatsapp" | "zalo" | "x" | "linkedin"; url: string }[];
+  };
   locales: string[];
   vocabularies: Record<string, Vocabulary>;
   collections: Collection[];

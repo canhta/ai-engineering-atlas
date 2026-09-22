@@ -376,3 +376,20 @@ test("@mobile filters live in a sheet with a live count", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Filters (1)" })).toBeVisible();
   await expect(count(page)).toHaveText(`Showing ${READY} of ${TOTAL}`);
 });
+
+test("the frame links to the repository and to the owner's contacts", async ({ page }) => {
+  await open(page, "/en/");
+  const repo: string = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8")).site
+    .repository;
+
+  await expect(page.locator(`header a[href="${repo}"]`)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Star on GitHub" })).toHaveAttribute("href", `${repo}/stargazers`);
+
+  const contacts = page.getByRole("list", { name: "Contact" }).getByRole("link");
+  const links: { kind: string; url: string }[] = JSON.parse(
+    readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8"),
+  ).site.links;
+  await expect(contacts).toHaveCount(links.length);
+  for (const link of links)
+    await expect(contacts.filter({ hasText: "" }).and(page.locator(`[href="${link.url}"]`))).toHaveCount(1);
+});
