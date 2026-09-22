@@ -4,6 +4,28 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Anthropic — Tool use](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview) | Tool use overview covering tool definitions with name/description/input schema and the client-side execution loop that returns tool results to the model | Establish the model-proposes/application-executes control flow and the structure of a tool contract. |
+| [OpenAI — Function Calling](https://help.openai.com/en/articles/8555517-function-calling-in-the-openai-api) | Function Calling overview and Structured Outputs note describing schema-constrained function arguments with strict mode | Show schema-constrained model output while keeping application validation/execution as a separate responsibility. |
+| [Writing effective tools for agents — with agents](https://www.anthropic.com/engineering/writing-tools-for-agents) | Sections "Running an evaluation", "Choosing the right tools for agents", "Returning meaningful context from your tools", "Optimizing tool responses for token efficiency", and "Prompt-engineering your tool descriptions" | Connect tool-surface design, descriptions, result shaping, token efficiency, and raw-trace evaluation. |
+| [Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) | Sections "Reducing client complexity with idempotent API design" and "Retries and semantic equivalence" | Make timeout/retry behavior safe for mutating operations through explicit idempotency semantics. |
+| [Designing AI agents to resist prompt injection](https://openai.com/index/designing-agents-to-resist-prompt-injection/) | Guidance on designing agent/tool boundaries so untrusted model-controlled content cannot directly authorize privileged actions | Reinforce that security policy and approval remain deterministic application controls even when the model chooses or parameterizes tools. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `systems.api-service-design` | [Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) | Sections "Reducing client complexity with idempotent API design" and "Retries and semantic equivalence" | Patch the API contract, error, retry, and idempotency reasoning required for safe tool execution without requiring the full API/service-design curriculum. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 A model can propose a tool call. Your application is still responsible for deciding what is valid, allowed, retryable, and safe to execute.
