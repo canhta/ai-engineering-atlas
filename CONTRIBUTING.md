@@ -151,6 +151,19 @@ make check
 
 before opening a PR.
 
+## Setup
+
+```bash
+pip install -r requirements-dev.txt   # Python checks and the git hooks
+make hooks                            # formatters on commit, `make check` on push
+cd site && pnpm install               # only for work on the web atlas
+```
+
+`make hooks` is worth the one minute: without it, a change that leaves `curriculum/STATUS.md` or
+`site/src/data/atlas.json` stale, or a file the formatter would rewrite, only fails later in CI.
+Regenerate with `python scripts/render_status.py --write` and `python scripts/build_site_data.py --write`,
+and format with `make format`.
+
 For curriculum release semantics, see [docs/VERSIONING.md](docs/VERSIONING.md).
 
 ## Writing and layout
