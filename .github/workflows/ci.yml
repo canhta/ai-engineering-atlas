@@ -116,6 +116,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install CPython browser-lab dependencies
+        run: python -m pip install -r requirements-labs.txt
+
       - name: Browser labs under Pyodide match CPython
         run: pnpm run test:labs
 

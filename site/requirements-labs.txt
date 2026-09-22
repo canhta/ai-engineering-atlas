@@ -1,0 +1,3 @@
+# CPython dependencies needed by browser-lab parity tests.
+# Keep this aligned with packages declared in labs/*/lab.yaml browser.packages.
+numpy>=2,<3
