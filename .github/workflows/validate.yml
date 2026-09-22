@@ -25,3 +25,6 @@ jobs:
 
       - name: Validate internal links
         run: python scripts/validate_links.py
+
+      - name: Validate lab reference contracts
+        run: python scripts/validate_labs.py

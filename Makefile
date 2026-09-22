@@ -7,4 +7,7 @@ status:
 links:
 	python scripts/validate_links.py
 
-check: validate status links
+labs:
+	python scripts/validate_labs.py
+
+check: validate status links labs
