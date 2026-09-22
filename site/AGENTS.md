@@ -41,6 +41,11 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 - To show a new content field, add a block to `presentation.yaml`; do not special-case it in the site. Unknown block types render as `data`.
 - Pages exist only where an item has `page` (competencies: `page_when` on status). Items without a page render as list entries.
 
+## Tests
+
+- Browser tests read counts, task numbers, and source counts from `src/data/atlas.json`; never type a number such as "19 of 116" into a test. The curriculum grows, and a pinned count fails on the next route promotion instead of on a regression.
+- Every test fails on a console error, an uncaught exception, or a CSP violation.
+
 ## Learner state
 
 - Progress follows [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md): a state changes only through an evidence record. Opening a source, scrolling, or AI output leaves state unchanged.

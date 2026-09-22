@@ -23,7 +23,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm run preview",
+    // Build first: the preview serves `dist/`, and a stale bundle fails tests that read the content model.
+    command: "pnpm run build && pnpm run preview",
     url: `${base}/en/`,
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,

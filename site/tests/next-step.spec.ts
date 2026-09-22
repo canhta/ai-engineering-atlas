@@ -63,7 +63,7 @@ test("an imported progress.yaml: Home leads with the due check, Progress leaves 
 
   await open(page, "/en/routes/ai.model-selection/");
   await expect(page.locator("aside.field-log .log-advice")).toHaveText(
-    "Recommended next (4 of 5). Ready to start: nothing needs learning first.",
+    /^Recommended next \(\d+ of \d+\)\. Ready to start: nothing needs learning first\.$/,
   );
 
   await open(page, "/en/routes/retrieval.search/");

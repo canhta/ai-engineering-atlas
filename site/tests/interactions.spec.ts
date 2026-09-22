@@ -2,6 +2,25 @@ import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 
 const ROUTE = "/en/routes/ai.tool-calling/";
+const ROUTE_REF = "ai.tool-calling";
+
+// Counts come from the content model, never typed in: the curriculum grows, and a test that
+// pins "19 of 116" fails on the next route promotion rather than on a real regression.
+type Model = {
+  collections: { id: string; page_when?: unknown; progress?: { tracks?: boolean } }[];
+  items: Record<
+    string,
+    { id: string; page?: { blocks: { id: string; type: string; tasks?: unknown[]; rows?: unknown[] }[] } }[]
+  >;
+};
+const model: Model = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8"));
+const tracked = model.collections.find((c) => c.progress?.tracks)!;
+const trackedItems = model.items[tracked.id];
+const TOTAL = trackedItems.length;
+const READY = trackedItems.filter((i) => i.page).length;
+const routeBlocks = trackedItems.find((i) => i.id === ROUTE_REF)!.page!.blocks;
+const TASKS = (routeBlocks.find((b) => b.type === "diagnostic")?.tasks ?? []).length;
+const SOURCES = (routeBlocks.find((b) => b.id === "sources")?.rows ?? []).length;
 
 /** Wait until every island on the page has hydrated (Astro removes the `ssr` attribute). */
 async function hydrated(page: Page) {
@@ -42,24 +61,24 @@ async function recordEvidence(page: Page, note: string) {
 
 test("atlas search and filters dim the plate and announce the count", async ({ page }) => {
   await open(page, "/en/map/");
-  await expect(count(page)).toHaveText("Showing 116 of 116");
+  await expect(count(page)).toHaveText(`Showing ${TOTAL} of ${TOTAL}`);
 
   await page.getByLabel("Search competencies").fill("retrieval");
-  await expect(count(page)).not.toHaveText("Showing 116 of 116");
+  await expect(count(page)).not.toHaveText(`Showing ${TOTAL} of ${TOTAL}`);
   await expect(tile(page, "retrieval.search")).not.toHaveClass(/is-dim/);
   await expect(tile(page, "software.testing")).toHaveClass(/is-dim/);
 
   await page.getByText("Ready routes only").click();
   await expect(page).toHaveURL(/ready=1/);
   await page.getByRole("button", { name: "Clear filters" }).first().click();
-  await expect(count(page)).toHaveText("Showing 116 of 116");
+  await expect(count(page)).toHaveText(`Showing ${TOTAL} of ${TOTAL}`);
   await expect(page).not.toHaveURL(/ready=1/);
 });
 
 test("?ready=1 starts with ready routes only; nothing matching shows the empty state", async ({ page }) => {
   await open(page, "/en/map/?ready=1");
   await expect(page.getByRole("checkbox", { name: "Ready routes only" })).toBeChecked();
-  await expect(count(page)).toHaveText(/^Showing 19 of 116$/);
+  await expect(count(page)).toHaveText(`Showing ${READY} of ${TOTAL}`);
   await page.getByLabel("Search competencies").fill("zzzz");
   await expect(page.getByText("No competency matches these filters.")).toBeVisible();
 });
@@ -129,7 +148,7 @@ test("home tiles lead to the atlas drawer", async ({ page }) => {
 
 test("diagnostic: one task per card, then the pass condition, record a gap", async ({ page }) => {
   await open(page, ROUTE);
-  await expect(page.getByText("Task 1 of 4")).toBeVisible();
+  await expect(page.getByText(`Task 1 of ${TASKS}`)).toBeVisible();
   await expect(page.getByRole("heading", { name: "Pass condition" })).toHaveCount(0);
 
   await expect(page.getByRole("button", { name: "Next task" })).toBeDisabled();
@@ -139,11 +158,11 @@ test("diagnostic: one task per card, then the pass condition, record a gap", asy
   await page.reload();
   await hydrated(page);
   await expect(page.getByRole("textbox", { name: "Your answer to task 1" })).toHaveValue("answer 1");
-  await expect(rail(page).getByText("1 of 4 answered")).toBeVisible();
+  await expect(rail(page).getByText(`1 of ${TASKS} answered`)).toBeVisible();
 
   for (let n = 1; n < 4; n++) {
     await page.getByRole("button", { name: "Next task" }).click();
-    await expect(page.getByText(`Task ${n + 1} of 4`)).toBeVisible();
+    await expect(page.getByText(`Task ${n + 1} of ${TASKS}`)).toBeVisible();
     await page.getByRole("textbox", { name: `Your answer to task ${n + 1}` }).fill(`answer ${n + 1}`);
   }
   await page.getByRole("button", { name: "Compare with the pass condition" }).click();
@@ -160,7 +179,7 @@ test("opening a source is a personal mark and leaves the state unchanged", async
   const opened = page.getByRole("checkbox", { name: /^Opened / }).first();
   await page.locator(".sources-table .checkbox").first().click();
   await expect(opened).toBeChecked();
-  await expect(rail(page).getByText("1 of 5 opened")).toBeVisible();
+  await expect(rail(page).getByText(`1 of ${SOURCES} opened`)).toBeVisible();
   await page.reload();
   await hydrated(page);
   await expect(opened).toBeChecked();
@@ -175,7 +194,7 @@ test("recorded evidence shows on the route, the progress plate, and the atlas fi
   await expect(rail(page).getByText("Evidence recorded (1)").first()).toBeVisible();
 
   await open(page, "/en/progress/");
-  await expect(page.getByText(/^1 of 19 ready routes demonstrated or beyond$/)).toBeVisible();
+  await expect(page.getByText(`1 of ${READY} ready routes demonstrated or beyond`)).toBeVisible();
   await expect(tile(page, "ai.tool-calling")).toHaveClass(/tile-full/);
   await expect(tile(page, "ai.tool-calling")).toHaveAttribute(
     "aria-label",
@@ -185,7 +204,7 @@ test("recorded evidence shows on the route, the progress plate, and the atlas fi
 
   await open(page, "/en/map/");
   await page.getByRole("combobox", { name: "Your state" }).selectOption("done");
-  await expect(count(page)).toHaveText("Showing 1 of 116");
+  await expect(count(page)).toHaveText(`Showing 1 of ${TOTAL}`);
 });
 
 test("progress exports as progress.yaml and re-imports", async ({ page }, testInfo) => {
@@ -214,7 +233,7 @@ test("progress exports as progress.yaml and re-imports", async ({ page }, testIn
 
 test("Vietnamese pages render the same interactions and mark untranslated text", async ({ page }) => {
   await open(page, "/vi/map/");
-  await expect(count(page)).toHaveText("116/116 kỹ năng");
+  await expect(count(page)).toHaveText(`${TOTAL}/${TOTAL} kỹ năng`);
   await open(page, "/vi/routes/ai.tool-calling/");
   await expect(page.getByText("Câu 1/4")).toBeVisible();
   await expect(page.getByRole("button", { name: "Câu tiếp" })).toBeDisabled();
@@ -352,8 +371,8 @@ test("@mobile filters live in a sheet with a live count", async ({ page }) => {
   const sheet = page.getByRole("dialog", { name: "Filters" });
   await expect(sheet).toBeVisible();
   await sheet.getByText("Ready routes only").click();
-  await sheet.getByRole("button", { name: /^Show 19$/ }).click();
+  await sheet.getByRole("button", { name: `Show ${READY}` }).click();
   await expect(sheet).toBeHidden();
   await expect(page.getByRole("button", { name: "Filters (1)" })).toBeVisible();
-  await expect(count(page)).toHaveText("Showing 19 of 116");
+  await expect(count(page)).toHaveText(`Showing ${READY} of ${TOTAL}`);
 });
