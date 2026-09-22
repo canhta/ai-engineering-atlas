@@ -1,4 +1,7 @@
 validate:
 	python scripts/validate_repo.py
 
-check: validate
+links:
+	python scripts/validate_links.py
+
+check: validate links
