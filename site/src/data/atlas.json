@@ -105,31 +105,36 @@
     "level": {
       "L0": {
         "label": {
-          "en": "awareness"
+          "en": "awareness",
+          "vi": "nhận biết"
         },
         "order": 0
       },
       "L1": {
         "label": {
-          "en": "working-knowledge"
+          "en": "working-knowledge",
+          "vi": "kiến thức làm việc"
         },
         "order": 1
       },
       "L2": {
         "label": {
-          "en": "practical-competence"
+          "en": "practical-competence",
+          "vi": "năng lực thực hành"
         },
         "order": 2
       },
       "L3": {
         "label": {
-          "en": "deep-engineering-competence"
+          "en": "deep-engineering-competence",
+          "vi": "năng lực kỹ thuật chuyên sâu"
         },
         "order": 3
       },
       "L4": {
         "label": {
-          "en": "specialist-depth"
+          "en": "specialist-depth",
+          "vi": "chuyên sâu chuyên gia"
         },
         "order": 4
       }
@@ -938,6 +943,34 @@
               ]
             },
             {
+              "type": "sources",
+              "id": "visual",
+              "title": {
+                "en": "Visual explanation",
+                "vi": "Giải thích trực quan"
+              },
+              "rows": [
+                {
+                  "resource": "visual.3blue1brown-attention",
+                  "locator": {
+                    "en": "Attention lesson"
+                  },
+                  "purpose": {
+                    "en": "Build geometric and token-mixing intuition."
+                  }
+                },
+                {
+                  "resource": "visual.jay-alammar-illustrated-transformer",
+                  "locator": {
+                    "en": "Self-attention section"
+                  },
+                  "purpose": {
+                    "en": "Connect self-attention to the transformer block."
+                  }
+                }
+              ]
+            },
+            {
               "type": "practice",
               "id": "practice",
               "title": {
@@ -954,6 +987,10 @@
                     {
                       "text": {
                         "en": "Trace each intermediate tensor, shape, softmax dimension, and mask operation."
+                      },
+                      "resource": "book.raschka-llm-from-scratch",
+                      "locator": {
+                        "en": "Chapter 3, sections 3.3-3.5 examples"
                       }
                     }
                   ]
@@ -1031,45 +1068,6 @@
               "body": {
                 "en": "Given a non-text sequence such as image patches, explain what self-attention operates on, what remains the same, and whether causal masking is required."
               }
-            },
-            {
-              "type": "data",
-              "id": "learning-route-guided-practice-locator",
-              "title": {
-                "en": "learning_route.guided_practice[].locator"
-              },
-              "value": [
-                "Chapter 3, sections 3.3-3.5 examples"
-              ]
-            },
-            {
-              "type": "data",
-              "id": "learning-route-guided-practice-source",
-              "title": {
-                "en": "learning_route.guided_practice[].source"
-              },
-              "value": [
-                "book.raschka-llm-from-scratch"
-              ]
-            },
-            {
-              "type": "data",
-              "id": "learning-route-visual",
-              "title": {
-                "en": "learning_route.visual"
-              },
-              "value": [
-                {
-                  "source": "visual.3blue1brown-attention",
-                  "locator": "Attention lesson",
-                  "purpose": "Build geometric and token-mixing intuition."
-                },
-                {
-                  "source": "visual.jay-alammar-illustrated-transformer",
-                  "locator": "Self-attention section",
-                  "purpose": "Connect self-attention to the transformer block."
-                }
-              ]
             }
           ]
         }
@@ -7147,6 +7145,18 @@
       "type": "standard",
       "author": "OWASP Gen AI Security Project",
       "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    "visual.3blue1brown-attention": {
+      "title": "Attention in Transformers, Step-by-Step",
+      "type": "visual",
+      "author": "3Blue1Brown",
+      "url": "https://www.3blue1brown.com/lessons/attention/"
+    },
+    "visual.jay-alammar-illustrated-transformer": {
+      "title": "The Illustrated Transformer",
+      "type": "visual",
+      "author": "Jay Alammar",
+      "url": "https://jalammar.github.io/illustrated-transformer/"
     }
   }
 }

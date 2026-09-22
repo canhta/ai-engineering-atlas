@@ -281,7 +281,9 @@
                   "properties": {
                     "text": {"$ref": "#/$defs/l10n"},
                     "ref": {"$ref": "#/$defs/ref"},
-                    "path": {"type": "string", "minLength": 1}
+                    "path": {"type": "string", "minLength": 1},
+                    "resource": {"$ref": "#/$defs/resourceRef"},
+                    "locator": {"$ref": "#/$defs/l10n"}
                   }
                 }
               }

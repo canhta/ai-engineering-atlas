@@ -16,7 +16,14 @@ locales: [en, vi]
 
 vocabularies:
   domain: {from: "curriculum/manifest.yaml#domains", key: id, label: title}
-  level: {from: "curriculum/manifest.yaml#levels"}
+  level:
+    from: "curriculum/manifest.yaml#levels"
+    values:  # merged onto the manifest entries; English stays from the manifest
+      L0: {label: {vi: nhận biết}}
+      L1: {label: {vi: kiến thức làm việc}}
+      L2: {label: {vi: năng lực thực hành}}
+      L3: {label: {vi: năng lực kỹ thuật chuyên sâu}}
+      L4: {label: {vi: chuyên sâu chuyên gia}}
   status:
     values:
       ready: {label: {en: ready, vi: sẵn sàng}}
@@ -79,13 +86,18 @@ collections:
         type: sources
         row: {resource: source, locator: locator, purpose: purpose}
         title: {en: Learning route, vi: Lộ trình học}
+      - id: visual
+        field: learning_route.visual
+        type: sources
+        row: {resource: source, locator: locator, purpose: purpose}
+        title: {en: Visual explanation, vi: Giải thích trực quan}
       - id: practice
         field: learning_route
         type: practice
         groups:
           - {field: guided_practice, label: {en: Guided, vi: Có hướng dẫn}}
           - {field: independent_practice, label: {en: Independent, vi: Tự làm}}
-        item: {text: task, path: artifact}
+        item: {text: task, path: artifact, resource: source, locator: locator}
         title: {en: Practice, vi: Thực hành}
       - {id: experiments, field: experiments, type: list, title: {en: Experiments, vi: Thí nghiệm}}
       - {id: exit-evidence, field: exit_evidence, type: list, title: {en: Exit evidence, vi: Bằng chứng đầu ra}}

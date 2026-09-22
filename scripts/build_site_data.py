@@ -292,6 +292,10 @@ def block_practice(spec, value, content, ctx):
                 ref = ctx.resolver.path_ref(path)
                 if ref:
                     item["ref"] = ref
+            if "resource" in mapping and entry.get(mapping["resource"]) is not None:
+                item["resource"] = ctx.resource(entry[mapping["resource"]])
+            if "locator" in mapping and entry.get(mapping["locator"]) is not None:
+                item["locator"] = ctx.text(entry[mapping["locator"]], f"{field}.{group['field']} locator")
             items.append(item)
         if items:
             groups.append({"label": group["label"], "items": items})
@@ -410,7 +414,7 @@ class Resolver:
 def build_vocabularies(config: dict) -> dict:
     vocabularies = {}
     for name, spec in config.items():
-        if "values" in spec:
+        if "from" not in spec:
             entries = {
                 value: {**entry, "order": entry.get("order", index)}
                 for index, (value, entry) in enumerate(spec["values"].items())
@@ -427,6 +431,14 @@ def build_vocabularies(config: dict) -> dict:
                     errors.append(f"vocabulary '{name}': value '{value}' has no English label in {spec['from']}")
                     label = en(value)
                 entries[str(value)] = {"label": label, "order": index}
+            # `values` next to `from` overrides per value; labels merge per locale.
+            for value, override in (spec.get("values") or {}).items():
+                if value not in entries:
+                    errors.append(f"vocabulary '{name}': override for unknown value '{value}'")
+                    continue
+                entry = entries[value]
+                for key, inner in override.items():
+                    entry[key] = {**entry[key], **inner} if key == "label" else inner
         vocabularies[name] = entries
     return vocabularies
 
