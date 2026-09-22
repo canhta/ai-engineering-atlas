@@ -1,0 +1,99 @@
+id: agents.memory
+title: Agent Memory
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Cross-session memory can improve continuity and personalization, but uncontrolled retention creates stale facts, harmful recall, privacy and isolation failures, and context noise. Engineers need explicit admission, retrieval, provenance, lifecycle, and evaluation policies.
+curriculum_evidence:
+  - docs.google-adk-session-state-memory
+  - docs.google-adk-memory
+  - article.anthropic-context-engineering
+  - docs.langgraph-persistence
+  - paper.memgpt
+prerequisites:
+  - agents.state
+  - ai.context-engineering
+  - ai.evaluation
+outcomes:
+  - Distinguish execution state, current context, session history, product corpus retrieval, and long-term agent memory.
+  - Justify why a piece of information should be persisted across sessions instead of retained only in current context or recomputed.
+  - Define memory scope, schema, provenance, timestamps or freshness, write admission, and retrieval rules.
+  - Choose a storage and retrieval mechanism from the memory type rather than defaulting to vector search.
+  - Retrieve memories selectively in a new session and project only relevant memories into current context.
+  - Measure whether memory improves the target task relative to a no-memory baseline.
+  - Detect irrelevant, stale, conflicting, false, or incorrectly scoped memories.
+  - Support correction, update, and deletion or forgetting behavior.
+  - Prevent cross-user, cross-workspace, or cross-scope leakage where identities exist.
+  - Reject memory complexity when measured benefit does not justify cost or harmful recall.
+diagnostic:
+  tasks:
+    - Classify examples such as current workflow step, user preference, retrieved document chunk, durable project convention, and raw transcript as state, memory candidate, context candidate, corpus data, or neither.
+    - Define a write/admission policy for one cross-session Knowledge Assistant memory use case.
+    - Explain how stale, conflicting, corrected, and deleted memories should behave on a later session.
+    - Design a no-memory versus memory evaluation that can reveal both benefit and harmful recall.
+  pass_condition: Skip introductory material only if the learner can define a scoped memory lifecycle, evaluate it across sessions, and reject unbounded retention or unvalidated recall.
+learning_route:
+  mental_model:
+    - source: docs.google-adk-session-state-memory
+      locator: Section "Core Concepts", especially Session, State, and Memory
+      purpose: Establish the distinction between single-thread history/state and searchable information spanning past sessions.
+    - source: docs.google-adk-memory
+      locator: Sections "Memory: Long-term knowledge with MemoryService" and "The MemoryService role"
+      purpose: Study explicit memory ingestion and later search as a concrete cross-session memory interface.
+    - source: article.anthropic-context-engineering
+      locator: Section "Context engineering for long-horizon tasks", especially "Structured note-taking"
+      purpose: Separate persistent external notes or memory from the smaller subset loaded into the current context.
+    - source: docs.langgraph-persistence
+      locator: Persistence overview and the "Checkpointer vs. store" distinction
+      purpose: Compare thread-scoped checkpoint state with application-defined storage that can span threads.
+    - source: paper.memgpt
+      locator: Sections 1 "Introduction", 2 "MemGPT (MemoryGPT)", 2.1 "Main context (prompt tokens)", 2.2 "Queue Manager", 3.1 "MemGPT for conversational agents", and 3.1.1 "Deep memory retrieval task"
+      purpose: Study finite current context versus persistent external storage and the need to evaluate retrieval of older information without adopting the architecture as a default.
+  guided_practice:
+    - task: Review ten pieces of information from the Knowledge Assistant and decide which should be forgotten, remain session-local, enter product corpus storage, or become a scoped long-term memory; justify each admission decision.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/state-and-memory/
+      task: Add one justified cross-session memory use case, compare no-memory with at least two memory policies, and test stale, conflicting, correction, deletion, and isolation behavior.
+experiments:
+  - Compare no memory, simple structured memory, and an alternative write/read policy on the same cross-session cases.
+  - Inject an irrelevant memory and measure whether it is incorrectly retrieved or influences the answer.
+  - Age or supersede a memory and test freshness/conflict behavior.
+  - Correct and delete a memory, then verify later sessions do not continue using the obsolete value.
+  - Attempt cross-user or cross-scope retrieval where identity exists.
+  - Compare a simple keyed lookup with semantic retrieval when the memory type supports both.
+exit_evidence:
+  - A versioned memory schema defines scope, provenance, timestamps or freshness, and content type.
+  - Write or admission criteria explicitly reject information that should not be persisted.
+  - Retrieval criteria explain when memory is searched and when candidates enter model context.
+  - Multi-session evaluation preserves a no-memory baseline and compares at least two memory policies.
+  - Task benefit is reported together with harmful or irrelevant recall, latency, and context/token cost.
+  - Stale and conflicting memories are tested.
+  - Correction or update and deletion or forgetting are verified in later sessions.
+  - Cross-user or cross-scope isolation is tested where identity exists.
+  - A context-projection trace shows exactly which memories influenced the model call.
+  - The final decision records whether memory is worth keeping for this product need.
+transfer:
+  task: Redesign the memory policy for a different application whose retention, scope, privacy, or freshness requirements differ materially.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.google-adk-session-state-memory
+    - docs.google-adk-memory
+    - article.anthropic-context-engineering
+    - docs.langgraph-persistence
+    - paper.memgpt
+  assessment:
+    - paper.memgpt
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
