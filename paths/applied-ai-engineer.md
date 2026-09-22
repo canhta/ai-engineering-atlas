@@ -73,13 +73,15 @@ Build capability in:
 - model selection;
 - prompting;
 - [context engineering](../curriculum/07-ai-engineering/context-engineering/);
-- structured outputs;
+- [structured outputs](../curriculum/07-ai-engineering/structured-outputs/);
 - [tool calling](../curriculum/07-ai-engineering/tool-calling/);
-- uncertainty and abstention.
+- [uncertainty and abstention](../curriculum/07-ai-engineering/uncertainty-abstention-trust/).
 
 The learner should be able to justify why a chosen pattern is simpler or better than an alternative.
 
 For context and tools, preserve the same evaluation lineage from the Knowledge Assistant: first prove what information belongs in context, then add external actions behind deterministic application controls before considering agentic autonomy.
+
+Before increasing autonomy further, make the response contract explicit and measure when the system should answer versus abstain or fall back. Treat schema validity and confidence-like signals as evidence inputs, not as proof of correctness.
 
 ## Phase E — retrieval and RAG
 
