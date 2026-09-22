@@ -1,0 +1,97 @@
+id: agents.state
+title: Agent State
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Multi-step and interruptible agent workflows need explicit durable execution state so they can resume correctly after failures, avoid duplicated side effects, and project only the state needed for the next model call.
+curriculum_evidence:
+  - docs.google-adk-session-state-memory
+  - docs.google-adk-state
+  - docs.langgraph-thinking-state
+  - docs.temporal-overview
+  - article.anthropic-long-running-harnesses
+prerequisites:
+  - agents.deterministic-vs-agentic
+  - ai.context-engineering
+outcomes:
+  - Distinguish durable execution state, current model context, event history, external environment state, observability data, and long-term memory.
+  - Define an explicit serializable state schema instead of relying on conversation text as implicit control state.
+  - Identify persisted values, derived values, and values that should not be stored.
+  - Define legal state transitions, terminal states, and meaningful checkpoint or event boundaries.
+  - Resume after interruption or process loss from durable state rather than restarting the workflow.
+  - Prevent completed side effects from being duplicated after replay or resume.
+  - Use durable run or correlation identifiers to connect state transitions and external actions.
+  - Inspect checkpoint or event history to explain how a run reached its current state.
+  - Version state and handle one compatible or breaking state-schema change.
+  - Project only the state required for the next inference into model context.
+diagnostic:
+  tasks:
+    - For a multi-step Knowledge Assistant workflow, classify each piece of information as execution state, event history, current model context, observability data, external environment state, or long-term memory.
+    - Define a state transition table and identify where a durable checkpoint belongs.
+    - Explain how the workflow resumes after a crash that occurs after an external side effect succeeds but before the next model call.
+    - Explain why rereading the transcript is not a sufficient recovery contract.
+  pass_condition: Skip introductory material only if the learner can design explicit resumable state, choose checkpoint boundaries, and prevent duplicate side effects under replay.
+learning_route:
+  mental_model:
+    - source: docs.google-adk-session-state-memory
+      locator: Section "Core Concepts", especially the distinction among Session, State, and Memory
+      purpose: Establish a clean boundary between one conversation thread, mutable session state, and cross-session memory.
+    - source: docs.google-adk-state
+      locator: Sections "What is session.state?", "Key Characteristics of State", and "How State is Updated: Recommended Methods"
+      purpose: Study serializable mutable state and tracked state updates as one concrete implementation model.
+    - source: docs.langgraph-thinking-state
+      locator: Sections "Step 3: Design your state", "What belongs in state?", "Keep state raw, format prompts on-demand", the interrupt/checkpointer example, and "Advanced considerations — Node granularity trade-offs"
+      purpose: Learn to keep raw execution data in state, derive prompt/context views on demand, and connect checkpoint granularity to recovery behavior.
+    - source: docs.temporal-overview
+      locator: Documentation overview describing durable execution and resuming where execution left off after crashes, network failures, or infrastructure outages
+      purpose: Ground recovery semantics in a production durable-execution model without requiring Temporal.
+    - source: article.anthropic-long-running-harnesses
+      locator: Sections "The long-running agent problem", "Incremental progress", and "Getting up to speed"
+      purpose: See why context compaction alone is insufficient and how durable progress artifacts allow fresh contexts to continue work.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant tool workflow and rewrite its implicit progress as an explicit state schema plus transition table.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/state-and-memory/
+      task: Add durable state to an interruptible multi-step Knowledge Assistant workflow, inject a crash after a completed step, then resume without duplicating the completed side effect.
+experiments:
+  - Crash the workflow after an external action succeeds but before the following step and verify resume behavior.
+  - Move a checkpoint boundary and measure repeated work or duplicate-side-effect risk.
+  - Remove a derived field from persisted state and verify it can be reconstructed safely.
+  - Inject stale, corrupt, or incompatible state and verify detection and recovery behavior.
+  - Migrate one persisted state schema and exercise an in-flight old-version run.
+exit_evidence:
+  - A versioned state schema distinguishes persisted, derived, and intentionally unstored values.
+  - A transition table or equivalent defines legal transitions and terminal states.
+  - Durable checkpoint or event boundaries are explicit.
+  - An injected interruption resumes from persisted state rather than restarting the whole workflow.
+  - Replay or resume does not duplicate a previously completed side effect.
+  - Correlation or idempotency identifiers connect persisted state to external actions where needed.
+  - One stale, corrupt, or incompatible-state case is handled explicitly.
+  - One state-schema migration decision covers existing persisted runs.
+  - The learner explains why transcript-only continuity is insufficient for this workflow.
+transfer:
+  task: Redesign the state and recovery contract for a different interruptible workflow whose side effects and checkpoint costs differ from the Knowledge Assistant.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.google-adk-session-state-memory
+    - docs.google-adk-state
+    - docs.langgraph-thinking-state
+    - docs.temporal-overview
+    - article.anthropic-long-running-harnesses
+  production-reference:
+    - docs.temporal-overview
+    - article.anthropic-long-running-harnesses
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
