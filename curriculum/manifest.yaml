@@ -1,0 +1,47 @@
+version: 0.1.0
+name: AI Engineering Atlas
+repository: canhta/ai-engineering-atlas
+learning_model: gap-driven
+levels:
+  L0: awareness
+  L1: working-knowledge
+  L2: practical-competence
+  L3: deep-engineering-competence
+  L4: specialist-depth
+domains:
+  - id: software-engineering
+    path: curriculum/01-software-engineering
+    target: L2
+  - id: systems
+    path: curriculum/02-systems
+    target: L2
+  - id: data-engineering
+    path: curriculum/03-data-engineering
+    target: L1-L2
+  - id: ml-foundations
+    path: curriculum/04-ml-foundations
+    target: L1-L2
+  - id: deep-learning
+    path: curriculum/05-deep-learning
+    target: L2
+  - id: llm-foundations
+    path: curriculum/06-llm-foundations
+    target: L2-L3
+  - id: ai-engineering
+    path: curriculum/07-ai-engineering
+    target: L2-L3
+  - id: agents
+    path: curriculum/08-agents
+    target: L2-L3
+  - id: production-ai
+    path: curriculum/09-production-ai
+    target: L3
+  - id: security-governance
+    path: curriculum/10-security-governance
+    target: L2
+  - id: multimodal
+    path: curriculum/11-multimodal
+    target: L1-L2
+  - id: specializations
+    path: curriculum/12-specializations
+    target: optional
