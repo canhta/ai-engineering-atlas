@@ -2,8 +2,9 @@
 import { Font } from "astro:assets";
 import "../styles/tokens.css";
 import "../styles/base.css";
+import "../styles/islands.css";
 import { languages, useTranslations, type Lang } from "../i18n";
-import { homeUrl, mapUrl, switchLang } from "../lib/urls";
+import { homeUrl, mapUrl, progressUrl, switchLang } from "../lib/urls";
 import { REPO_URL } from "../lib/atlas";
 
 interface Props {
@@ -19,6 +20,7 @@ const path = Astro.url.pathname;
 const navItems = [
   { href: homeUrl(lang), label: t("nav.home") },
   { href: mapUrl(lang), label: t("nav.map") },
+  { href: progressUrl(lang), label: t("nav.progress") },
 ];
 ---
 

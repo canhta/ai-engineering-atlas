@@ -1,0 +1,18 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ProgressDashboard from "../../../components/react/ProgressDashboard";
+import { langPaths, useTranslations, type Lang } from "../../../i18n";
+import { competencies, readyCompetencies } from "../../../lib/atlas";
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const titles = Object.fromEntries(competencies.map((c) => [c.id, c.title]));
+---
+
+<Base lang={lang} title={t("progress.title")}>
+  <h1>{t("progress.title")}</h1>
+  <p class="reading">{t("progress.intro")}</p>
+  <ProgressDashboard client:load lang={lang} titles={titles} readyIds={readyCompetencies.map((c) => c.id)} />
+</Base>

@@ -18,4 +18,15 @@ git apply .claude/skills/atlas-ui-review/evals/01-muted-contrast.patch
 git apply -R .claude/skills/atlas-ui-review/evals/01-muted-contrast.patch
 ```
 
+When a run uses an isolated worktree, check out the commit under test first; new worktrees may start from `origin/main`.
+
 Record for each run: defect found (yes/no), rule cited, false findings. Re-run all three after changing SKILL.md, DESIGN.md, or `site/scripts/capture.mjs`.
+
+## Results
+
+| Date | Patch | Run | Defect found | Notes |
+|---|---|---|---|---|
+| 2026-09-22 | 01 | automation only | yes | `check:contrast` failed (dark: 3.65:1, 3.40:1); axe `color-contrast` on all pages |
+| 2026-09-22 | 02 | automation only | yes | horizontal page scroll on every `/vi/` page at 375px |
+| 2026-09-22 | 03 | baseline, no skill | yes | 7 findings; it still read DESIGN.md through `site/AGENTS.md`, so this baseline measures the skill, not the whole harness |
+| 2026-09-22 | 03 | with skill | yes | 2 blockers plus 10 findings, each tied to a DESIGN.md rule; automation passed, the visual review caught it |

@@ -12,7 +12,8 @@ Run from `site/` unless noted.
 |---|---|
 | `pnpm install` | Install; build scripts are allowed only for the packages in `pnpm-workspace.yaml` |
 | `pnpm run dev` | Dev server. Astro's CSP and `_headers` do not apply in dev |
-| `pnpm run check` | Typecheck, style lint, i18n parity, token contrast, headers, build |
+| `pnpm run check` | Typecheck, unit tests, style lint, i18n parity, token contrast, headers, icons, build |
+| `pnpm run test:e2e` | Browser tests of the interactions against the built site (starts `pnpm run preview`) |
 | `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
 | `node scripts/capture.mjs` | With preview running: screenshots (en/vi × light/dark × 375/1280), axe, header and overflow checks |
 | `make site-check` | From the repository root: what CI runs for the site |
@@ -46,6 +47,7 @@ Run from `site/` unless noted.
 
 - Labs run in Pyodide inside a Web Worker. Interrupting code needs `SharedArrayBuffer`, so every page is served with `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`. Any third-party asset must be same-origin or send CORP/CORS headers, or it will fail to load.
 - Browser labs run the same `tests.py` as local labs. A lab change is verified both ways.
+- CSP comes from `astro.config.mjs` (`security.csp`): scripts are hash-only; styles allow `'unsafe-inline'` because React Aria server-renders `style` attributes. Only `pnpm run test:e2e` (real CSP via Wrangler) catches a violation, so run it after adding an island or third-party code.
 
 ## AI tutor and Worker
 

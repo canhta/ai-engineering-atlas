@@ -1,0 +1,539 @@
+/* Styles for React Aria islands. React Aria exposes state as data attributes
+   (data-selected, data-focus-visible, data-disabled, data-expanded). */
+
+.icon {
+  flex: none;
+  vertical-align: -0.125em;
+}
+
+.small {
+  font-size: var(--text-small);
+}
+
+/* Fields */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  font-size: var(--text-ui);
+  color: var(--text);
+  background: var(--bg);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--row-height);
+}
+
+.field textarea {
+  resize: vertical;
+  line-height: var(--leading-ui);
+}
+
+.field [data-disabled],
+.field :disabled {
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0 var(--space-2);
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+.input-row input {
+  border: 0;
+  padding-left: 0;
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+}
+
+.input-row input:focus-visible {
+  outline: none;
+}
+
+.input-row:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.input-row input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Buttons */
+
+.button,
+.icon-button,
+.link-button,
+.domain-trigger {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--row-height);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg-component);
+  color: var(--text);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.button[data-hovered] {
+  background: var(--bg-component-hover);
+}
+
+.button[data-pressed] {
+  background: var(--bg-component-active);
+}
+
+.button.primary {
+  background: var(--action-bg);
+  border-color: var(--action-bg);
+  color: var(--action-text);
+}
+
+.button.primary[data-hovered],
+.button.primary:hover {
+  background: var(--action-bg-hover);
+}
+
+.button[data-disabled],
+.button:disabled {
+  cursor: default;
+  background: var(--bg-subtle);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.button[data-focus-visible],
+.icon-button[data-focus-visible],
+.link-button[data-focus-visible],
+.domain-trigger[data-focus-visible] {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--target-min);
+  min-height: var(--target-min);
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.link-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+}
+
+/* Checkbox and radio */
+
+.checkbox,
+.radio {
+  /* React Aria's hidden input is absolutely positioned; keep it inside the control. */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-min);
+  cursor: pointer;
+  color: var(--text);
+}
+
+.checkbox .box,
+.radio::before {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.radio::before {
+  content: "";
+  border-radius: 50%;
+}
+
+.checkbox[data-selected] .box {
+  background: var(--action-bg);
+  border-color: var(--action-bg);
+  outline: 3px solid var(--bg);
+  outline-offset: -5px;
+}
+
+.radio[data-selected]::before {
+  border: 5px solid var(--action-bg);
+}
+
+.checkbox[data-focus-visible] .box,
+.radio[data-focus-visible]::before {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.checkbox[data-disabled],
+.radio[data-disabled] {
+  cursor: default;
+  color: var(--text-muted);
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-3) 0;
+}
+
+.radio-group > [class*="label"],
+.radio-group > label {
+  font-weight: 500;
+}
+
+/* Status */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.status.coverage {
+  color: var(--text-muted);
+}
+
+.status.ready .icon {
+  color: var(--ready-marker);
+}
+
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.state-gap,
+.state-learning {
+  color: var(--state-gap);
+}
+
+.state-demonstrated {
+  color: var(--state-demonstrated);
+}
+
+.state-transferred,
+.state-retained,
+.state-applied {
+  color: var(--state-beyond);
+}
+
+.status-message:empty {
+  display: none;
+}
+
+.status-message {
+  margin: var(--space-2) 0;
+}
+
+.confirm {
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  max-width: var(--measure);
+}
+
+/* Map explorer */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.filter-bar .field {
+  min-width: 12rem;
+}
+
+.filter-bar .field:first-child {
+  flex: 1 1 16rem;
+}
+
+.results {
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.domain {
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.domain h2,
+.timeline h3 {
+  margin: 0;
+  font-size: var(--text-h2);
+}
+
+.timeline h3 {
+  font-size: var(--text-ui);
+}
+
+.domain-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 3rem;
+  padding: var(--space-2) 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-weight: 600;
+}
+
+.domain-trigger .icon {
+  transform: rotate(-90deg);
+  transition: transform var(--duration) var(--ease);
+}
+
+[data-expanded] > .domain-trigger .icon,
+.domain[data-expanded] .domain-trigger .icon,
+.timeline[data-expanded] .domain-trigger .icon {
+  transform: none;
+}
+
+.domain-trigger .count {
+  font-size: var(--text-small);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.map-table tr.coverage td {
+  color: var(--text-muted);
+}
+
+.map-table .id {
+  display: block;
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+.map-table th:first-child,
+.map-table td:first-child {
+  min-width: 16rem;
+}
+
+.map-table th:nth-child(3) {
+  white-space: nowrap;
+}
+
+.cell-label {
+  display: none;
+}
+
+@media (width < 43.75rem) {
+  .map-table thead {
+    display: none;
+  }
+
+  .map-table tr,
+  .map-table td {
+    display: block;
+  }
+
+  .map-table tr {
+    padding: var(--space-2) 0;
+    border-bottom: var(--border-width) solid var(--border);
+  }
+
+  .map-table td {
+    border: 0;
+    padding: 0;
+  }
+
+  .map-table th:first-child,
+  .map-table td:first-child {
+    min-width: 0;
+  }
+
+  .map-table td:empty {
+    display: none;
+  }
+
+  .cell-label {
+    display: inline;
+    color: var(--text-muted);
+    font-size: var(--text-small);
+  }
+}
+
+/* Route page */
+
+.learner-panel {
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: var(--radius-large);
+  background: var(--bg-subtle);
+}
+
+.panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: var(--text-ui);
+}
+
+.panel-row .button {
+  margin-left: auto;
+}
+
+.next-action {
+  margin: var(--space-2) 0 0;
+}
+
+.evidence-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--border);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-3);
+}
+
+.timeline {
+  margin-top: var(--space-2);
+}
+
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-left: var(--space-6);
+}
+
+.timeline-list li > * {
+  margin-right: var(--space-3);
+}
+
+.timeline-list .note {
+  display: block;
+}
+
+.task-list {
+  padding-left: var(--space-6);
+}
+
+.task-list li {
+  margin-bottom: var(--space-4);
+}
+
+.task-list .reading {
+  margin-bottom: var(--space-2);
+}
+
+.task-list .field {
+  max-width: var(--measure);
+}
+
+.compare {
+  max-width: var(--measure);
+  border-left: 2px solid var(--border-strong);
+  padding-left: var(--space-4);
+}
+
+.compare h3 {
+  margin-top: 0;
+}
+
+.source-table .source {
+  min-width: 14rem;
+}
+
+.external {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--text-muted);
+}
+
+/* Progress */
+
+.state-counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+
+.state-counts li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.progress-dashboard .summary {
+  font-weight: 500;
+}

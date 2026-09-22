@@ -4,8 +4,12 @@
 import Base from "../../../../layouts/Base.astro";
 import ExternalLink from "../../../../components/ExternalLink.astro";
 import StatusLabel from "../../../../components/StatusLabel.astro";
+import DiagnosticCheck from "../../../../components/react/DiagnosticCheck";
+import LearnerPanel from "../../../../components/react/LearnerPanel";
+import SourceTable from "../../../../components/react/SourceTable";
+import type { TargetState } from "../../../../lib/progress";
 import { languages, useTranslations, type Lang } from "../../../../i18n";
-import { competency, labFor, levels, readyCompetencies, repoUrl, routes } from "../../../../lib/atlas";
+import { competency, labFor, levels, readyCompetencies, repoUrl, resolveSource, routes } from "../../../../lib/atlas";
 import { routeUrl } from "../../../../lib/urls";
 
 export function getStaticPaths() {
@@ -21,6 +25,12 @@ const t = useTranslations(lang);
 const en = lang === "en" ? undefined : "en";
 const bridges = route.prerequisite_support ?? {};
 const lab = labFor(route.id);
+const target = (route.target_states.at(-1) ?? "demonstrated") as TargetState;
+const sourceRows = (route.learning_route.mental_model ?? []).map((item) => ({
+  ...resolveSource(item.source),
+  locator: item.locator ?? "",
+  purpose: item.purpose ?? "",
+}));
 const levelName = (levels[route.target_level] ?? "").replaceAll("-", " ");
 ---
 
@@ -35,6 +45,8 @@ const levelName = (levels[route.target_level] ?? "").replaceAll("-", " ");
     </p>
     {en && <p class="untranslated" role="note">{t("translation.missing")}</p>}
   </header>
+
+  <LearnerPanel client:load lang={lang} routeId={route.id} target={target} />
 
   <h2>{t("route.why")}</h2>
   <p class="reading" lang={en}>{route.why}</p>
@@ -79,44 +91,22 @@ const levelName = (levels[route.target_level] ?? "").replaceAll("-", " ");
     {route.outcomes.map((o) => <li>{o}</li>)}
   </ul>
 
-  <h2>{t("route.diagnostic")}</h2>
+  <h2 id="diagnostic">{t("route.diagnostic")}</h2>
   <p class="muted">{t("route.diagnostic.intro")}</p>
-  <ol class="reading" lang={en}>
-    {route.diagnostic.tasks.map((task) => <li>{task}</li>)}
-  </ol>
-  <details class="pass">
-    <summary>{t("route.passCondition")}</summary>
-    <p class="reading" lang={en}>{route.diagnostic.pass_condition}</p>
-  </details>
+  <DiagnosticCheck
+    client:load
+    lang={lang}
+    routeId={route.id}
+    target={target}
+    tasks={route.diagnostic.tasks}
+    passCondition={route.diagnostic.pass_condition}
+  />
 
   <h2 id="learning-route">{t("route.learningRoute")}</h2>
   <p class="muted">{t("route.learningRoute.intro")}</p>
-  <div class="table-scroll" role="region" tabindex="0" aria-labelledby="learning-route">
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">{t("route.col.source")}</th>
-          <th scope="col">{t("route.col.locator")}</th>
-          <th scope="col">{t("route.col.purpose")}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          (route.learning_route.mental_model ?? []).map((item) => (
-            <tr>
-              <td class="source">
-                <ExternalLink source={item.source} lang={lang} />
-              </td>
-              <td lang={en}>{item.locator}</td>
-              <td lang={en}>{item.purpose}</td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </div>
+  <SourceTable client:load lang={lang} routeId={route.id} rows={sourceRows} />
 
-  <h2>{t("route.practice")}</h2>
+  <h2 id="practice">{t("route.practice")}</h2>
   {
     route.learning_route.guided_practice?.length ? (
       <>
@@ -231,27 +221,6 @@ const levelName = (levels[route.target_level] ?? "").replaceAll("-", " ");
   .label {
     font-size: var(--text-small);
     color: var(--text-muted);
-  }
-
-  .pass {
-    max-width: var(--measure);
-    border: var(--border-width) solid var(--border);
-    border-radius: var(--radius);
-    padding: var(--space-2) var(--space-3);
-  }
-
-  .pass summary {
-    cursor: pointer;
-    min-height: var(--target-min);
-    font-weight: 500;
-  }
-
-  .pass p {
-    margin: var(--space-2) 0 0;
-  }
-
-  .source {
-    min-width: 14rem;
   }
 
   .contract {

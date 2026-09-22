@@ -1,159 +1,35 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import StatusLabel from "../../../components/StatusLabel.astro";
+import MapExplorer, { type MapGroup } from "../../../components/react/MapExplorer";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
-import { competencies, competency, domains, routes } from "../../../lib/atlas";
-import { routeUrl } from "../../../lib/urls";
+import { competencies, competency, domains, projects, routes } from "../../../lib/atlas";
 
 export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const englishText = lang === "en" ? undefined : "en";
-const groups = domains.map((d) => {
-  const items = competencies.filter((c) => c.domain === d.id);
-  return { ...d, items, ready: items.filter((c) => c.status === "ready").length };
-});
+const groups: MapGroup[] = domains.map((d) => ({
+  id: d.id,
+  title: d.title,
+  items: competencies
+    .filter((c) => c.domain === d.id)
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      ready: Boolean(routes[c.id]),
+      level: routes[c.id]?.target_level ?? "",
+      prerequisites: (routes[c.id]?.prerequisites ?? []).map((p) => ({
+        id: p,
+        title: competency(p)?.title ?? p,
+        ready: Boolean(routes[p]),
+      })),
+    })),
+}));
+const projectFilters = projects.map((p) => ({ id: p.id, title: p.title, competencies: p.competencies }));
 ---
 
 <Base lang={lang} title={t("map.title")}>
   <h1>{t("map.title")}</h1>
   <p class="reading">{t("map.intro")}</p>
-
-  {
-    groups.map((g) => (
-      <details class="domain" open={g.ready > 0}>
-        <summary>
-          <h2 id={`domain-${g.id}`}>
-            {g.title} <span class="count">{t("map.domainCount", { ready: g.ready, total: g.items.length })}</span>
-          </h2>
-        </summary>
-        <div class="table-scroll" role="region" tabindex="0" aria-labelledby={`domain-${g.id}`}>
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">{t("map.col.competency")}</th>
-                <th scope="col">{t("map.col.status")}</th>
-                <th scope="col">{t("map.col.level")}</th>
-                <th scope="col">{t("map.col.prerequisites")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {g.items.map((c) => {
-                const route = routes[c.id];
-                return (
-                  <tr class:list={[c.status]}>
-                    <td>
-                      {route ? (
-                        <a href={routeUrl(lang, c.id)} lang={englishText}>
-                          {c.title}
-                        </a>
-                      ) : (
-                        <span lang={englishText}>{c.title}</span>
-                      )}
-                      <code class="id">{c.id}</code>
-                    </td>
-                    <td>
-                      <StatusLabel status={c.status} lang={lang} />
-                    </td>
-                    <td>{route?.target_level ?? ""}</td>
-                    <td>
-                      {route?.prerequisites.map((p, i) => (
-                        <>
-                          {i > 0 && ", "}
-                          {routes[p] ? (
-                            <a href={routeUrl(lang, p)} lang={englishText}>
-                              {competency(p)?.title ?? p}
-                            </a>
-                          ) : (
-                            <span class="muted" lang={englishText}>
-                              {competency(p)?.title ?? p}
-                            </span>
-                          )}
-                        </>
-                      ))}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </details>
-    ))
-  }
+  <MapExplorer client:load lang={lang} groups={groups} projects={projectFilters} />
 </Base>
-
-<style>
-  .count {
-    font-size: var(--text-small);
-    font-weight: 400;
-    color: var(--text-muted);
-    margin-left: var(--space-2);
-  }
-
-  tr.coverage td {
-    color: var(--text-muted);
-  }
-
-  td {
-    font-size: var(--text-ui);
-  }
-
-  .id {
-    display: block;
-    font-size: var(--text-small);
-    color: var(--text-muted);
-  }
-
-  th:first-child,
-  td:first-child {
-    min-width: 16rem;
-  }
-
-  .domain {
-    border-bottom: var(--border-width) solid var(--border);
-  }
-
-  .domain summary {
-    cursor: pointer;
-    padding: var(--space-3) 0;
-    min-height: var(--target-min);
-  }
-
-  .domain summary h2 {
-    display: inline;
-    margin: 0;
-  }
-
-  /* Narrow screens: each competency becomes a stacked row instead of a 4-column table. */
-  @media (width < 43.75rem) {
-    thead {
-      display: none;
-    }
-
-    tr,
-    td {
-      display: block;
-    }
-
-    tr {
-      padding: var(--space-2) 0;
-      border-bottom: var(--border-width) solid var(--border);
-    }
-
-    td {
-      border: 0;
-      padding: 0;
-    }
-
-    th:first-child,
-    td:first-child {
-      min-width: 0;
-    }
-
-    td:empty {
-      display: none;
-    }
-  }
-</style>

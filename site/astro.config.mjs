@@ -28,7 +28,9 @@ export default defineConfig({
         "form-action 'self'",
       ],
       scriptDirective: { resources: ["'self'"] },
-      styleDirective: { resources: ["'self'"] },
+      // React Aria server-renders style attributes (e.g. visually hidden inputs); hashes cannot
+      // cover attributes, so styles allow 'unsafe-inline'. Scripts stay hash-only.
+      styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
     },
   },
   fonts: [

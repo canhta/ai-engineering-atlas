@@ -29,7 +29,9 @@ Token values live in code, in `site/src/styles/tokens.css`. This file names role
 
 Fixed section order, generated from `competency.yaml`:
 
-Why → Prerequisites (with bridges) → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer.
+Learner panel → Why → Prerequisites (with bridges) → Outcomes → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer.
+
+- The learner panel shows the learner's state, target, next review, and the only control that changes state: **Record evidence** (kind, the state it supports, independence, reviewer, link, note). The evidence timeline sits below it.
 
 - Learning route is a table: `Source | Exact locator | Why read it | Opened`. "Opened" is a personal checklist and is not progress.
 - External links show the domain and an external-link glyph with visually hidden text "opens external site".
@@ -59,6 +61,8 @@ Why → Prerequisites (with bridges) → Diagnostic → Learning route → Pract
 - The reader's scroll position stays put while text streams.
 
 ### Progress
+
+- The Progress page shows counts by state, the review queue, competencies with evidence, and import/export of `progress.yaml`. Import shows a replace confirmation and lists validation errors.
 
 - Each state has an icon, a text label, and a colour, so no state depends on colour alone. Icons are the registry names of the same state (`unassessed`, `gap`, `learning`, `demonstrated`, `transferred`, `retained`, `applied`).
 - Per competency: evidence timeline (date, kind, `review_method`, `independence`, link).

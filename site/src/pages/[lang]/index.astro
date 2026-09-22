@@ -28,6 +28,7 @@ const englishText = lang === "en" ? undefined : "en";
       })
     }
   </p>
+  <p>{t("home.diagnostic")}</p>
   <p><a href={mapUrl(lang)}>{t("home.start")}</a></p>
 
   <h2>{t("home.ready.title")}</h2>
@@ -35,7 +36,7 @@ const englishText = lang === "en" ? undefined : "en";
   {
     readyByDomain.map((d) => (
       <section>
-        <h3>{d.title}</h3>
+        <h3 lang={englishText}>{d.title}</h3>
         <ul class="route-list">
           {d.items.map((c) => (
             <li>

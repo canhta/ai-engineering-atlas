@@ -63,5 +63,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Typecheck, lint, i18n, contrast, headers, build
+      - name: Typecheck, unit tests, lint, i18n, contrast, headers, icons, build
         run: pnpm run check
+
+      - name: Install Chromium for browser tests
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Browser tests against the built site (real CSP and headers)
+        run: pnpm run test:e2e

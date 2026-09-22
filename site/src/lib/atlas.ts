@@ -51,6 +51,7 @@ export const domains = atlas.domains;
 export const competencies = atlas.competencies as Competency[];
 export const routes = atlas.routes as unknown as Record<string, Route>;
 export const labs = atlas.labs;
+export const projects = atlas.projects;
 export const levels = atlas.levels as Record<string, string>;
 
 const byId = new Map(competencies.map((c) => [c.id, c]));

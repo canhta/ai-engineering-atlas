@@ -15,8 +15,10 @@
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:headers": "node scripts/check-headers.mjs",
-    "check": "astro check && pnpm run lint:styles && pnpm run check:i18n && pnpm run check:contrast && pnpm run check:headers && pnpm run check:icons && astro build",
-    "check:icons": "node scripts/check-icons.mjs"
+    "check": "astro check && pnpm run test && pnpm run lint:styles && pnpm run check:i18n && pnpm run check:contrast && pnpm run check:headers && pnpm run check:icons && astro build",
+    "check:icons": "node scripts/check-icons.mjs",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",
@@ -24,14 +26,17 @@
     "astro": "^7.3.3",
     "react": "^19.3.0",
     "react-aria-components": "^1.21.1",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "ajv": "^8.20.0",
     "postcss-html": "^2.0.0",
     "stylelint": "^17.15.0",
     "typescript": "^6.0.3",

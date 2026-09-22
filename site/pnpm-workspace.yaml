@@ -1,5 +1,7 @@
+# Dependency build scripts. Allowed: native binaries. Denied: Carbon's postinstall only sends
+# IBM telemetry (ibmtelemetry) and is not needed for the icons.
 allowBuilds:
-  '@carbon/icon-helpers': set this to true or false
-  '@carbon/icons-react': set this to true or false
   esbuild: true
   workerd: true
+  '@carbon/icon-helpers': false
+  '@carbon/icons-react': false

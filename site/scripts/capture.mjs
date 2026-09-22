@@ -6,7 +6,7 @@ import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const [baseUrl = "http://127.0.0.1:8787", outDir = "ui-review", ...paths] = process.argv.slice(2);
-const pages = paths.length ? paths : ["/{lang}/", "/{lang}/map/", "/{lang}/routes/ai.tool-calling/"];
+const pages = paths.length ? paths : ["/{lang}/", "/{lang}/map/", "/{lang}/routes/ai.tool-calling/", "/{lang}/progress/"];
 const langs = ["en", "vi"];
 const schemes = ["light", "dark"];
 const widths = [375, 1280];
