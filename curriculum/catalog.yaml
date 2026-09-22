@@ -234,9 +234,9 @@ competencies:
       route: curriculum/08-agents/verification,
     }
   - { id: agents.multi-agent, title: Multi-Agent Systems, domain: agents, status: coverage }
-  - { id: agents.long-running, title: Long-Running Agents, domain: agents, status: coverage }
+  - { id: agents.long-running, title: Long-Running Agents, domain: agents, status: ready, route: curriculum/08-agents/long-running }
   - { id: agents.mcp, title: Model Context Protocol, domain: agents, status: coverage }
-  - { id: agents.orchestration, title: AI Workflow Orchestration, domain: agents, status: coverage }
+  - { id: agents.orchestration, title: AI Workflow Orchestration, domain: agents, status: ready, route: curriculum/08-agents/orchestration }
 
   # Production AI
   - { id: production.architecture, title: AI Production Architecture, domain: production-ai, status: coverage }
