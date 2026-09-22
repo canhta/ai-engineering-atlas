@@ -20,3 +20,25 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+- id: article.anthropic-harness-design-long-running-apps
+    type: article
+    title: Harness design for long-running application development
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/harness-design-long-running-apps
+    roles: [curriculum-evidence, teaching, practice, production-reference]
+    covers: [agents.planning, agents.verification, long-running-agents]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: guide.openai-practical-agents
+    type: guide
+    title: A practical guide to building agents
+    author: OpenAI
+    url: https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [agents.planning, agents.verification, agents.orchestration]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
