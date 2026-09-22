@@ -16,7 +16,6 @@ import {
   headerChips,
   itemUrl,
   langAttr,
-  refOf,
   repoUrl,
   resolveRef,
   stateLabels,
@@ -26,6 +25,8 @@ import {
   type Item,
 } from "../../lib/atlas";
 import { TARGET_STATES, type TargetState } from "../../lib/progress";
+import { refOf } from "../../lib/refs";
+import { nextGraph, nextLinks } from "../../lib/summaries";
 import { mapUrl } from "../../lib/urls";
 
 interface Props {
@@ -76,6 +77,10 @@ const prereqs: PrereqEntry[] =
         };
       })
     : [];
+
+// Next-step line in the field log: the whole graph (ranking needs it) and links for this item's prerequisites.
+const graph = target ? nextGraph() : [];
+const adviceLinks = nextLinks(lang, (graph.find((g) => g.id === ref)?.needs ?? []).map((n) => n.id));
 
 let stepNumber = 0;
 const railEntries: RailEntry[] = blocks.map((b) => {
@@ -159,7 +164,11 @@ const railEntries: RailEntry[] = blocks.map((b) => {
           ))
         }
       </div>
-      {target && <FieldLog client:load lang={lang} itemRef={ref} target={target} stateLabels={stateLabels(lang)} />}
+      {
+        target && (
+          <FieldLog client:load lang={lang} itemRef={ref} target={target} stateLabels={stateLabels(lang)} graph={graph} links={adviceLinks} />
+        )
+      }
     </div>
   </article>
 </Base>

@@ -14,9 +14,10 @@ Run from `site/` unless noted.
 | `pnpm run dev` | Dev server. Astro's CSP and `_headers` do not apply in dev |
 | `pnpm run check` | Typecheck, unit tests (`node --test` for logic, Vitest for the block renderer), style lint, i18n parity, token contrast, headers, icons, content coupling, build |
 | `pnpm run test:e2e` | Browser tests against the built site (starts `pnpm run preview`): desktop at 1440px; tests tagged `@mobile` at 390px |
-| `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
-| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route by default; en/vi × light/dark × 390/1440), axe, header and overflow checks |
+| `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787, or `ATLAS_PORT`) |
+| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route by default; en/vi × light/dark × 390/1440), axe, header and overflow checks. `CAPTURE_PROGRESS=<progress.yaml>` seeds learner progress |
 | `make site-check` | From the repository root: what CI runs for the site |
+| `ATLAS_PORT=8791 …` | Parallel worktrees set `ATLAS_PORT` (default 8787) to a free port; `preview`, the browser tests, and `capture.mjs` read it. Browser tests reuse any server on that port, so check it is free first (`lsof -iTCP:$ATLAS_PORT -sTCP:LISTEN`) |
 
 Deploys run only through the manual **Deploy site** workflow (`.github/workflows/deploy.yml`, Actions → Run workflow). It runs every check and the browser tests before `wrangler deploy`. Do not deploy from a local machine or an agent session.
 
@@ -43,11 +44,13 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 
 - Progress follows [LEARNING_MODEL.md](../LEARNING_MODEL.md): a state changes only through an evidence record. Opening a source, scrolling, or AI output leaves state unchanged.
 - Progress lives in the browser and exports as `progress.yaml` valid against [schemas/progress.schema.json](../schemas/progress.schema.json). Use the schema's existing enum values (`independence: reference-open` for a revealed solution).
+- The next-step rules live only in `src/lib/recommend.ts` (pure, deterministic, tested in `recommend.test.ts`). Pages pass it the graph from `nextGraph()`; the recommendation is advice and never changes a state.
 
 ## Bilingual
 
 - Every UI string key exists in both [src/i18n/en.json](src/i18n/en.json) and `vi.json` with the same `{params}`, and no `vi` value is longer than 1.3 × its `en` value + 12 characters; `pnpm run check:i18n` enforces it.
 - **Any Vietnamese string** → follow [VIETNAMESE_STYLE.md](../VIETNAMESE_STYLE.md): voice, glossary, word choice, punctuation, numbers, and dates. `check:i18n` enforces its mechanical rules.
+- Dates shown to learners go through `formatDate(iso, lang)` in `src/lib/dates.ts` (Intl: dd/mm/yyyy on `/vi/`, "Jan 1, 2026" on `/en/`) inside `<time dateTime={iso}>`. Files keep ISO dates.
 - Curriculum text rendered on a `/vi/` page carries `lang="en"` (WCAG 3.1.2).
 - English contracts are canonical. Vietnamese route text comes only from reviewed `competency.vi.yaml` files; a missing or stale translation shows English with `lang="en"` and the marker "chưa dịch / not yet translated". Machine translation is never rendered.
 - The repository owner reviews Vietnamese before merge.

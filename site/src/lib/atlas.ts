@@ -3,6 +3,7 @@
 // names a curriculum field (scripts/check-content-coupling.mjs enforces this).
 import model from "../data/atlas.json";
 import type { Lang } from "../i18n";
+import { refOf } from "./refs";
 
 // ---------------------------------------------------------------------------------------------
 // Contract types
@@ -164,9 +165,6 @@ export const trackedCollection: Collection = (() => {
   return found;
 })();
 export const trackedItems = itemsOf(trackedCollection.id);
-
-/** Reference string for an item: `<ref_prefix>:<id>`, or the bare id when the collection has no prefix. */
-export const refOf = (c: Collection, item: Item) => (c.ref_prefix ? `${c.ref_prefix}:${item.id}` : item.id);
 
 const byRef = new Map<string, { collection: Collection; item: Item }>();
 for (const c of collections) for (const item of itemsOf(c.id)) byRef.set(refOf(c, item), { collection: c, item });

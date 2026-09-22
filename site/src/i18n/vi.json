@@ -179,5 +179,15 @@
   "drawer.missingTitle": "Không tìm thấy",
   "drawer.missing": "Không có kỹ năng nào có id {id}. Có thể id đã đổi; hãy tìm trong atlas.",
   "storage.blocked": "Trình duyệt đang chặn lưu trữ, tiến độ chỉ còn tới khi bạn rời trang. Xuất file ở trang Tiến độ để giữ lại.",
-  "progress.localNote": "Chỉ lưu trên trình duyệt này. Xuất file để giữ bản sao hoặc chuyển sang máy khác."
+  "progress.localNote": "Chỉ lưu trên trình duyệt này. Xuất file để giữ bản sao hoặc chuyển sang máy khác.",
+  "next.title": "Tiếp theo cho bạn",
+  "next.reason.due": "Đến hạn ôn ngày {date}: làm lại bài kiểm tra đầu vào, không mở tài liệu.",
+  "next.reason.continue": "Đang học dở: học tiếp rồi ghi bằng chứng.",
+  "next.reason.start": "Bắt đầu được ngay: không cần học gì trước.",
+  "next.reason.transfer": "Đã làm được: tiếp theo là bài vận dụng.",
+  "next.reason.apply": "Tiếp theo: dùng kỹ năng này trong một dự án.",
+  "next.recommended": "Nên làm tiếp ({n}/{total}).",
+  "next.blocked": "Học trước:",
+  "next.note": "Tính từ phần cần học trước và trạng thái bạn đã ghi. Chỉ là gợi ý, không đổi trạng thái.",
+  "next.empty": "Chưa có gợi ý: mọi lộ trình đã đạt mục tiêu hoặc đang chờ tới hạn ôn."
 }

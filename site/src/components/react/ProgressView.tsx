@@ -5,12 +5,15 @@ import { useState } from "react";
 import { Button, FileTrigger } from "react-aria-components";
 import { useTranslations, type Lang } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
+import { formatDate } from "../../lib/dates";
 import { fromYaml, isDemonstrated, reviewQueue, STATES, today, toYaml, type Progress, type State } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import type { ItemDetail, RegionData } from "../../lib/summaries";
+import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
+import type { ItemDetail, NextLink, RegionData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
 import { Icon } from "./Icon";
+import NextSteps from "./NextSteps";
 import { StateBadge } from "./StateBadge";
 import { StorageNote } from "./StorageNote";
 
@@ -20,11 +23,13 @@ interface Props {
   regions: RegionData[];
   details: Record<string, ItemDetail>;
   stateLabels: Record<string, string>;
+  graph: GraphItem[];
+  links: Record<string, NextLink>;
 }
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function ProgressView({ lang, atlasUrl, regions, details, stateLabels }: Props) {
+export default function ProgressView({ lang, atlasUrl, regions, details, stateLabels, graph, links }: Props) {
   const t = useTranslations(lang);
   const [progress, saveProgress] = useProgress();
   const [pending, setPending] = useState<Progress | null>(null);
@@ -39,6 +44,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
   for (const ref of readyRefs) counts[stateOfRef(ref)] += 1;
   const queue = progress ? reviewQueue(progress, today()) : { due: [], upcoming: [] };
 
+  const dateCell = (iso: string | undefined, empty: string) => (iso ? <time dateTime={iso}>{formatDate(iso, lang)}</time> : empty);
   const title = (ref: string) => details[ref]?.title ?? { value: ref, lang: "en" as const };
   const link = (ref: string) => {
     const detail = details[ref];
@@ -85,7 +91,9 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           <p className="muted small">{t("progress.mappedNote")}</p>
         </div>
 
-        <section className="progress-queue" aria-labelledby="queue-title">
+        <div className="progress-side">
+          <NextSteps lang={lang} graph={graph} links={links} limit={NEXT_LIMIT} due={false} />
+          <section className="progress-queue" aria-labelledby="queue-title">
           <h2 id="queue-title">{t("progress.queue")}</h2>
           <p className="queue-counts tabular">
             <span>
@@ -105,7 +113,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                     <li key={ref}>
                       {link(ref)}
                       <time className="muted small tabular" dateTime={when}>
-                        {t("progress.dueOn", { date: when ?? "" })}
+                        {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
                       </time>
                       {detail?.href && (
                         <a className="pill pill-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
@@ -124,7 +132,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           ) : (
             <p className="muted">{t("progress.queueEmpty")}</p>
           )}
-        </section>
+          </section>
+        </div>
       </div>
 
       <h2>{t("progress.withEvidence")}</h2>
@@ -160,8 +169,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                   </td>
                   <td>{stateLabels[entry.target_state]}</td>
                   <td className="tabular">{entry.evidence.length}</td>
-                  <td className="tabular">{entry.evidence.at(-1)?.recorded_at ?? ""}</td>
-                  <td className="tabular">{entry.review_on ?? "—"}</td>
+                  <td className="tabular">{dateCell(entry.evidence.at(-1)?.recorded_at, "")}</td>
+                  <td className="tabular">{dateCell(entry.review_on, "—")}</td>
                 </tr>
               ))}
             </tbody>

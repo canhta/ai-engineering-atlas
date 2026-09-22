@@ -9,7 +9,6 @@ import {
   headerChips,
   itemUrl,
   itemsOf,
-  refOf,
   relations,
   relationsTo,
   resolveRef,
@@ -21,6 +20,8 @@ import {
   vocabularyValues,
   type Localized,
 } from "./atlas";
+import { refOf, refPrefix } from "./refs";
+import { graphOf, type GraphItem } from "./recommend";
 
 export interface TileData {
   ref: string;
@@ -101,7 +102,7 @@ export function plateRegions(lang: Lang): RegionData[] {
         maturity: maturityOf(item, lang),
         needs: relationsTo("prerequisite", ref).map((r) => r.from),
         values: Object.fromEntries(Object.keys(c.fields).map((f) => [f, fieldChips(c, item, f, lang).map((chip) => chip.value)])),
-        relatedTo: relations.filter((r) => r.to === ref && others.has(r.from.split(":")[0])).map((r) => r.from),
+        relatedTo: relations.filter((r) => r.to === ref && others.has(refPrefix(r.from))).map((r) => r.from),
         list: (c.list_fields ?? []).map((f) =>
           fieldChips(c, item, f, lang)
             .map((chip) => chip.label.value)
@@ -191,4 +192,28 @@ export function relatedFacets(lang: Lang): RelatedFacetData[] {
         .map((item) => ({ ref: refOf(other, item), title: text(item.title, lang) })),
     }))
     .filter((f) => f.options.length > 0);
+}
+
+/** The tracked collection as the next-step recommendation sees it (src/lib/recommend.ts). */
+export const nextGraph = (): GraphItem[] => graphOf(c, trackedItems, relations);
+
+export interface NextLink {
+  title: Localized;
+  /** The item's page. */
+  href?: string;
+  /** Its diagnostic on the page: where a delayed-retrieval check starts. */
+  check?: string;
+}
+
+/** Titles and links for the given tracked items, or for every item with a page (the only ones recommended). */
+export function nextLinks(lang: Lang, refs?: string[]): Record<string, NextLink> {
+  const links: Record<string, NextLink> = {};
+  for (const item of trackedItems) {
+    const ref = refOf(c, item);
+    const href = itemUrl(lang, ref);
+    if (refs ? !refs.includes(ref) : !href) continue;
+    const diagnostic = item.page?.blocks.find((b) => b.type === "diagnostic");
+    links[ref] = { title: text(item.title, lang), href, check: href && diagnostic ? `${href}#${diagnostic.id}` : href };
+  }
+  return links;
 }

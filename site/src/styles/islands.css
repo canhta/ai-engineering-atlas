@@ -1715,6 +1715,90 @@
   background: var(--sheet);
 }
 
+/* ---------------------------------------------------------------- Next step (Home, Progress, field log) */
+
+.next-steps {
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--line);
+}
+
+.next-steps > p {
+  margin: var(--space-3) 0 0;
+}
+
+.next-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-h3);
+}
+
+.next-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.next-rows li {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--line);
+}
+
+.next-num {
+  grid-row: span 2;
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: var(--leading-heading);
+  color: var(--route);
+  transform: translateY(0.2em);
+}
+
+.next-item {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  justify-self: start;
+  min-height: var(--target-min);
+  font-weight: 550;
+}
+
+.next-item .tile-glyph {
+  flex: none;
+  margin-top: 0.3em;
+}
+
+.next-reason {
+  font-size: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.progress-side {
+  display: grid;
+  gap: var(--space-10);
+}
+
+.progress-side .next-steps {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.progress-side .next-title {
+  font-size: var(--text-h2);
+}
+
+.log-advice {
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+  font-size: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.log-advice strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 /* ---------------------------------------------------------------- Home ready rows */
 
 .ready-group h3 {
