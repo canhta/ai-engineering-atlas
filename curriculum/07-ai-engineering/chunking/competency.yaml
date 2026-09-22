@@ -1,0 +1,68 @@
+id: retrieval.chunking
+title: Chunking
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Chunk boundaries determine what a retriever can find and what evidence reaches generation. Treating chunking as a framework default can hide boundary loss, duplicated context, broad noisy chunks, and corpus-structure mismatch.
+curriculum_evidence:
+  - book.chip-huyen-ai-engineering
+  - paper.maxmin-chunking
+prerequisites:
+  - retrieval.search
+  - ai.embeddings
+  - ai.evaluation
+outcomes:
+  - Explain chunking as a retrieval and index representation decision rather than preprocessing boilerplate.
+  - Compare chunking strategies while keeping the corpus, query set, relevance judgments, retriever, and evaluation definitions controlled.
+  - Measure retrieval effects using ranking/recall evidence alongside latency, index size, and duplicated or wasted context.
+  - Diagnose boundary loss, over-fragmentation, overly broad chunks, excessive overlap, and mismatch with document structure.
+  - Choose a chunking strategy from measured behavior rather than a framework default.
+diagnostic:
+  tasks:
+    - Given long technical documents and a fixed retriever, design a fair experiment comparing three chunking strategies.
+    - Explain how a chunk can improve Recall@K while making supplied context noisier.
+    - Diagnose whether a missed answer is more likely caused by chunk boundaries, the retriever, or the relevance labels.
+  pass_condition: Skip introductory material only if the learner can design and interpret a controlled chunking experiment and explain the retrieval/context trade-offs behind the result.
+learning_route:
+  mental_model:
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 6 "RAG and Agents" → "Retrieval Optimization" (pp. 268-272)
+      purpose: Place data preparation and retrieval optimization inside the RAG pipeline rather than treating chunking as an isolated splitter API.
+    - source: paper.maxmin-chunking
+      locator: Section 4.2 "RAG evaluation"
+      purpose: Study a controlled comparison where multiple chunking methods are evaluated while retrieval and generation components remain consistent; use the experimental pattern, not the proposed algorithm as a default.
+  guided_practice:
+    - task: Take five failed queries from the Knowledge Assistant and predict whether smaller, larger, overlapping, or structure-aware chunks should help before changing the index.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/retrieval-quality/
+      task: Compare at least three sensible chunking configurations on the same corpus/query/evaluation contract and produce a reproducible experiment record plus decision.
+experiments:
+  - Sweep chunk size or boundary strategy while holding the retriever and query set fixed.
+  - Compare overlap against duplicated-context and index-size cost rather than assuming more overlap is better.
+  - Analyze at least one query slice where the aggregate winner is not the best strategy.
+exit_evidence:
+  - Exact splitter configurations and corpus/query-set versions are recorded.
+  - At least three strategies are compared under a controlled evidence contract.
+  - Retrieval metrics and operational/context costs are reported together.
+  - Representative failures are classified by boundary, fragmentation, noise, overlap, or corpus-structure mismatch.
+  - The chosen strategy and rejected alternatives are justified from measured evidence.
+transfer:
+  task: Redesign the chunking experiment for a structurally different corpus such as API docs, support tickets, or legal/policy documents and explain which assumptions from the first corpus no longer hold.
+project_spines:
+  - ai-system
+resources:
+  teaching:
+    - book.chip-huyen-ai-engineering
+    - paper.maxmin-chunking
+  assessment:
+    - paper.maxmin-chunking
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
