@@ -1,7 +1,7 @@
 id: security.prompt-injection
 title: Prompt Injection and Trust Boundaries
 domain: security-governance
-status: seeded
+status: ready
 competency_types:
   - concept
   - engineering-skill

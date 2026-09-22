@@ -1,6 +1,6 @@
 # Model Selection
 
-**Status:** seeded for promotion  
+**Status:** ready  
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 

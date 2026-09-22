@@ -20,3 +20,6 @@ The solution should not be the default learning path. Attempt the task first.
 
 - [Self-Attention](self-attention/)
 - [Evaluation Harness](evaluation-harness/)
+- [Model Selection](model-selection/)
+- [Workflow vs Agent](agentic-design/)
+- [Prompt Injection Trust Boundaries](prompt-injection-boundaries/)

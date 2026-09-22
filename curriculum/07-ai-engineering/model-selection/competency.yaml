@@ -1,7 +1,7 @@
 id: ai.model-selection
 title: Model Selection
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - design-judgment
 target_level: L3

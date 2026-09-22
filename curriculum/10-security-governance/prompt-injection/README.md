@@ -1,6 +1,6 @@
 # Prompt Injection and Trust Boundaries
 
-**Status:** seeded for promotion  
+**Status:** ready  
 **Target:** L2 practical competence  
 **Evidence target:** demonstrated → transferred → applied
 

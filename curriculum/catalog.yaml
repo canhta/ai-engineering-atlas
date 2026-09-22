@@ -65,7 +65,7 @@ competencies:
 
   # Applied AI Engineering
   - {id: ai.product-framing, title: AI Product and Problem Framing, domain: ai-engineering, status: coverage}
-  - {id: ai.model-selection, title: Model Landscape and Selection, domain: ai-engineering, status: coverage}
+  - {id: ai.model-selection, title: Model Selection, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/model-selection}
   - {id: ai.prompt-engineering, title: Prompt Engineering, domain: ai-engineering, status: coverage}
   - {id: ai.context-engineering, title: Context Engineering, domain: ai-engineering, status: coverage}
   - {id: ai.structured-outputs, title: Structured Outputs, domain: ai-engineering, status: coverage}
@@ -93,7 +93,7 @@ competencies:
 
   # Agents
   - {id: agents.fundamentals, title: Agent Fundamentals, domain: agents, status: coverage}
-  - {id: agents.deterministic-vs-agentic, title: Deterministic vs Agentic Design, domain: agents, status: coverage}
+  - {id: agents.deterministic-vs-agentic, title: Deterministic vs Agentic Design, domain: agents, status: ready, route: curriculum/08-agents/deterministic-vs-agentic}
   - {id: agents.state, title: Agent State, domain: agents, status: coverage}
   - {id: agents.memory, title: Agent Memory, domain: agents, status: coverage}
   - {id: agents.planning, title: Planning, domain: agents, status: coverage}
@@ -117,7 +117,7 @@ competencies:
   - {id: production.drift, title: Drift, domain: production-ai, status: coverage}
 
   # Security and Governance
-  - {id: security.prompt-injection, title: Prompt Injection, domain: security-governance, status: coverage}
+  - {id: security.prompt-injection, title: Prompt Injection and Trust Boundaries, domain: security-governance, status: ready, route: curriculum/10-security-governance/prompt-injection}
   - {id: security.data-exfiltration, title: Data Exfiltration, domain: security-governance, status: coverage}
   - {id: security.tool-permissions, title: Tool Permissions, domain: security-governance, status: coverage}
   - {id: security.sandboxing, title: Sandboxing, domain: security-governance, status: coverage}
