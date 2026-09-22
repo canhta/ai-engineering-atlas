@@ -4,6 +4,17 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/) | Chapter 6 "Scoring, term weighting and the vector space model", especially §§6.2-6.3; Chapter 8 "Evaluation in information retrieval", especially ranked-retrieval evaluation | Learn term weighting, query/document vector scoring, ranking, relevance judgments, and retrieval evaluation. |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 6 "RAG and Agents" → "RAG" → "Retrieval Algorithms" (pp. 253-268, especially retrieval algorithms from p. 257) | Place term-based retrieval beside embedding-based retrieval inside modern AI application architecture. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 RAG starts too late in the reasoning process. Before generation, vector databases, or rerankers, you need to know whether a simple retrieval system can find the right evidence and where it fails.
