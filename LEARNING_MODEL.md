@@ -223,3 +223,217 @@ Possible material:
 - a small trace through an algorithm.
 
 The goal is not broad content coverage. The goal is enough structure to reason about the next task.
+
+
+## 6. Guided practice
+
+When prior knowledge is weak, practice may start with:
+
+- worked examples;
+- partially completed code;
+- annotated traces;
+- guided notebooks;
+- small exercises with immediate feedback.
+
+Guidance should fade as competence increases.
+
+## 7. Independent practice
+
+The learner should then solve a task without step-by-step instructions.
+
+Examples:
+
+- implement a simplified attention mechanism;
+- build a lexical + vector retrieval baseline;
+- design retry and idempotency behavior;
+- create an evaluation dataset;
+- add tracing to an agent workflow.
+
+This is the first strong evidence that knowledge has become usable.
+
+## 8. Experiment and debug
+
+Engineering competence requires more than producing a happy-path implementation.
+
+The learner should change, compare, or break the system.
+
+Examples:
+
+- vary chunk size and measure Recall@K;
+- increase sequence length and inspect attention memory;
+- inject a tool timeout into an agent;
+- compare two models on quality, latency, and cost;
+- introduce a stale index and diagnose the retrieval failure.
+
+The learner should make a prediction before running the experiment when practical.
+
+## 9. Exit evidence
+
+A competency is **demonstrated** only when the required evidence is present.
+
+An exit test should be derived from the competency outcomes, not generated arbitrarily.
+
+It may require a combination of:
+
+- explanation;
+- calculation;
+- implementation;
+- debugging;
+- measurement;
+- design choice;
+- production operation.
+
+Passing an exit test does **not** yet mean the capability is retained or transferable.
+
+## 10. Transfer
+
+The learner should solve a related task in a context that was not used during instruction.
+
+Examples:
+
+- after learning attention from text examples, reason about attention in a vision transformer;
+- after building retrieval on documentation, design retrieval for support tickets with ACLs;
+- after evaluating a classifier, design an evaluation strategy for a stochastic agent.
+
+Transfer separates pattern copying from usable understanding.
+
+## 11. Project integration
+
+Important competencies should eventually be used inside a larger system.
+
+A small lab proves a local skill. A project exposes interactions, constraints, and trade-offs between skills.
+
+## 12. Delayed retrieval
+
+Important knowledge should be recalled after a delay rather than only tested immediately after study.
+
+The exact schedule is configurable. A reasonable default for important competencies is to revisit them after roughly:
+
+- one day;
+- one week;
+- one month.
+
+The review should begin with retrieval or a task, not rereading.
+
+## 13. Applied competence
+
+The strongest evidence comes from using the competency to make or improve a real system.
+
+Examples include:
+
+- finding a production failure;
+- choosing between competing designs;
+- reducing latency without harming quality;
+- adding a release gate that catches a regression;
+- changing a retrieval architecture after failure analysis.
+
+---
+
+# Learner states
+
+Progress should not be represented by a single "done" checkbox.
+
+| State | Meaning |
+| --- | --- |
+| unassessed | No meaningful evidence yet |
+| gap | Diagnostic found missing capability |
+| learning | Instruction or guided practice is in progress |
+| demonstrated | Exit evidence was produced successfully |
+| transferred | Capability was used on a sufficiently different task |
+| retained | Capability was retrieved successfully after a delay |
+| applied | Capability was used in an integrated or real system |
+
+These states are evidence states, not badges for time spent.
+
+A competency does not have to reach applied for every learner. Required state depends on the role and target depth.
+
+---
+
+# Competency types and evidence
+
+Different competencies require different forms of proof.
+
+| Competency type | Typical evidence |
+| --- | --- |
+| Concept | explain, distinguish, recall, calculate |
+| Mechanism | trace, visualize, implement, predict behavior |
+| Engineering skill | build, test, debug, modify |
+| System operation | configure, observe, recover, automate |
+| Design judgment | compare alternatives, reason from constraints, defend a choice |
+| Production competency | ship, measure, detect failure, mitigate, rollback or improve |
+
+## Example: cosine similarity
+
+Appropriate evidence:
+
+- explain what the score represents;
+- calculate a simple example;
+- interpret similarities;
+- explain when cosine similarity is insufficient.
+
+A deployment project is unnecessary.
+
+## Example: self-attention
+
+Appropriate evidence:
+
+- explain Q/K/V and scaling;
+- trace tensor shapes;
+- implement simplified causal attention;
+- visualize the matrix;
+- diagnose a masking error;
+- reason about sequence-length cost.
+
+## Example: retrieval-augmented generation
+
+Appropriate evidence:
+
+- construct a baseline;
+- evaluate retrieval separately from generation;
+- analyze false positives and misses;
+- compare chunking or retrieval strategies;
+- handle update, deletion, provenance, or access constraints.
+
+## Example: production AI
+
+Appropriate evidence:
+
+- deploy a service;
+- collect useful traces and metrics;
+- define a release gate;
+- simulate or analyze a failure;
+- degrade or roll back safely.
+
+---
+
+# Mastery model
+
+The roadmap should separate several questions that are often collapsed into "Do I know this?"
+
+~~~text
+Can I recognize it?
+Can I explain it?
+Can I perform it?
+Can I diagnose it?
+Can I use it in a new context?
+Can I still do it later?
+Can I use it inside a real system?
+~~~
+
+A competency's required depth should specify which of these are necessary.
+
+~~~text
+L1 working knowledge
+→ explain + distinguish
+
+L2 practical competence
+→ explain + perform + diagnose
+
+L3 deep engineering competence
+→ perform + diagnose + transfer + design under constraints
+
+L4 specialist depth
+→ reproduce, optimize, extend, or teach the mechanism
+~~~
+
+Retention and applied evidence are tracked separately because a learner may demonstrate L2 today and still fail delayed retrieval later.
