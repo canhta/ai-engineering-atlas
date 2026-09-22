@@ -9,7 +9,7 @@ milestones:
   - chunking-quality
   - hybrid-and-reranking
   - rag
-  - evaluation-harness
+  - rag-evaluation
   - data-lifecycle
   - tool-or-agent-workflow
   - service-and-observability
