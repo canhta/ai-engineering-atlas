@@ -11,6 +11,7 @@ milestones:
   - rag
   - rag-evaluation
   - data-lifecycle
+  - context-policy
   - tool-or-agent-workflow
   - service-and-observability
   - release-gate
@@ -25,6 +26,8 @@ competencies:
   - retrieval.reranking
   - retrieval.rag-evaluation
   - ai.evaluation
+  - ai.context-engineering
+  - ai.tool-calling
   - agents.deterministic-vs-agentic
   - security.prompt-injection
 evidence:
@@ -35,6 +38,9 @@ evidence:
   - chunking-comparison
   - reranking-comparison
   - rag-evaluation-record
+  - context-experiment
+  - tool-contract
+  - tool-use-evaluation
   - decision-records
   - traces
   - security-tests
