@@ -1,0 +1,74 @@
+id: retrieval.rag-evaluation
+title: RAG Evaluation
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: End-to-end answer quality can hide whether a RAG system failed at retrieval, context selection, generation, or evaluation itself. Reliable iteration requires component evidence, failure attribution, evaluator provenance, and regression cases.
+curriculum_evidence:
+  - paper.ragas-evaluation
+  - book.chip-huyen-ai-engineering
+prerequisites:
+  - ai.evaluation
+  - retrieval.search
+outcomes:
+  - Separate retrieval, supplied-context, generation, and end-to-end evaluation.
+  - Choose retrieval metrics from explicit relevance judgments when available and pair them with answer/context evidence.
+  - Diagnose whether a bad answer originates from missing evidence, poor ranking/context construction, or unfaithful/incorrect generation.
+  - Use model-based evaluators only with explicit metric/rubric definitions, evaluator provenance, and human-reviewed calibration for important subjective judgments.
+  - Convert important RAG failures into regression cases and make architecture or release decisions from the combined evidence.
+diagnostic:
+  tasks:
+    - Given a wrong RAG answer, design evidence that distinguishes retrieval failure from generation failure.
+    - Explain why one aggregate RAG score cannot tell you which component to fix.
+    - Describe how you would validate an LLM-based faithfulness or relevance evaluator before using it as a release signal.
+  pass_condition: Skip introductory material only if the learner can design component-level RAG evaluation, attribute failures, and define trustworthy evaluator/release evidence.
+learning_route:
+  mental_model:
+    - source: paper.ragas-evaluation
+      locator: Abstract and framework sections describing retrieval context relevance/focus, generation faithfulness, and generation quality as distinct evaluation dimensions
+      purpose: Establish component decomposition for RAG evaluation rather than collapsing the pipeline into one end-to-end score.
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 4 "Evaluate AI Systems" → "Design Your Evaluation Pipeline" (pp. 200-207), especially evaluating all components, guidelines, methods, and data
+      purpose: Apply the repository's general evaluation discipline to each RAG component and the full system.
+    - source: docs.ragas-rag-metrics
+      locator: RAG evaluation metrics documentation for context/retrieval and generation-oriented metrics
+      purpose: Inspect concrete metric definitions as examples while keeping metric choice tied to the product/evaluation contract rather than the framework.
+  guided_practice:
+    - task: Take five bad Knowledge Assistant answers and classify each as retrieval miss, ranking/context-selection failure, insufficient/noisy context, unfaithful generation, answer-quality failure despite sufficient context, or evaluation-label problem.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/retrieval-quality/
+      task: Produce a RAG evaluation record with retrieval, context, generation, end-to-end, evaluator-provenance, failure-taxonomy, and regression evidence for two system configurations.
+experiments:
+  - Hold generation fixed while changing retrieval and verify which metrics/failures move.
+  - Supply an oracle/relevant context for selected cases to test whether generation succeeds when retrieval is removed as the failure source.
+  - Calibrate at least one model-based evaluator against a small human-reviewed sample and record disagreements.
+exit_evidence:
+  - A versioned evaluation set and system configuration are recorded.
+  - Retrieval evidence is separated from context and generation evidence.
+  - Important failures are attributed to a component with inspectable examples.
+  - Model-based evaluator provenance and calibration are recorded when used.
+  - Production or project failures become regression cases.
+  - The final architecture/release decision does not rely on a single aggregate RAG score.
+transfer:
+  task: Redesign the evaluation for a different RAG domain with different relevance, citation, freshness, or abstention requirements and explain which metrics or labels must change.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - paper.ragas-evaluation
+    - book.chip-huyen-ai-engineering
+    - docs.ragas-rag-metrics
+  assessment:
+    - paper.ragas-evaluation
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
