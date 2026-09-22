@@ -36,7 +36,7 @@ diagnostic:
 learning_route:
   mental_model:
     - source: standard.owasp-llm01-prompt-injection
-      locator: "Types of Prompt Injection Vulnerabilities", "Prevention and Mitigation Strategies", and "Example Attack Scenarios"
+      locator: 'Sections: "Types of Prompt Injection Vulnerabilities", "Prevention and Mitigation Strategies", and "Example Attack Scenarios"'
       purpose: Establish direct/indirect injection risks, impact, least-privilege controls, human approval, external-content segregation, and adversarial testing.
     - source: book.chip-huyen-ai-engineering
       locator: Chapter 5 "Defensive Prompt Engineering" — Jailbreaking and Prompt Injection, and Defenses Against Prompt Attacks
