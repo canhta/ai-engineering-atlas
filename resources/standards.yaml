@@ -1,0 +1,11 @@
+resources:
+  - id: standard.owasp-llm01-prompt-injection
+    type: standard
+    title: "OWASP LLM01:2025 Prompt Injection"
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+    roles: [curriculum-evidence, teaching, production-reference]
+    covers: [security.prompt-injection, security.tool-permissions, security.auth]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
