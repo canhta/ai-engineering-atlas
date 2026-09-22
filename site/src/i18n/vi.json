@@ -232,5 +232,15 @@
   "lab.evidence.hint": "Test đạt mới là một phần. Đề bài ghi rõ cần gì để “đã làm được”.",
   "lab.evidence.method": "Kiểm tra tự động bằng test của lab, {independence}.",
   "lab.evidence.note": "{run} đạt trong trình duyệt (Pyodide {version}). {file} SHA-256: {hash}",
-  "lab.yours": "code của bạn"
+  "lab.yours": "code của bạn",
+  "form.toForm": "Tới phần trả lời",
+  "form.draftNote": "Câu trả lời được lưu trong trình duyệt này.",
+  "form.export": "Xuất câu trả lời",
+  "form.choice.placeholder": "Chọn một câu trả lời",
+  "form.table.add": "Thêm dòng",
+  "form.table.remove": "Xóa dòng",
+  "form.table.row": "dòng {row}",
+  "form.evidence.hint": "Câu trả lời ở trên chính là bằng chứng.",
+  "form.evidence.method": "Tự đánh giá theo tiêu chí ở trên.",
+  "form.evidence.note": "Tự đánh giá theo tiêu chí. {summary}"
 }

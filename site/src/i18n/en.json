@@ -232,5 +232,15 @@
   "lab.evidence.hint": "Passing tests is one artifact. The lab brief lists what demonstrated needs.",
   "lab.evidence.method": "Checked by the lab tests (automated), {independence}.",
   "lab.evidence.note": "{run} passed in the browser (Pyodide {version}). {file} SHA-256: {hash}",
-  "lab.yours": "your code"
+  "lab.yours": "your code",
+  "form.toForm": "Go to the form",
+  "form.draftNote": "Your answers are saved in this browser.",
+  "form.export": "Export answers",
+  "form.choice.placeholder": "Select an answer",
+  "form.table.add": "Add row",
+  "form.table.remove": "Remove row",
+  "form.table.row": "row {row}",
+  "form.evidence.hint": "Your answers above are the evidence.",
+  "form.evidence.method": "Self-reviewed against the rubric above.",
+  "form.evidence.note": "Self-review against the rubric. {summary}"
 }

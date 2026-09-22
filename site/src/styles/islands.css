@@ -2165,3 +2165,86 @@
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------- Decision forms (DESIGN.md → Labs: the form variant) */
+
+.form-fields {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.form-table-field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-table-field legend {
+  padding: 0;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  font-weight: 550;
+}
+
+.form-table-field > .button-quiet {
+  margin-top: var(--space-2);
+}
+
+/* Columns share the bench width, so a cell is a usable field rather than a stub. */
+.form-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.form-table th,
+.form-table td {
+  vertical-align: top;
+}
+
+.form-table input {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--line-strong);
+  border-radius: var(--radius-card);
+  background: var(--sheet);
+  color: var(--ink);
+  font-size: var(--text-small);
+}
+
+@media (width < 768px) {
+  .form-table thead {
+    display: none;
+  }
+
+  .form-table tr,
+  .form-table td {
+    display: block;
+  }
+
+  .form-table tr {
+    padding: var(--space-4) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .form-table td {
+    padding: 0 0 var(--space-3);
+    border: 0;
+  }
+
+  .form-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    font-weight: 550;
+    color: var(--ink-muted);
+  }
+}

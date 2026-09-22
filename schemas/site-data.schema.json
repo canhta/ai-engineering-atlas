@@ -292,12 +292,12 @@
       }
     },
     "block": {
-      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, data. Every block has type, id, and title.",
+      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, form, data. Every block has type, id, and title.",
       "type": "object",
       "required": ["type", "id", "title"],
       "properties": {
         "type": {
-          "enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"]
+          "enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "form", "data"]
         },
         "id": {
           "type": "string",
@@ -394,6 +394,18 @@
           },
           "then": {
             "$ref": "#/$defs/runnerBlock"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "form"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/formBlock"
           }
         },
         {
@@ -626,6 +638,56 @@
             "minLength": 1
           },
           "description": "Runtime packages to load before running."
+        }
+      },
+      "additionalProperties": false
+    },
+    "formBlock": {
+      "description": "A rubric or decision form the learner fills (a decision lab's browser: {runtime: form} contract).",
+      "required": ["fields"],
+      "properties": {
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "label": { "$ref": "#/$defs/l10n" },
+              "type": { "enum": ["text", "longtext", "choice", "table"] },
+              "help": { "$ref": "#/$defs/l10n" },
+              "options": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#/$defs/l10n" },
+                "description": "Choice values; required when type is choice."
+              },
+              "columns": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["id", "label"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": { "type": "string", "minLength": 1 },
+                    "label": { "$ref": "#/$defs/l10n" }
+                  }
+                },
+                "description": "Table columns; required when type is table."
+              }
+            },
+            "allOf": [
+              { "if": { "properties": { "type": { "const": "choice" } } }, "then": { "required": ["options"] } },
+              { "if": { "properties": { "type": { "const": "table" } } }, "then": { "required": ["columns"] } }
+            ]
+          }
         }
       },
       "additionalProperties": false

@@ -1,11 +1,13 @@
 // Browser storage for learner progress and personal marks. Local-first: nothing leaves the
 // browser except through export. Storage can be unavailable (private mode), so every access is guarded.
 import { useCallback, useSyncExternalStore } from "react";
+import type { FormAnswers } from "./lab-form";
 import { emptyProgress, type Progress, today } from "./progress";
 
 const PROGRESS_KEY = "atlas.progress.v2";
 const OPENED_KEY = "atlas.opened.v1";
 const DRAFT_PREFIX = "atlas.draft.v1.";
+const FORM_PREFIX = "atlas.lab-form.v1.";
 
 type Listener = () => void;
 const listeners = new Set<Listener>();
@@ -111,6 +113,40 @@ export function useReferenceOpened(labRef: string): [boolean | null, () => void]
     write(REFERENCE_KEY, { ...read<Record<string, boolean>>(REFERENCE_KEY, {}), [labRef]: true });
   }, [labRef]);
   return [opened, open];
+}
+
+/** A decision lab's draft answers, restored on return (DESIGN.md -> Labs: the form variant). */
+export function useLabFormAnswers(labRef: string): [FormAnswers | null, (answers: FormAnswers) => void] {
+  const key = FORM_PREFIX + labRef;
+  const answers = useSyncExternalStore(
+    subscribe,
+    () => read<FormAnswers>(key, {}),
+    () => null,
+  );
+  const save = useCallback((next: FormAnswers) => write(key, next), [key]);
+  return [answers, save];
+}
+
+/** Every decision lab's draft answers, keyed by lab ref: gathered into progress.yaml on export. */
+export function allLabFormAnswers(): Record<string, FormAnswers> {
+  const all: Record<string, FormAnswers> = {};
+  try {
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (!key?.startsWith(FORM_PREFIX)) continue;
+      const labRef = key.slice(FORM_PREFIX.length);
+      const answers = read<FormAnswers>(key, {});
+      if (Object.keys(answers).length > 0) all[labRef] = answers;
+    }
+  } catch {
+    // Storage blocked: export the progress the learner has without the local lab drafts.
+  }
+  return all;
+}
+
+/** Writes one lab's answers back into its own storage entry, e.g. after importing progress.yaml. */
+export function writeLabFormAnswers(labRef: string, answers: FormAnswers) {
+  write(FORM_PREFIX + labRef, answers);
 }
 
 let storageProbe: boolean | undefined;

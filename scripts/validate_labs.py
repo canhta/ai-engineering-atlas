@@ -39,26 +39,19 @@ for path in sorted(LABS.rglob("*.py")):
 
 
 # 2. Browser contracts (labs/<id>/lab.yaml → browser:). Labs without lab.yaml stay local-only.
-BROWSER_RUNTIMES = {"pyodide"}
-BROWSER_KEYS = {"runtime", "editable", "run", "reference", "files", "packages"}
+# Two runtimes: `pyodide` (a code lab run in the browser) and `form` (a decision lab rendered as
+# a structured rubric form; rfcs/0000-interactive-web-atlas.md → In-browser labs → Decision labs).
+BROWSER_RUNTIMES = {"pyodide", "form"}
+PYODIDE_KEYS = {"runtime", "editable", "run", "reference", "files", "packages"}
+FORM_KEYS = {"runtime", "fields"}
+FORM_FIELD_TYPES = {"text", "longtext", "choice", "table"}
+FORM_FIELD_KEYS = {"id", "label", "type", "help", "options", "columns"}
 
-for contract in sorted(LABS.glob("*/lab.yaml")):
-    lab = contract.parent
-    where = contract.relative_to(ROOT)
-    try:
-        data = yaml.safe_load(contract.read_text(encoding="utf-8")) or {}
-    except yaml.YAMLError as exc:
-        errors.append(f"{where}: invalid YAML: {exc}")
-        continue
-    browser = data.get("browser") if isinstance(data, dict) else None
-    if not isinstance(browser, dict):
-        errors.append(f"{where}: needs a `browser:` mapping")
-        continue
-    unknown = set(browser) - BROWSER_KEYS
+
+def check_pyodide(where, lab, browser):
+    unknown = set(browser) - PYODIDE_KEYS
     if unknown:
         errors.append(f"{where}: unknown browser keys {sorted(unknown)}")
-    if browser.get("runtime") not in BROWSER_RUNTIMES:
-        errors.append(f"{where}: browser.runtime must be one of {sorted(BROWSER_RUNTIMES)}")
     for key in ("editable", "run", "reference"):
         name = browser.get(key)
         if not isinstance(name, str) or not name:
@@ -78,6 +71,84 @@ for contract in sorted(LABS.glob("*/lab.yaml")):
     elif packages:
         # The site self-hosts only the Pyodide core and standard library (site/AGENTS.md).
         errors.append(f"{where}: browser.packages is not supported yet; the site ships no Pyodide packages")
+
+
+def check_form(where, browser):
+    unknown = set(browser) - FORM_KEYS
+    if unknown:
+        errors.append(f"{where}: unknown browser keys {sorted(unknown)}")
+    fields = browser.get("fields")
+    if not isinstance(fields, list) or not fields:
+        errors.append(f"{where}: browser.fields must be a non-empty list")
+        fields = []
+    seen: set[str] = set()
+    for i, entry in enumerate(fields):
+        at = f"{where}: browser.fields[{i}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{at} must be a mapping")
+            continue
+        unknown_keys = set(entry) - FORM_FIELD_KEYS
+        if unknown_keys:
+            errors.append(f"{at}: unknown keys {sorted(unknown_keys)}")
+        fid = entry.get("id")
+        if not isinstance(fid, str) or not fid:
+            errors.append(f"{at}.id must be a non-empty string")
+        elif fid in seen:
+            errors.append(f"{at}.id '{fid}' is duplicated")
+        else:
+            seen.add(fid)
+        if not isinstance(entry.get("label"), str) or not entry["label"]:
+            errors.append(f"{at}.label must be a non-empty string")
+        ftype = entry.get("type")
+        if ftype not in FORM_FIELD_TYPES:
+            errors.append(f"{at}.type must be one of {sorted(FORM_FIELD_TYPES)}")
+        if "help" in entry and (not isinstance(entry["help"], str) or not entry["help"]):
+            errors.append(f"{at}.help must be a non-empty string")
+        if ftype == "choice":
+            options = entry.get("options")
+            if not isinstance(options, list) or not options or not all(isinstance(o, str) and o for o in options):
+                errors.append(f"{at}.options must be a non-empty list of strings for a choice field")
+        elif "options" in entry:
+            errors.append(f"{at}: options is only valid for a choice field")
+        if ftype == "table":
+            columns = entry.get("columns")
+            if not isinstance(columns, list) or not columns:
+                errors.append(f"{at}.columns must be a non-empty list for a table field")
+            else:
+                for j, col in enumerate(columns):
+                    ok = (
+                        isinstance(col, dict)
+                        and isinstance(col.get("id"), str)
+                        and col["id"]
+                        and isinstance(col.get("label"), str)
+                        and col["label"]
+                    )
+                    if not ok:
+                        errors.append(f"{at}.columns[{j}] must have a non-empty id and label")
+        elif "columns" in entry:
+            errors.append(f"{at}: columns is only valid for a table field")
+
+
+for contract in sorted(LABS.glob("*/lab.yaml")):
+    lab = contract.parent
+    where = contract.relative_to(ROOT)
+    try:
+        data = yaml.safe_load(contract.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as exc:
+        errors.append(f"{where}: invalid YAML: {exc}")
+        continue
+    browser = data.get("browser") if isinstance(data, dict) else None
+    if not isinstance(browser, dict):
+        errors.append(f"{where}: needs a `browser:` mapping")
+        continue
+    runtime = browser.get("runtime")
+    if runtime not in BROWSER_RUNTIMES:
+        errors.append(f"{where}: browser.runtime must be one of {sorted(BROWSER_RUNTIMES)}")
+        continue
+    if runtime == "pyodide":
+        check_pyodide(where, lab, browser)
+    else:
+        check_form(where, browser)
 
 
 # 3. Evaluation-harness reference solution contract.

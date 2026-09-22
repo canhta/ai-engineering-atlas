@@ -320,6 +320,11 @@ def block_runner(spec, value, content, ctx):
     """A runnable lab: the files it ships (name → text) and which one the learner edits."""
     mapping = spec["map"]
     field = spec["field"]
+    consumed = [f"{field}.{k}" for k in mapping.values()]
+    # The labs collection declares both a `runner` and a `form` block against the same `browser`
+    # field; each emits only when its runtime matches, so a lab's contract needs no special-casing.
+    if str(value.get(mapping["runtime"])) != "pyodide":
+        return None, consumed
     directory = ROOT / (ctx.source_path or "")
 
     def name(key):
@@ -349,7 +354,55 @@ def block_runner(spec, value, content, ctx):
     packages = value.get(mapping["packages"]) or []
     if packages:
         payload["packages"] = [str(p) for p in packages]
-    return payload, [f"{field}.{k}" for k in mapping.values()]
+    return payload, consumed
+
+
+FORM_FIELD_TYPES = {"text", "longtext", "choice", "table"}
+
+
+def block_form(spec, value, content, ctx):
+    """A decision lab's rubric or decision form: fields the learner fills (browser.runtime: form)."""
+    mapping = spec["map"]
+    field = spec["field"]
+    consumed = [f"{field}.{mapping['runtime']}", f"{field}.{mapping['fields']}"]
+    if str(value.get(mapping["runtime"])) != "form":
+        return None, consumed
+    fields = []
+    seen_ids: set[str] = set()
+    for i, raw in enumerate(value.get(mapping["fields"]) or []):
+        where = f"{field}.{mapping['fields']}[{i}]"
+        if not isinstance(raw, dict):
+            errors.append(f"{ctx.label}: {where} must be a mapping")
+            continue
+        ftype = raw.get("type")
+        if ftype not in FORM_FIELD_TYPES:
+            errors.append(f"{ctx.label}: {where}.type must be one of {sorted(FORM_FIELD_TYPES)}")
+            continue
+        fid = str(raw.get("id") or "")
+        if not fid:
+            errors.append(f"{ctx.label}: {where}.id is required")
+        elif fid in seen_ids:
+            errors.append(f"{ctx.label}: {where}.id '{fid}' is duplicated")
+        seen_ids.add(fid)
+        entry = {"id": fid, "label": ctx.text(raw.get("label"), f"{where}.label"), "type": ftype}
+        if raw.get("help") is not None:
+            entry["help"] = ctx.text(raw["help"], f"{where}.help")
+        if ftype == "choice":
+            options = raw.get("options") or []
+            if not options:
+                errors.append(f"{ctx.label}: {where}.options must be a non-empty list for a choice field")
+            entry["options"] = [ctx.text(o, f"{where}.options") for o in options]
+        if ftype == "table":
+            columns = raw.get("columns") or []
+            if not columns:
+                errors.append(f"{ctx.label}: {where}.columns must be a non-empty list for a table field")
+            entry["columns"] = [
+                {"id": str(c.get("id") or ""), "label": ctx.text(c.get("label"), f"{where}.columns")}
+                for c in columns
+                if isinstance(c, dict)
+            ]
+        fields.append(entry)
+    return {"fields": fields}, consumed
 
 
 def block_data(spec, value, content, ctx):
@@ -364,6 +417,7 @@ BLOCK_TYPES = {
     "sources": block_sources,
     "practice": block_practice,
     "runner": block_runner,
+    "form": block_form,
     "data": block_data,
 }
 
@@ -605,11 +659,14 @@ def build():
                         value = get_path(content, spec["field"])
                     if handler is None or value is None:
                         continue
-                    if spec["type"] in ("diagnostic", "practice", "runner") and not isinstance(value, dict):
+                    if spec["type"] in ("diagnostic", "practice", "runner", "form") and not isinstance(value, dict):
                         errors.append(f"{label}: field '{spec['field']}' must be a mapping for a {spec['type']} block")
                         continue
                     payload, consumed = handler(spec, value, content, ctx)
                     covered += consumed
+                    if payload is None:
+                        # The runner/form pair targets one shared field; only the matching runtime emits.
+                        continue
                     blocks.append(
                         {
                             "type": spec["type"],

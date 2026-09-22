@@ -88,6 +88,25 @@ const fixture: Record<string, unknown> = {
       "solution.py": "def answer():\n    return 42\n",
     },
   },
+  form: {
+    type: "form",
+    id: "form",
+    title,
+    step: true,
+    fields: [
+      { id: "architecture", label: { en: "Architecture" }, type: "choice", options: [{ en: "A single model call" }] },
+      { id: "evidence", label: { en: "Evidence" }, type: "longtext", help: { en: "Write this before choosing." } },
+      {
+        id: "candidates",
+        label: { en: "Evaluation evidence" },
+        type: "table",
+        columns: [
+          { id: "candidate", label: { en: "Candidate" } },
+          { id: "quality", label: { en: "Quality" } },
+        ],
+      },
+    ],
+  },
   data: { type: "data", id: "extra", title, value: { nested: [1, true, { en: "Localised leaf" }, { deeper: ["x"] }] } },
   unknown: { type: "timeline", id: "odd", title, entries: [{ year: 2026, note: "Unknown shape" }] },
 };
@@ -102,7 +121,7 @@ const render = (name: string, lang: "en" | "vi" = "en") =>
     props: {
       block: fixture[name] as BlockData,
       lang,
-      itemRef: name === "runner" ? "lab:evaluation-harness" : "fixture.item",
+      itemRef: name === "runner" ? "lab:evaluation-harness" : name === "form" ? "lab:model-selection" : "fixture.item",
       target: "demonstrated",
       after: [],
       headingId: "h",
@@ -171,6 +190,16 @@ describe("block renderer", () => {
     expect(html).toContain("Run tests");
     // The reference is shipped in the props but not shown as a tab until the learner opens it.
     expect(html).not.toMatch(/<code>solution\.py<\/code>/);
+  });
+
+  test("form renders the rubric fields as an island, with the table columns", async () => {
+    const html = await render("form");
+    expect(html).toContain("astro-island");
+    expect(html).toContain("Architecture");
+    expect(html).toContain("A single model call");
+    expect(html).toContain("Write this before choosing.");
+    expect(html).toContain("Candidate");
+    expect(html).toContain("Quality");
   });
 
   test("data renders nested values of any shape", async () => {

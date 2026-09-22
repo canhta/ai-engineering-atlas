@@ -1,0 +1,51 @@
+# Browser contract: the web atlas renders this lab as a structured rubric form instead of a code
+# runner (rfcs/0000-interactive-web-atlas.md -> In-browser labs -> Decision labs). Field wording is
+# copied from decision-rubric.md; checked by scripts/validate_labs.py.
+browser:
+  runtime: form
+  fields:
+    - id: decomposed
+      label: Can the task be decomposed into known fixed steps?
+      type: longtext
+    - id: predictable-branches
+      label: Are branches/categories predictable?
+      type: longtext
+    - id: reacts-to-results
+      label: Must later steps react to unpredictable tool/environment results?
+      type: longtext
+    - id: measurable-success
+      label: Is success objectively measurable?
+      type: longtext
+    - id: required-autonomy
+      label: What autonomy is actually required?
+      type: longtext
+    - id: new-failure-surface
+      label: What new failure surface does autonomy add?
+      type: longtext
+    - id: cost-latency
+      label: What are cost/latency differences?
+      type: longtext
+    - id: traceable-failures
+      label: Can failures be traced and reproduced?
+      type: longtext
+    - id: bounded-permissions
+      label: Are tools and permissions bounded?
+      type: longtext
+    - id: stop-condition
+      label: What stop condition prevents unbounded work?
+      type: longtext
+    - id: architecture
+      label: Architecture
+      type: choice
+      help: Choose the simplest architecture that meets the measured requirement.
+      options:
+        - A single model call
+        - A deterministic workflow
+        - A workflow with bounded model decisions
+        - An autonomous agent loop
+    - id: decision-evidence
+      label: Evidence
+      type: longtext
+    - id: increase-autonomy
+      label: What would make you increase autonomy later?
+      type: longtext
