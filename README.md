@@ -2,6 +2,8 @@
 
 A gap-driven roadmap for software engineers learning modern AI engineering.
 
+Browse it at **[ai-eng.canhta.com](https://ai-eng.canhta.com)** (English and Vietnamese): the skill map, route pages, diagnostics, and local progress tracking.
+
 [![Validate curriculum](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml/badge.svg)](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 

@@ -42,7 +42,7 @@ Last updated: 2026-09-22
 - [x] Custom domain `ai-eng.canhta.com`; production passes `capture.mjs` (headers, axe, overflow)
 - [x] Manual deploy workflow (`workflow_dispatch`) with checks and browser tests before deploy
 - [x] Repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; `production` environment limited to `main`; first CI deploy 2026-09-22 (run 35704294981), production passes `capture.mjs`
-- [ ] Link the site from the root `README.md`
+- [x] Link the site from the root `README.md`
 
 ### Content-driven site (next, owner request)
 
@@ -57,7 +57,7 @@ Last updated: 2026-09-22
 - [x] Milestone 1: global frame (floating pill nav, mobile menu overlay, breadcrumb, footer), route sheet (rail with steps and scrollspy, one-task diagnostic, sources table, field log with mobile sheet), project pages from the same renderer
 - [x] Milestone 2: the plate (`src/components/plate/`) in overview, explore, and progress modes; Home, Atlas (plate, list, filters, drawer with `?item=`, `?ready=1`, `?group=`), and Progress rebuilt on it; mobile Playwright project
 - [x] Milestone 3: seven distinguishable learner states (fill and hue per state), one bridge wording, capture at 390/1440 over home, atlas, drawer, progress, and route, and tests for the states surfaces must handle (unknown `?item=`, empty review queue, import errors, storage blocked, JavaScript off, reduced motion)
-- [ ] Owner review of the survey-plate redesign on a preview deploy before merging `agent/site-v2`
+- [ ] Owner review of the live survey-plate redesign and the Vietnamese wording
 - [ ] Before-hydration pass: Atlas filters and the field log are disabled until hydration; decide whether the Atlas plate should also work without JavaScript (tiles as `?item=` links that open a server-rendered drawer)
 
 ### Phase 1 follow-ups
@@ -109,6 +109,5 @@ Last updated: 2026-09-22
 - Model provider and model IDs for the project key
 - SSO providers beyond GitHub and Google
 - Budgets: questions per user per day, global monthly cap
-- Show `seeded` routes with a draft label, or hide until ready
 - Should decision-lab answers ever leave the browser before Phase 3
 - `self-attention` lab: port to NumPy in place (runs in the browser) or keep PyTorch local-only
