@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/competency.schema.json",
+  "title": "AI Engineering Atlas competency",
+  "type": "object",
+  "required": ["id", "title", "domain", "target_level", "why", "outcomes", "diagnostic", "exit_criteria", "resources", "metadata"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "domain": { "type": "string", "minLength": 1 },
+    "status": { "type": "string" },
+    "target_level": { "type": "string", "pattern": "^L[0-4]$" },
+    "why": { "type": "string", "minLength": 1 },
+    "prerequisites": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "outcomes": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "diagnostic": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "practice": { "type": "object" },
+    "exit_criteria": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "resources": { "type": "object" },
+    "metadata": { "type": "object", "required": ["last_reviewed", "evidence_required"] }
+  },
+  "additionalProperties": true
+}
