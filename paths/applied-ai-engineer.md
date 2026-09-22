@@ -81,10 +81,13 @@ The learner should be able to justify why a chosen pattern is simpler or better 
 
 ## Phase E — retrieval and RAG
 
-Ready foundations:
+Ready retrieval routes:
 
 - [Search and Retrieval](../curriculum/07-ai-engineering/search-retrieval/)
 - [Embeddings for AI Applications](../curriculum/07-ai-engineering/embeddings/)
+- [Chunking](../curriculum/07-ai-engineering/chunking/)
+- [Reranking](../curriculum/07-ai-engineering/reranking/)
+- [RAG Evaluation](../curriculum/07-ai-engineering/rag-evaluation/)
 
 Build in roughly this dependency order:
 
@@ -92,12 +95,12 @@ Build in roughly this dependency order:
 lexical baseline
 → embeddings
 → vector retrieval
-→ hybrid retrieval
-→ reranking
-→ chunking/filtering/query transformation as needed
+→ chunking when corpus/boundary failures justify it
+→ hybrid retrieval as needed
+→ reranking when candidate ordering is the bottleneck
 → RAG
-→ retrieval lifecycle
 → RAG evaluation
+→ retrieval lifecycle
 ```
 
 Reference system:
