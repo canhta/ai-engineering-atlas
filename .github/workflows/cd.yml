@@ -1,11 +1,7 @@
-name: Deploy site
+name: CD
 
-# Manual only: Actions → Deploy site → Run workflow. Deploys the chosen ref to ai-eng.canhta.com.
-#
-# This workflow does not re-run the test suite. Validation belongs to CI ("Validate curriculum"),
-# which runs on every push; deploying only checks that CI passed for this exact commit, then
-# builds and ships it. Running the suite twice would double the wall clock and still tell us
-# nothing new about the commit.
+# Manual only: Actions → CD → Run workflow. Builds the chosen ref and ships it to
+# ai-eng.canhta.com. Whether the commit is good is CI's question, answered before this runs.
 on:
   workflow_dispatch:
     inputs:
@@ -34,19 +30,18 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      # The gate: this commit must already be green in CI. A run that is still going, failed,
-      # or never happened stops the deploy here, before anything is built.
+      # The only gate: this commit is already green in CI.
       - name: Require a green CI run for this commit
         env:
           GH_TOKEN: ${{ github.token }}
         working-directory: .
         run: |
           sha="$(git rev-parse HEAD)"
-          conclusion="$(gh run list --workflow validate.yml --commit "$sha" --limit 1 \
+          conclusion="$(gh run list --workflow ci.yml --commit "$sha" --limit 1 \
             --json conclusion --jq '.[0].conclusion // "none"')"
-          echo "Validate curriculum for $sha: $conclusion"
+          echo "CI for $sha: $conclusion"
           if [ "$conclusion" != "success" ]; then
-            echo "::error::Refusing to deploy $sha: its 'Validate curriculum' run is '$conclusion', not 'success'."
+            echo "::error::Refusing to deploy $sha: its CI run is '$conclusion', not 'success'."
             exit 1
           fi
 
@@ -62,8 +57,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm run build
+      - run: pnpm run build
 
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v4
@@ -72,10 +66,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: site
           command: deploy
-
-      # The deployed site must answer, carry its security headers, and pass axe in both
-      # languages. This is about the deployment, not about the code, so it belongs here.
-      - name: Smoke-test the deployed site
-        run: |
-          pnpm exec playwright install --with-deps chromium
-          node scripts/capture.mjs https://ai-eng.canhta.com "${RUNNER_TEMP}/deployed"

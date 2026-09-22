@@ -1,4 +1,7 @@
-name: Validate curriculum
+name: CI
+
+# Runs on every push and pull request. Everything that decides whether a commit is good
+# lives here; deploying is a separate, manual workflow (cd.yml).
 
 on:
   push:

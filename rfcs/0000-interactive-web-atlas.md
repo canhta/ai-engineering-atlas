@@ -190,7 +190,7 @@ Quality control, using the atlas's own `ai.evaluation` practice:
 
 - `build_site_data.py` with `--write` / `--check`.
 - JSON schema for the emitted file under `schemas/`.
-- Wire `site-data` into `make check` and `.github/workflows/validate.yml`.
+- Wire `site-data` into `make check` and `.github/workflows/ci.yml`.
 
 Exit: CI fails when a competency changes without regenerating site data.
 
@@ -256,7 +256,7 @@ This phase extends the Phase 2 Worker with stored evidence and is out of scope f
 - affected competencies: none; no curriculum content changes.
 - resource changes: none; resource URLs are read, not edited.
 - new files: `site/`, `worker/`, `scripts/build_site_data.py`, `schemas/site-data.schema.json`, `schemas/competency-translation.schema.json`, per-lab browser metadata and feedback keys, tutor prompt config and eval set.
-- modified files: `Makefile`, `.github/workflows/validate.yml`, `scripts/validate_labs.py`, `README.md` (link to the site), `CONTRIBUTING.md` (translation and browser-lab rules).
+- modified files: `Makefile`, `.github/workflows/ci.yml`, `scripts/validate_labs.py`, `README.md` (link to the site), `CONTRIBUTING.md` (translation and browser-lab rules).
 - generated-document impact: `site/src/data/atlas.json` becomes a checked generated file.
 
 ## Open questions
