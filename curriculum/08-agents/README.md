@@ -6,7 +6,7 @@ Engineering systems in which models choose or sequence actions.
 
 - tool and function calling
 - [deterministic workflows versus agentic control](deterministic-vs-agentic/)
-- state and memory
+- [state](state/) and [memory](memory/)
 - planning and task decomposition
 - retries, idempotency, and long-running tasks
 - Model Context Protocol (MCP)
@@ -14,9 +14,11 @@ Engineering systems in which models choose or sequence actions.
 - permission boundaries and tool trust
 - multi-agent patterns where they provide measurable value
 
-## Ready route
+## Ready routes
 
 - [Deterministic vs Agentic Design](deterministic-vs-agentic/) — start from the simplest viable architecture and add autonomy only when measured failures justify it.
+- [Agent State](state/) — make execution continuity explicit with durable state, checkpoints, restart/resume, and replay-safe side effects.
+- [Agent Memory](memory/) — add scoped cross-session memory only with explicit admission, retrieval, lifecycle, isolation, and measured benefit.
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 
