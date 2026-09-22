@@ -10992,7 +10992,353 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/data-exfiltration",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Sensitive information can enter an AI request from user input, retrieval, tools, memory, caches, credentials, logs, or upstream systems and can leave through model output, tools, links, external destinations, telemetry, caches, or provider requests. Prompt injection is one way to manipulate that flow, but the durable defense is an application-level data-flow policy: authorize data at the source, minimize what enters model context, constrain outbound sinks, preserve tenant boundaries, and make sensitive transmissions explicit rather than relying on the model to keep secrets."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "security.prompt-injection"
+                },
+                {
+                  "ref": "security.tool-permissions"
+                },
+                {
+                  "ref": "retrieval.search"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "production.caching"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Classify sensitive data relevant to the product, including credentials, personal data, confidential business data, regulated records, tenant-private content, and security metadata."
+                },
+                {
+                  "en": "Map sensitive sources, transformations, model context, storage, telemetry, caches, outputs, tools, and external sinks as one end-to-end data flow."
+                },
+                {
+                  "en": "Distinguish a source of attacker influence from a sensitive-data source and from an outbound sink."
+                },
+                {
+                  "en": "Authorize retrieval and tool access before sensitive content enters model context rather than filtering only the final answer."
+                },
+                {
+                  "en": "Minimize context so the model receives only the fields, documents, rows, or tool results required for the current task."
+                },
+                {
+                  "en": "Keep reusable credentials, secrets, private keys, and broad bearer tokens out of model-visible context and model-generated tool arguments."
+                },
+                {
+                  "en": "Use tenant, user, authorization, and data-version scope in retrieval and cache boundaries so protected data cannot be reused across principals."
+                },
+                {
+                  "en": "Define which external destinations, domains, tools, files, messages, or network sinks are allowed to receive sensitive information."
+                },
+                {
+                  "en": "Require deterministic policy or explicit user approval before transmitting sensitive information to a new or high-risk sink when the product requires it."
+                },
+                {
+                  "en": "Present the actual sensitive fields, destination, and action being approved rather than hiding them behind a model summary."
+                },
+                {
+                  "en": "Prevent hidden links, tool arguments, markdown, or structured output from creating an undeclared exfiltration channel."
+                },
+                {
+                  "en": "Treat prompt instructions that say not to reveal secrets as defense-in-depth, not as the primary confidentiality control."
+                },
+                {
+                  "en": "Redact, omit, tokenize, or reference sensitive data before telemetry/logging when raw content is not operationally required."
+                },
+                {
+                  "en": "Verify caches and replay/diagnostic records preserve the same data-classification and tenant boundaries as the live request path."
+                },
+                {
+                  "en": "Account for streamed partial output when sensitive content could be exposed before final validation."
+                },
+                {
+                  "en": "Separate accidental sensitive disclosure, authorization bypass, credential leakage, and deliberate source-to-sink exfiltration during incident diagnosis."
+                },
+                {
+                  "en": "Test sensitive-data controls with canary values or synthetic protected records rather than real secrets."
+                },
+                {
+                  "en": "Detect and contain unexpected outbound transmissions without assuming an input classifier will catch every manipulation."
+                },
+                {
+                  "en": "Minimize retained sensitive artifacts after the request when retention is not required for product or compliance needs."
+                },
+                {
+                  "en": "Convert an exfiltration failure into a durable security regression case and update the source/sink policy or boundary that actually failed."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Draw how one confidential document can travel from retrieval into model context and then into output, logs, cache, a tool call, or an external URL."
+                },
+                {
+                  "en": "Explain why output filtering cannot recover confidentiality after a sensitive record was already sent to an unauthorized external tool or provider."
+                },
+                {
+                  "en": "Given an indirect prompt injection that asks the agent to upload private content to a public endpoint, identify the attacker-controlled source, sensitive source, and dangerous sink."
+                },
+                {
+                  "en": "Design a test that proves tenant-private retrieval results and cached responses cannot cross into another tenant's answer."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can classify sensitive data, map source-to-sink flows, enforce authorization before context construction, constrain outbound destinations, protect logs/caches/credentials, and reproduce an exfiltration attempt without relying on prompt-only secrecy."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.owasp-llm02-sensitive-information",
+                  "locator": {
+                    "en": "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially sanitization, access controls, restricted data sources, tokenization/redaction, and the warning that prompt restrictions can be bypassed"
+                  },
+                  "purpose": {
+                    "en": "Establish the sensitive-information classes and application controls that must exist outside model instructions."
+                  }
+                },
+                {
+                  "resource": "article.openai-agent-prompt-injection",
+                  "locator": {
+                    "en": "Section \"How this informs our defenses in ChatGPT\", especially source-sink analysis and safeguards around transmitting potentially sensitive information to third parties"
+                  },
+                  "purpose": {
+                    "en": "Model exfiltration as an attacker-controlled source plus a dangerous sink, then constrain or confirm the transmission even when manipulation succeeds."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-security-best-practices-2026",
+                  "locator": {
+                    "en": "Section \"Token Passthrough\", especially accountability/audit, trust-boundary, privilege, and data-exfiltration risks"
+                  },
+                  "purpose": {
+                    "en": "Show why reusable credentials and broad upstream tokens are themselves sensitive cross-boundary data and why proxy boundaries must not leak them."
+                  }
+                },
+                {
+                  "resource": "docs.otel-genai-spans",
+                  "locator": {
+                    "en": "Sections \"Capturing instructions, inputs, and outputs\" and \"Recording content on attributes\""
+                  },
+                  "purpose": {
+                    "en": "Apply the same confidentiality policy to observability so tracing does not become a second exfiltration channel."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Trace one Knowledge Assistant answer from authenticated retrieval through model context to output, cache, trace, tools, and any external destinations. Mark each data classification, authorization check, minimization step, storage/retention point, and allowed sink."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Harden the Knowledge Assistant against a source-to-sink exfiltration attack: use synthetic sensitive records, enforce retrieval/tool/cache scope before context assembly, constrain external sinks, redact telemetry, and prove a manipulated model cannot transmit protected data outside the declared policy."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Place synthetic sensitive data in a retrieved document and use indirect prompt injection to request transmission to an unapproved external destination; verify the sink policy blocks or requires the declared approval."
+                },
+                {
+                  "en": "Attempt to retrieve another user's or tenant's protected document and verify authorization prevents the data from entering model context at all."
+                },
+                {
+                  "en": "Seed a cache entry under the wrong tenant/user scope and verify the application cannot serve it across the authorization boundary."
+                },
+                {
+                  "en": "Attempt to place an API token, credential, or reusable access token into model-visible context or tool arguments and verify the secure path uses an external credential boundary instead."
+                },
+                {
+                  "en": "Enable verbose tracing and verify raw sensitive prompt, tool, retrieval, or output content is excluded or redacted according to the telemetry contract."
+                },
+                {
+                  "en": "Stream a response containing a synthetic sensitive canary and verify partial-output handling does not bypass the declared validation or sink policy."
+                },
+                {
+                  "en": "Attempt exfiltration through a hidden URL, markdown destination, tool argument, or structured field and verify outbound policy is applied to the actual destination rather than surface text."
+                },
+                {
+                  "en": "Allow one user-approved external transmission and verify the approval shows the real destination and sensitive fields involved."
+                },
+                {
+                  "en": "Convert one blocked or simulated exfiltration case into a durable security regression test."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A sensitive-data classification identifies credentials, personal/private data, tenant-confidential data, and other product-relevant protected classes."
+                },
+                {
+                  "en": "A source-to-sink data-flow map covers retrieval, tools, model context, output, telemetry, caches, replay records, and external destinations."
+                },
+                {
+                  "en": "Sensitive retrieval/tool access is authorized before protected content enters model context."
+                },
+                {
+                  "en": "Context minimization removes fields or documents not needed for the current task."
+                },
+                {
+                  "en": "Reusable credentials and broad bearer tokens remain outside model-visible context."
+                },
+                {
+                  "en": "Retrieval and cache scope tests prove protected data does not cross user or tenant boundaries."
+                },
+                {
+                  "en": "An outbound sink policy identifies allowed, approval-required, and forbidden destinations or action types."
+                },
+                {
+                  "en": "A synthetic exfiltration attack through untrusted content is blocked even when the model is treated as compromised."
+                },
+                {
+                  "en": "Approved sensitive transmission exposes the actual destination, action, and relevant data to the user or policy decision point."
+                },
+                {
+                  "en": "Logs, traces, metrics, caches, and diagnostic replay artifacts follow the declared sensitive-content policy."
+                },
+                {
+                  "en": "Streaming or partial-output paths do not silently bypass confidentiality controls where streaming is used."
+                },
+                {
+                  "en": "Credential/token passthrough is rejected at the relevant trust boundary."
+                },
+                {
+                  "en": "At least one alternate exfiltration channel such as URL, markdown, tool argument, structured field, or error path is tested."
+                },
+                {
+                  "en": "Security evidence uses synthetic/canary secrets rather than real production credentials."
+                },
+                {
+                  "en": "One exfiltration failure or blocked attempt becomes durable regression evidence tied to the source/sink boundary that prevented or allowed it."
+                },
+                {
+                  "en": "The final decision states which sensitive flows remain intentionally allowed, which require approval, and which are impossible by design."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Threat-model and redesign sensitive-data flow for an email or enterprise-search agent that can read private records and communicate with external systems, using a different set of tenants, destinations, retention rules, and approval requirements."
+              }
+            }
+          ]
         }
       },
       {
@@ -11002,7 +11348,326 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/tool-permissions",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "An agent should be treated as a potentially mistaken or manipulated decision-maker, not as an authorization authority. The production boundary must constrain which tools exist, what each tool can do, which user/resource scope it can access, when privilege elevation or approval is required, and which downstream system performs the final authorization check. Least functionality and complete mediation limit damage from hallucination, prompt injection, compromised tools, or stolen credentials."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.tool-calling"
+                },
+                {
+                  "ref": "agents.mcp"
+                },
+                {
+                  "ref": "agents.deterministic-vs-agentic"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Inventory every tool or extension exposed to the model and remove functionality the product does not need."
+                },
+                {
+                  "en": "Prefer narrow purpose-built actions over open-ended shell, URL-fetch, database, filesystem, or generic admin interfaces."
+                },
+                {
+                  "en": "Separate read, create, update, delete, export, send, approve, and administrative capabilities instead of bundling them behind one broad tool."
+                },
+                {
+                  "en": "Define a permission matrix across tool, action, resource, tenant, user, and execution context."
+                },
+                {
+                  "en": "Execute user-delegated operations in the user's authorization context when the downstream resource is user-scoped."
+                },
+                {
+                  "en": "Use service identities only for capabilities that are truly service-owned and give them the minimum downstream permissions required."
+                },
+                {
+                  "en": "Enforce authorization in deterministic application or downstream systems rather than asking the model whether an action is allowed."
+                },
+                {
+                  "en": "Apply complete mediation so every privileged invocation is checked at execution time rather than trusting a previous model or UI decision."
+                },
+                {
+                  "en": "Bind credentials or access tokens to their intended resource and reject wrong-audience or token-passthrough designs."
+                },
+                {
+                  "en": "Start with minimal scopes and perform explicit step-up elevation only when a higher-risk operation is actually requested."
+                },
+                {
+                  "en": "Keep privilege elevation separate from the model's tool arguments and preserve the user or policy decision that granted it."
+                },
+                {
+                  "en": "Require explicit approval for irreversible, externally visible, financially significant, privacy-sensitive, or otherwise high-impact actions where product risk requires it."
+                },
+                {
+                  "en": "Design approval prompts so the user sees the action, target, destination, and sensitive information involved rather than approving an opaque summary."
+                },
+                {
+                  "en": "Fail closed when identity, permission, scope, approval, or policy state cannot be verified."
+                },
+                {
+                  "en": "Record privileged-action audit evidence without logging reusable credentials or unnecessary sensitive arguments."
+                },
+                {
+                  "en": "Rate-limit or cap high-impact actions as blast-radius mitigation without treating rate limits as authorization."
+                },
+                {
+                  "en": "Test that compromised model output cannot invoke an unexposed tool, broaden a resource scope, impersonate another user, bypass approval, or turn a read path into a write path."
+                },
+                {
+                  "en": "Remove or reduce permissions when a capability no longer needs them and verify revocation takes effect."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a read-only document assistant and an admin export tool, design which functionality should be exposed to the model and which should not exist in the agent surface."
+                },
+                {
+                  "en": "Explain where authorization is enforced when the model requests a tool call on behalf of user A against a resource owned by user B."
+                },
+                {
+                  "en": "Design a step-up approval flow for a send or delete action without letting the model grant itself the required privilege."
+                },
+                {
+                  "en": "Explain why forwarding the client's broad access token through an MCP server to a downstream API creates a broken trust boundary."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can design least-functionality tools, user/resource-scoped permissions, deterministic complete mediation, bounded privilege elevation, and approval behavior that remains correct under compromised model output."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.owasp-llm06-excessive-agency",
+                  "locator": {
+                    "en": "Sections \"Common Examples of Risks\" and \"Prevention and Mitigation Strategies\", especially excessive functionality, excessive permissions, excessive autonomy, user context, user approval, and complete mediation"
+                  },
+                  "purpose": {
+                    "en": "Establish that harmful agent actions are controlled by functionality, permissions, and autonomy—and that enforcement belongs outside the model."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-security-best-practices-2026",
+                  "locator": {
+                    "en": "Sections \"Confused Deputy Problem\", \"Token Passthrough\", and \"Scope Minimization\""
+                  },
+                  "purpose": {
+                    "en": "Ground proxy/tool permission design in concrete confused-deputy, audience, broad-scope, audit, privilege-chaining, and progressive-elevation failure modes."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-authorization-security-2026",
+                  "locator": {
+                    "en": "Sections \"Token Audience Binding and Validation\", \"Confused Deputy Problem\", and \"Access Token Privilege Restriction\""
+                  },
+                  "purpose": {
+                    "en": "Turn least privilege into enforceable credential/resource boundaries: validate intended audiences, use separate upstream credentials, and never rely on token passthrough."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take the Knowledge Assistant tool inventory and split each capability into the smallest meaningful read/write/export/send/admin actions. Assign user/service identity, resource scope, downstream enforcement point, approval requirement, and audit evidence."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Harden the Knowledge Assistant tool surface so a simulated compromised model cannot exceed the current user's resource scope, invoke unexposed functionality, bypass approval, pass a token to the wrong audience, or use a read path to perform a write."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Simulate model output that requests an unexposed admin or delete capability and verify no executable path exists."
+                },
+                {
+                  "en": "Attempt to access another tenant or user's resource through a permitted read tool and verify downstream authorization blocks it."
+                },
+                {
+                  "en": "Give a read-oriented tool identity unnecessary write permissions, demonstrate the blast radius, then reduce the permission and rerun the attack."
+                },
+                {
+                  "en": "Attempt a wrong-audience or token-passthrough flow and verify the server rejects it before a downstream request is made."
+                },
+                {
+                  "en": "Start with baseline scopes, request a privileged operation, and verify step-up elevation is precise rather than granting the full tool catalog."
+                },
+                {
+                  "en": "Attempt a high-impact operation without approval, with stale approval, and with approval for a different target; verify all fail closed."
+                },
+                {
+                  "en": "Revoke or down-scope a permission and verify subsequent calls observe the new policy."
+                },
+                {
+                  "en": "Remove at least one tool or capability from the model-visible surface because it is unnecessary or too open-ended."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A tool/capability inventory distinguishes functionality the product needs from functionality deliberately not exposed."
+                },
+                {
+                  "en": "A permission matrix maps action, user or service identity, tenant/resource scope, downstream enforcement, and approval requirements."
+                },
+                {
+                  "en": "Open-ended capabilities are removed or constrained to purpose-built operations where practical."
+                },
+                {
+                  "en": "User-scoped operations execute under an authorization context that cannot silently broaden to other users or tenants."
+                },
+                {
+                  "en": "Service identities use only the permissions required by service-owned operations."
+                },
+                {
+                  "en": "Every privileged action is authorized at execution time outside the model."
+                },
+                {
+                  "en": "Credential/resource audience and token-passthrough boundaries are tested."
+                },
+                {
+                  "en": "Privilege elevation is minimal, explicit, auditable, and separate from model-generated tool arguments."
+                },
+                {
+                  "en": "High-impact actions have an approval contract that shows target, action, and sensitive effect where approval is required."
+                },
+                {
+                  "en": "Missing, stale, wrong-target, or denied approval fails closed."
+                },
+                {
+                  "en": "A cross-user or cross-tenant negative test proves complete mediation."
+                },
+                {
+                  "en": "A compromised-model test proves the model cannot invent a new capability or expand a tool's downstream privileges."
+                },
+                {
+                  "en": "Audit evidence preserves action, actor, resource, policy decision, and correlation without exposing reusable credentials."
+                },
+                {
+                  "en": "At least one unnecessary tool, permission, scope, or autonomous action is removed."
+                },
+                {
+                  "en": "The final decision records residual blast radius and the next permission boundary that would need redesign if product capability expands."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the permission model for an email or finance assistant whose tools include read, draft, send, export, and irreversible actions, with different user scopes and approval requirements."
+              }
+            }
+          ]
         }
       },
       {
@@ -11763,7 +12428,13 @@
                   "en": "operating-lifecycle-synthesis"
                 },
                 {
-                  "en": "security-failure-work"
+                  "en": "tool-permission-boundary"
+                },
+                {
+                  "en": "data-exfiltration-boundary"
+                },
+                {
+                  "en": "integrated-security-attack-path"
                 },
                 {
                   "en": "incident-and-feedback"
@@ -11970,6 +12641,27 @@
                 },
                 {
                   "en": "production-readiness-review"
+                },
+                {
+                  "en": "tool-capability-inventory"
+                },
+                {
+                  "en": "tool-permission-matrix"
+                },
+                {
+                  "en": "approval-policy"
+                },
+                {
+                  "en": "sensitive-data-flow-map"
+                },
+                {
+                  "en": "exfiltration-sink-policy"
+                },
+                {
+                  "en": "security-boundary-failure-matrix"
+                },
+                {
+                  "en": "security-audit-record"
                 },
                 {
                   "en": "decision-records"
@@ -12264,7 +12956,17 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "security.data-exfiltration"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "security.tool-permissions"
     },
     {
       "type": "member",
@@ -12315,6 +13017,16 @@
       "type": "prerequisite",
       "from": "agents.deterministic-vs-agentic",
       "to": "agents.state"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.deterministic-vs-agentic",
+      "to": "security.tool-permissions"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.mcp",
+      "to": "security.tool-permissions"
     },
     {
       "type": "prerequisite",
@@ -12533,6 +13245,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "ai.tool-calling",
+      "to": "security.tool-permissions"
+    },
+    {
+      "type": "prerequisite",
       "from": "dl.embeddings",
       "to": "llm.self-attention"
     },
@@ -12570,6 +13287,11 @@
       "type": "prerequisite",
       "from": "production.caching",
       "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.caching",
+      "to": "security.data-exfiltration"
     },
     {
       "type": "prerequisite",
@@ -12658,6 +13380,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.observability",
+      "to": "security.data-exfiltration"
+    },
+    {
+      "type": "prerequisite",
       "from": "production.release-engineering",
       "to": "production.architecture"
     },
@@ -12718,6 +13445,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "retrieval.search",
+      "to": "security.data-exfiltration"
+    },
+    {
+      "type": "prerequisite",
       "from": "security.auth",
       "to": "security.prompt-injection"
     },
@@ -12725,6 +13457,16 @@
       "type": "prerequisite",
       "from": "security.prompt-injection",
       "to": "agents.mcp"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.prompt-injection",
+      "to": "security.data-exfiltration"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.tool-permissions",
+      "to": "security.data-exfiltration"
     },
     {
       "type": "prerequisite",
@@ -13072,11 +13814,23 @@
       "author": "LangChain",
       "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph"
     },
+    "docs.mcp-authorization-security-2026": {
+      "title": "MCP Authorization Security Considerations — 2026-07-28",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2026-07-28/basic/authorization/security-considerations.mdx"
+    },
     "docs.mcp-conformance-2026": {
       "title": "MCP Conformance — 2026-07-28",
       "type": "documentation",
       "author": "Model Context Protocol",
       "url": "https://plan.modelcontextprotocol.io/conformance/1"
+    },
+    "docs.mcp-security-best-practices-2026": {
+      "title": "MCP Security Best Practices — 2026-07-28",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/docs/2026-07-28/tutorials/security/security_best_practices.mdx"
     },
     "docs.mcp-tasks-2026": {
       "title": "MCP Tasks Extension — 2026-07-28",
@@ -13311,6 +14065,18 @@
       "type": "standard",
       "author": "OWASP Gen AI Security Project",
       "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    "standard.owasp-llm02-sensitive-information": {
+      "title": "OWASP LLM02:2025 Sensitive Information Disclosure",
+      "type": "standard",
+      "author": "OWASP Gen AI Security Project",
+      "url": "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/"
+    },
+    "standard.owasp-llm06-excessive-agency": {
+      "title": "OWASP LLM06:2025 Excessive Agency",
+      "type": "standard",
+      "author": "OWASP Gen AI Security Project",
+      "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
     },
     "visual.3blue1brown-attention": {
       "title": "Attention in Transformers, Step-by-Step",

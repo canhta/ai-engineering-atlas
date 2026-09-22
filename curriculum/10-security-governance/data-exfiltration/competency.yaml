@@ -1,0 +1,121 @@
+id: security.data-exfiltration
+title: "Data Exfiltration"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Sensitive information can enter an AI request from user input, retrieval, tools, memory, caches, credentials, logs, or upstream systems and can leave through model output, tools, links, external destinations, telemetry, caches, or provider requests. Prompt injection is one way to manipulate that flow, but the durable defense is an application-level data-flow policy: authorize data at the source, minimize what enters model context, constrain outbound sinks, preserve tenant boundaries, and make sensitive transmissions explicit rather than relying on the model to keep secrets."
+curriculum_evidence:
+  - standard.owasp-llm02-sensitive-information
+  - article.openai-agent-prompt-injection
+  - docs.mcp-security-best-practices-2026
+  - docs.otel-genai-spans
+prerequisites:
+  - security.prompt-injection
+  - security.tool-permissions
+  - retrieval.search
+  - production.observability
+  - production.caching
+outcomes:
+  - "Classify sensitive data relevant to the product, including credentials, personal data, confidential business data, regulated records, tenant-private content, and security metadata."
+  - "Map sensitive sources, transformations, model context, storage, telemetry, caches, outputs, tools, and external sinks as one end-to-end data flow."
+  - "Distinguish a source of attacker influence from a sensitive-data source and from an outbound sink."
+  - "Authorize retrieval and tool access before sensitive content enters model context rather than filtering only the final answer."
+  - "Minimize context so the model receives only the fields, documents, rows, or tool results required for the current task."
+  - "Keep reusable credentials, secrets, private keys, and broad bearer tokens out of model-visible context and model-generated tool arguments."
+  - "Use tenant, user, authorization, and data-version scope in retrieval and cache boundaries so protected data cannot be reused across principals."
+  - "Define which external destinations, domains, tools, files, messages, or network sinks are allowed to receive sensitive information."
+  - "Require deterministic policy or explicit user approval before transmitting sensitive information to a new or high-risk sink when the product requires it."
+  - "Present the actual sensitive fields, destination, and action being approved rather than hiding them behind a model summary."
+  - "Prevent hidden links, tool arguments, markdown, or structured output from creating an undeclared exfiltration channel."
+  - "Treat prompt instructions that say not to reveal secrets as defense-in-depth, not as the primary confidentiality control."
+  - "Redact, omit, tokenize, or reference sensitive data before telemetry/logging when raw content is not operationally required."
+  - "Verify caches and replay/diagnostic records preserve the same data-classification and tenant boundaries as the live request path."
+  - "Account for streamed partial output when sensitive content could be exposed before final validation."
+  - "Separate accidental sensitive disclosure, authorization bypass, credential leakage, and deliberate source-to-sink exfiltration during incident diagnosis."
+  - "Test sensitive-data controls with canary values or synthetic protected records rather than real secrets."
+  - "Detect and contain unexpected outbound transmissions without assuming an input classifier will catch every manipulation."
+  - "Minimize retained sensitive artifacts after the request when retention is not required for product or compliance needs."
+  - "Convert an exfiltration failure into a durable security regression case and update the source/sink policy or boundary that actually failed."
+diagnostic:
+  tasks:
+    - "Draw how one confidential document can travel from retrieval into model context and then into output, logs, cache, a tool call, or an external URL."
+    - "Explain why output filtering cannot recover confidentiality after a sensitive record was already sent to an unauthorized external tool or provider."
+    - "Given an indirect prompt injection that asks the agent to upload private content to a public endpoint, identify the attacker-controlled source, sensitive source, and dangerous sink."
+    - "Design a test that proves tenant-private retrieval results and cached responses cannot cross into another tenant's answer."
+  pass_condition: "Skip introductory material only if the learner can classify sensitive data, map source-to-sink flows, enforce authorization before context construction, constrain outbound destinations, protect logs/caches/credentials, and reproduce an exfiltration attempt without relying on prompt-only secrecy."
+learning_route:
+  mental_model:
+    - source: standard.owasp-llm02-sensitive-information
+      locator: "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially sanitization, access controls, restricted data sources, tokenization/redaction, and the warning that prompt restrictions can be bypassed"
+      purpose: "Establish the sensitive-information classes and application controls that must exist outside model instructions."
+    - source: article.openai-agent-prompt-injection
+      locator: "Section \"How this informs our defenses in ChatGPT\", especially source-sink analysis and safeguards around transmitting potentially sensitive information to third parties"
+      purpose: "Model exfiltration as an attacker-controlled source plus a dangerous sink, then constrain or confirm the transmission even when manipulation succeeds."
+    - source: docs.mcp-security-best-practices-2026
+      locator: "Section \"Token Passthrough\", especially accountability/audit, trust-boundary, privilege, and data-exfiltration risks"
+      purpose: "Show why reusable credentials and broad upstream tokens are themselves sensitive cross-boundary data and why proxy boundaries must not leak them."
+    - source: docs.otel-genai-spans
+      locator: "Sections \"Capturing instructions, inputs, and outputs\" and \"Recording content on attributes\""
+      purpose: "Apply the same confidentiality policy to observability so tracing does not become a second exfiltration channel."
+  guided_practice:
+    - task: "Trace one Knowledge Assistant answer from authenticated retrieval through model context to output, cache, trace, tools, and any external destinations. Mark each data classification, authorization check, minimization step, storage/retention point, and allowed sink."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Harden the Knowledge Assistant against a source-to-sink exfiltration attack: use synthetic sensitive records, enforce retrieval/tool/cache scope before context assembly, constrain external sinks, redact telemetry, and prove a manipulated model cannot transmit protected data outside the declared policy."
+experiments:
+  - "Place synthetic sensitive data in a retrieved document and use indirect prompt injection to request transmission to an unapproved external destination; verify the sink policy blocks or requires the declared approval."
+  - "Attempt to retrieve another user's or tenant's protected document and verify authorization prevents the data from entering model context at all."
+  - "Seed a cache entry under the wrong tenant/user scope and verify the application cannot serve it across the authorization boundary."
+  - "Attempt to place an API token, credential, or reusable access token into model-visible context or tool arguments and verify the secure path uses an external credential boundary instead."
+  - "Enable verbose tracing and verify raw sensitive prompt, tool, retrieval, or output content is excluded or redacted according to the telemetry contract."
+  - "Stream a response containing a synthetic sensitive canary and verify partial-output handling does not bypass the declared validation or sink policy."
+  - "Attempt exfiltration through a hidden URL, markdown destination, tool argument, or structured field and verify outbound policy is applied to the actual destination rather than surface text."
+  - "Allow one user-approved external transmission and verify the approval shows the real destination and sensitive fields involved."
+  - "Convert one blocked or simulated exfiltration case into a durable security regression test."
+exit_evidence:
+  - "A sensitive-data classification identifies credentials, personal/private data, tenant-confidential data, and other product-relevant protected classes."
+  - "A source-to-sink data-flow map covers retrieval, tools, model context, output, telemetry, caches, replay records, and external destinations."
+  - "Sensitive retrieval/tool access is authorized before protected content enters model context."
+  - "Context minimization removes fields or documents not needed for the current task."
+  - "Reusable credentials and broad bearer tokens remain outside model-visible context."
+  - "Retrieval and cache scope tests prove protected data does not cross user or tenant boundaries."
+  - "An outbound sink policy identifies allowed, approval-required, and forbidden destinations or action types."
+  - "A synthetic exfiltration attack through untrusted content is blocked even when the model is treated as compromised."
+  - "Approved sensitive transmission exposes the actual destination, action, and relevant data to the user or policy decision point."
+  - "Logs, traces, metrics, caches, and diagnostic replay artifacts follow the declared sensitive-content policy."
+  - "Streaming or partial-output paths do not silently bypass confidentiality controls where streaming is used."
+  - "Credential/token passthrough is rejected at the relevant trust boundary."
+  - "At least one alternate exfiltration channel such as URL, markdown, tool argument, structured field, or error path is tested."
+  - "Security evidence uses synthetic/canary secrets rather than real production credentials."
+  - "One exfiltration failure or blocked attempt becomes durable regression evidence tied to the source/sink boundary that prevented or allowed it."
+  - "The final decision states which sensitive flows remain intentionally allowed, which require approval, and which are impossible by design."
+transfer:
+  task: "Threat-model and redesign sensitive-data flow for an email or enterprise-search agent that can read private records and communicate with external systems, using a different set of tenants, destinations, retention rules, and approval requirements."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.owasp-llm02-sensitive-information
+    - article.openai-agent-prompt-injection
+    - docs.mcp-security-best-practices-2026
+    - docs.otel-genai-spans
+  practice:
+    - standard.owasp-llm02-sensitive-information
+    - article.openai-agent-prompt-injection
+  production-reference:
+    - standard.owasp-llm02-sensitive-information
+    - docs.mcp-security-best-practices-2026
+    - docs.otel-genai-spans
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

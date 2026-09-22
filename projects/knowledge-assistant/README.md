@@ -30,6 +30,8 @@ For post-release change detection, continue with the [Drift Monitoring evidence 
 
 For the final Production AI synthesis, continue with the [Production Synthesis evidence contract](production-synthesis/). Architecture and MLOps/LLMOps must simplify and operate the system already built; they must not become a reason to add infrastructure without a measured need.
 
+For action authorization and sensitive-data flow, continue with the [Security Boundaries evidence contract](security-boundaries/). The model is treated as potentially mistaken or manipulated; permissions and confidentiality must still hold.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -699,20 +701,68 @@ Map the full operating loop around the selected architecture.
 
 **Decision:** automate only the transitions that reduce risk, lead time, or toil without weakening evidence or required human judgment.
 
-## Milestone 30 — security failure work
+## Milestone 30 — tool permission boundary
 
-Test realistic trust-boundary failures.
+Use the [Tool Permissions](../../curriculum/10-security-governance/tool-permissions/) route and the [Security Boundaries evidence contract](security-boundaries/).
 
-At minimum consider:
+Reduce the tool surface before testing prompt injection.
 
-- indirect prompt injection in retrieved content;
-- unauthorized document access;
-- dangerous or malformed tool arguments;
-- sensitive data in logs/traces.
+**Evidence:**
 
-Mitigations should live outside the model prompt when the control requires real authorization or isolation.
+- capability inventory;
+- least-functionality tool design;
+- user/service identity mapping;
+- tool/action/resource permission matrix;
+- downstream complete-mediation point;
+- token audience/passthrough negative test;
+- progressive scope/step-up policy;
+- high-impact approval policy;
+- cross-user/tenant negative tests;
+- permission revocation test;
+- one unnecessary capability or permission removed.
 
-## Milestone 31 — incident and feedback loop
+**Decision:** the model may propose an action, but deterministic downstream policy decides whether that action exists and is authorized.
+
+## Milestone 31 — data exfiltration boundary
+
+Use the [Data Exfiltration](../../curriculum/10-security-governance/data-exfiltration/) route and continue in the same [Security Boundaries evidence contract](security-boundaries/).
+
+Map protected data before testing how an attacker might move it.
+
+**Evidence:**
+
+- sensitive-data classification;
+- source-to-sink data-flow map;
+- retrieval/tool authorization before model context;
+- context-minimization decision;
+- credential/secret separation;
+- tenant-safe cache/retrieval test;
+- allowed/approval-required/forbidden sink policy;
+- telemetry/log/replay redaction evidence;
+- alternate-channel exfiltration tests;
+- synthetic/canary protected values;
+- durable security regression case.
+
+**Decision:** sensitive data may reach only the sources, transformations, stores, and sinks explicitly allowed by application policy.
+
+## Milestone 32 — integrated security attack path
+
+Reuse [Prompt Injection and Trust Boundaries](../../curriculum/10-security-governance/prompt-injection/) together with both new security routes.
+
+Inject adversarial retrieved or tool content and treat the model output as compromised.
+
+At minimum prove:
+
+- the model cannot call an unexposed capability;
+- the model cannot broaden user/tenant resource scope;
+- high-impact actions cannot bypass approval;
+- protected data cannot enter context without authorization;
+- sensitive data cannot reach an unapproved external sink;
+- logs, traces, cache, and streaming paths do not become alternate leak channels.
+
+**Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior.
+
+## Milestone 33 — incident and feedback loop
 
 Inject or analyze one failure:
 

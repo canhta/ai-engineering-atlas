@@ -34,7 +34,9 @@ milestones:
   - drift-monitoring
   - architecture-synthesis
   - operating-lifecycle-synthesis
-  - security-failure-work
+  - tool-permission-boundary
+  - data-exfiltration-boundary
+  - integrated-security-attack-path
   - incident-and-feedback
 competencies:
   - ai.product-framing
@@ -69,7 +71,9 @@ competencies:
   - production.drift
   - production.architecture
   - production.mlops-llmops
+  - security.tool-permissions
   - security.prompt-injection
+  - security.data-exfiltration
 evidence:
   - product-brief
   - baseline-results
@@ -135,6 +139,13 @@ evidence:
   - operating-lifecycle-map
   - automation-boundary-record
   - production-readiness-review
+  - tool-capability-inventory
+  - tool-permission-matrix
+  - approval-policy
+  - sensitive-data-flow-map
+  - exfiltration-sink-policy
+  - security-boundary-failure-matrix
+  - security-audit-record
   - decision-records
   - traces
   - security-tests

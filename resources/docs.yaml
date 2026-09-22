@@ -93,7 +93,7 @@ resources:
     author: OpenAI
     url: https://openai.com/index/designing-agents-to-resist-prompt-injection/
     roles: [curriculum-evidence, production-reference, reference]
-    covers: [ai.tool-calling, security.prompt-injection, security.tool-permissions]
+    covers: [ai.tool-calling, security.prompt-injection, security.tool-permissions, security.data-exfiltration]
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
@@ -1098,3 +1098,84 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: standard.owasp-llm06-excessive-agency
+    type: standard
+    title: OWASP LLM06:2025 Excessive Agency
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm062025-excessive-agency/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.tool-permissions
+      - excessive-agency
+      - least-privilege
+      - human-approval
+      - complete-mediation
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-security-best-practices-2026
+    type: documentation
+    title: MCP Security Best Practices — 2026-07-28
+    author: Model Context Protocol
+    url: https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/docs/2026-07-28/tutorials/security/security_best_practices.mdx
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.tool-permissions
+      - security.data-exfiltration
+      - confused-deputy
+      - token-passthrough
+      - scope-minimization
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-authorization-security-2026
+    type: documentation
+    title: MCP Authorization Security Considerations — 2026-07-28
+    author: Model Context Protocol
+    url: https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2026-07-28/basic/authorization/security-considerations.mdx
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - security.tool-permissions
+      - token-audience
+      - privilege-restriction
+      - confused-deputy
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: standard.owasp-llm02-sensitive-information
+    type: standard
+    title: OWASP LLM02:2025 Sensitive Information Disclosure
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.data-exfiltration
+      - sensitive-information
+      - access-control
+      - redaction
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90

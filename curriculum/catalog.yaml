@@ -324,8 +324,20 @@ competencies:
       status: ready,
       route: curriculum/10-security-governance/prompt-injection,
     }
-  - { id: security.data-exfiltration, title: Data Exfiltration, domain: security-governance, status: coverage }
-  - { id: security.tool-permissions, title: Tool Permissions, domain: security-governance, status: coverage }
+  - {
+      id: security.data-exfiltration,
+      title: Data Exfiltration,
+      domain: security-governance,
+      status: ready,
+      route: curriculum/10-security-governance/data-exfiltration,
+    }
+  - {
+      id: security.tool-permissions,
+      title: Tool Permissions,
+      domain: security-governance,
+      status: ready,
+      route: curriculum/10-security-governance/tool-permissions,
+    }
   - { id: security.sandboxing, title: Sandboxing, domain: security-governance, status: coverage }
   - { id: security.auth, title: Authentication and Authorization, domain: security-governance, status: coverage }
   - { id: security.multi-tenant, title: Multi-Tenant Isolation, domain: security-governance, status: coverage }

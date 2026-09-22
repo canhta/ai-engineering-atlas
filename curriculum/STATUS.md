@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **34** ready learning routes
-- **81** coverage-only competencies
+- **36** ready learning routes
+- **79** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -23,7 +23,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | AI Engineering | 26 | 12 |
 | Agents | 9 | 9 |
 | Production AI | 11 | 11 |
-| Security & Governance | 10 | 1 |
+| Security & Governance | 10 | 3 |
 | Multimodal | 3 | 0 |
 | Specializations | 8 | 0 |
 
@@ -65,6 +65,8 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `production.mlops-llmops` — MLOps and LLMOps | Production AI | [Open route](09-production-ai/mlops-llmops/) |
 | `production.drift` — Drift Monitoring and Response | Production AI | [Open route](09-production-ai/drift/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
+| `security.data-exfiltration` — Data Exfiltration | Security & Governance | [Open route](10-security-governance/data-exfiltration/) |
+| `security.tool-permissions` — Tool Permissions | Security & Governance | [Open route](10-security-governance/tool-permissions/) |
 
 ## Promotion rule
 

@@ -1,0 +1,109 @@
+id: security.tool-permissions
+title: "Tool Permissions"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "An agent should be treated as a potentially mistaken or manipulated decision-maker, not as an authorization authority. The production boundary must constrain which tools exist, what each tool can do, which user/resource scope it can access, when privilege elevation or approval is required, and which downstream system performs the final authorization check. Least functionality and complete mediation limit damage from hallucination, prompt injection, compromised tools, or stolen credentials."
+curriculum_evidence:
+  - standard.owasp-llm06-excessive-agency
+  - docs.mcp-security-best-practices-2026
+  - docs.mcp-authorization-security-2026
+prerequisites:
+  - ai.tool-calling
+  - agents.mcp
+  - agents.deterministic-vs-agentic
+outcomes:
+  - "Inventory every tool or extension exposed to the model and remove functionality the product does not need."
+  - "Prefer narrow purpose-built actions over open-ended shell, URL-fetch, database, filesystem, or generic admin interfaces."
+  - "Separate read, create, update, delete, export, send, approve, and administrative capabilities instead of bundling them behind one broad tool."
+  - "Define a permission matrix across tool, action, resource, tenant, user, and execution context."
+  - "Execute user-delegated operations in the user's authorization context when the downstream resource is user-scoped."
+  - "Use service identities only for capabilities that are truly service-owned and give them the minimum downstream permissions required."
+  - "Enforce authorization in deterministic application or downstream systems rather than asking the model whether an action is allowed."
+  - "Apply complete mediation so every privileged invocation is checked at execution time rather than trusting a previous model or UI decision."
+  - "Bind credentials or access tokens to their intended resource and reject wrong-audience or token-passthrough designs."
+  - "Start with minimal scopes and perform explicit step-up elevation only when a higher-risk operation is actually requested."
+  - "Keep privilege elevation separate from the model's tool arguments and preserve the user or policy decision that granted it."
+  - "Require explicit approval for irreversible, externally visible, financially significant, privacy-sensitive, or otherwise high-impact actions where product risk requires it."
+  - "Design approval prompts so the user sees the action, target, destination, and sensitive information involved rather than approving an opaque summary."
+  - "Fail closed when identity, permission, scope, approval, or policy state cannot be verified."
+  - "Record privileged-action audit evidence without logging reusable credentials or unnecessary sensitive arguments."
+  - "Rate-limit or cap high-impact actions as blast-radius mitigation without treating rate limits as authorization."
+  - "Test that compromised model output cannot invoke an unexposed tool, broaden a resource scope, impersonate another user, bypass approval, or turn a read path into a write path."
+  - "Remove or reduce permissions when a capability no longer needs them and verify revocation takes effect."
+diagnostic:
+  tasks:
+    - "Given a read-only document assistant and an admin export tool, design which functionality should be exposed to the model and which should not exist in the agent surface."
+    - "Explain where authorization is enforced when the model requests a tool call on behalf of user A against a resource owned by user B."
+    - "Design a step-up approval flow for a send or delete action without letting the model grant itself the required privilege."
+    - "Explain why forwarding the client's broad access token through an MCP server to a downstream API creates a broken trust boundary."
+  pass_condition: "Skip introductory material only if the learner can design least-functionality tools, user/resource-scoped permissions, deterministic complete mediation, bounded privilege elevation, and approval behavior that remains correct under compromised model output."
+learning_route:
+  mental_model:
+    - source: standard.owasp-llm06-excessive-agency
+      locator: "Sections \"Common Examples of Risks\" and \"Prevention and Mitigation Strategies\", especially excessive functionality, excessive permissions, excessive autonomy, user context, user approval, and complete mediation"
+      purpose: "Establish that harmful agent actions are controlled by functionality, permissions, and autonomy—and that enforcement belongs outside the model."
+    - source: docs.mcp-security-best-practices-2026
+      locator: "Sections \"Confused Deputy Problem\", \"Token Passthrough\", and \"Scope Minimization\""
+      purpose: "Ground proxy/tool permission design in concrete confused-deputy, audience, broad-scope, audit, privilege-chaining, and progressive-elevation failure modes."
+    - source: docs.mcp-authorization-security-2026
+      locator: "Sections \"Token Audience Binding and Validation\", \"Confused Deputy Problem\", and \"Access Token Privilege Restriction\""
+      purpose: "Turn least privilege into enforceable credential/resource boundaries: validate intended audiences, use separate upstream credentials, and never rely on token passthrough."
+  guided_practice:
+    - task: "Take the Knowledge Assistant tool inventory and split each capability into the smallest meaningful read/write/export/send/admin actions. Assign user/service identity, resource scope, downstream enforcement point, approval requirement, and audit evidence."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Harden the Knowledge Assistant tool surface so a simulated compromised model cannot exceed the current user's resource scope, invoke unexposed functionality, bypass approval, pass a token to the wrong audience, or use a read path to perform a write."
+experiments:
+  - "Simulate model output that requests an unexposed admin or delete capability and verify no executable path exists."
+  - "Attempt to access another tenant or user's resource through a permitted read tool and verify downstream authorization blocks it."
+  - "Give a read-oriented tool identity unnecessary write permissions, demonstrate the blast radius, then reduce the permission and rerun the attack."
+  - "Attempt a wrong-audience or token-passthrough flow and verify the server rejects it before a downstream request is made."
+  - "Start with baseline scopes, request a privileged operation, and verify step-up elevation is precise rather than granting the full tool catalog."
+  - "Attempt a high-impact operation without approval, with stale approval, and with approval for a different target; verify all fail closed."
+  - "Revoke or down-scope a permission and verify subsequent calls observe the new policy."
+  - "Remove at least one tool or capability from the model-visible surface because it is unnecessary or too open-ended."
+exit_evidence:
+  - "A tool/capability inventory distinguishes functionality the product needs from functionality deliberately not exposed."
+  - "A permission matrix maps action, user or service identity, tenant/resource scope, downstream enforcement, and approval requirements."
+  - "Open-ended capabilities are removed or constrained to purpose-built operations where practical."
+  - "User-scoped operations execute under an authorization context that cannot silently broaden to other users or tenants."
+  - "Service identities use only the permissions required by service-owned operations."
+  - "Every privileged action is authorized at execution time outside the model."
+  - "Credential/resource audience and token-passthrough boundaries are tested."
+  - "Privilege elevation is minimal, explicit, auditable, and separate from model-generated tool arguments."
+  - "High-impact actions have an approval contract that shows target, action, and sensitive effect where approval is required."
+  - "Missing, stale, wrong-target, or denied approval fails closed."
+  - "A cross-user or cross-tenant negative test proves complete mediation."
+  - "A compromised-model test proves the model cannot invent a new capability or expand a tool's downstream privileges."
+  - "Audit evidence preserves action, actor, resource, policy decision, and correlation without exposing reusable credentials."
+  - "At least one unnecessary tool, permission, scope, or autonomous action is removed."
+  - "The final decision records residual blast radius and the next permission boundary that would need redesign if product capability expands."
+transfer:
+  task: "Redesign the permission model for an email or finance assistant whose tools include read, draft, send, export, and irreversible actions, with different user scopes and approval requirements."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.owasp-llm06-excessive-agency
+    - docs.mcp-security-best-practices-2026
+    - docs.mcp-authorization-security-2026
+  practice:
+    - standard.owasp-llm06-excessive-agency
+    - docs.mcp-security-best-practices-2026
+  production-reference:
+    - standard.owasp-llm06-excessive-agency
+    - docs.mcp-authorization-security-2026
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
