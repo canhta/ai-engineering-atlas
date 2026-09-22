@@ -4,6 +4,25 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | Sections "Context engineering vs. prompt engineering", "The anatomy of effective context", "Context retrieval and agentic search", and "Context engineering for long-horizon tasks" | Establish context as the full inference state and introduce high-signal selection, just-in-time retrieval, and compaction under a finite attention budget. |
+| [Harness engineering — leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) | Section "We made repository knowledge the system of record" | Study a production pattern that keeps a small stable map in context while moving deeper knowledge into navigable external sources. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `ai.prompt-engineering` | [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 5 "Prompt Engineering" — "Introduction to Prompting" (p. 212), "System Prompt and User Prompt" (p. 215), and "Prompt Engineering Best Practices" (from p. 220) | Patch only the instruction-design skill needed to distinguish prompt wording from broader context selection and management. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 The model does not see your architecture. It sees the context you assemble for each inference.
