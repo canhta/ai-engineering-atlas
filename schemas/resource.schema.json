@@ -3,15 +3,33 @@
   "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/resource.schema.json",
   "title": "AI Engineering Atlas resource",
   "type": "object",
-  "required": ["id", "type", "title", "roles", "source_verified", "last_checked"],
+  "required": ["id", "type", "title", "url", "roles", "source_verified", "last_checked"],
   "properties": {
     "id": { "type": "string", "minLength": 1 },
     "type": { "type": "string", "minLength": 1 },
     "title": { "type": "string", "minLength": 1 },
     "author": { "type": "string" },
-    "url": { "type": "string" },
-    "roles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "url": { "type": "string", "minLength": 1 },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "curriculum-evidence",
+          "teaching",
+          "visual",
+          "practice",
+          "assessment",
+          "production-reference",
+          "reference",
+          "benchmark",
+          "ux-benchmark"
+        ]
+      }
+    },
     "covers": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" },
     "source_verified": { "type": "boolean" },
     "last_checked": { "type": "string" }
   },
