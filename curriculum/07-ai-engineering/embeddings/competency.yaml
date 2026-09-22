@@ -41,7 +41,7 @@ learning_route:
   guided_practice:
     - task: Encode a small query/document corpus, inspect nearest neighbors, then explain at least one good match and one surprising match from the representation and task.
   independent_practice:
-    - artifact: projects/knowledge-assistant/
+    - artifact: projects/knowledge-assistant/foundation/
       task: Add embedding retrieval to the Knowledge Assistant without deleting the lexical baseline; compare both on the identical corpus, query set, relevance judgments, top-k metric, and latency measurement.
 experiments:
   - Compare an embedding model or encoding setup on vocabulary-mismatch queries versus identifier/exact-match queries.
