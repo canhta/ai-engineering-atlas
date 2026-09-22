@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/project.schema.json",
+  "title": "AI Engineering Atlas reference project",
+  "type": "object",
+  "required": ["id", "title", "spines", "purpose", "milestones", "competencies", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^project\\.[a-z0-9.-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "spines": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["foundation", "ai-system", "production"] }
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "milestones": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "competencies": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  }
+}
