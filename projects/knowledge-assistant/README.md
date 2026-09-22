@@ -8,6 +8,8 @@ For chunking, reranking, and RAG evaluation, continue with the [Retrieval Qualit
 
 For runtime context and external actions, continue with the [Context and Tools evidence contract](context-and-tools/). Reuse the same evaluation lineage so context/tool changes can be compared against the measured RAG system.
 
+For typed responses and answer-versus-abstain decisions, continue with the [Output and Trust evidence contract](output-and-trust/). Keep the same evaluation lineage so output reliability and abstention policy are measured against the system you already built.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -222,7 +224,42 @@ Start with a deterministic workflow. Introduce agentic control only when flexibi
 - failure recovery;
 - explicit decision to stay deterministic or justify later agentic control.
 
-## Milestone 9 — service and observability
+## Milestone 9 — structured response contract
+
+Use the [Structured Outputs](../../curriculum/07-ai-engineering/structured-outputs/) route.
+
+Introduce a versioned response contract because a real downstream consumer needs one—not because JSON looks cleaner.
+
+**Evidence:**
+
+- schema/version and consumer requirement;
+- contract tests;
+- deterministic semantic validation;
+- refusal/unavailable and incomplete-output handling;
+- schema-valid but semantically invalid failure case;
+- one schema migration decision;
+- comparison with the prior free-form baseline.
+
+## Milestone 10 — abstention and trust policy
+
+Use the [Uncertainty Abstention and Trust](../../curriculum/07-ai-engineering/uncertainty-abstention-trust/) route.
+
+Do not use model self-reported confidence as the policy by default.
+
+**Experiment:**
+
+- preserve the no-abstention baseline;
+- define answerability/risk labels;
+- compare at least two candidate signals or policies;
+- select the operating point on validation data;
+- evaluate once on held-out test data;
+- report risk together with coverage;
+- measure unnecessary abstention, unsafe answers, and fallback/escalation outcome;
+- test at least one stale, insufficient-evidence, or shifted slice.
+
+**Decision:** record the chosen answer/abstain/fallback policy and what evidence would change it.
+
+## Milestone 11 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -238,7 +275,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 10 — release gate
+## Milestone 12 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -251,7 +288,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 11 — security failure work
+## Milestone 13 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -264,7 +301,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 12 — incident and feedback loop
+## Milestone 14 — incident and feedback loop
 
 Inject or analyze one failure:
 
