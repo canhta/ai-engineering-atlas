@@ -5,8 +5,8 @@
 ## Summary
 
 - **116** catalog competencies
-- **11** ready learning routes
-- **105** coverage-only competencies
+- **13** ready learning routes
+- **103** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -20,7 +20,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | ML Foundations | 9 | 0 |
 | Deep Learning | 5 | 0 |
 | LLM Foundations | 11 | 1 |
-| AI Engineering | 26 | 8 |
+| AI Engineering | 26 | 10 |
 | Agents | 10 | 1 |
 | Production AI | 11 | 0 |
 | Security & Governance | 10 | 1 |
@@ -34,6 +34,8 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `llm.self-attention` — Self-Attention | LLM Foundations | [Open route](06-llm-foundations/self-attention/) |
 | `ai.product-framing` — AI Product and Problem Framing | AI Engineering | [Open route](07-ai-engineering/product-framing/) |
 | `ai.model-selection` — Model Selection | AI Engineering | [Open route](07-ai-engineering/model-selection/) |
+| `ai.context-engineering` — Context Engineering | AI Engineering | [Open route](07-ai-engineering/context-engineering/) |
+| `ai.tool-calling` — Tool Calling | AI Engineering | [Open route](07-ai-engineering/tool-calling/) |
 | `ai.embeddings` — Embeddings for AI Applications | AI Engineering | [Open route](07-ai-engineering/embeddings/) |
 | `retrieval.search` — Search and Retrieval | AI Engineering | [Open route](07-ai-engineering/search-retrieval/) |
 | `retrieval.chunking` — Chunking | AI Engineering | [Open route](07-ai-engineering/chunking/) |
