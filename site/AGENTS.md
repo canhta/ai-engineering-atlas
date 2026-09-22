@@ -49,7 +49,7 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 ## Bilingual
 
 - Every UI string key exists in both [src/i18n/en.json](src/i18n/en.json) and `vi.json` with the same `{params}`, and no `vi` value is longer than 1.3 × its `en` value + 12 characters; `pnpm run check:i18n` enforces it.
-- Vietnamese wording: write the way a Vietnamese developer talks: short, plain, active. Keep the English terms they use (AI engineering, deep learning, data engineering, LLM, agent, lab, debug, link, file, repo, production, prompt). No word-for-word calques. Glossary: competency → kỹ năng; ready route → lộ trình sẵn sàng / có lộ trình; mapped, no route → chưa có lộ trình; diagnostic → kiểm tra đầu vào; pass condition → tiêu chí đạt; sources, learning route → tài liệu (cần đọc); exit evidence → bằng chứng hoàn thành; transfer → vận dụng; field log → nhật ký học; gap → còn thiếu; learning → đang học; demonstrated → đã làm được; transferred → vận dụng được; retained → nhớ lâu; applied → dùng trong dự án.
+- **Any Vietnamese string** → follow [VIETNAMESE_STYLE.md](../VIETNAMESE_STYLE.md): voice, glossary, word choice, punctuation, numbers, and dates. `check:i18n` enforces its mechanical rules.
 - Curriculum text rendered on a `/vi/` page carries `lang="en"` (WCAG 3.1.2).
 - English contracts are canonical. Vietnamese route text comes only from reviewed `competency.vi.yaml` files; a missing or stale translation shows English with `lang="en"` and the marker "chưa dịch / not yet translated". Machine translation is never rendered.
 - The repository owner reviews Vietnamese before merge.
