@@ -21,7 +21,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 90
 
-- id: article.anthropic-harness-design-long-running-apps
+  - id: article.anthropic-harness-design-long-running-apps
     type: article
     title: Harness design for long-running application development
     author: Anthropic
