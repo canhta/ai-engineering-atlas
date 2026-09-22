@@ -429,18 +429,32 @@ Rejected because abstaining on more cases can mechanically improve answered-case
 - catalog/generated status:
   - **no promotion before review and seeded validation**
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- `ai.structured-outputs` promoted to `ready` at L2.
+- `ai.uncertainty-abstention-trust` promoted to `ready` at L3.
+- Structured Outputs remains a response-contract competency distinct from Tool Calling.
+- Structured-output evidence requires semantic validation, refusal/incomplete handling, and schema migration rather than parse success alone.
+- Uncertainty/Abstention uses `ai.evaluation` plus a targeted `math.probability` bridge; threshold selection is performed on validation data and evaluated on held-out test data.
+- Model self-evaluation is treated as one candidate signal to validate, not as calibrated truth.
+- The Knowledge Assistant now includes an `output-and-trust/` evidence package in the existing system/evaluation lineage.
+- Seeded-state validation passed before promotion.
+- Learner-facing source blocks are generated from the competency/resource contracts.
+
 ## Review checklist
 
-- [ ] Evidence is traceable and source locators are specific enough to author routes.
-- [ ] Structured Outputs is distinct from Tool Calling and Prompt Engineering.
-- [ ] Schema validity is explicitly separated from semantic/task correctness.
-- [ ] Structured-output failure handling includes refusal, incomplete output, and semantic validation.
-- [ ] Structured-output target depth L2 is appropriate.
-- [ ] Abstention is framed as a risk/coverage decision rather than self-reported confidence.
-- [ ] Probability prerequisite and targeted bridge are justified.
-- [ ] Threshold selection uses validation data and preserves a held-out test.
-- [ ] Abstention evidence penalizes unnecessary abstention and unsafe answers.
-- [ ] Fallback/escalation behavior is part of the capability.
-- [ ] Shift/freshness/insufficient-evidence cases are represented.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before any route promotion.
+- [x] Evidence is traceable and source locators are specific enough to author routes.
+- [x] Structured Outputs is distinct from Tool Calling and Prompt Engineering.
+- [x] Schema validity is explicitly separated from semantic/task correctness.
+- [x] Structured-output failure handling includes refusal, incomplete output, and semantic validation.
+- [x] Structured-output target depth L2 is appropriate.
+- [x] Abstention is framed as a risk/coverage decision rather than self-reported confidence.
+- [x] Probability prerequisite and targeted bridge are justified.
+- [x] Threshold selection uses validation data and preserves a held-out test.
+- [x] Abstention evidence penalizes unnecessary abstention and unsafe answers.
+- [x] Fallback/escalation behavior is part of the capability.
+- [x] Shift/freshness/insufficient-evidence cases are represented.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before any route promotion.
