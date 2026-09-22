@@ -6,6 +6,7 @@ resources:
     roles: [curriculum-evidence, benchmark, ux-benchmark]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 90
 
   - id: roadmap.roadmapsh-mlops
     type: roadmap
@@ -14,3 +15,4 @@ resources:
     roles: [curriculum-evidence, benchmark]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 90
