@@ -1,0 +1,11 @@
+resources:
+  - id: docs.sentence-transformers-semantic-search
+    type: documentation
+    title: Sentence Transformers — Semantic Search
+    author: Sentence Transformers maintainers
+    url: https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html
+    roles: [teaching, practice, reference]
+    covers: [ai.embeddings, semantic-search]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
