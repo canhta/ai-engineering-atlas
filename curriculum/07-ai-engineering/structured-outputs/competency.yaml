@@ -1,0 +1,78 @@
+id: ai.structured-outputs
+title: Structured Outputs
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Downstream systems need predictable contracts, but valid JSON or schema-conforming output does not guarantee semantic correctness. Engineers must design response schemas, handle refusal and incomplete states, validate business invariants deterministically, and version the contract safely.
+curriculum_evidence:
+  - article.openai-structured-outputs
+  - docs.google-structured-outputs
+  - docs.json-schema-object
+prerequisites:
+  - ai.evaluation
+outcomes:
+  - Design a small JSON Schema or equivalent typed contract from downstream consumer needs.
+  - Distinguish valid JSON, schema validity, semantic or business validity, and task correctness.
+  - Use required fields, enums, nullability, and additional-property policy intentionally.
+  - Explain constrained generation conceptually and identify provider-specific schema subsets or limitations.
+  - Handle normal output, refusal or unavailable state, incomplete or truncated output, and schema-compliant but semantically invalid values separately.
+  - Validate semantic invariants deterministically after generation.
+  - Version output schemas and identify breaking versus compatible changes.
+  - Compare free-form parsing, JSON-only output, and schema-constrained output on reliability and operational cost where supported.
+diagnostic:
+  tasks:
+    - Design a response schema for a cited Knowledge Assistant answer and explain which properties belong in the schema versus deterministic semantic validation.
+    - Explain why schema-valid output can still be wrong for the task.
+    - Describe how refusal, incomplete output, and a schema migration should be represented without silently treating them as normal success.
+  pass_condition: Skip introductory material only if the learner can design a typed response contract, separate schema validity from semantic correctness, handle non-happy paths, and reason about schema evolution.
+learning_route:
+  mental_model:
+    - source: article.openai-structured-outputs
+      locator: Sections "How to use Structured Outputs", "Safe Structured Outputs", "Under the hood", and "Constrained decoding"
+      purpose: Understand schema-constrained generation, refusal and incomplete-output handling, and the difference between valid JSON and schema adherence.
+    - source: docs.google-structured-outputs
+      locator: Sections "JSON schema support", "Structured outputs versus function calling", "Best practices", and "Limitations"
+      purpose: Compare another provider's schema subset, semantic-validation guidance, and the boundary between structured final responses and tool execution.
+    - source: docs.json-schema-object
+      locator: Sections "Properties", "Required Properties", and "Additional Properties"
+      purpose: Ground basic object-contract semantics in the schema standard rather than provider-specific syntax.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant response and convert it into a typed contract, then list at least three semantic invariants that the schema cannot prove.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/output-and-trust/
+      task: Add a versioned structured response contract to the Knowledge Assistant, implement deterministic semantic validation and non-happy-path handling, then compare it with the prior free-form baseline.
+experiments:
+  - Compare free-form parsing, JSON-only output, and schema-constrained output on the same evaluation set when the provider supports them.
+  - Inject a schema-valid but semantically invalid response and verify deterministic validation rejects or routes it appropriately.
+  - Exercise refusal or unavailable and incomplete or truncated paths instead of mapping them to a normal answer.
+  - Change the schema once and classify the migration as compatible or breaking for the downstream consumer.
+exit_evidence:
+  - A versioned schema is tied to a concrete downstream consumer requirement.
+  - Contract tests distinguish malformed transport, schema failure, semantic failure, refusal or unavailable state, incomplete output, and task failure.
+  - Deterministic semantic invariants are documented and enforced outside the model.
+  - Provider and supported-schema constraints are recorded.
+  - One schema migration decision identifies compatibility and consumer impact.
+  - Reliability and operational evidence are compared against the prior free-form baseline.
+transfer:
+  task: Redesign the response contract for a different consumer such as a UI card, workflow API, or batch export and explain which fields, invariants, and compatibility rules change.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.openai-structured-outputs
+    - docs.google-structured-outputs
+    - docs.json-schema-object
+  practice:
+    - docs.google-structured-outputs
+    - docs.json-schema-object
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
