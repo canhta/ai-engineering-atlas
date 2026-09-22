@@ -22,6 +22,8 @@ target
 → evidence
 → transfer / retention
 → project application
+→ portfolio review
+→ next gaps
 ```
 
 ## Use the Atlas
@@ -37,19 +39,16 @@ target
 
 The repository separates **coverage** from **ready learning routes**.
 
-The canonical [competency catalog](curriculum/catalog.yaml) currently maps the audited scope with stable IDs. Coverage nodes become ready only after they have diagnostics, verified source locators, practice, and evidence criteria.
+The canonical [competency catalog](curriculum/catalog.yaml) maps the audited scope with stable IDs. Coverage nodes become ready only after they have diagnostics, verified source locators, practice, and evidence criteria.
 
-Ready lifecycle-based routes currently include:
-
-- [Self-Attention](curriculum/06-llm-foundations/self-attention/)
-- [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
+See the generated [Curriculum Status](curriculum/STATUS.md) for the current counts and ready routes. CI checks that this status view matches the catalog.
 
 Reference systems:
 
 - [Tiny Transformer](projects/tiny-transformer/)
 - [Knowledge Assistant](projects/knowledge-assistant/)
 
-This maturity is intentional: the repository does not present a topic as a finished lesson merely because it appears on the roadmap.
+This maturity model is intentional: a topic is not presented as a finished lesson merely because it appears on the roadmap.
 
 ## Curriculum areas
 
@@ -78,8 +77,10 @@ Key rules:
 - prior knowledge changes the route;
 - different capability types require different evidence;
 - source material is curated to exact sections when possible;
+- sources used by ready routes have review metadata;
 - an immediate exit test is not the same as transfer or retention;
 - important skills are revisited in evolving projects;
+- periodic portfolio review consolidates evidence and selects the next gaps;
 - AI may tutor and review, but it does not silently define the curriculum.
 
 ## For contributors
@@ -89,6 +90,7 @@ Read:
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [AGENTS.md](AGENTS.md)
 - [CURRICULUM.md](CURRICULUM.md)
+- [resources/REVIEW_POLICY.md](resources/REVIEW_POLICY.md)
 
 Run `make check` before a pull request. Substantial curriculum changes should include evidence and use the RFC process.
 
