@@ -626,3 +626,132 @@ API
 ~~~
 
 The spines are not three mandatory mega-projects. They are persistent contexts into which competencies can be integrated.
+
+
+---
+
+# AI tutor contract
+
+The future AI layer should operate on the curriculum and learner evidence rather than inventing a syllabus.
+
+## AI may
+
+- run diagnostics from reviewed assessment material;
+- explain approved source material;
+- ask Socratic questions;
+- provide progressively smaller hints;
+- generate practice variants constrained by an approved competency;
+- inject bugs or failure scenarios;
+- review code and reasoning;
+- compare an answer with explicit criteria;
+- recommend a next competency from prerequisites and learner state;
+- schedule delayed retrieval;
+- summarize learner evidence.
+
+## AI must not
+
+- silently create required competencies;
+- change prerequisites or target depth;
+- turn its own explanation into an authoritative source;
+- mark a competency mastered because content was read;
+- pass a learner solely from self-reported confidence;
+- use hidden model judgment as the only evidence for subjective assessments.
+
+Where an LLM judge is useful, it should use an explicit rubric and, for important evaluations, be calibrated against human-reviewed examples.
+
+---
+
+# Adaptive guidance
+
+The learner's prior knowledge should change the learning route.
+
+## Low prior knowledge
+
+Use more:
+
+- worked examples;
+- visual explanations;
+- guided implementation;
+- immediate feedback;
+- smaller tasks.
+
+## Partial knowledge
+
+Use:
+
+- short targeted reading;
+- completion tasks;
+- debugging;
+- comparison exercises.
+
+## Strong prior knowledge
+
+Prefer:
+
+- diagnostic challenges;
+- independent implementation;
+- transfer problems;
+- architecture trade-offs;
+- failure analysis.
+
+Do not punish expertise with redundant introductory content.
+
+---
+
+# Feedback loop
+
+The curriculum itself should improve from learner evidence.
+
+Useful signals include:
+
+- repeated diagnostic failures;
+- exit-test failure patterns;
+- resources learners repeatedly abandon;
+- concepts requiring excessive hints;
+- project failures caused by missing prerequisites;
+- production or interview tasks not represented in the curriculum.
+
+These signals can propose curriculum changes, but changes still require evidence and review.
+
+---
+
+# Implications for repository design
+
+The repository structure should serve this lifecycle.
+
+A mature competency may eventually contain or reference:
+
+~~~text
+competency.yaml        required capability and depth
+README.md              context and learner route
+diagnostic.*           baseline evidence
+route.yaml             exact source sections
+practice/              guided and independent tasks
+experiments/           measurement or failure tasks
+assessment/            exit and transfer tasks
+review.yaml            delayed retrieval prompts
+project-links.yaml     integration points into project spines
+~~~
+
+Not every competency needs every file.
+
+Do not create empty folders merely to conform to this shape.
+
+---
+
+# Definition of a complete competency
+
+A competency is ready for normal learners only when all of the following are clear:
+
+1. **Why** it belongs in the curriculum.
+2. **Prerequisites** required to begin.
+3. **Outcomes** stated as observable capabilities.
+4. **Diagnostic** capable of identifying prior knowledge.
+5. **Learning route** pointing to precise source material.
+6. **Practice** appropriate to the capability type.
+7. **Exit evidence** matching the outcomes.
+8. **Transfer task** when transfer matters.
+9. **Project connection** when integration matters.
+10. **Review plan** when long-term retention matters.
+
+If these are not available, mark the competency as incomplete rather than filling the gaps with AI-generated material.
