@@ -1,38 +1,34 @@
 #!/usr/bin/env python3
-"""Compile curriculum contracts into the single JSON file the web atlas reads."""
+"""Compile repository content into the web atlas content model (site/src/data/atlas.json).
+
+The adapter is generic: curriculum/presentation.yaml names the collections, the
+fields, and the blocks. Contract: rfcs/0000-content-model.md.
+"""
 from __future__ import annotations
 
 from datetime import date, datetime
 from pathlib import Path
 import argparse
 import json
+import re
 import sys
 
 import yaml
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
+CONFIG = ROOT / "curriculum" / "presentation.yaml"
 OUTPUT = ROOT / "site" / "src" / "data" / "atlas.json"
 SCHEMA = ROOT / "schemas" / "site-data.schema.json"
+MODEL_VERSION = 2
 
-DOMAIN_LABELS = {
-    "software-engineering": "Software Engineering",
-    "systems": "Systems",
-    "data-engineering": "Data Engineering",
-    "ml-foundations": "ML Foundations",
-    "deep-learning": "Deep Learning",
-    "llm-foundations": "LLM Foundations",
-    "ai-engineering": "AI Engineering",
-    "agents": "Agents",
-    "production-ai": "Production AI",
-    "security-governance": "Security & Governance",
-    "multimodal": "Multimodal",
-    "specializations": "Specializations",
-}
+RESOURCE_FIELDS = ("title", "type", "author", "url")
 
-RESOURCE_FIELDS = ("title", "type", "author", "url", "roles")
+errors: list[str] = []
+warnings: list[str] = []
 
-errors = []
+
+# ---------------------------------------------------------------- loading
 
 
 def normalize(value):
@@ -40,7 +36,7 @@ def normalize(value):
     if isinstance(value, (date, datetime)):
         return value.isoformat()
     if isinstance(value, dict):
-        return {key: normalize(item) for key, item in value.items()}
+        return {str(key): normalize(item) for key, item in value.items()}
     if isinstance(value, list):
         return [normalize(item) for item in value]
     return value
@@ -54,11 +50,19 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
-def markdown_title(path: Path) -> str:
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("# "):
-            return line[2:].strip()
-    return path.stem
+def load_pointer(spec: str):
+    """Load `file.yaml#key` (or a whole file when there is no pointer)."""
+    file, _, key = spec.partition("#")
+    data = load_yaml(ROOT / file)
+    return data.get(key) if key else data
+
+
+def markdown_title(path: Path, fallback: str) -> str:
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# "):
+                return line[2:].strip()
+    return fallback
 
 
 def load_resources():
@@ -71,116 +75,485 @@ def load_resources():
     return resources
 
 
-def check_source(source, resources, label):
-    if source.startswith(("http://", "https://")):
+def en(text) -> dict:
+    """Curriculum text carries English only until a reviewed translation exists."""
+    return {"en": str(text)}
+
+
+def get_path(data, dotted: str):
+    value = data
+    for part in dotted.split("."):
+        if not isinstance(value, dict):
+            return None
+        value = value.get(part)
+    return value
+
+
+def collect(data, path: str) -> list:
+    """Values at a path where `[]` steps into every list item (e.g. `a.b[].c`)."""
+    values = [data]
+    for part in path.split("."):
+        is_list = part.endswith("[]")
+        key = part[:-2] if is_list else part
+        next_values = []
+        for value in values:
+            if isinstance(value, dict) and value.get(key) is not None:
+                inner = value[key]
+                if is_list:
+                    next_values.extend(inner if isinstance(inner, list) else [])
+                else:
+                    next_values.append(inner)
+        values = next_values
+    return values
+
+
+# ---------------------------------------------------------------- items
+
+
+def raw_items(name: str, config: dict):
+    """Yield (id, title, content, source_path, derived fields) for a collection."""
+    spec = config["items_from"]
+    id_key, title_key = config.get("id"), config.get("title")
+    exclude = set(config.get("exclude", []))
+
+    if "#" in spec:
+        for entry in load_pointer(spec) or []:
+            yield entry[id_key], entry[title_key], entry, None, {}
         return
-    if source not in resources:
-        errors.append(f"{label}: unknown source '{source}'")
+
+    for path in sorted(ROOT.glob(spec.rstrip("/"))):
+        if path.name in exclude:
+            continue
+        if spec.endswith("/"):
+            if not path.is_dir():
+                continue
+            files = sorted(f.name for f in path.iterdir() if f.is_file() and not f.name.startswith("."))
+            title = markdown_title(path / "README.md", path.name)
+            yield path.name, title, {}, rel(path), {"path": rel(path), "files": files}
+        elif path.suffix == ".md":
+            yield path.stem, markdown_title(path, path.stem), {}, rel(path), {"path": rel(path)}
+        else:
+            content = load_yaml(path)
+            title = content.get(title_key, path.parent.name) if title_key else path.parent.name
+            yield path.parent.name, title, content, rel(path.parent), {"path": rel(path.parent)}
+
+
+def template_keys(template: str | None) -> list[str]:
+    return re.findall(r"{(\w+)}", template or "")
+
+
+def load_page_source(config: dict, entry: dict, label: str):
+    template = config.get("page_from")
+    keys = template_keys(template)
+    if not template or any(entry.get(k) is None for k in keys):
+        return None, None
+    path = ROOT / template.format(**{k: entry[k] for k in keys})
+    if not path.exists():
+        errors.append(f"{label}: page source {rel(path)} does not exist")
+        return None, None
+    return load_yaml(path), rel(path.parent)
+
+
+def item_fields(name: str, config: dict, content: dict, derived: dict, vocabularies: dict, label: str):
+    fields = {}
+    for field, spec in (config.get("fields") or {}).items():
+        value = derived.get(field, content.get(field))
+        if value is None:
+            continue
+        values = value if isinstance(value, list) else [value]
+        if any(isinstance(v, (dict, list)) for v in values):
+            errors.append(f"{label}: field '{field}' must be a scalar or a list of scalars")
+            continue
+        vocab = spec.get("vocabulary")
+        if vocab:
+            for v in values:
+                if str(v) not in vocabularies.get(vocab, {}):
+                    errors.append(f"{label}: value '{v}' of field '{field}' is missing from vocabulary '{vocab}'")
+        fields[field] = value
+    return fields
+
+
+def page_matches(config: dict, fields: dict) -> bool:
+    when = config.get("page_when")
+    if not config.get("blocks"):
+        return False
+    if not when:
+        return True
+    return fields.get(when["field"]) in when["in"]
+
+
+# ---------------------------------------------------------------- blocks
+
+
+class Context:
+    def __init__(self, resources, resolver, label):
+        self.resources = resources
+        self.resolver = resolver
+        self.label = label
+        self.used_resources: set[str] = set()
+
+    def resource(self, value) -> str:
+        value = str(value or "")
+        if value.startswith(("http://", "https://")):
+            return value
+        if value not in self.resources:
+            errors.append(f"{self.label}: unknown resource '{value}'")
+        else:
+            self.used_resources.add(value)
+        return value
+
+    def text(self, value, where: str) -> dict:
+        if not isinstance(value, (str, int, float)):
+            errors.append(f"{self.label}: {where} must be text")
+        return en(value)
+
+    def texts(self, value, where: str) -> list:
+        if not isinstance(value, list):
+            errors.append(f"{self.label}: {where} must be a list")
+            return []
+        return [self.text(v, where) for v in value]
+
+
+def block_text(spec, value, content, ctx):
+    return {"body": ctx.text(value, spec["field"])}, [spec["field"]]
+
+
+def block_list(spec, value, content, ctx):
+    return {"items": ctx.texts(value, spec["field"]), "ordered": bool(spec.get("ordered", False))}, [spec["field"]]
+
+
+def block_prerequisites(spec, value, content, ctx):
+    support_field = spec.get("support")
+    support = (get_path(content, support_field) if support_field else None) or {}
+    mapping = spec.get("bridge") or {}
+    items = []
+    for ref in value if isinstance(value, list) else []:
+        item = {"ref": ctx.resolver.ref(ref, ctx.label)}
+        bridge_src = support.get(ref)
+        if isinstance(bridge_src, dict):
+            bridge = {}
+            for key, source_key in mapping.items():
+                if bridge_src.get(source_key) is None:
+                    continue
+                if key == "resource":
+                    bridge[key] = ctx.resource(bridge_src[source_key])
+                else:
+                    bridge[key] = ctx.text(bridge_src[source_key], f"{support_field}.{ref}.{source_key}")
+            if "resource" not in bridge:
+                errors.append(f"{ctx.label}: bridge for '{ref}' has no resource")
+            item["bridge"] = bridge
+        items.append(item)
+    for ref in support:
+        if ref not in (value or []):
+            errors.append(f"{ctx.label}: {support_field} entry '{ref}' is not a declared prerequisite")
+    consumed = [spec["field"]]
+    if support_field:
+        consumed += [f"{support_field}.*.{k}" for k in mapping.values()]
+    return {"items": items}, consumed
+
+
+def block_diagnostic(spec, value, content, ctx):
+    mapping = spec["map"]
+    field = spec["field"]
+    payload = {
+        "tasks": ctx.texts(value.get(mapping["tasks"]), f"{field}.{mapping['tasks']}"),
+        "pass_condition": ctx.text(value.get(mapping["pass_condition"]), f"{field}.{mapping['pass_condition']}"),
+    }
+    return payload, [f"{field}.{mapping['tasks']}", f"{field}.{mapping['pass_condition']}"]
+
+
+def block_sources(spec, value, content, ctx):
+    mapping = spec["row"]
+    field = spec["field"]
+    rows = []
+    for row in value if isinstance(value, list) else []:
+        rows.append({
+            "resource": ctx.resource(row.get(mapping["resource"])),
+            "locator": ctx.text(row.get(mapping["locator"]), f"{field} locator"),
+            "purpose": ctx.text(row.get(mapping["purpose"]), f"{field} purpose"),
+        })
+    return {"rows": rows}, [f"{field}[].{k}" for k in mapping.values()]
+
+
+def block_practice(spec, value, content, ctx):
+    mapping = spec["item"]
+    field = spec["field"]
+    groups, consumed = [], []
+    for group in spec["groups"]:
+        entries = value.get(group["field"]) or []
+        items = []
+        for entry in entries:
+            item = {"text": ctx.text(entry.get(mapping["text"]), f"{field}.{group['field']}")}
+            path = entry.get(mapping["path"]) if "path" in mapping else None
+            if path:
+                if not (ROOT / path).exists():
+                    errors.append(f"{ctx.label}: practice path '{path}' does not exist")
+                item["path"] = path
+                ref = ctx.resolver.path_ref(path)
+                if ref:
+                    item["ref"] = ref
+            items.append(item)
+        if items:
+            groups.append({"label": group["label"], "items": items})
+        consumed += [f"{field}.{group['field']}[].{k}" for k in mapping.values()]
+    return {"groups": groups}, consumed
+
+
+def block_data(spec, value, content, ctx):
+    return {"value": value}, [spec["field"]]
+
+
+BLOCK_TYPES = {
+    "text": block_text,
+    "list": block_list,
+    "prerequisites": block_prerequisites,
+    "diagnostic": block_diagnostic,
+    "sources": block_sources,
+    "practice": block_practice,
+    "data": block_data,
+}
+
+
+def slug(path: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", path.lower()).strip("-")
+
+
+# ---------------------------------------------------------------- unmapped fields
+
+
+def matches(pattern: list[str], path: list[str]) -> bool:
+    return len(pattern) == len(path) and all(p == "*" or p == q for p, q in zip(pattern, path))
+
+
+def is_prefix(pattern: list[str], path: list[str]) -> bool:
+    return len(pattern) > len(path) and all(p == "*" or p == q for p, q in zip(pattern, path))
+
+
+def split(path: str) -> list[str]:
+    return [part for part in path.replace("[]", ".[]").split(".") if part]
+
+
+def join(parts: list[str]) -> str:
+    return ".".join(parts).replace(".[]", "[]")
+
+
+def unmapped(content, covered: list[str]) -> dict[str, list]:
+    """Return {path: value} for content not covered by any consumed or ignored path."""
+    patterns = [split(p) for p in covered]
+    found: dict[str, list] = {}
+
+    def walk(value, path):
+        if any(matches(p, path) for p in patterns):
+            return
+        if path and not any(is_prefix(p, path) for p in patterns):
+            found.setdefault(join(path), []).append(value)
+            return
+        if isinstance(value, dict):
+            for key, inner in value.items():
+                walk(inner, path + [key])
+        elif isinstance(value, list):
+            for inner in value:
+                walk(inner, path + ["[]"])
+        else:
+            found.setdefault(join(path), []).append(value)
+
+    walk(content, [])
+    return found
+
+
+# ---------------------------------------------------------------- references
+
+
+class Resolver:
+    def __init__(self, collections: dict):
+        self.collections = collections
+        self.ids: dict[str, set[str]] = {}
+        self.paths: dict[str, str] = {}
+        self.prefix: dict[str, str] = {}
+
+    def ref_for(self, collection: str, item_id: str) -> str:
+        prefix = self.prefix.get(collection)
+        return f"{prefix}:{item_id}" if prefix else item_id
+
+    def add(self, collection: str, item_id: str, path: str | None):
+        self.ids.setdefault(collection, set()).add(item_id)
+        if path:
+            self.paths[path.rstrip("/")] = self.ref_for(collection, item_id)
+
+    def collection_of(self, ref: str) -> str | None:
+        prefix, sep, item_id = ref.partition(":")
+        for name, pfx in self.prefix.items():
+            if (sep and pfx == prefix and item_id in self.ids.get(name, ())) or (
+                not sep and not pfx and ref in self.ids.get(name, ())
+            ):
+                return name
+        return None
+
+    def ref(self, value, label: str) -> str:
+        value = str(value)
+        if self.collection_of(value) is None:
+            errors.append(f"{label}: reference '{value}' does not resolve to an item")
+        return value
+
+    def path_ref(self, path: str) -> str | None:
+        path = path.rstrip("/")
+        while path:
+            if path in self.paths:
+                return self.paths[path]
+            path = path.rpartition("/")[0]
+        return None
+
+
+# ---------------------------------------------------------------- build
+
+
+def build_vocabularies(config: dict) -> dict:
+    vocabularies = {}
+    for name, spec in config.items():
+        if "values" in spec:
+            entries = {
+                value: {**entry, "order": entry.get("order", index)}
+                for index, (value, entry) in enumerate(spec["values"].items())
+            }
+        else:
+            source = load_pointer(spec["from"])
+            if isinstance(source, dict):
+                pairs = [(key, en(label)) for key, label in source.items()]
+            else:
+                pairs = [(entry[spec["key"]], entry.get(spec["label"])) for entry in source or []]
+            entries = {}
+            for index, (value, label) in enumerate(pairs):
+                if not isinstance(label, dict) or not label.get("en"):
+                    errors.append(f"vocabulary '{name}': value '{value}' has no English label in {spec['from']}")
+                    label = en(value)
+                entries[str(value)] = {"label": label, "order": index}
+        vocabularies[name] = entries
+    return vocabularies
+
+
+def check_config(presentation: dict, vocabularies: dict):
+    for name, config in presentation["collections"].items():
+        fields = config.get("fields") or {}
+        for field, spec in fields.items():
+            vocab = spec.get("vocabulary")
+            if vocab and vocab not in vocabularies:
+                errors.append(f"presentation: {name}.fields.{field} names unknown vocabulary '{vocab}'")
+        named = [config.get("group_by")] + list(config.get("facets", [])) + list(config.get("list_fields", []))
+        named += [(config.get("progress") or {}).get("target_field"), (config.get("page_when") or {}).get("field")]
+        for field in filter(None, named):
+            if field not in fields:
+                errors.append(f"presentation: {name} refers to undeclared field '{field}'")
+        for block in config.get("blocks", []) or []:
+            if block.get("type") not in BLOCK_TYPES:
+                errors.append(f"presentation: {name} block '{block.get('field')}' has unknown type '{block.get('type')}'")
+        for relation in config.get("relations", []) or []:
+            target = relation.get("target")
+            if target and target not in presentation["collections"]:
+                errors.append(f"presentation: {name} relation '{relation['type']}' targets unknown collection '{target}'")
+
+
+def collection_model(name: str, config: dict) -> dict:
+    model = {"id": name, "label": config["label"]}
+    if config.get("ref_prefix"):
+        model["ref_prefix"] = config["ref_prefix"]
+    model["fields"] = config.get("fields") or {}
+    for key in ("group_by", "facets", "list_fields", "page_when", "progress"):
+        if config.get(key) is not None:
+            model[key] = config[key]
+    return model
 
 
 def build():
-    manifest = load_yaml(ROOT / "curriculum" / "manifest.yaml")
-    catalog = load_yaml(ROOT / "curriculum" / "catalog.yaml")
+    presentation = load_yaml(CONFIG)
     resources = load_resources()
+    vocabularies = build_vocabularies(presentation.get("vocabularies") or {})
+    check_config(presentation, vocabularies)
+    collections = presentation["collections"]
 
-    domains = [
-        {
-            "id": d["id"],
-            "title": DOMAIN_LABELS.get(d["id"], d["id"]),
-            "path": d["path"],
-            "target": str(d.get("target", "")),
-        }
-        for d in manifest.get("domains", []) or []
-    ]
+    resolver = Resolver(collections)
+    resolver.prefix = {name: config.get("ref_prefix", "") for name, config in collections.items()}
 
-    competencies = [
-        {k: item[k] for k in ("id", "title", "domain", "status", "route") if k in item}
-        for item in catalog.get("competencies", []) or []
-    ]
-    catalog_ids = {c["id"] for c in competencies}
+    # Pass 1: load every item so references can resolve across collections.
+    loaded = {}
+    for name, config in collections.items():
+        loaded[name] = []
+        for item_id, title, entry, source_path, derived in raw_items(name, config):
+            label = f"{name}/{item_id}"
+            page_content, page_path = load_page_source(config, entry, label)
+            content = {**(page_content or {}), **entry} if page_content else entry
+            loaded[name].append((str(item_id), title, content, page_path or source_path, derived, label))
+            resolver.add(name, str(item_id), derived.get("path"))
 
-    routes = {}
-    edges = []
-    for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
-        data = load_yaml(path)
-        if data.get("status") not in {"seeded", "ready"}:
-            continue
-        cid = data["id"]
-        label = rel(path)
+    # Pass 2: fields, pages, relations.
+    items, relations, used_resources = {}, set(), set()
+    for name, config in collections.items():
+        items[name] = []
+        blocks_config = config.get("blocks", []) or []
+        relations_config = config.get("relations", []) or []
+        base_covered = list(config.get("ignore", []))
+        base_covered += [k for k in (config.get("id"), config.get("title")) if k]
+        base_covered += list((config.get("fields") or {}).keys())
+        base_covered += template_keys(config.get("page_from"))
+        base_covered += [r["field"] for r in relations_config]
 
-        for prereq in data.get("prerequisites", []) or []:
-            if prereq not in catalog_ids:
-                errors.append(f"{label}: prerequisite '{prereq}' is not in catalog")
-            edges.append({"from": prereq, "to": cid})
+        for item_id, title, content, source_path, derived, label in loaded[name]:
+            fields = item_fields(name, config, content, derived, vocabularies, label)
+            item = {"id": item_id, "title": en(title), "fields": fields}
+            ref = resolver.ref_for(name, item_id)
 
-        route = data.get("learning_route") or {}
-        for item in route.get("mental_model", []) or []:
-            check_source(item.get("source", ""), resources, label)
-        for gap, bridge in (data.get("prerequisite_support") or {}).items():
-            check_source(bridge.get("source", ""), resources, f"{label} bridge '{gap}'")
+            for relation in relations_config:
+                for value in collect(content, relation["field"]):
+                    values = value if isinstance(value, list) else [value]
+                    for v in values:
+                        v = str(v)
+                        if "/" in v:
+                            other = resolver.path_ref(v)
+                            if other is None or (relation.get("target") and resolver.collection_of(other) != relation["target"]):
+                                continue
+                        else:
+                            other = resolver.ref(v, label)
+                        pair = (other, ref) if relation.get("direction") == "in" else (ref, other)
+                        relations.add((relation["type"], *pair))
 
-        routes[cid] = {**data, "path": rel(path.parent)}
-
-    labs = []
-    for lab_dir in sorted(p for p in (ROOT / "labs").iterdir() if p.is_dir()):
-        readme = lab_dir / "README.md"
-        prefix = rel(lab_dir) + "/"
-        used_by = sorted(
-            cid
-            for cid, route in routes.items()
-            for step in (route.get("learning_route") or {}).get("independent_practice", []) or []
-            if str(step.get("artifact", "")).startswith(prefix)
-        )
-        labs.append({
-            "id": lab_dir.name,
-            "title": markdown_title(readme) if readme.exists() else lab_dir.name,
-            "path": rel(lab_dir),
-            "files": sorted(f.name for f in lab_dir.iterdir() if f.is_file() and not f.name.startswith(".")),
-            "competencies": used_by,
-        })
-
-    projects = []
-    for path in sorted((ROOT / "projects").rglob("project.yaml")):
-        data = load_yaml(path)
-        projects.append({
-            "id": data["id"],
-            "title": data["title"],
-            "purpose": data["purpose"],
-            "path": rel(path.parent),
-            "spines": data["spines"],
-            "milestones": data["milestones"],
-            "competencies": data["competencies"],
-        })
-
-    paths = [
-        {"id": p.stem, "title": markdown_title(p), "file": rel(p)}
-        for p in sorted((ROOT / "paths").glob("*.md"))
-        if p.name != "README.md"
-    ]
-
-    used_sources = set()
-    for route in routes.values():
-        for group in (route.get("resources") or {}).values():
-            used_sources.update(group or [])
-        used_sources.update(route.get("curriculum_evidence") or [])
-        for item in (route.get("learning_route") or {}).get("mental_model", []) or []:
-            used_sources.add(item.get("source"))
-        for bridge in (route.get("prerequisite_support") or {}).values():
-            used_sources.add(bridge.get("source"))
+            covered = list(base_covered)
+            if page_matches(config, fields):
+                ctx = Context(resources, resolver, label)
+                blocks = []
+                for spec in blocks_config:
+                    handler = BLOCK_TYPES.get(spec["type"])
+                    value = get_path(content, spec["field"])
+                    if handler is None or value is None:
+                        continue
+                    if spec["type"] in ("diagnostic", "practice") and not isinstance(value, dict):
+                        errors.append(f"{label}: field '{spec['field']}' must be a mapping for a {spec['type']} block")
+                        continue
+                    payload, consumed = handler(spec, value, content, ctx)
+                    covered += consumed
+                    blocks.append({
+                        "type": spec["type"],
+                        "id": spec.get("id") or slug(spec["field"]),
+                        "title": spec["title"],
+                        **payload,
+                    })
+                for path, values in sorted(unmapped(content, covered).items()):
+                    warnings.append(f"{label}: field '{path}' is neither mapped nor ignored; rendered as a data block")
+                    value = values if "[]" in path else values[0]
+                    blocks.append({"type": "data", "id": slug(path), "title": en(path), "value": value})
+                item["page"] = {"source_path": source_path, "blocks": blocks}
+                used_resources |= ctx.used_resources
+            items[name].append(item)
+        if not config.get("items_from", "").count("#"):
+            items[name].sort(key=lambda item: item["id"])
 
     return {
-        "version": 1,
-        "catalog_version": catalog.get("version"),
-        "last_reviewed": catalog.get("last_reviewed"),
-        "levels": manifest.get("levels", {}),
-        "domains": domains,
-        "competencies": competencies,
-        "edges": edges,
-        "routes": routes,
-        "resources": {rid: resources[rid] for rid in sorted(used_sources) if rid in resources},
-        "labs": labs,
-        "projects": projects,
-        "paths": paths,
+        "version": MODEL_VERSION,
+        "site": presentation["site"],
+        "locales": presentation["locales"],
+        "vocabularies": vocabularies,
+        "collections": [collection_model(name, config) for name, config in collections.items()],
+        "items": items,
+        "relations": [{"type": t, "from": f, "to": to} for t, f, to in sorted(relations)],
+        "resources": {rid: resources[rid] for rid in sorted(used_resources)},
     }
 
 
@@ -202,7 +575,7 @@ def main():
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     for error in Draft202012Validator(schema).iter_errors(data):
         location = ".".join(str(part) for part in error.path)
-        errors.append(f"site data{' at ' + location if location else ''}: {error.message}")
+        errors.append(f"content model{' at ' + location if location else ''}: {error.message}")
 
     if not errors:
         expected = serialize(data)
@@ -211,6 +584,12 @@ def main():
             OUTPUT.write_text(expected, encoding="utf-8")
         elif not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != expected:
             errors.append(f"{rel(OUTPUT)} is missing or stale")
+
+    if warnings:
+        print("Unmapped content (add a block to curriculum/presentation.yaml or list the field under `ignore`):")
+        for warning in warnings:
+            print(f"- {warning}")
+        print()
 
     if errors:
         print("Site data build failed:\n")
@@ -222,7 +601,7 @@ def main():
     if args.write:
         print(f"OK: wrote {rel(OUTPUT)}")
     else:
-        print(f"OK: {rel(OUTPUT)} matches curriculum contracts")
+        print(f"OK: {rel(OUTPUT)} matches the content model")
 
 
 if __name__ == "__main__":
