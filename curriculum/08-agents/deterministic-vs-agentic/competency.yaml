@@ -1,0 +1,66 @@
+id: agents.deterministic-vs-agentic
+title: Deterministic vs Agentic Design
+domain: agents
+status: seeded
+competency_types:
+  - design-judgment
+  - engineering-skill
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Add model-directed autonomy only when fixed workflows cannot satisfy the task well enough and the measured benefit justifies the added cost and failure surface.
+curriculum_evidence:
+  - article.anthropic-building-effective-agents
+prerequisites:
+  - ai.evaluation
+  - ai.tool-calling
+  - software.testing
+outcomes:
+  - Distinguish workflows with predefined code paths from agents that dynamically direct their process and tool use.
+  - Start from the simplest viable architecture and use failure analysis to justify additional autonomy.
+  - Select between chaining, routing, parallelization, orchestrator-worker, evaluator-optimizer, and agent loops based on task structure.
+  - Compare workflow and agentic implementations on the same task set.
+  - Define stop conditions, tool boundaries, traces, and measurable success criteria for autonomous behavior.
+  - Reject agentic complexity when it does not produce enough measured value.
+diagnostic:
+  tasks:
+    - Given a task, decide whether one model call, a deterministic workflow, or an agent is appropriate and explain why.
+    - Name the failure evidence that would justify increasing autonomy.
+    - Explain what new failure modes, cost, and debugging difficulty an autonomous loop introduces.
+    - Define a stop condition and a measurable task-success criterion.
+  pass_condition: Skip guided material only if the learner can select the simplest viable architecture from task structure and defend autonomy with same-set evaluation evidence.
+learning_route:
+  mental_model:
+    - source: article.anthropic-building-effective-agents
+      locator: "What are agents?", "When (and when not) to use agents", "Building blocks, workflows, and agents", and "Combining and customizing these patterns"
+      purpose: Distinguish fixed workflows from agents, learn common workflow patterns, and use measured complexity as the selection principle.
+  guided_practice:
+    - task: Classify three familiar product tasks by whether their steps and branches are predictable, then choose the simplest architecture for each.
+  independent_practice:
+    - artifact: labs/agentic-design/
+      task: Compare a simple baseline with a more autonomous design on the same versioned task set.
+experiments:
+  - Measure task success, model calls/steps, latency, cost, and failure types for baseline and agentic versions.
+  - Remove autonomy from one design and identify whether task quality actually degrades.
+exit_evidence:
+  - Produce a simple baseline architecture before introducing an agent.
+  - Show failure analysis that motivates any additional autonomy.
+  - Compare baseline and agentic variants on the same task set.
+  - Record cost/latency/debuggability as well as quality.
+  - Define stop conditions and bounded tool permissions.
+  - Make an explicit keep-workflow or use-agent decision from evidence.
+transfer:
+  task: Compare one task with known fixed subtasks and one whose subtasks depend on intermediate environment/tool results; choose and defend a different architecture when appropriate.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-building-effective-agents
+  production-reference:
+    - article.anthropic-building-effective-agents
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
