@@ -401,6 +401,11 @@ for cid, item in catalog.items():
         errors.append(
             f"curriculum/catalog.yaml: ready competency '{cid}' has no competency.yaml route"
         )
+    elif route_competencies[cid]["data"].get("status") != "ready":
+        errors.append(
+            f"curriculum/catalog.yaml: '{cid}' is ready but its competency.yaml "
+            "route status is not ready"
+        )
 
 
 # ---------------------------------------------------------------------------
