@@ -383,7 +383,7 @@ test("the frame links to the repository and to the owner's contacts", async ({ p
     .repository;
 
   await expect(page.locator(`header a[href="${repo}"]`)).toBeVisible();
-  await expect(page.getByRole("link", { name: "Star on GitHub" })).toHaveAttribute("href", `${repo}/stargazers`);
+  await expect(page.getByRole("link", { name: "Star on GitHub" })).toHaveAttribute("href", repo);
 
   const contacts = page.getByRole("list", { name: "Contact" }).getByRole("link");
   const links: { kind: string; url: string }[] = JSON.parse(
