@@ -7,6 +7,7 @@ resources:
     notes: Curriculum governance, prerequisites, assessment substitution, and capstone reference.
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: repo.microsoft-ml-beginners
     type: repository
@@ -16,6 +17,7 @@ resources:
     notes: Pre/post assessment, project-based progression, challenge, assignment, and PAT rubric reference.
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: repo.microsoft-genai-beginners
     type: repository
@@ -25,6 +27,7 @@ resources:
     notes: Scenario, learning goals, assignment, solution, knowledge-check, and challenge reference.
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: repo.made-with-ml
     type: repository
@@ -34,6 +37,7 @@ resources:
     notes: Evolving product, notebook-to-code, evaluation, code/data/model testing, deployment, and iteration reference.
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: repo.mlabonne-llm-course
     type: repository
@@ -42,3 +46,4 @@ resources:
     roles: [benchmark, reference]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
