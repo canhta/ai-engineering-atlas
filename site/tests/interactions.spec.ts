@@ -20,6 +20,17 @@ async function noConsoleErrors(page: Page) {
   return errors;
 }
 
+const fieldLog = (page: Page) => page.locator("aside.field-log");
+const rail = (page: Page) => page.getByRole("navigation", { name: "On this page" });
+
+async function recordEvidence(page: Page, note: string) {
+  await fieldLog(page).getByRole("button", { name: "Record evidence" }).click();
+  await page.getByLabel("Kind").selectOption("implementation");
+  await page.getByLabel("This shows the capability is").selectOption("demonstrated");
+  await page.getByLabel("What does the artifact show?").fill(note);
+  await page.getByRole("button", { name: "Save evidence" }).click();
+}
+
 test("map search and filters narrow the list and announce the count", async ({ page }) => {
   const errors = await noConsoleErrors(page);
   await open(page, "/en/map/");
@@ -48,50 +59,56 @@ test("domain disclosures open and close with the keyboard", async ({ page }) => 
   await expect(page.getByText("software.testing")).toBeVisible();
 });
 
-test("diagnostic: answer, compare with the pass condition, record a gap", async ({ page }) => {
+test("diagnostic: one task per card, then the pass condition, record a gap", async ({ page }) => {
   const errors = await noConsoleErrors(page);
   await open(page, ROUTE);
-  const submit = page.getByRole("button", { name: "Submit answers" });
-  await expect(submit).toBeDisabled();
-  const boxes = page.getByRole("textbox", { name: /Your answer to task/ });
-  const count = await boxes.count();
-  expect(count).toBeGreaterThan(0);
-  for (let i = 0; i < count; i++) await boxes.nth(i).fill(`answer ${i + 1}`);
+  await expect(page.getByText("Task 1 of 4")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pass condition" })).toHaveCount(0);
+
+  const next = page.getByRole("button", { name: "Next task" });
+  await expect(next).toBeDisabled();
+  await page.getByRole("textbox", { name: "Your answer to task 1" }).fill("answer 1");
 
   // Drafts survive a reload.
   await page.reload();
   await hydrated(page);
-  await expect(boxes.first()).toHaveValue("answer 1");
+  await expect(page.getByRole("textbox", { name: "Your answer to task 1" })).toHaveValue("answer 1");
+  await expect(rail(page).getByText("1 of 4 answered")).toBeVisible();
 
-  await submit.click();
+  for (let n = 1; n < 4; n++) {
+    await page.getByRole("button", { name: "Next task" }).click();
+    await expect(page.getByText(`Task ${n + 1} of 4`)).toBeVisible();
+    await page.getByRole("textbox", { name: `Your answer to task ${n + 1}` }).fill(`answer ${n + 1}`);
+  }
+  await page.getByRole("button", { name: "Compare with the pass condition" }).click();
   await expect(page.getByRole("heading", { name: "Pass condition" })).toBeVisible();
   await page.getByText("Not yet").click();
   await page.getByRole("button", { name: "Record diagnostic result" }).click();
-  await expect(page.getByText("Recorded. Start with the learning route.")).toBeVisible();
-  await expect(page.locator(".learner-panel .state-badge").first()).toHaveText("gap");
+  await expect(page.getByText("Recorded. Start with")).toBeVisible();
+  await expect(fieldLog(page).locator(".state-badge").first()).toHaveText("gap");
+  await expect(rail(page).getByText("Result recorded")).toBeVisible();
   expect(errors).toEqual([]);
 });
 
 test("opening a source is a personal mark and leaves the state unchanged", async ({ page }) => {
   await open(page, ROUTE);
   const opened = page.getByRole("checkbox", { name: /^Opened / }).first();
-  await page.locator(".source-table .checkbox").first().click();
+  await page.locator(".sources-table .checkbox").first().click();
   await expect(opened).toBeChecked();
+  await expect(rail(page).getByText("1 of 5 opened")).toBeVisible();
   await page.reload();
   await hydrated(page);
   await expect(opened).toBeChecked();
-  await expect(page.locator(".learner-panel .state-badge").first()).toHaveText("unassessed");
+  await expect(fieldLog(page).locator(".state-badge").first()).toHaveText("unassessed");
 });
 
-test("recording evidence changes the state, schedules review, and shows in progress", async ({ page }) => {
+test("recording evidence in the field log changes the state, schedules review, and shows in progress", async ({ page }) => {
   await open(page, ROUTE);
-  await page.getByRole("button", { name: "Record evidence" }).click();
-  await page.getByLabel("Kind").selectOption("implementation");
-  await page.getByLabel("This shows the capability is").selectOption("demonstrated");
-  await page.getByLabel("What does the artifact show?").fill("Tool contract with validation and idempotent retries.");
-  await page.getByRole("button", { name: "Save evidence" }).click();
-  await expect(page.getByText("Saved. Your state is now demonstrated.")).toBeVisible();
-  await expect(page.getByText("Next review")).toBeVisible();
+  await recordEvidence(page, "Tool contract with validation and idempotent retries.");
+  await expect(fieldLog(page).getByText("Saved. Your state is now demonstrated.")).toBeVisible();
+  // Next review is scheduled.
+  await expect(fieldLog(page).locator(".log-facts time")).toBeVisible();
+  await expect(rail(page).getByText("Evidence recorded (1)").first()).toBeVisible();
 
   await open(page, "/en/progress/");
   await expect(page.getByText(/^1 of \d+ ready routes demonstrated or beyond$/)).toBeVisible();
@@ -102,11 +119,20 @@ test("recording evidence changes the state, schedules review, and shows in progr
   await expect(page.getByRole("status")).toContainText("Showing 1 of 116");
 });
 
+test("on mobile the field log opens as a sheet from the bottom bar", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await open(page, ROUTE);
+  await expect(fieldLog(page)).toBeHidden();
+  await page.locator(".log-bar").getByRole("button", { name: "Record evidence" }).click();
+  const sheet = page.getByRole("dialog", { name: "Field log" });
+  await expect(sheet).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toBeHidden();
+});
+
 test("progress exports as progress.yaml and re-imports", async ({ page }, testInfo) => {
   await open(page, ROUTE);
-  await page.getByRole("button", { name: "Record evidence" }).click();
-  await page.getByLabel("What does the artifact show?").fill("Evidence for export.");
-  await page.getByRole("button", { name: "Save evidence" }).click();
+  await recordEvidence(page, "Evidence for export.");
 
   await open(page, "/en/progress/");
   const download = page.waitForEvent("download");
@@ -128,9 +154,18 @@ test("progress exports as progress.yaml and re-imports", async ({ page }, testIn
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 });
 
-test("Vietnamese pages render the same interactions", async ({ page }) => {
+test("Vietnamese pages render the same interactions and mark untranslated text", async ({ page }) => {
   await open(page, "/vi/map/");
   await expect(page.getByRole("status")).toContainText("Hiển thị 116 trên 116");
   await open(page, "/vi/routes/ai.tool-calling/");
-  await expect(page.getByRole("button", { name: "Nộp câu trả lời" })).toBeDisabled();
+  await expect(page.getByText("Nhiệm vụ 1 trên 4")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Nhiệm vụ tiếp" })).toBeDisabled();
+  await expect(page.locator("h1")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("note")).toHaveText("chưa dịch / not yet translated");
+});
+
+test("the root page opens the remembered language", async ({ page }) => {
+  await open(page, "/vi/");
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/vi\/$/);
 });

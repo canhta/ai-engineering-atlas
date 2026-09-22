@@ -24,8 +24,8 @@ Last updated: 2026-09-22
 
 - [x] Astro 7 static site, Node 26, pnpm, Cloudflare Workers static assets config
 - [x] `/en/` and `/vi/` routes; 145 UI strings in both languages
-- [x] Tokens (sand + indigo, light/dark), IBM Plex Sans / Source Serif 4 / IBM Plex Mono with Vietnamese subsets
-- [x] Carbon icons through `src/lib/icons.ts`
+- [x] Tokens, fonts with Vietnamese subsets (replaced by the survey-plate redesign below)
+- [x] Icons through `src/lib/icons.ts` (Phosphor since the redesign)
 - [x] Home, map, route pages (fixed section order), progress page
 - [x] Map: search, ready-only, learner-state and project filters, live count, keyboard disclosures
 - [x] Route: learner panel with Record evidence and timeline; diagnostic workspace; per-source Opened checklist
@@ -48,16 +48,20 @@ Last updated: 2026-09-22
 
 - [x] Versioned content model contract: collections → items → typed blocks; the site renders only the contract ([RFC](../rfcs/0000-content-model.md), `schemas/site-data.schema.json` v2)
 - [x] Content side (agent A): `curriculum/presentation.yaml` (field → block, section order, en/vi section titles, vocabularies) and the generic adapter `scripts/build_site_data.py`; unmapped fields render as `data` blocks and are reported
-- [ ] Site renderer uses a block registry; no curriculum field names in `site/src`
+- [x] Site renderer uses a block registry; no curriculum field names in `site/src` (`src/lib/atlas.ts`, `src/components/blocks/`, `pnpm run check:coupling`)
+- [ ] Site test that renders every block type from a fixture, including `data` with unknown shapes (content model RFC → Checks)
 
 ### Visual redesign (next, owner request)
 
-- [ ] Redesign against the `high-end-visual-design` and `frontend-design` skills; update DESIGN.md and tokens first, then components
+- [x] DESIGN.md survey-plate direction; tokens (mineral ground, ink, magenta route), Hubot Sans / Newsreader / JetBrains Mono (variable, Vietnamese subsets), Phosphor light icons
+- [x] Milestone 1: global frame (floating pill nav, mobile menu overlay, breadcrumb, footer), route sheet (rail with steps and scrollspy, one-task diagnostic, sources table, field log with mobile sheet), project pages from the same renderer
+- [ ] Milestone 2: the plate (`src/components/plate/`) in overview, explore, and progress modes; Home, Atlas (plate, list, filters, drawer with `?item=`), and Progress rebuilt on it
+- [ ] Milestone 3: review pass against DESIGN.md, reduced-motion and before-hydration states on every surface
 
 ### Phase 1 follow-ups
 
 - [ ] Graph view (React Flow + ELK): ready routes and declared prerequisites only, zoom buttons, `ariaLabelConfig` in both languages
-- [ ] Remember the language choice; `/` currently always redirects to `/en/`
+- [x] Remember the language choice: `/` opens the language of the last page viewed
 - [ ] Scroll hint for wide tables on mobile (review finding)
 - [ ] Home ready-route rows wrap unevenly at 375px (review finding)
 - [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)

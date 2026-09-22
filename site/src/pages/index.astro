@@ -1,0 +1,52 @@
+---
+// `/` opens the remembered language (the layout stores it on every page view), else English.
+// Without JavaScript the language links remain.
+import "../styles/tokens.css";
+import "../styles/base.css";
+import { languages, type Lang } from "../i18n";
+import { site } from "../lib/atlas";
+import { homeUrl } from "../lib/urls";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{site.title.en}</title>
+    <link rel="canonical" href={new URL(homeUrl("en"), Astro.site)} />
+  </head>
+  <body>
+    <main class="root-choice">
+      <h1>{site.title.en}</h1>
+      <ul>
+        {
+          (Object.entries(languages) as [Lang, string][]).map(([l, name]) => (
+            <li>
+              <a href={homeUrl(l)} hreflang={l} lang={l}>
+                {name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+    <script>
+      let lang = "en";
+      try {
+        const saved = localStorage.getItem("atlas.lang");
+        if (saved === "en" || saved === "vi") lang = saved;
+      } catch {
+        // Storage unavailable: English.
+      }
+      location.replace(`/${lang}/`);
+    </script>
+  </body>
+</html>
+
+<style>
+  .root-choice {
+    padding: var(--space-16) var(--space-6);
+  }
+</style>

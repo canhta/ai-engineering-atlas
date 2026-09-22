@@ -1,0 +1,17 @@
+---
+import type { Lang } from "../../i18n";
+import { langAttr, text, type TextBlock } from "../../lib/atlas";
+
+interface Props {
+  block: TextBlock;
+  lang: Lang;
+}
+
+const { block, lang } = Astro.props;
+const body = text(block.body, lang);
+const paragraphs = body.value.split(/\n\s*\n/).filter((p) => p.trim());
+---
+
+<div class="text-block" lang={langAttr(body, lang)}>
+  {paragraphs.map((p) => <p class="reading">{p}</p>)}
+</div>

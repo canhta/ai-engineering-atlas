@@ -1,0 +1,36 @@
+---
+import type { Lang } from "../../i18n";
+import { langAttr, text, type ListBlock } from "../../lib/atlas";
+
+interface Props {
+  block: ListBlock;
+  lang: Lang;
+}
+
+const { block, lang } = Astro.props;
+const items = block.items.map((i) => text(i, lang));
+const List = block.ordered ? "ol" : "ul";
+---
+
+<List class:list={["list-block reading", { ordered: block.ordered }]}>
+  {items.map((i) => <li lang={langAttr(i, lang)}>{i.value}</li>)}
+</List>
+
+<style>
+  .list-block {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding-left: var(--space-6);
+  }
+
+  .list-block li::marker {
+    color: var(--ink-muted);
+  }
+
+  .ordered li::marker {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

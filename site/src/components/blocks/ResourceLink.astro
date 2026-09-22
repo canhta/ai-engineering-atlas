@@ -1,0 +1,67 @@
+---
+// External resource: title, kind tag (resource type), and host; says it leaves the site.
+import Icon from "../Icon.astro";
+import { useTranslations, type Lang } from "../../i18n";
+import type { ResolvedResource } from "../../lib/atlas";
+
+interface Props {
+  resource: ResolvedResource;
+  lang: Lang;
+}
+
+const { resource, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<span class="resource">
+  {
+    resource.url ? (
+      <a href={resource.url} rel="noopener noreferrer" lang="en">
+        {resource.title}
+        <span class="visually-hidden">({t("link.external")})</span>
+      </a>
+    ) : (
+      <code>{resource.title}</code>
+    )
+  }
+  <span class="resource-meta">
+    {
+      resource.kind && (
+        <span class="chip chip-kind" lang="en">
+          {resource.kind}
+        </span>
+      )
+    }
+    {
+      resource.host && (
+        <span class="resource-host">
+          {resource.host}
+          <Icon name="external" />
+        </span>
+      )
+    }
+  </span>
+</span>
+
+<style>
+  .resource {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .resource-meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .resource-host {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+</style>

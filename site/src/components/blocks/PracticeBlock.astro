@@ -1,0 +1,144 @@
+---
+// Practice groups; each item links to its referenced item page, its repository path, or its
+// resource with the exact locator.
+import Icon from "../Icon.astro";
+import ResourceLink from "./ResourceLink.astro";
+import { useTranslations, type Lang } from "../../i18n";
+import { itemUrl, langAttr, repoUrl, resolveRef, resolveResource, text, type PracticeBlock } from "../../lib/atlas";
+
+interface Props {
+  block: PracticeBlock;
+  lang: Lang;
+}
+
+const { block, lang } = Astro.props;
+const t = useTranslations(lang);
+const groups = block.groups.map((g) => ({
+  label: text(g.label, lang),
+  items: g.items.map((i) => {
+    const target = i.ref ? resolveRef(i.ref) : undefined;
+    return {
+      body: text(i.text, lang),
+      page: i.ref ? itemUrl(lang, i.ref) : undefined,
+      refTitle: target ? text(target.item.title, lang) : undefined,
+      refCollection: target ? text(target.collection.label, lang) : undefined,
+      path: i.path,
+      resource: i.resource ? resolveResource(i.resource) : undefined,
+      locator: i.locator ? text(i.locator, lang) : undefined,
+    };
+  }),
+}));
+---
+
+<div class="practice">
+  {
+    groups.map((g) => (
+      <section class="practice-group">
+        <h3 lang={langAttr(g.label, lang)}>{g.label.value}</h3>
+        <ul>
+          {g.items.map((i) => (
+            <li>
+              <p class="reading" lang={langAttr(i.body, lang)}>
+                {i.body.value}
+              </p>
+              {(i.refTitle || i.path || i.resource) && (
+                <div class="practice-links">
+                  {i.refTitle && i.page && (
+                    <a class="pill" href={i.page}>
+                      <span lang={langAttr(i.refCollection!, lang)}>{i.refCollection!.value}</span>
+                      <span class="pill-strong" lang={langAttr(i.refTitle, lang)}>
+                        {i.refTitle.value}
+                      </span>
+                      <Icon name="forward" />
+                    </a>
+                  )}
+                  {i.path && (
+                    <a class="practice-path" href={repoUrl(i.path)}>
+                      {i.refTitle && !i.page && (
+                        <span class="practice-ref" lang={langAttr(i.refTitle, lang)}>
+                          {i.refTitle.value}
+                        </span>
+                      )}
+                      <code>{i.path}</code>
+                      <span class="visually-hidden">({t("link.repository")})</span>
+                    </a>
+                  )}
+                  {i.resource && (
+                    <div class="practice-resource">
+                      <ResourceLink resource={i.resource} lang={lang} />
+                      {i.locator && (
+                        <p class="small" lang={langAttr(i.locator, lang)}>
+                          {i.locator.value}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .practice {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .practice-group h3 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-ui);
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+
+  .practice-group ul {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .practice-group li {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--line);
+  }
+
+  .practice-group .reading {
+    margin-bottom: var(--space-3);
+  }
+
+  .practice-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .practice-path {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--target-min);
+    overflow-wrap: anywhere;
+  }
+
+  .practice-ref {
+    font-weight: 550;
+  }
+
+  .practice-resource p {
+    margin: var(--space-1) 0 0;
+    max-width: var(--measure);
+  }
+
+  .pill-strong {
+    font-weight: 600;
+  }
+</style>

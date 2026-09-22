@@ -1,15 +1,17 @@
 ---
-// Route sheets: items of collections with `page_when` whose item has a page (DESIGN.md → Route sheet).
+// Pages of other collections whose items have blocks (projects today), same sheet renderer.
 import ItemSheet from "../../../../components/sheet/ItemSheet.astro";
 import { languages, type Lang } from "../../../../i18n";
-import { collections, pagedItems } from "../../../../lib/atlas";
+import { collections, pagedItems, pageSegment } from "../../../../lib/atlas";
 
 export function getStaticPaths() {
   const langs = Object.keys(languages) as Lang[];
   return collections
-    .filter((c) => c.page_when)
+    .filter((c) => !c.page_when)
     .flatMap((c) => pagedItems(c).map((item) => ({ c, item })))
-    .flatMap(({ c, item }) => langs.map((lang) => ({ params: { lang, id: item.id }, props: { collection: c, item } })));
+    .flatMap(({ c, item }) =>
+      langs.map((lang) => ({ params: { lang, collection: pageSegment(c), id: item.id }, props: { collection: c, item } })),
+    );
 }
 
 const { collection, item } = Astro.props;
