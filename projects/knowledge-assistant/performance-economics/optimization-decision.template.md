@@ -9,23 +9,23 @@
 
 ## Latency
 
-| Metric | Baseline | Candidate |
-| --- | ---: | ---: |
-| p50 | | |
-| p95 | | |
-| p99 | | |
-| TTFC, if applicable | | |
-| completion | | |
-| error rate | | |
+| Metric              | Baseline | Candidate |
+| ------------------- | -------: | --------: |
+| p50                 |          |           |
+| p95                 |          |           |
+| p99                 |          |           |
+| TTFC, if applicable |          |           |
+| completion          |          |           |
+| error rate          |          |           |
 
 ## Cost
 
-| Metric | Baseline | Candidate |
-| --- | ---: | ---: |
-| total scoped cost | | |
-| technical unit cost | | |
-| useful-outcome unit cost | | |
-| retry/tool amplification | | |
+| Metric                   | Baseline | Candidate |
+| ------------------------ | -------: | --------: |
+| total scoped cost        |          |           |
+| technical unit cost      |          |           |
+| useful-outcome unit cost |          |           |
+| retry/tool amplification |          |           |
 
 ## Quality
 
