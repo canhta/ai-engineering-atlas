@@ -3177,6 +3177,17 @@
     }
   },
   "resources": {
+    "article.anthropic-agent-evals": {
+      "title": "Demystifying Evals for AI Agents",
+      "type": "article",
+      "author": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "roles": [
+        "teaching",
+        "assessment",
+        "production-reference"
+      ]
+    },
     "article.anthropic-building-effective-agents": {
       "title": "Building Effective Agents",
       "type": "article",
