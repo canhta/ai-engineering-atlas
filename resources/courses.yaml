@@ -7,6 +7,7 @@ resources:
     covers: [deep-learning]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: course.stanford-cs336
     type: course
@@ -16,6 +17,7 @@ resources:
     covers: [llm-systems, language-model-training, llm.self-attention]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: course.huggingface-llm
     type: course
@@ -25,6 +27,7 @@ resources:
     covers: [transformers, open-source-models]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: course.made-with-ml-evaluation
     type: course
@@ -35,6 +38,7 @@ resources:
     covers: [ai.evaluation, ml-evaluation]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
 
   - id: course.made-with-ml-product-design
     type: course
@@ -45,3 +49,4 @@ resources:
     covers: [ai-product-framing, evaluation-planning]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 180
