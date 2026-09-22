@@ -3,8 +3,17 @@ resources:
     type: repository
     title: OSSU Computer Science
     url: https://github.com/ossu/computer-science
+    roles: [curriculum-evidence, benchmark]
+    notes: Curriculum governance, prerequisites, assessment substitution, and capstone reference.
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: repo.microsoft-ml-beginners
+    type: repository
+    title: Machine Learning for Beginners
+    url: https://github.com/microsoft/ML-For-Beginners
     roles: [benchmark]
-    notes: Curriculum governance and navigation reference.
+    notes: Pre/post assessment, project-based progression, challenge, assignment, and PAT rubric reference.
     source_verified: true
     last_checked: 2026-09-22
 
@@ -13,7 +22,7 @@ resources:
     title: Generative AI for Beginners
     url: https://github.com/microsoft/generative-ai-for-beginners
     roles: [benchmark]
-    notes: Lesson packaging and contributor ergonomics reference.
+    notes: Scenario, learning goals, assignment, solution, knowledge-check, and challenge reference.
     source_verified: true
     last_checked: 2026-09-22
 
@@ -21,8 +30,8 @@ resources:
     type: repository
     title: Made With ML
     url: https://github.com/GokuMohandas/Made-With-ML
-    roles: [benchmark, practice]
-    notes: Notebook-to-production and testing discipline reference.
+    roles: [benchmark, production-reference]
+    notes: Evolving product, notebook-to-code, evaluation, code/data/model testing, deployment, and iteration reference.
     source_verified: true
     last_checked: 2026-09-22
 
@@ -30,6 +39,6 @@ resources:
     type: repository
     title: LLM Course
     url: https://github.com/mlabonne/llm-course
-    roles: [benchmark, resource-discovery]
+    roles: [benchmark, reference]
     source_verified: true
     last_checked: 2026-09-22
