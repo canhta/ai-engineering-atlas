@@ -1,7 +1,7 @@
 id: ai.uncertainty-abstention-trust
 title: Uncertainty Abstention and Trust
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
