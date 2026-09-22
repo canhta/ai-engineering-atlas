@@ -4,6 +4,26 @@
 **Target:** L2 practical competence  
 **Evidence target:** demonstrated → transferred → retained
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Build a Large Language Model (From Scratch)](https://github.com/rasbt/LLMs-from-scratch) | Chapter 3, sections 3.3-3.5; main chapter notebook ch03/01_main-chapter-code/ch03.ipynb | Progress from attention weights to trainable Q/K/V and causal masking. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `math.dot-product` | [Build a Large Language Model (From Scratch)](https://github.com/rasbt/LLMs-from-scratch) | Chapter 3, section 3.3 simple self-attention examples where attention scores are computed with dot products. | Patch the vector dot-product operation needed to follow QK^T attention scores. |
+| `dl.embeddings` | [Build a Large Language Model (From Scratch)](https://github.com/rasbt/LLMs-from-scratch) | Chapter 2, section 2.7 "Creating token embeddings". | Patch the learned-vector representation needed before Q/K/V projections. |
+| `dl.softmax` | [Build a Large Language Model (From Scratch)](https://github.com/rasbt/LLMs-from-scratch) | Chapter 3, section 3.3 simple self-attention examples where attention scores are normalized with softmax. | Patch the normalization operation used to convert attention scores into mixing weights. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 Self-attention is a core mechanism inside transformer models. For an AI engineer, recognizing the formula is not enough. You should be able to trace the tensors, implement a simplified version, inspect its behavior, and diagnose masking or shape failures.
