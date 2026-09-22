@@ -17,7 +17,7 @@
     "check": "astro check && pnpm run test && pnpm run lint:styles && pnpm run check:i18n && pnpm run check:contrast && pnpm run check:headers && pnpm run check:icons && pnpm run check:coupling && astro build",
     "check:icons": "node scripts/check-icons.mjs",
     "check:coupling": "node scripts/check-content-coupling.mjs",
-    "test": "node --test \"src/**/*.test.ts\"",
+    "test": "node --test \"src/**/*.test.ts\" && vitest run",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -40,6 +40,7 @@
     "postcss-html": "^2.0.0",
     "stylelint": "^17.15.0",
     "typescript": "^6.0.3",
+    "vitest": "^5.0.1",
     "wrangler": "^4.135.0"
   }
 }
