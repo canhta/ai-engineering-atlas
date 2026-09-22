@@ -228,12 +228,13 @@ test("the real model with the example progress.yaml gives a valid, stable plan",
   assert.deepEqual(result.next[0], { id: "ai.evaluation", reason: "continue", prerequisites: [] });
   assert.ok(result.next.some((r) => r.id === "llm.self-attention" && r.reason === "transfer"));
   assert.deepEqual(plan([...realGraph].reverse(), example.progress!, DAY), result);
-  // On its review date self-attention comes first.
-  assert.deepEqual(plan(realGraph, example.progress!, "2026-09-29").next[0], {
+  // On its review date (progress.example.yaml's FSRS-scheduled review_on) self-attention comes first.
+  const dueOn = example.progress!.competencies["llm.self-attention"].review_on!;
+  assert.deepEqual(plan(realGraph, example.progress!, dueOn).next[0], {
     id: "llm.self-attention",
     reason: "due",
     prerequisites: [],
-    due: "2026-09-29",
+    due: dueOn,
   });
 });
 

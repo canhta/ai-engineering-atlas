@@ -78,6 +78,8 @@
   "diag.record": "Ghi kết quả",
   "diag.recorded.meets": "Đã ghi. Bỏ qua tài liệu nhập môn, chuyển tới",
   "diag.recorded.gap": "Đã ghi. Bắt đầu với",
+  "diag.review.recorded.meets": "Đã ghi. Lần kiểm tra sau: {date}.",
+  "diag.review.recorded.sooner": "Đã ghi. Lần kiểm tra sau đến sớm hơn: {date}.",
   "diag.edit": "Sửa câu trả lời",
   "sources.col.resource": "Tài liệu",
   "sources.col.locator": "Đọc phần nào",

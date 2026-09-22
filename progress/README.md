@@ -45,6 +45,15 @@ This lets a learner or future AI tutor answer:
 - When was retention last checked?
 - Did the learner regress and relearn the skill?
 
+## Delayed review
+
+`review_on` is the calendar date the next check is due. In the web atlas it is computed by
+`site/src/lib/review.ts` (`ts-fsrs`) from the learner's own retrieval results, kept under the `review`
+key: a passing check lengthens the interval, a failed one shortens it, rather than following one fixed
+schedule for every learner. A `progress.yaml` written before this existed still validates: it has
+`review_on` but no `review` key, and is read as a fresh card the next time evidence is recorded for
+that competency.
+
 ## Evidence fields
 
 Each evidence item records:
@@ -55,7 +64,8 @@ Each evidence item records:
 - **uri** — optional artifact path/URL;
 - **independence** — independent, minimal hints, guided, reference open, or unknown;
 - **review_method** — self, peer, automated, AI-assisted, or combined;
-- **note** — what the artifact actually shows.
+- **note** — what the artifact actually shows;
+- **retrieval_result** — `kind: retrieval` only: the reported result (meets, partial, not yet) that `review.ts` mapped to a review outcome.
 
 AI review is metadata about the review process. It does not make weak evidence strong.
 

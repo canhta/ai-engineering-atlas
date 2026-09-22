@@ -1,7 +1,9 @@
 // Learner progress: state transitions backed by evidence (docs/LEARNING_MODEL.md, progress/README.md).
 // Pure functions over the progress.yaml v2 shape (schemas/progress.schema.json); storage lives in
-// progress-store.ts. A state changes only when an evidence item is recorded.
+// progress-store.ts. A state changes only when an evidence item is recorded. Delayed-retrieval
+// scheduling (when the next check is due) lives in review.ts; this file never imports ts-fsrs.
 import { parse, stringify } from "yaml";
+import { review, type ReviewCard, type ReviewResult } from "./review.ts";
 
 export const STATES = ["unassessed", "gap", "learning", "demonstrated", "transferred", "retained", "applied"] as const;
 export const TARGET_STATES = ["demonstrated", "transferred", "retained", "applied"] as const;
@@ -42,6 +44,9 @@ export interface Evidence {
   note?: string;
   independence: Independence;
   review_method: ReviewMethod;
+  /** For `kind: "retrieval"` only: the diagnostic result the learner reported (review.ts maps it to
+   * an FSRS rating). Other evidence kinds never set this. */
+  retrieval_result?: ReviewResult;
 }
 
 export interface HistoryEntry {
@@ -57,7 +62,11 @@ export interface CompetencyProgress {
   evidence: Evidence[];
   state_history: HistoryEntry[];
   next_action: string;
+  /** Calendar date the next delayed-retrieval check is due (review.ts); the review queue's key field. */
   review_on?: string;
+  /** FSRS card state (review.ts); absent for a competency that has never reached a reviewed state, and
+   * for a `progress.yaml` written before FSRS — read as a fresh card, seeded on the next evidence. */
+  review?: ReviewCard;
 }
 
 export interface Progress {
@@ -68,8 +77,6 @@ export interface Progress {
 
 export type EvidenceInput = Omit<Evidence, "id" | "recorded_at">;
 
-/** Days until the next delayed-retrieval check, by number of earlier successful checks. */
-const REVIEW_INTERVALS = [7, 21, 60, 150];
 const REVIEWED_STATES: readonly State[] = ["demonstrated", "transferred", "retained", "applied"];
 
 export const emptyProgress = (today: string): Progress => ({ version: 2, updated_at: today, competencies: {} });
@@ -106,10 +113,13 @@ function nextActionFor(state: State): string {
   }
 }
 
-function reviewDate(entry: CompetencyProgress, state: State, date: string): string | undefined {
-  if (!REVIEWED_STATES.includes(state)) return undefined;
-  const checks = entry.evidence.filter((e) => e.kind === "retrieval" && isDemonstrated(e.supports_state)).length;
-  return addDays(date, REVIEW_INTERVALS[Math.min(checks, REVIEW_INTERVALS.length - 1)]);
+/** The state a delayed-retrieval check supports, from the competency's state before the check
+ * (docs/LEARNING_MODEL.md: "retained" means the capability was retrieved successfully after a delay).
+ * A pass moves a demonstrated or transferred competency to retained; retained or applied stays as is.
+ * Anything short of "meets" drops the competency back to learning, same as a first diagnostic miss. */
+export function retrievalOutcome(previous: State, result: ReviewResult): EvidenceState {
+  if (result !== "meets") return "learning";
+  return rank(previous) < rank("retained") ? "retained" : (previous as EvidenceState);
 }
 
 /**
@@ -152,9 +162,29 @@ export function recordEvidence(
     },
   ];
   entry.next_action = nextActionFor(state);
-  const reviewOn = reviewDate(entry, state, date);
-  if (reviewOn) entry.review_on = reviewOn;
-  else delete entry.review_on;
+
+  // Delayed-retrieval scheduling (review.ts, the only module that imports ts-fsrs). FSRS only decides
+  // *when* to check next; it never moves `current_state`, set above from the reported evidence alone.
+  const asOf = new Date(`${date}T00:00:00Z`);
+  if (input.kind === "retrieval" && input.retrieval_result) {
+    // A reported retrieval result — pass or fail — always reviews the card, seeding one from this
+    // evidence when there was none yet (a pre-FSRS `progress.yaml` has `review_on` but no card).
+    const { card, dueDate } = review(previous.review, input.retrieval_result, asOf);
+    entry.review = card;
+    entry.review_on = dueDate;
+  } else if (REVIEWED_STATES.includes(state) && !previous.review) {
+    // First time this competency reaches a reviewed state: the evidence that proved it is itself
+    // the first successful check, so seed the card from it rather than leaving review_on unset.
+    const { card, dueDate } = review(undefined, "meets", asOf);
+    entry.review = card;
+    entry.review_on = dueDate;
+  } else if (!REVIEWED_STATES.includes(state)) {
+    // Not a reviewed state (e.g. a fresh diagnostic gap): nothing due, but keep any existing card so a
+    // later return to a reviewed state resumes the same schedule instead of restarting it.
+    delete entry.review_on;
+  }
+  // else: a reviewed state reaffirmed by non-retrieval evidence with an existing card — the schedule
+  // that card already produced (copied from `previous` above) is left alone.
 
   return { ...progress, updated_at: date, competencies: { ...progress.competencies, [id]: entry } };
 }
