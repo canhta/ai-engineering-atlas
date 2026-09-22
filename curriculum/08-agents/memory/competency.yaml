@@ -1,7 +1,7 @@
 id: agents.memory
 title: Agent Memory
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
