@@ -97,3 +97,14 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: article.aws-idempotent-apis
+    type: article
+    title: Making retries safe with idempotent APIs
+    author: Malcolm Featonby, Amazon Web Services
+    url: https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [systems.api-service-design, ai.tool-calling, retries, idempotency]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
