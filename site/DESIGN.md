@@ -34,7 +34,7 @@ Proven patterns, reused rather than invented:
 /{lang}/                     Home
 /{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
 /{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
-/{lang}/<collection>/<id>/   Other collection items that have blocks (projects today)
+/{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Field log: your states, review queue, your data
 ```
 
@@ -167,6 +167,50 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 - Mapped items stay in the plate with the note "Mapped items do not count toward progress."
 - Empty: every ready tile unassessed, and "Start with a diagnostic on any ready route" with the CTA.
 
+### Labs
+
+Every lab has a page that renders its README (a Markdown `text` block). A lab with a browser contract also has a `runner` block, and the page becomes a workbench: brief beside bench, no rail.
+
+```text
+ Atlas / Labs / Evaluation Harness Lab                                       breadcrumb
+ Evaluation Harness Lab                                                      display
+ View contract ↗   Copy link
+ Practice for ◧ AI Evaluation and Experimentation            tracked items pointing at the lab
+┌ brief, 5 fr, reading column ─────────┬ bench, 7 fr, sticky under the nav, scrolls inside ─┐
+│ Lab brief                            │ Run the tests                                       │
+│ README: tasks, transfer, evidence;   │ ╭─ double bezel ──────────────────────────────────╮ │
+│ headings one level down; relative    │ │ starter.py your code │ tests.py │ cases.jsonl    │ │
+│ links go to atlas pages or the repo  │ │ editor (CodeMirror, 18–32rem)                    │ │
+│                                      │ │ Tab indents; Esc then Tab leaves. Draft saved.   │ │
+│                                      │ │ ( Run tests (▷) )  ( □ Stop )    ↺ Reset to starter│ │
+│                                      │ │ ⊗ A test failed  in 43 ms                        │ │
+│                                      │ │ tests.py, line 36  Show in editor                │ │
+│                                      │ │ ▌assert starter.authorize(normal_user, search)   │ │
+│                                      │ │ ▸ Output                                          │ │
+│                                      │ │ (after pass) Record evidence                     │ │
+│                                      │ │ Show the reference solution                      │ │
+│                                      │ ╰──────────────────────────────────────────────────╯ │
+└──────────────────────────────────────┴─────────────────────────────────────────────────────┘
+```
+
+- Tabs: the editable file first (marked "your code"), then the run file, then fixtures, read only. The reference appears as a last tab only after the learner opens it.
+- Editor: JetBrains Mono without ligatures (code must look as typed), syntax colours from the `code-*` tokens, `lang="en"`, the bezel core as background. Before hydration the files show as plain `pre`.
+- Results panel, one `role="status"` line with icon, label, and time; colour is never the only cue:
+
+  | State | Line | Detail |
+  |---|---|---|
+  | idle | muted: what Run does and the one-time ~13 MB download | none |
+  | loading runtime, running | muted, pulsing dot (static with reduced motion) | Stop enabled while running |
+  | pass | check icon, `state-demonstrated` | output open; Record evidence |
+  | fail | cross icon, `state-gap` | file and line of the failing assert, its source, the assertion message; Show in editor selects the line |
+  | error | warning icon, `state-gap` | exception type and message, the line in the learner's file when the traceback passes through it, traceback in lab files (collapsed) |
+  | stopped | stop icon, muted | Python raised KeyboardInterrupt; the next run reuses the runtime |
+  | timeout | timer icon, `state-gap` | after 20 s the worker is terminated; the next run starts a fresh one |
+
+- Reset to starter and Show the reference solution each open an inline confirmation (focus moves to its first button). Opening the reference is remembered per lab and marks later evidence `reference-open`, which the form states.
+- Evidence (after pass only): the competency (radio when several), the state it supports (learning or demonstrated, starting at learning), a note pre-filled with the run file, runtime version, and the SHA-256 of the code. Kind `implementation`, review `automated`.
+- Below 1024: one column, brief then bench; the header gets "Go to the code". The editor keeps its height; toolbar buttons wrap.
+
 ### States every surface handles
 
 Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home and Progress tiles, ready rows, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").
@@ -184,6 +228,7 @@ Before hydration (controls disabled, no learner state drawn); empty; filtered to
 | `route` | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
 | `water` | teal: links |
 | `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied` | one hue per learner state (see The plate); always with shape and label |
+| `code-keyword`, `code-string`, `code-number`, `code-definition`, `code-comment`, `code-selection`, `code-gutter` | lab editor syntax and chrome only (see Labs) |
 
 `pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
 
@@ -200,7 +245,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ### Shape and depth
 
-- Double bezel (outer tray and inner core with concentric radii) only for the plate, the drawer, and the field log. Everything else sits flat on the ground.
+- Double bezel (outer tray and inner core with concentric radii) only for the plate, the drawer, the field log, and the lab bench. Everything else sits flat on the ground.
 - Radii: tray 28, core 22; cards and inputs 12; chips and buttons are pills.
 - Hairlines use `line`. Shadows are soft and ambient and only on floating layers: nav, drawer, sheets, tooltips.
 - Primary action: a pill whose trailing icon sits in its own circle; pressing scales it to 0.98 and nudges the icon circle.
@@ -235,7 +280,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 | Tell | Replace with |
 |---|---|
-| Identical card grid with one radius and shadow everywhere | Plate tiles, rows, and the three double-bezel surfaces only |
+| Identical card grid with one radius and shadow everywhere | Plate tiles, rows, and the four double-bezel surfaces only |
 | Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips, sentence case, monospace only for code and IDs |
 | Marketing headline, percent rings, streaks, XP, "N of M complete" | Ready and mapped counts, evidence states, due reviews |
 | Learning/Done/Skip toggles on items | Record evidence in the field log |

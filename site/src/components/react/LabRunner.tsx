@@ -284,7 +284,7 @@ function Results(props: {
         {line.icon && <Icon name={line.icon} size={20} />}
         <span>{line.text}</span>
         {outcome && phase === "idle" && outcome.verdict !== "timeout" && (
-          <span className="muted small tabular">{t("lab.duration", { ms: outcome.ms })}</span>
+          <span className="muted small tabular">{t("lab.duration", { ms: new Intl.NumberFormat(props.lang).format(outcome.ms) })}</span>
         )}
       </p>
       {at && (

@@ -13,9 +13,10 @@ Run from `site/` unless noted.
 | `pnpm install` | Install; build scripts are allowed only for the packages in `pnpm-workspace.yaml` |
 | `pnpm run dev` | Dev server. Astro's CSP and `_headers` do not apply in dev |
 | `pnpm run check` | Typecheck, unit tests (`node --test` for logic, Vitest for the block renderer), style lint, i18n parity, token contrast, headers, icons, content coupling, build |
+| `pnpm run test:labs` | Browser labs under Pyodide in Node: the reference passes, and the starter gives the same result as `python3 tests.py` (needs `python3`, or set `PYTHON`) |
 | `pnpm run test:e2e` | Browser tests against the built site (starts `pnpm run preview`): desktop at 1440px; tests tagged `@mobile` at 390px |
 | `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
-| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route by default; en/vi × light/dark × 390/1440), axe, header and overflow checks |
+| `node scripts/capture.mjs` | With preview running: screenshots (home, atlas, drawer, progress, route, lab by default; en/vi × light/dark × 390/1440), axe, header and overflow checks |
 | `make site-check` | From the repository root: what CI runs for the site |
 
 Deploys run only through the manual **Deploy site** workflow (`.github/workflows/deploy.yml`, Actions → Run workflow). It runs every check and the browser tests before `wrangler deploy`. Do not deploy from a local machine or an agent session.
@@ -34,7 +35,7 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 - `src/data/atlas.json` is the content model v2 ([RFC](../rfcs/0000-content-model.md), [schema](../schemas/site-data.schema.json)): site, vocabularies, collections, items with typed blocks, relations, resources. Regenerate it with `python scripts/build_site_data.py --write`; `make check` fails when it is stale.
 - The site renders only the content model. Curriculum field names, section titles, and vocabulary labels live in [curriculum/presentation.yaml](../curriculum/presentation.yaml), not in `src/`. `pnpm run check:coupling` fails when a curriculum field name (from `presentation.yaml` and `schemas/competency.schema.json`) appears in `src/` outside `src/data/`.
 - `src/lib/atlas.ts` is the only reader of the model. Islands never import it (it would ship the whole model to the browser); pages pass them plain props. `text(l10n, lang)` returns `{value, lang}`: render `lang` on the element when it differs from the page language.
-- Blocks render through `src/components/blocks/Block.astro`, one component per block type. Route and project pages share `src/components/sheet/ItemSheet.astro`.
+- Blocks render through `src/components/blocks/Block.astro`, one component per block type. Route, project, and lab pages share `src/components/sheet/ItemSheet.astro`; a page with a `runner` block uses its workbench layout.
 - Atlas filters come from the model: the tracked collection's `facets` (the `page_when` field is the "Ready routes only" toggle), the learner state, and one facet per other collection whose items have relations pointing at tracked items (projects today).
 - To show a new content field, add a block to `presentation.yaml`; do not special-case it in the site. Unknown block types render as `data`.
 - Pages exist only where an item has `page` (competencies: `page_when` on status). Items without a page render as list entries.
@@ -54,9 +55,13 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 
 ## Labs and runtime
 
-- Labs run in Pyodide inside a Web Worker. Interrupting code needs `SharedArrayBuffer`, so every page is served with `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`. Any third-party asset must be same-origin or send CORP/CORS headers, or it will fail to load.
-- Browser labs run the same `tests.py` as local labs. A lab change is verified both ways.
-- CSP comes from `astro.config.mjs` (`security.csp`): scripts are hash-only; styles allow `'unsafe-inline'` because React Aria server-renders `style` attributes. Only `pnpm run test:e2e` (real CSP via Wrangler) catches a violation, so run it after adding an island or third-party code.
+- A lab runs in the browser when `labs/<id>/lab.yaml` has a `browser:` contract (checked by `scripts/validate_labs.py`); the adapter turns it into a `runner` block. Labs without it get a README-only page. Do not edit `starter.py`, `tests.py`, `solution.py`, or a lab README as part of site work: lab changes get their own review.
+- Pyodide is self-hosted: `astro.config.mjs` copies the npm package's core files to `dist/pyodide/<version>/` (each under Cloudflare's 25 MiB static-asset limit; the build fails otherwise) and serves them in dev. Only the core and standard library ship; `browser.packages` is rejected.
+- `src/lib/lab-run.ts` is the one run harness (runs the run file as `__main__`, classifies pass, fail, error, stopped), shared by the worker (`lab-worker.ts`, loaded on the first Run by `lab-session.ts`) and `scripts/test-labs.mjs`. Stop sets the `SharedArrayBuffer` interrupt; the 20 s limit terminates the worker.
+- Interrupting code needs `SharedArrayBuffer`, so every page is served with `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`. Any third-party asset must be same-origin or send CORP/CORS headers, or it will fail to load.
+- Browser labs run the same `tests.py` as local labs; `pnpm run test:labs` proves it against CPython. Run it after any lab change.
+- Lab drafts (`atlas.lab-code.v1.<ref>`) and opened references (`atlas.lab-reference.v1`) live in guarded local storage next to progress.
+- CSP comes from `astro.config.mjs` (`security.csp`): scripts are hash-only plus `'wasm-unsafe-eval'` (Pyodide's WebAssembly, no JavaScript eval) and `worker-src 'self'`; styles allow `'unsafe-inline'` because React Aria server-renders `style` attributes. Only `pnpm run test:e2e` (real CSP via Wrangler) catches a violation, so run it after adding an island or third-party code.
 
 ## AI tutor and Worker
 

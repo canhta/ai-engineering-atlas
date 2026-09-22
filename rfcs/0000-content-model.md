@@ -79,12 +79,13 @@ Every block has `type`, `id` (stable anchor), and `title: L10n`, and may have `s
 
 | type | payload | interactive behaviour |
 |---|---|---|
-| `text` | `body: L10n` | none |
+| `text` | `body: L10n`, `format?: markdown` | none; a Markdown body renders at build time with headings one level down, relative links resolved against the item's `source_path` (to the atlas page of the item at that path, else to the repository), and raw HTML escaped |
 | `list` | `items: L10n[]`, `ordered: bool` | none |
 | `prerequisites` | `items: [{ ref, bridge?: { diagnostic?: L10n, resource, locator?: L10n, purpose?: L10n } }]` | links to referenced items that have pages |
 | `diagnostic` | `tasks: L10n[]`, `pass_condition: L10n` | answer, compare, record diagnostic evidence |
 | `sources` | `rows: [{ resource, locator: L10n, purpose: L10n }]` | per-row personal "opened" mark |
 | `practice` | `groups: [{ label: L10n, items: [{ text: L10n, ref?, path?, resource?, locator?: L10n }] }]` | links to labs, repository paths, and resources |
+| `runner` | `runtime: pyodide`, `editable`, `run`, `reference`, `files: { name: text }`, `packages?: string[]` | edit `editable`, run `run` as `__main__` in the browser, show the result, reveal `reference` on a confirmed request, record evidence for the tracked items that point at this item |
 | `data` | `value: any JSON` | generic fallback, rendered as nested lists |
 
 `resource` is a key in `resources` or an absolute URL. A practice item's `ref` is set when its `path` lies inside an item's repository path (`labs/self-attention/` → `lab:self-attention`).
@@ -139,7 +140,10 @@ collections:
       - { id: exit-evidence, step: true, field: exit_evidence, type: list, title: L10n }
       - { id: transfer, step: true, field: transfer.task, type: text, title: L10n }
     ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
-  labs:     { label: L10n, ref_prefix: lab, items_from: "labs/*/", fields: {path: …, files: …} }
+  labs:     { label: L10n, ref_prefix: lab, items_from: "labs/*/", content_from: lab.yaml, fields: {path: …, files: …},
+              blocks: [{id: brief, file: README.md, type: text, format: markdown, title: L10n},
+                       {id: runner, step: true, field: browser, type: runner,
+                        map: {runtime: runtime, editable: editable, run: run, reference: reference, files: files, packages: packages}, title: L10n}] }
   projects: { label: L10n, ref_prefix: project, items_from: "projects/*/project.yaml", title: title,
               relations: [{type: member, field: competencies, direction: out}], blocks: [purpose, milestones, evidence], … }
   paths:    { label: L10n, ref_prefix: path, items_from: "paths/*.md", exclude: [README.md], fields: {path: …} }
@@ -148,7 +152,9 @@ collections:
 - Block order on the page is the order in this file. A block whose field is absent is skipped.
 - `bridge`, `map`, `row`, and `item` map payload keys to content keys, so the adapter names no curriculum field.
 - A relation value containing `/` is a repository path, resolved to the item whose path contains it; with `target`, only items of that collection count.
-- Directory items get the derived fields `path` and `files`; file items get `path`.
+- Directory items get the derived fields `path` and `files`; file items get `path`. `content_from` names an optional YAML file inside each directory whose keys are the item's content (labs: `lab.yaml`).
+- A block reads either a content `field` or a `file` inside a directory item (its text is the value). A `text` block with `format: markdown` drops the file's leading H1, which is the item title.
+- A `runner` block's `files` holds the editable, run, and reference files plus the listed fixtures, read from the item's directory. A lab without a `browser:` contract has no runner block, so its page renders the README only. The page puts the runner beside the other blocks (the workbench layout in site/DESIGN.md → Labs).
 - `ignore` lists fields deliberately not rendered.
 
 ### Checks
