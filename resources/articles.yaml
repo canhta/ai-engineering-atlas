@@ -1,0 +1,22 @@
+resources:
+  - id: article.anthropic-building-effective-agents
+    type: article
+    title: Building Effective Agents
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/building-effective-agents
+    roles: [curriculum-evidence, teaching, production-reference]
+    covers: [agents.deterministic-vs-agentic, agents.fundamentals, agents.orchestration]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.anthropic-agent-evals
+    type: article
+    title: Demystifying Evals for AI Agents
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+    roles: [teaching, assessment, production-reference]
+    covers: [ai.evaluation, agents.fundamentals]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
