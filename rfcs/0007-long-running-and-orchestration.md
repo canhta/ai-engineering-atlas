@@ -548,19 +548,37 @@ Rejected. Parallelism is useful only when subtasks are sufficiently independent 
 - presentation/site:
   - no new competency fields are proposed; existing presentation blocks should be sufficient.
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- `agents.long-running` promoted to `ready` at L3.
+- `agents.orchestration` promoted to `ready` at L3.
+- Long-Running remains distinct from State: the route adds lifecycle, wait/resume, budget, timeout/cancellation, ownership, worker replacement, and unsafe-replay boundaries over durable execution state.
+- Orchestration remains distinct from Planning and Multi-Agent Systems: each flow decision records code/model/hybrid ownership, and multi-agent topology remains optional.
+- The Knowledge Assistant now includes a `runtime-and-orchestration/` evidence package in the same project lineage.
+- Long-Running evidence requires a synchronous baseline, pause/resume across process loss, retry/non-retryable failure handling, concurrent-resume protection, replay-safe side effects, explicit runtime budgets, and final outcome verification.
+- Orchestration evidence preserves a simpler-flow baseline, bounds concurrency, tests branch failure containment and fan-in behavior, and includes an orchestration ablation before any multi-agent decision.
+- Three OpenAI runtime/orchestration sources were registered alongside existing Anthropic and Temporal sources.
+- Learner-facing source blocks are generated from the route/resource contracts.
+- `site/src/data/atlas.json` is generated from source-of-truth content under the v2 presentation/content-model contract and must not be edited by hand.
+- Seeded-state validation passed before promotion.
+- Promotion-state repository and site validation passed on latest `main`.
+- Repository status is now 116 catalog competencies, 21 ready routes, and 95 coverage-only competencies; Agents has 7 ready routes.
+
 ## Review checklist
 
-- [ ] Evidence is traceable and locators are specific enough for route authoring.
-- [ ] Long-Running is distinct from State, Planning, Memory, Orchestration, and Observability.
-- [ ] Orchestration is distinct from Planning and Multi-Agent Systems.
-- [ ] Long-Running target depth L3 is appropriate.
-- [ ] Orchestration target depth L3 is appropriate.
-- [ ] Long-Running evidence includes pause/wait, process restart, resume, budgets, cancellation/timeout, and replay safety.
-- [ ] Long-Running completion requires outcome verification rather than run termination.
-- [ ] Orchestration requires a simpler baseline and explicit control ownership.
-- [ ] Code-controlled flow remains the default for known/testable branches.
-- [ ] Parallelism requires independent work, bounded concurrency, and explicit fan-in.
-- [ ] Branch failure containment is part of orchestration evidence.
-- [ ] Multi-Agent remains outside this RFC.
-- [ ] Knowledge Assistant integration extends the existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before promotion.
+- [x] Evidence is traceable and locators are specific enough for route authoring.
+- [x] Long-Running is distinct from State, Planning, Memory, Orchestration, and Observability.
+- [x] Orchestration is distinct from Planning and Multi-Agent Systems.
+- [x] Long-Running target depth L3 is appropriate.
+- [x] Orchestration target depth L3 is appropriate.
+- [x] Long-Running evidence includes pause/wait, process restart, resume, budgets, cancellation/timeout, and replay safety.
+- [x] Long-Running completion requires outcome verification rather than run termination.
+- [x] Orchestration requires a simpler baseline and explicit control ownership.
+- [x] Code-controlled flow remains the default for known/testable branches.
+- [x] Parallelism requires independent work, bounded concurrency, and explicit fan-in.
+- [x] Branch failure containment is part of orchestration evidence.
+- [x] Multi-Agent remains outside this RFC.
+- [x] Knowledge Assistant integration extends the existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before promotion.
