@@ -1,8 +1,10 @@
 # RFC: Model Context Protocol Slice
 
-- Status: Draft
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
+- Reviewed: 2026-09-22
+- Review decision: Approved by repository owner
 
 ## Problem
 
@@ -297,14 +299,14 @@ The learner should be able to:
 
 The learner must explicitly compare:
 
-| Concern | Legacy era | Modern `2026-07-28` |
-| --- | --- | --- |
-| startup | `initialize` handshake | `server/discover` |
-| protocol version | session-negotiated | per request |
-| capabilities | session-negotiated | per request |
-| session ID | may use MCP session | no core session |
-| server → client interaction | server-to-client request channel | multi-round-trip `input_required` |
-| change notifications | legacy notification/session patterns | `subscriptions/listen` model |
+| Concern                     | Legacy era                          | Modern `2026-07-28`                   |
+| --------------------------- | ----------------------------------- | --------------------------------------- |
+| startup                     | `initialize` handshake              | `server/discover`                       |
+| protocol version            | session-negotiated                  | per request                             |
+| capabilities                | session-negotiated                  | per request                             |
+| session ID                  | may use MCP session                 | no core session                         |
+| server → client interaction | server-to-client request channel    | multi-round-trip `input_required`       |
+| change notifications        | legacy notification/session patterns | `subscriptions/listen` model            |
 
 The learner does not need to implement every legacy behavior.
 

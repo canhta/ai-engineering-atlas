@@ -1,0 +1,117 @@
+id: agents.mcp
+title: Model Context Protocol
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: MCP creates a standardized interoperability boundary between AI hosts and systems exposing tools, resources, and prompts. Engineers must understand the current stateless protocol era, capability/version negotiation, primitive semantics, authorization boundaries, compatibility, and conformance instead of relying on stale SDK tutorials.
+curriculum_evidence:
+  - docs.mcp-v2-protocol-versions
+  - docs.mcp-v2-support-2026-07-28
+  - docs.mcp-v2-overview
+  - docs.mcp-tasks-2026
+  - docs.mcp-conformance-2026
+prerequisites:
+  - ai.tool-calling
+  - security.prompt-injection
+outcomes:
+  - Explain host, client, and server responsibilities without tying them to one vendor product.
+  - Distinguish the modern 2026-07-28 stateless era from legacy initialize-handshake MCP.
+  - Explain server/discover and per-request protocol-version and capability metadata.
+  - Distinguish tools, resources, and prompts by semantics, ownership, and risk.
+  - Choose a narrow MCP surface from a real interoperability need instead of mirroring an internal API.
+  - Preserve deterministic validation, authorization, approval, and side-effect policy outside model output.
+  - Treat clientInfo and serverInfo as self-reported metadata rather than authenticated identity.
+  - Validate resource URI and scope boundaries instead of treating a URI as authorization.
+  - Implement or inspect one modern client/server exchange and separate discovery, invocation, and result handling.
+  - Explain multi-round-trip input_required behavior, request-scoped state, bounded rounds, and re-entry.
+  - Distinguish version mismatch, unsupported capability, malformed input, authorization failure, and downstream execution failure.
+  - Reason about discovery/cache freshness when capabilities change.
+  - Treat Tasks as an optional extension and verify SDK support before relying on it.
+  - Produce interoperability or protocol-level conformance evidence.
+  - Compare direct integration with MCP and justify whether interoperability earns the adapter and versioning complexity.
+diagnostic:
+  tasks:
+    - Compare legacy initialize-based MCP with the modern 2026-07-28 discovery and per-request capability model.
+    - Classify one proposed surface as a tool, resource, prompt, or something that should not be exposed through MCP.
+    - Explain why an advertised capability or clientInfo value does not authorize a protected action.
+    - Design failure tests for version mismatch, malformed tool input, unauthorized resource access, and a downstream tool failure.
+  pass_condition: Skip introductory material only if the learner can reason about modern MCP lifecycle, primitive semantics, security boundaries, compatibility failures, and interoperability without relying on one SDK's decorators.
+learning_route:
+  mental_model:
+    - source: docs.mcp-v2-protocol-versions
+      locator: 'Sections "Name the two eras", "Negotiate the era from the client", "Pin an era", and the legacy/modern behavior matrix'
+      purpose: Establish the legacy-versus-modern protocol boundary and the modern server/discover negotiation model.
+    - source: docs.mcp-v2-support-2026-07-28
+      locator: 'Sections "Serving the 2026-07-28 revision", "Replacing per-session state", "Auth on 2026-07-28", "Server identity in result _meta; clientInfo demoted to SHOULD", "Multi-round-trip requests", "Mcp-Param-* and standard headers", and "Cache fields and cache hints"'
+      purpose: Understand the stateless request envelope, request-scoped state, authorization changes, modern headers, multi-round-trip input, and cache behavior.
+    - source: docs.mcp-v2-overview
+      locator: 'Overview and server/client entry points describing MCP hosts, servers, tools, resources, and prompts'
+      purpose: Ground the interoperability model and the three core server primitives in the current v2 SDK documentation.
+    - source: docs.mcp-v2-first-client
+      locator: 'Sections "List the server’s tools" and "Add a resource and read it"'
+      purpose: Contrast callable tool discovery with URI-addressed resource discovery/read behavior.
+    - source: docs.mcp-v2-prompts
+      locator: 'Sections "Register a prompt", "Validate the arguments with the schema", and "Build the messages"'
+      purpose: Distinguish user-selectable prompt templates from tools and resources and inspect their argument-validation contract.
+    - source: docs.mcp-tasks-2026
+      locator: 'Sections "Capability Negotiation", "Supported Methods", "Tasks", "Task Polling", and "Security Considerations"'
+      purpose: Treat durable async Tasks as an optional extension with explicit capability negotiation, polling, cancellation, and per-request authorization.
+    - source: docs.mcp-conformance-2026
+      locator: '2026-07-28 conformance coverage dashboard'
+      purpose: Connect protocol learning to versioned conformance evidence rather than only one successful host connection.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant internal tool and one read-only data source, then decide whether each should become an MCP tool, resource, prompt, or remain internal; justify every boundary.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/mcp/
+      task: Expose a deliberately narrow MCP surface, connect a modern client, exercise discovery and failures, and compare the result with the pre-MCP integration.
+experiments:
+  - Connect in modern auto or pinned mode and record the negotiated era; then test the behavior against a legacy-only endpoint or fixture.
+  - Attempt a tool call with malformed arguments and verify deterministic validation and error classification.
+  - Attempt to read a resource outside its allowed scope and verify application-side authorization or path validation blocks it.
+  - Advertise or omit a client capability and verify protocol support changes without changing application permissions.
+  - Trigger one downstream tool/resource failure and preserve the distinction between protocol failure and application failure.
+  - Exercise input_required only when the chosen interaction genuinely needs client input and cap the number of rounds.
+  - If Tasks is used, verify extension capability support, durable task creation, polling, cancellation, and per-task authorization.
+exit_evidence:
+  - The supported MCP revision and legacy-compatibility policy are explicit.
+  - A host/client/server boundary diagram and primitive inventory are inspectable.
+  - Modern server/discover and per-request capability/version evidence is preserved.
+  - Tool schemas and resource URI/scope rules are versioned and tested.
+  - Authentication and authorization remain deterministic application controls rather than capability inference.
+  - Self-reported client/server metadata is not used as a security identity.
+  - Version/capability mismatch, malformed input, authorization failure, and downstream failure cases are tested.
+  - Multi-round-trip behavior is documented when relevant and bounded against runaway re-entry.
+  - Tasks, if used, are justified as an optional extension and checked against actual SDK/protocol support.
+  - Interoperability or conformance evidence is recorded.
+  - A pre-MCP baseline is compared on task quality, latency, operational complexity, and maintenance/versioning cost.
+  - The final decision records whether to keep, simplify, or remove MCP.
+transfer:
+  task: Redesign the MCP boundary for a different host/server relationship with different transport, authorization, resource-scope, compatibility, and asynchronous-execution requirements.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.mcp-v2-protocol-versions
+    - docs.mcp-v2-support-2026-07-28
+    - docs.mcp-v2-overview
+    - docs.mcp-v2-first-client
+    - docs.mcp-v2-prompts
+    - docs.mcp-tasks-2026
+    - docs.mcp-conformance-2026
+  practice:
+    - docs.mcp-v2-first-client
+    - docs.mcp-v2-prompts
+  assessment:
+    - docs.mcp-conformance-2026
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

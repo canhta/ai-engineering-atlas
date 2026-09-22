@@ -262,3 +262,81 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: docs.mcp-v2-protocol-versions
+    type: documentation
+    title: MCP TypeScript SDK v2 — Protocol versions
+    author: Model Context Protocol
+    url: https://ts.sdk.modelcontextprotocol.io/v2/protocol-versions
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [agents.mcp, protocol-versioning, capability-negotiation]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-v2-support-2026-07-28
+    type: documentation
+    title: MCP TypeScript SDK v2 — Supporting protocol revision 2026-07-28
+    author: Model Context Protocol
+    url: https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [agents.mcp, protocol-migration, authorization, multi-round-trip]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-v2-overview
+    type: documentation
+    title: MCP TypeScript SDK v2 — Overview
+    author: Model Context Protocol
+    url: https://ts.sdk.modelcontextprotocol.io/v2/
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [agents.mcp, tools, resources, prompts]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-v2-first-client
+    type: documentation
+    title: MCP TypeScript SDK v2 — Build your first client
+    author: Model Context Protocol
+    url: https://ts.sdk.modelcontextprotocol.io/v2/get-started/first-client.html
+    roles: [teaching, practice, reference]
+    covers: [agents.mcp, tools, resources, client]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-v2-prompts
+    type: documentation
+    title: MCP TypeScript SDK v2 — Prompts
+    author: Model Context Protocol
+    url: https://ts.sdk.modelcontextprotocol.io/v2/servers/prompts
+    roles: [teaching, practice, reference]
+    covers: [agents.mcp, prompts]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.mcp-tasks-2026
+    type: documentation
+    title: MCP Tasks Extension — 2026-07-28
+    author: Model Context Protocol
+    url: https://tasks.extensions.modelcontextprotocol.io/specification/draft/tasks
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [agents.mcp, tasks, async-execution]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.mcp-conformance-2026
+    type: documentation
+    title: MCP Conformance — 2026-07-28
+    author: Model Context Protocol
+    url: https://plan.modelcontextprotocol.io/conformance/1
+    roles: [curriculum-evidence, assessment, benchmark, reference]
+    covers: [agents.mcp, conformance, interoperability]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
