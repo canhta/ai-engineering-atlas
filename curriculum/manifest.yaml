@@ -18,15 +18,15 @@ domains:
     path: curriculum/02-systems
     target: L2
   - id: data-engineering
-    title: {en: "Data Engineering", vi: "Kỹ thuật dữ liệu"}
+    title: {en: "Data Engineering", vi: "Data engineering"}
     path: curriculum/03-data-engineering
     target: L1-L2
   - id: ml-foundations
-    title: {en: "ML Foundations", vi: "Nền tảng học máy"}
+    title: {en: "ML Foundations", vi: "Nền tảng ML"}
     path: curriculum/04-ml-foundations
     target: L1-L2
   - id: deep-learning
-    title: {en: "Deep Learning", vi: "Học sâu"}
+    title: {en: "Deep Learning", vi: "Deep learning"}
     path: curriculum/05-deep-learning
     target: L2
   - id: llm-foundations
@@ -34,7 +34,7 @@ domains:
     path: curriculum/06-llm-foundations
     target: L2-L3
   - id: ai-engineering
-    title: {en: "AI Engineering", vi: "Kỹ thuật AI"}
+    title: {en: "AI Engineering", vi: "AI engineering"}
     path: curriculum/07-ai-engineering
     target: L2-L3
   - id: agents
@@ -42,11 +42,11 @@ domains:
     path: curriculum/08-agents
     target: L2-L3
   - id: production-ai
-    title: {en: "Production AI", vi: "AI trong production"}
+    title: {en: "Production AI", vi: "AI trên production"}
     path: curriculum/09-production-ai
     target: L3
   - id: security-governance
-    title: {en: "Security & Governance", vi: "Bảo mật và quản trị"}
+    title: {en: "Security & Governance", vi: "Bảo mật & quản trị"}
     path: curriculum/10-security-governance
     target: L2
   - id: multimodal
@@ -54,6 +54,6 @@ domains:
     path: curriculum/11-multimodal
     target: L1-L2
   - id: specializations
-    title: {en: "Specializations", vi: "Chuyên sâu"}
+    title: {en: "Specializations", vi: "Chuyên ngành"}
     path: curriculum/12-specializations
     target: optional
