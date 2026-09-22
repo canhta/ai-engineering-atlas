@@ -5,8 +5,6 @@ A gap-driven roadmap for software engineers learning modern AI engineering.
 [![Validate curriculum](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml/badge.svg)](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**New here? Start with [START_HERE.md](START_HERE.md).**
-
 > [!NOTE]
 > I'm a software engineer learning my way into AI Engineering. This repo is basically my learning journey in public — I'm sharing what I learn along the way, and hopefully some of it is useful to others on the same path.
 
