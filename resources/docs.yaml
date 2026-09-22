@@ -174,3 +174,70 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: docs.google-adk-session-state-memory
+    type: documentation
+    title: Google ADK — Conversational Context: Session, State, and Memory
+    author: Google
+    url: https://adk.dev/sessions/
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [agents.state, agents.memory, sessions, state-management]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.google-adk-state
+    type: documentation
+    title: Google ADK — State: The Session's Scratchpad
+    author: Google
+    url: https://adk.dev/sessions/state/
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [agents.state, state-management]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.google-adk-memory
+    type: documentation
+    title: Google ADK — Memory: Long-term knowledge
+    author: Google
+    url: https://adk.dev/sessions/memory/
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [agents.memory, long-term-memory]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.langgraph-thinking-state
+    type: documentation
+    title: LangGraph — Thinking in LangGraph
+    author: LangChain
+    url: https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [agents.state, checkpointing, durable-execution]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.temporal-overview
+    type: documentation
+    title: Temporal Documentation — Durable Execution
+    author: Temporal Technologies
+    url: https://docs.temporal.io/
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [agents.state, durable-execution, recovery]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.anthropic-long-running-agent-harness
+    type: article
+    title: Effective harnesses for long-running agents
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [agents.state, agents.memory, long-running-agents]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
