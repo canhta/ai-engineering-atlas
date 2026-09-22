@@ -2,3 +2,6 @@ PyYAML>=6.0
 jsonschema>=4.23
 ruff>=0.16
 pre-commit>=4.4
+
+# labs/self-attention runs under NumPy; site/scripts/test-labs.mjs compares Pyodide against CPython.
+numpy>=2.0

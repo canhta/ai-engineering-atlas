@@ -64,6 +64,9 @@ const summary = (r) =>
 const pyodide = await loadPyodide();
 const failures = [];
 for (const { ref, id, block } of labs) {
+  // A lab may ask for packages Pyodide builds; their wheels sit beside the runtime
+  // (scripts/fetch-pyodide-wheels.mjs), so this loads them from disk, not from a CDN.
+  if (block.packages?.length) await pyodide.loadPackage(block.packages);
   const starter = block.files[block.editable];
   const solved = withReference(starter, block.files[block.reference]);
   const request = (code) => ({ lab: id, files: block.files, editable: block.editable, code, run: block.run });

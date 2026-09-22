@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 import math
-import torch
+
+import numpy as np
 
 
 def causal_self_attention(
-    x: torch.Tensor,
-    w_q: torch.Tensor,
-    w_k: torch.Tensor,
-    w_v: torch.Tensor,
+    x: np.ndarray,
+    w_q: np.ndarray,
+    w_k: np.ndarray,
+    w_v: np.ndarray,
 ):
     """Implement causal single-head self-attention.
 
@@ -33,11 +34,11 @@ def causal_self_attention(
 
 
 if __name__ == "__main__":
-    torch.manual_seed(7)
-    x = torch.randn(4, 6)
-    w_q = torch.randn(6, 3)
-    w_k = torch.randn(6, 3)
-    w_v = torch.randn(6, 3)
+    rng = np.random.default_rng(7)
+    x = rng.standard_normal((4, 6))
+    w_q = rng.standard_normal((6, 3))
+    w_k = rng.standard_normal((6, 3))
+    w_v = rng.standard_normal((6, 3))
 
     output, scores, mask, probs = causal_self_attention(x, w_q, w_k, w_v)
     print("scores\n", scores)

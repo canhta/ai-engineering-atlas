@@ -199,3 +199,17 @@ test("the time limit terminates the worker and a fresh one runs next", async ({ 
   await run(page).click();
   await expect(verdict(page)).toHaveAttribute("data-verdict", "error", LOAD);
 });
+
+test("a lab that needs NumPy loads it from our own origin and runs", async ({ page }) => {
+  const requests: string[] = [];
+  page.on("request", (r) => requests.push(r.url()));
+
+  await open(page, "/en/labs/self-attention/");
+  await run(page).click();
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "error", { timeout: 300_000 });
+  await expect(verdict(page).getByRole("status")).toContainText("The run raised NotImplementedError");
+
+  const wheel = requests.filter((url) => url.endsWith(".whl"));
+  expect(wheel.length).toBeGreaterThan(0);
+  for (const url of wheel) expect(new URL(url).origin).toBe(new URL(page.url()).origin);
+});

@@ -77,8 +77,8 @@ Last updated: 2026-09-22
 - [x] `evaluation-harness` and `prompt-injection-boundaries` in the browser; every lab has a README page at `/{lang}/labs/<id>/`
 - [x] Reference solution behind a confirmed reveal, remembered per lab as `independence: reference-open`; automated `implementation` evidence with the code's SHA-256
 - [ ] Owner review of the lab UI and its Vietnamese strings
-- [ ] Host Pyodide packages (wheels) if a lab needs more than the standard library; `browser.packages` is rejected until then
-- [ ] `self-attention`: port to NumPy in place, or keep PyTorch local-only (owner decision; no parallel variant)
+- [x] Pyodide package wheels served from our own origin, verified against `pyodide-lock.json` (`scripts/fetch-pyodide-wheels.mjs`)
+- [x] `self-attention` ported to NumPy in place; it runs in the browser like the other code labs
 - [x] `agentic-design` and `model-selection` as rubric forms
 - [ ] Help ladder and reviewed feedback keys (en/vi); highest step recorded as `independence`
 - [x] CI step running each browser lab under Pyodide (Node) against CPython `python tests.py` (`pnpm run test:labs`, in `make site-check`, `ci.yml`)
@@ -116,4 +116,3 @@ Last updated: 2026-09-22
 - SSO providers beyond GitHub and Google
 - Budgets: questions per user per day, global monthly cap
 - Should decision-lab answers ever leave the browser before Phase 3
-- `self-attention` lab: port to NumPy in place (runs in the browser) or keep PyTorch local-only

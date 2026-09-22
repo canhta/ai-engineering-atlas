@@ -10,6 +10,8 @@ This lab is deliberately smaller than a framework's production attention impleme
 
 ## Setup
 
+Run it in the browser from the lab page, or locally:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -32,7 +34,7 @@ Return:
 - causal mask;
 - attention probabilities.
 
-Do not use `torch.nn.MultiheadAttention` or scaled-dot-product attention.
+Write the mechanism yourself with NumPy array operations: no attention helper from a framework, and no `scipy.special.softmax`.
 
 ## Task 2 — tests
 

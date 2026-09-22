@@ -48,6 +48,14 @@ FORM_FIELD_TYPES = {"text", "longtext", "choice", "table"}
 FORM_FIELD_KEYS = {"id", "label", "type", "help", "options", "columns"}
 
 
+def pyodide_packages():
+    """Package names the installed Pyodide provides, or an empty set when it is not installed."""
+    lock = ROOT / "site" / "node_modules" / "pyodide" / "pyodide-lock.json"
+    if not lock.is_file():
+        return set()
+    return set(json.loads(lock.read_text(encoding="utf-8")).get("packages", {}))
+
+
 def check_pyodide(where, lab, browser):
     unknown = set(browser) - PYODIDE_KEYS
     if unknown:
@@ -69,8 +77,12 @@ def check_pyodide(where, lab, browser):
     if not isinstance(packages, list) or not all(isinstance(p, str) and p for p in packages):
         errors.append(f"{where}: browser.packages must be a list of package names")
     elif packages:
-        # The site self-hosts only the Pyodide core and standard library (site/AGENTS.md).
-        errors.append(f"{where}: browser.packages is not supported yet; the site ships no Pyodide packages")
+        # Only packages Pyodide itself builds: site/scripts/fetch-pyodide-wheels.mjs serves their
+        # wheels from our own origin, checked against pyodide-lock.json (site/AGENTS.md).
+        available = pyodide_packages()
+        missing = [name for name in packages if available and name not in available]
+        if missing:
+            errors.append(f"{where}: Pyodide has no package(s) {missing}; only packages it builds run in the browser")
 
 
 def check_form(where, browser):

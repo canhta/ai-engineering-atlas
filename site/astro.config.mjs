@@ -1,4 +1,4 @@
-import { copyFileSync, createReadStream, mkdirSync, readFileSync, statSync } from "node:fs";
+import { copyFileSync, createReadStream, mkdirSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import react from "@astrojs/react";
 import { defineConfig, fontProviders } from "astro/config";
@@ -7,18 +7,27 @@ import { defineConfig, fontProviders } from "astro/config";
 const subsets = ["latin", "vietnamese"];
 
 // Browser labs (DESIGN.md → Labs): Pyodide is self-hosted from the npm package under a versioned
-// path, so it loads same-origin (COEP require-corp) and nothing third-party runs. Only the core
-// runtime and the standard library ship; labs cannot load extra packages yet.
+// path, so it loads same-origin (COEP require-corp) and nothing third-party runs. Package wheels a
+// lab asks for are fetched into node_modules/pyodide by scripts/fetch-pyodide-wheels.mjs (prebuild)
+// and shipped beside the runtime, so `loadPackage` also stays same-origin.
 const pyodideDir = fileURLToPath(new URL("./node_modules/pyodide/", import.meta.url));
 const pyodideVersion = JSON.parse(readFileSync(`${pyodideDir}package.json`, "utf8")).version;
 const PYODIDE_BASE = `/pyodide/${pyodideVersion}/`;
-const PYODIDE_FILES = ["pyodide.mjs", "pyodide.asm.mjs", "pyodide.asm.wasm", "python_stdlib.zip", "pyodide-lock.json"];
+const PYODIDE_FILES = [
+  "pyodide.mjs",
+  "pyodide.asm.mjs",
+  "pyodide.asm.wasm",
+  "python_stdlib.zip",
+  "pyodide-lock.json",
+  ...readdirSync(pyodideDir).filter((name) => name.endsWith(".whl")),
+];
 const ASSET_LIMIT = 25 * 1024 * 1024; // Cloudflare Workers static assets: 25 MiB per file
 const MIME = {
   ".mjs": "text/javascript",
   ".wasm": "application/wasm",
   ".zip": "application/zip",
   ".json": "application/json",
+  ".whl": "application/zip",
 };
 
 function selfHostedPyodide() {

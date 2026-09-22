@@ -18,6 +18,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:styles": "stylelint \"src/**/*.{css,astro}\"",
+    "prebuild": "node scripts/fetch-pyodide-wheels.mjs",
+    "pretest:labs": "node scripts/fetch-pyodide-wheels.mjs",
     "preview": "wrangler dev --ip 127.0.0.1 --port ${ATLAS_PORT:-8787}",
     "test": "node --test \"src/**/*.test.ts\" && vitest run",
     "test:e2e": "playwright test",
