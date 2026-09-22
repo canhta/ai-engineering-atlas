@@ -15,6 +15,8 @@ milestones:
   - tool-or-agent-workflow
   - structured-response
   - abstention-policy
+  - stateful-workflow
+  - long-term-memory
   - service-and-observability
   - release-gate
   - security-failure-work
@@ -33,6 +35,8 @@ competencies:
   - ai.structured-outputs
   - ai.uncertainty-abstention-trust
   - agents.deterministic-vs-agentic
+  - agents.state
+  - agents.memory
   - security.prompt-injection
 evidence:
   - product-brief
@@ -47,6 +51,8 @@ evidence:
   - tool-use-evaluation
   - response-schema-record
   - abstention-experiment
+  - state-recovery-record
+  - memory-evaluation-record
   - decision-records
   - traces
   - security-tests
