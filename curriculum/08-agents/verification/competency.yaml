@@ -1,7 +1,7 @@
 id: agents.verification
 title: Verification
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation
