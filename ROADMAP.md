@@ -222,8 +222,9 @@ Coverage:
 - distillation;
 - human feedback and product analytics.
 
-Ready route:
+Ready routes:
 
+- [Model Selection](curriculum/07-ai-engineering/model-selection/)
 - [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
 
 Project integration:
@@ -247,6 +248,10 @@ Coverage:
 - MCP;
 - workflow orchestration;
 - agent evaluation and failure analysis.
+
+Ready route:
+
+- [Deterministic vs Agentic Design](curriculum/08-agents/deterministic-vs-agentic/)
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 
@@ -295,6 +300,10 @@ Coverage:
 - legal/licensing considerations;
 - responsible AI;
 - adversarial testing.
+
+Ready route:
+
+- [Prompt Injection and Trust Boundaries](curriculum/10-security-governance/prompt-injection/)
 
 These topics extend normal application security; they do not replace it.
 
