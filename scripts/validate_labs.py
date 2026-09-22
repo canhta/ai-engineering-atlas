@@ -17,7 +17,14 @@ def load_module(name: str, path: Path):
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load {path}")
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # Some stdlib machinery (notably dataclasses with postponed annotations)
+    # expects the module to exist in sys.modules while class bodies execute.
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except Exception:
+        sys.modules.pop(name, None)
+        raise
     return module
 
 
