@@ -1,0 +1,23 @@
+learner:
+  goal: "Build and operate reliable AI product features"
+  target_role: applied-ai-engineer
+  horizon: "3-6 months"
+  weekly_capacity_hours: 8
+  notes: "Example only"
+
+depth_preferences:
+  software-engineering: L2
+  systems: L2
+  data-engineering: L1
+  ml-foundations: L2
+  deep-learning: L2
+  llm-foundations: L2
+  ai-engineering: L3
+  agents: L3
+  production-ai: L3
+  security-governance: L2
+  multimodal: L1
+
+current_focus:
+  domain: ai-engineering
+  reason: "Improve evaluation and retrieval quality before adding more agent complexity"
