@@ -4,47 +4,43 @@ A structured roadmap for software engineers learning modern AI engineering.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Start here:** [Curriculum](curriculum/) · [Learning method](LEARNING_METHOD.md) · [Contributing](CONTRIBUTING.md)
-
-## Contents
-
-- [Summary](#summary)
-- [Who this is for](#who-this-is-for)
-- [How to use it](#how-to-use-it)
-- [Curriculum](#curriculum)
-- [Learning units](#learning-units)
-- [Repository structure](#repository-structure)
-- [Contributing](#contributing)
+**Start here:** [Learning model](LEARNING_MODEL.md) · [Curriculum](curriculum/) · [Learning method](LEARNING_METHOD.md) · [Contributing](CONTRIBUTING.md)
 
 ## Summary
 
-AI Engineering Atlas organizes the knowledge and practice needed to build, evaluate, and operate AI systems.
+AI Engineering Atlas organizes the capabilities needed to build, evaluate, and operate AI systems.
 
-The curriculum covers software and systems fundamentals, data, machine learning, deep learning, language models, retrieval, evaluation, agents, production AI, security, multimodal systems, and advanced specializations.
+It is designed for learners who already have uneven experience across software engineering, machine learning, and modern AI. The first step is therefore diagnosis rather than starting every topic from the beginning.
 
-It is designed for non-linear study. If you already know a topic, assess it and move on. If you find a gap, use the linked material and complete the practice needed to close it.
+The curriculum covers software and systems fundamentals, data, ML and deep learning, language models, retrieval, evaluation, agents, production AI, security, multimodal systems, and advanced specializations.
+
+## How learning works
+
+The roadmap tracks evidence of capability rather than content completion.
+
+~~~text
+Baseline scan
+→ find a gap
+→ learn the missing mental model
+→ practice
+→ experiment or debug
+→ demonstrate
+→ transfer
+→ revisit later
+→ apply in a larger system
+~~~
+
+A learner can skip instruction when they already have evidence for the required capability.
+
+Read [LEARNING_MODEL.md](LEARNING_MODEL.md) for the full lifecycle, mastery states, sourcing rules, project spines, and AI tutor contract.
 
 ## Who this is for
 
-This roadmap is primarily for software engineers moving deeper into AI engineering.
+The primary audience is software engineers moving deeper into AI engineering.
 
-It can also be used by ML engineers, data engineers, platform engineers, and applied AI developers who want to review areas outside their current specialty.
+It can also be used by ML engineers, data engineers, platform engineers, and applied AI developers who want to identify gaps outside their current specialty.
 
-A working knowledge of programming is assumed. Prior AI experience is useful but not required for every section.
-
-## How to use it
-
-For each topic:
-
-1. Check the prerequisites.
-2. Try the diagnostic before studying.
-3. Skip or review the topic if you already meet the exit criteria.
-4. Use the primary learning resource for the missing concepts.
-5. Add a visual explanation where the mechanism is easier to understand graphically.
-6. Implement or experiment with the concept.
-7. Move on when you can explain it, apply it, and diagnose common failures.
-
-The roadmap is intentionally broad. It is not expected that every learner studies every section to the same depth.
+A working knowledge of programming is assumed.
 
 ## Curriculum
 
@@ -65,55 +61,58 @@ The roadmap is intentionally broad. It is not expected that every learner studie
 
 Browse the [curriculum index](curriculum/) for domain pages and seeded competencies.
 
-## Learning units
+## Learning routes
 
-A topic can include:
+A mature competency should eventually provide:
 
-- prerequisites
-- learning outcomes
-- a short diagnostic
-- primary learning material
-- visual material
-- implementation or lab work
-- experiments
-- an exit test
+- a diagnostic;
+- the engineering context for why it matters;
+- a precise route through primary source material;
+- visual material when useful;
+- guided and independent practice;
+- experiments or failure work when appropriate;
+- exit evidence;
+- transfer or project integration when the skill requires it;
+- delayed retrieval for important knowledge.
 
-The usual study loop is:
+The repository should point learners through strong existing material rather than replace it with AI-generated lessons.
 
-```text
-Diagnose → Learn → Implement → Visualize → Experiment → Explain → Exit test
-```
+## Project spines
 
-Resources are kept separate from the competency itself so that books, courses, papers, or repositories can be replaced without changing the learning objective.
+Important competencies will be revisited in three evolving contexts:
 
-See [LEARNING_METHOD.md](LEARNING_METHOD.md) for the study workflow and review method.
+- **Foundation spine** — model internals, from numerical operations toward a small transformer;
+- **AI system spine** — search, retrieval, RAG, evaluation, tools, agents, and multimodal input;
+- **Production spine** — APIs, gateways, tracing, eval gates, security, deployment, incidents, and feedback loops.
+
+See [LEARNING_MODEL.md](LEARNING_MODEL.md#project-spines).
 
 ## Repository structure
 
-```text
-curriculum/      topic and competency definitions
-resources/       books, courses, papers, repositories, and visual references
-assessments/     diagnostics and exit tests
-labs/            focused implementation exercises
-experiments/     comparisons, ablations, and measurements
-projects/        larger end-to-end work
-visuals/         diagrams and interactive learning material
-rfcs/            proposals for substantial curriculum changes
-schemas/         machine-readable curriculum and resource schemas
+~~~text
+curriculum/      competency definitions and learning routes
+resources/       curated source registry
+assessments/     diagnostics, exit and transfer tasks
+labs/            focused implementation practice
+experiments/     comparison, measurement and failure work
+projects/        project-spine artifacts
+visuals/         useful diagrams and interactive learning material
+rfcs/            substantial curriculum proposals
+schemas/         machine-readable contracts
 scripts/         validation and maintenance tools
-```
+~~~
 
-Curriculum conventions are documented in [CURRICULUM.md](CURRICULUM.md). Rules for AI agents working on the repository are in [AGENTS.md](AGENTS.md).
+Curriculum conventions are documented in [CURRICULUM.md](CURRICULUM.md). AI-agent rules are in [AGENTS.md](AGENTS.md).
 
 ## Contributing
 
-Contributions are welcome for curriculum corrections, learning resources, assessments, labs, visual material, and repository tooling.
+Contributions are welcome for curriculum corrections, source mappings, assessments, labs, visual material, projects, and repository tooling.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Acknowledgements
 
-The repository structure and learning workflow draw on patterns used by [OSSU Computer Science](https://github.com/ossu/computer-science), [Microsoft learning repositories](https://github.com/microsoft/generative-ai-for-beginners), [Made With ML](https://github.com/GokuMohandas/Made-With-ML), [roadmap.sh](https://roadmap.sh/), and [LLM Course](https://github.com/mlabonne/llm-course).
+The learning design draws on patterns from [OSSU Computer Science](https://github.com/ossu/computer-science), [Microsoft learning repositories](https://github.com/microsoft/generative-ai-for-beginners), [Made With ML](https://github.com/GokuMohandas/Made-With-ML), [roadmap.sh](https://roadmap.sh/), and research referenced in [LEARNING_MODEL.md](LEARNING_MODEL.md).
 
 ## License
 
