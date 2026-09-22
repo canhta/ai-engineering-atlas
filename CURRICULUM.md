@@ -21,6 +21,14 @@ A catalog item may be:
 
 This allows prerequisites and projects to reference a stable graph without pretending every node is already a finished lesson.
 
+### Coverage provenance
+
+`coverage` means the capability is part of the maintained scope map. It does **not** mean the repository already has precise per-node teaching sources, assessments, or normalized curriculum evidence for that item.
+
+Do not use a coverage node as proof that a topic is required at a particular depth.
+
+Before promotion to `ready`, the route must record traceable `curriculum_evidence`, exact learning-source locators, and matching practice/evidence. If source review shows that a coverage node is redundant, misplaced, or unsupported, change the catalog through the RFC process rather than inventing a route to preserve it.
+
 ### 3. Ready competency package
 
 A ready competency has its own folder with `competency.yaml` and learner-facing `README.md`.

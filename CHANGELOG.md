@@ -35,7 +35,8 @@ Curriculum changes are tracked separately from routine documentation and reposit
 - Turned project spines into evolving systems with baselines, metrics, failures, release decisions, and feedback.
 - Added canonical prerequisite validation to eliminate orphan/ghost competency IDs.
 - Aligned AI-agent and contribution rules with the catalog-first lifecycle.
-- CI now validates curriculum/catalog contracts, projects, progress references, source roles/freshness, generated status, and internal links.
+- CI now validates curriculum/catalog contracts, projects, progress references, source roles/freshness, generated status, schemas, lab reference contracts, and internal links.
+- Clarified that coverage status is a maintained scope candidate, not a claim of per-node source normalization or instructional completeness.
 
 ## 0.1.0 — 2026-09-22
 

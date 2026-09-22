@@ -10,11 +10,13 @@ For the learner workflow, start at [START_HERE.md](START_HERE.md).
 
 | Status | Meaning |
 | --- | --- |
-| Coverage | The topic is included in the audited scope and has a place in the competency graph |
+| Coverage | The topic is in the maintained scope map; per-node sources/evidence may still need normalization before promotion |
 | Ready route | Diagnostic, precise sources, practice, exit evidence, transfer/review where needed |
 | Project integration | The capability has a defined place in a reference project |
 
 The repository currently has broad **coverage** and is progressively converting high-value topics into **ready routes**.
+
+Coverage is intentionally weaker than ready status: it is a planning/catalog state, not a claim that a topic already has a verified lesson, exact source route, or settled required depth.
 
 ## Dependency map
 
