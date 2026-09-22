@@ -1,0 +1,71 @@
+id: security.prompt-injection
+title: Prompt Injection and Trust Boundaries
+domain: security-governance
+status: seeded
+competency_types:
+  - concept
+  - engineering-skill
+  - design-judgment
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: LLM inputs can influence model behavior in unintended ways, so privileged actions and data access must remain protected even when the model or external content is adversarially influenced.
+curriculum_evidence:
+  - standard.owasp-llm01-prompt-injection
+prerequisites:
+  - security.auth
+  - security.tool-permissions
+  - ai.tool-calling
+  - retrieval.search
+outcomes:
+  - Distinguish direct from indirect prompt injection and explain why RAG or fine-tuning does not eliminate the risk.
+  - Identify trusted policy, untrusted external content, model-controlled output, and privileged action boundaries.
+  - Enforce authorization and least privilege outside the model.
+  - Use human approval or other deterministic controls for high-risk actions where appropriate.
+  - Design adversarial tests for retrieved content, tools, and authorization boundaries.
+  - Explain the limits of prompt-only or filtering-only mitigations.
+diagnostic:
+  tasks:
+    - Explain direct and indirect prompt injection using one realistic system example each.
+    - Draw the trust boundaries for a RAG system that can call privileged tools.
+    - Explain where authorization must be enforced if the model proposes a forbidden action.
+    - Describe an adversarial test that proves a trust boundary still holds after a model is influenced.
+  pass_condition: Skip guided material only if the learner can threat-model both direct and indirect injection and implement deterministic authorization that remains correct under simulated compromised model output.
+learning_route:
+  mental_model:
+    - source: standard.owasp-llm01-prompt-injection
+      locator: "Types of Prompt Injection Vulnerabilities", "Prevention and Mitigation Strategies", and "Example Attack Scenarios"
+      purpose: Establish direct/indirect injection risks, impact, least-privilege controls, human approval, external-content segregation, and adversarial testing.
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 5 "Defensive Prompt Engineering" — Jailbreaking and Prompt Injection, and Defenses Against Prompt Attacks
+      purpose: Connect prompt attacks to application-level defensive design in foundation-model systems.
+  guided_practice:
+    - task: Draw trust boundaries for a retrieval system with one read-only tool and one privileged tool; label every model-controlled or external-data edge as untrusted.
+  independent_practice:
+    - artifact: labs/prompt-injection-boundaries/
+      task: Complete the trust-boundary lab so privileged tool execution is blocked even when model output is simulated as compromised.
+experiments:
+  - Add a simulated indirect injection to retrieved content and verify privileged action controls still hold.
+  - Change the authenticated user's permission set and verify authorization follows identity/policy rather than model text.
+exit_evidence:
+  - Explain direct and indirect prompt injection.
+  - Produce a trust-boundary diagram for an LLM application with external content or tools.
+  - Implement authorization outside the model and pass adversarial boundary tests.
+  - Show least-privilege or approval handling for a high-risk action.
+  - Explain why prompt instructions or filtering alone are insufficient as the authorization mechanism.
+transfer:
+  task: Threat-model an email assistant that can read messages and send replies; identify indirect-injection paths, privileged actions, approval points, and deterministic controls.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.owasp-llm01-prompt-injection
+    - book.chip-huyen-ai-engineering
+  production-reference:
+    - standard.owasp-llm01-prompt-injection
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
