@@ -10,6 +10,7 @@ errors = []
 LINK_RE = re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
 BACKTICK_FENCE = chr(96) * 3
 TILDE_FENCE = '~' * 3
+SKIP_DIRS = {'node_modules', '.git', '.astro', 'dist', '.wrangler'}
 
 
 def without_fenced_code(text: str) -> str:
@@ -35,6 +36,8 @@ def without_fenced_code(text: str) -> str:
 
 
 for path in sorted(ROOT.rglob('*.md')):
+    if SKIP_DIRS.intersection(path.relative_to(ROOT).parts):
+        continue
     text = without_fenced_code(path.read_text(encoding='utf-8'))
 
     for raw_target in LINK_RE.findall(text):
