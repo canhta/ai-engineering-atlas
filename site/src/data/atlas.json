@@ -6388,7 +6388,337 @@
         },
         "fields": {
           "domain": "agents",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/08-agents/mcp",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "MCP creates a standardized interoperability boundary between AI hosts and systems exposing tools, resources, and prompts. Engineers must understand the current stateless protocol era, capability/version negotiation, primitive semantics, authorization boundaries, compatibility, and conformance instead of relying on stale SDK tutorials."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.tool-calling"
+                },
+                {
+                  "ref": "security.prompt-injection"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Explain host, client, and server responsibilities without tying them to one vendor product."
+                },
+                {
+                  "en": "Distinguish the modern 2026-07-28 stateless era from legacy initialize-handshake MCP."
+                },
+                {
+                  "en": "Explain server/discover and per-request protocol-version and capability metadata."
+                },
+                {
+                  "en": "Distinguish tools, resources, and prompts by semantics, ownership, and risk."
+                },
+                {
+                  "en": "Choose a narrow MCP surface from a real interoperability need instead of mirroring an internal API."
+                },
+                {
+                  "en": "Preserve deterministic validation, authorization, approval, and side-effect policy outside model output."
+                },
+                {
+                  "en": "Treat clientInfo and serverInfo as self-reported metadata rather than authenticated identity."
+                },
+                {
+                  "en": "Validate resource URI and scope boundaries instead of treating a URI as authorization."
+                },
+                {
+                  "en": "Implement or inspect one modern client/server exchange and separate discovery, invocation, and result handling."
+                },
+                {
+                  "en": "Explain multi-round-trip input_required behavior, request-scoped state, bounded rounds, and re-entry."
+                },
+                {
+                  "en": "Distinguish version mismatch, unsupported capability, malformed input, authorization failure, and downstream execution failure."
+                },
+                {
+                  "en": "Reason about discovery/cache freshness when capabilities change."
+                },
+                {
+                  "en": "Treat Tasks as an optional extension and verify SDK support before relying on it."
+                },
+                {
+                  "en": "Produce interoperability or protocol-level conformance evidence."
+                },
+                {
+                  "en": "Compare direct integration with MCP and justify whether interoperability earns the adapter and versioning complexity."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Compare legacy initialize-based MCP with the modern 2026-07-28 discovery and per-request capability model."
+                },
+                {
+                  "en": "Classify one proposed surface as a tool, resource, prompt, or something that should not be exposed through MCP."
+                },
+                {
+                  "en": "Explain why an advertised capability or clientInfo value does not authorize a protected action."
+                },
+                {
+                  "en": "Design failure tests for version mismatch, malformed tool input, unauthorized resource access, and a downstream tool failure."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can reason about modern MCP lifecycle, primitive semantics, security boundaries, compatibility failures, and interoperability without relying on one SDK's decorators."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.mcp-v2-protocol-versions",
+                  "locator": {
+                    "en": "Sections \"Name the two eras\", \"Negotiate the era from the client\", \"Pin an era\", and the legacy/modern behavior matrix"
+                  },
+                  "purpose": {
+                    "en": "Establish the legacy-versus-modern protocol boundary and the modern server/discover negotiation model."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-v2-support-2026-07-28",
+                  "locator": {
+                    "en": "Sections \"Serving the 2026-07-28 revision\", \"Replacing per-session state\", \"Auth on 2026-07-28\", \"Server identity in result _meta; clientInfo demoted to SHOULD\", \"Multi-round-trip requests\", \"Mcp-Param-* and standard headers\", and \"Cache fields and cache hints\""
+                  },
+                  "purpose": {
+                    "en": "Understand the stateless request envelope, request-scoped state, authorization changes, modern headers, multi-round-trip input, and cache behavior."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-v2-overview",
+                  "locator": {
+                    "en": "Overview and server/client entry points describing MCP hosts, servers, tools, resources, and prompts"
+                  },
+                  "purpose": {
+                    "en": "Ground the interoperability model and the three core server primitives in the current v2 SDK documentation."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-v2-first-client",
+                  "locator": {
+                    "en": "Sections \"List the server’s tools\" and \"Add a resource and read it\""
+                  },
+                  "purpose": {
+                    "en": "Contrast callable tool discovery with URI-addressed resource discovery/read behavior."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-v2-prompts",
+                  "locator": {
+                    "en": "Sections \"Register a prompt\", \"Validate the arguments with the schema\", and \"Build the messages\""
+                  },
+                  "purpose": {
+                    "en": "Distinguish user-selectable prompt templates from tools and resources and inspect their argument-validation contract."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-tasks-2026",
+                  "locator": {
+                    "en": "Sections \"Capability Negotiation\", \"Supported Methods\", \"Tasks\", \"Task Polling\", and \"Security Considerations\""
+                  },
+                  "purpose": {
+                    "en": "Treat durable async Tasks as an optional extension with explicit capability negotiation, polling, cancellation, and per-request authorization."
+                  }
+                },
+                {
+                  "resource": "docs.mcp-conformance-2026",
+                  "locator": {
+                    "en": "2026-07-28 conformance coverage dashboard"
+                  },
+                  "purpose": {
+                    "en": "Connect protocol learning to versioned conformance evidence rather than only one successful host connection."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one existing Knowledge Assistant internal tool and one read-only data source, then decide whether each should become an MCP tool, resource, prompt, or remain internal; justify every boundary."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Expose a deliberately narrow MCP surface, connect a modern client, exercise discovery and failures, and compare the result with the pre-MCP integration."
+                      },
+                      "path": "projects/knowledge-assistant/mcp/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Connect in modern auto or pinned mode and record the negotiated era; then test the behavior against a legacy-only endpoint or fixture."
+                },
+                {
+                  "en": "Attempt a tool call with malformed arguments and verify deterministic validation and error classification."
+                },
+                {
+                  "en": "Attempt to read a resource outside its allowed scope and verify application-side authorization or path validation blocks it."
+                },
+                {
+                  "en": "Advertise or omit a client capability and verify protocol support changes without changing application permissions."
+                },
+                {
+                  "en": "Trigger one downstream tool/resource failure and preserve the distinction between protocol failure and application failure."
+                },
+                {
+                  "en": "Exercise input_required only when the chosen interaction genuinely needs client input and cap the number of rounds."
+                },
+                {
+                  "en": "If Tasks is used, verify extension capability support, durable task creation, polling, cancellation, and per-task authorization."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "The supported MCP revision and legacy-compatibility policy are explicit."
+                },
+                {
+                  "en": "A host/client/server boundary diagram and primitive inventory are inspectable."
+                },
+                {
+                  "en": "Modern server/discover and per-request capability/version evidence is preserved."
+                },
+                {
+                  "en": "Tool schemas and resource URI/scope rules are versioned and tested."
+                },
+                {
+                  "en": "Authentication and authorization remain deterministic application controls rather than capability inference."
+                },
+                {
+                  "en": "Self-reported client/server metadata is not used as a security identity."
+                },
+                {
+                  "en": "Version/capability mismatch, malformed input, authorization failure, and downstream failure cases are tested."
+                },
+                {
+                  "en": "Multi-round-trip behavior is documented when relevant and bounded against runaway re-entry."
+                },
+                {
+                  "en": "Tasks, if used, are justified as an optional extension and checked against actual SDK/protocol support."
+                },
+                {
+                  "en": "Interoperability or conformance evidence is recorded."
+                },
+                {
+                  "en": "A pre-MCP baseline is compared on task quality, latency, operational complexity, and maintenance/versioning cost."
+                },
+                {
+                  "en": "The final decision records whether to keep, simplify, or remove MCP."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the MCP boundary for a different host/server relationship with different transport, authorization, resource-scope, compatibility, and asynchronous-execution requirements."
+              }
+            }
+          ]
         }
       },
       {
@@ -7803,6 +8133,9 @@
                   "en": "multi-agent-decision"
                 },
                 {
+                  "en": "mcp-interoperability"
+                },
+                {
                   "en": "service-and-observability"
                 },
                 {
@@ -7887,6 +8220,15 @@
                 },
                 {
                   "en": "multi-agent-decision"
+                },
+                {
+                  "en": "mcp-boundary"
+                },
+                {
+                  "en": "mcp-test-matrix"
+                },
+                {
+                  "en": "mcp-conformance-record"
                 },
                 {
                   "en": "decision-records"
@@ -8027,6 +8369,11 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "agents.long-running"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "agents.mcp"
     },
     {
       "type": "member",
@@ -8316,6 +8663,11 @@
     {
       "type": "prerequisite",
       "from": "ai.tool-calling",
+      "to": "agents.mcp"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.tool-calling",
       "to": "security.prompt-injection"
     },
     {
@@ -8372,6 +8724,11 @@
       "type": "prerequisite",
       "from": "security.auth",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.prompt-injection",
+      "to": "agents.mcp"
     },
     {
       "type": "prerequisite",
@@ -8555,6 +8912,48 @@
       "type": "documentation",
       "author": "LangChain",
       "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph"
+    },
+    "docs.mcp-conformance-2026": {
+      "title": "MCP Conformance — 2026-07-28",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://plan.modelcontextprotocol.io/conformance/1"
+    },
+    "docs.mcp-tasks-2026": {
+      "title": "MCP Tasks Extension — 2026-07-28",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://tasks.extensions.modelcontextprotocol.io/specification/draft/tasks"
+    },
+    "docs.mcp-v2-first-client": {
+      "title": "MCP TypeScript SDK v2 — Build your first client",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://ts.sdk.modelcontextprotocol.io/v2/get-started/first-client.html"
+    },
+    "docs.mcp-v2-overview": {
+      "title": "MCP TypeScript SDK v2 — Overview",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://ts.sdk.modelcontextprotocol.io/v2/"
+    },
+    "docs.mcp-v2-prompts": {
+      "title": "MCP TypeScript SDK v2 — Prompts",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://ts.sdk.modelcontextprotocol.io/v2/servers/prompts"
+    },
+    "docs.mcp-v2-protocol-versions": {
+      "title": "MCP TypeScript SDK v2 — Protocol versions",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://ts.sdk.modelcontextprotocol.io/v2/protocol-versions"
+    },
+    "docs.mcp-v2-support-2026-07-28": {
+      "title": "MCP TypeScript SDK v2 — Supporting protocol revision 2026-07-28",
+      "type": "documentation",
+      "author": "Model Context Protocol",
+      "url": "https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28"
     },
     "docs.openai-agent-orchestration": {
       "title": "OpenAI Agents SDK — Agent orchestration",

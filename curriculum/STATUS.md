@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **22** ready learning routes
-- **93** coverage-only competencies
+- **23** ready learning routes
+- **92** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -21,7 +21,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | Deep Learning | 5 | 0 |
 | LLM Foundations | 11 | 1 |
 | AI Engineering | 26 | 12 |
-| Agents | 9 | 8 |
+| Agents | 9 | 9 |
 | Production AI | 11 | 0 |
 | Security & Governance | 10 | 1 |
 | Multimodal | 3 | 0 |
@@ -51,6 +51,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `agents.verification` — Verification | Agents | [Open route](08-agents/verification/) |
 | `agents.multi-agent` — Multi-Agent Systems | Agents | [Open route](08-agents/multi-agent/) |
 | `agents.long-running` — Long-Running Agents | Agents | [Open route](08-agents/long-running/) |
+| `agents.mcp` — Model Context Protocol | Agents | [Open route](08-agents/mcp/) |
 | `agents.orchestration` — AI Workflow Orchestration | Agents | [Open route](08-agents/orchestration/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
 

@@ -406,7 +406,30 @@ Do not add agents because the architecture diagram looks more capable. Start fro
 
 **Decision:** keep the multi-agent topology, simplify it, or return to single-agent orchestration.
 
-## Milestone 18 — service and observability
+## Milestone 18 — MCP interoperability
+
+Use the [Model Context Protocol](../../curriculum/08-agents/mcp/) route.
+
+Add MCP only when the Knowledge Assistant has a real interoperability need across hosts/clients or reusable server capabilities. Preserve the direct/internal integration as the baseline.
+
+**Evidence:**
+
+- supported MCP revision and legacy-compatibility policy;
+- host/client/server responsibility diagram;
+- modern discovery and capability/version trace;
+- deliberately small tool/resource/prompt inventory;
+- deterministic tool validation and application-side authorization;
+- resource URI/scope validation;
+- version/capability mismatch test;
+- malformed input and downstream failure tests;
+- authorization failure test where applicable;
+- optional multi-round-trip or Tasks evidence only when the use case requires it;
+- interoperability or conformance evidence;
+- latency, maintenance, and operational-complexity comparison with the direct integration.
+
+**Decision:** keep MCP, simplify the exposed surface, or return to the direct integration.
+
+## Milestone 19 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -422,7 +445,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 19 — release gate
+## Milestone 20 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -435,7 +458,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 20 — security failure work
+## Milestone 21 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -448,7 +471,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 21 — incident and feedback loop
+## Milestone 22 — incident and feedback loop
 
 Inject or analyze one failure:
 

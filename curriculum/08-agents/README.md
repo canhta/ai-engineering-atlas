@@ -11,7 +11,7 @@ Engineering systems in which models choose or sequence actions.
 - [verification](verification/) and outcome checking
 - retries, idempotency, and [long-running tasks](long-running/)
 - [workflow orchestration](orchestration/)
-- Model Context Protocol (MCP)
+- [Model Context Protocol (MCP)](mcp/)
 - agent traces and trajectory evaluation
 - permission boundaries and tool trust
 - [multi-agent systems](multi-agent/) where they provide measurable value
@@ -26,6 +26,7 @@ Engineering systems in which models choose or sequence actions.
 - [Long-Running Agents](long-running/) — make long-duration runs resumable, bounded, cancellable, replay-safe, and verifiably complete across process boundaries.
 - [AI Workflow Orchestration](orchestration/) — choose code-controlled, model-controlled, or hybrid flow; bound concurrency and failure propagation before considering multi-agent topology.
 - [Multi-Agent Systems](multi-agent/) — introduce independent agent roles only when they measurably outperform or simplify the single-agent orchestration baseline.
+- [Model Context Protocol (MCP)](mcp/) — add a current-spec interoperability boundary only when standardized discovery, tools/resources/prompts, and cross-client compatibility justify the adapter complexity.
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 

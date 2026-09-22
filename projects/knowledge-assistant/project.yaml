@@ -22,6 +22,7 @@ milestones:
   - long-running-runtime
   - orchestrated-flow
   - multi-agent-decision
+  - mcp-interoperability
   - service-and-observability
   - release-gate
   - security-failure-work
@@ -47,6 +48,7 @@ competencies:
   - agents.long-running
   - agents.orchestration
   - agents.multi-agent
+  - agents.mcp
   - security.prompt-injection
 evidence:
   - product-brief
@@ -70,6 +72,9 @@ evidence:
   - agent-contract
   - multi-agent-experiment
   - multi-agent-decision
+  - mcp-boundary
+  - mcp-test-matrix
+  - mcp-conformance-record
   - decision-records
   - traces
   - security-tests

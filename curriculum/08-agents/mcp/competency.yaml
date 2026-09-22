@@ -1,7 +1,7 @@
 id: agents.mcp
 title: Model Context Protocol
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation

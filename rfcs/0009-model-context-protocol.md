@@ -491,20 +491,36 @@ Avoid third-party tutorials as curriculum authority.
 
 Add a Knowledge Assistant `mcp/` evidence package and MCP interoperability milestone.
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- `agents.mcp` promoted to `ready` at L3.
+- The route centers the current `2026-07-28` stateless MCP era and keeps legacy `initialize`/session behavior only as compatibility and migration context.
+- MCP remains distinct from Tool Calling, Orchestration, and Multi-Agent Systems; its hard prerequisites are `ai.tool-calling` and `security.prompt-injection`.
+- Tools, resources, and prompts are taught as distinct primitives with different semantics and trust boundaries.
+- Capability/version advertisement is explicitly separated from authentication and application authorization.
+- Modern multi-round-trip `input_required` behavior is represented without teaching deprecated server-to-client request assumptions.
+- Tasks remains optional and requires implementation-support verification before use.
+- The Knowledge Assistant now includes an `mcp/` evidence package preserving a direct-integration baseline, protocol failure matrix, resource-scope tests, and interoperability/conformance evidence.
+- Official current-spec MCP sources are registered; no third-party tutorial is curriculum authority.
+- Learner-facing source blocks, curriculum status, and site content are generated from source-of-truth files.
+- Repository status after promotion is expected to be 115 catalog competencies, 23 ready routes, and 92 coverage-only competencies; Agents is 9 / 9 ready.
+
 ## Review checklist
 
-- [ ] MCP is distinct from Tool Calling, Orchestration, and Multi-Agent Systems.
-- [ ] The route centers the current `2026-07-28` stateless era.
-- [ ] Legacy lifecycle is taught only for compatibility/migration context.
-- [ ] `server/discover` and per-request capabilities/versioning are represented.
-- [ ] Tools, resources, and prompts are differentiated.
-- [ ] Capability advertisement is distinct from authentication/authorization.
-- [ ] Self-reported client/server metadata is not used as security identity.
-- [ ] HTTP authorization preserves deterministic application-side enforcement.
-- [ ] Resource scope/path validation is represented.
-- [ ] Multi-round-trip input is represented without teaching deprecated server-request assumptions.
-- [ ] Tasks is optional rather than required core MCP.
-- [ ] Interoperability/conformance evidence is required.
-- [ ] A pre-MCP/direct-integration baseline is preserved.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before implementation.
+- [x] MCP is distinct from Tool Calling, Orchestration, and Multi-Agent Systems.
+- [x] The route centers the current `2026-07-28` stateless era.
+- [x] Legacy lifecycle is taught only for compatibility/migration context.
+- [x] `server/discover` and per-request capabilities/versioning are represented.
+- [x] Tools, resources, and prompts are differentiated.
+- [x] Capability advertisement is distinct from authentication/authorization.
+- [x] Self-reported client/server metadata is not used as security identity.
+- [x] HTTP authorization preserves deterministic application-side enforcement.
+- [x] Resource scope/path validation is represented.
+- [x] Multi-round-trip input is represented without teaching deprecated server-request assumptions.
+- [x] Tasks is optional rather than required core MCP.
+- [x] Interoperability/conformance evidence is required.
+- [x] A pre-MCP/direct-integration baseline is preserved.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before implementation.
