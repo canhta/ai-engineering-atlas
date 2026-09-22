@@ -42,13 +42,13 @@ diagnostic:
 learning_route:
   mental_model:
     - source: docs.google-adk-session-state-memory
-      locator: Section "Core Concepts", especially the distinction among Session, State, and Memory
+      locator: 'Section "Core Concepts", especially the distinction among Session, State, and Memory'
       purpose: Establish a clean boundary between one conversation thread, mutable session state, and cross-session memory.
     - source: docs.google-adk-state
-      locator: Sections "What is session.state?", "Key Characteristics of State", and "How State is Updated: Recommended Methods"
+      locator: 'Sections "What is session.state?", "Key Characteristics of State", and "How State is Updated: Recommended Methods"'
       purpose: Study serializable mutable state and tracked state updates as one concrete implementation model.
     - source: docs.langgraph-thinking-state
-      locator: Sections "Step 3: Design your state", "What belongs in state?", "Keep state raw, format prompts on-demand", the interrupt/checkpointer example, and "Advanced considerations — Node granularity trade-offs"
+      locator: 'Sections "Step 3: Design your state", "What belongs in state?", "Keep state raw, format prompts on-demand", the interrupt/checkpointer example, and "Advanced considerations — Node granularity trade-offs"'
       purpose: Learn to keep raw execution data in state, derive prompt/context views on demand, and connect checkpoint granularity to recovery behavior.
     - source: docs.temporal-overview
       locator: Documentation overview describing durable execution and resuming where execution left off after crashes, network failures, or infrastructure outages
