@@ -1,82 +1,143 @@
 ---
+// Home (milestone 1: content-model data, new frame; milestone 2 adds the plate, DESIGN.md → Home).
 import Base from "../../layouts/Base.astro";
-import StatusLabel from "../../components/StatusLabel.astro";
+import Icon from "../../components/Icon.astro";
 import { langPaths, useTranslations, type Lang } from "../../i18n";
-import { competencies, domains, labs, readyCompetencies, routes } from "../../lib/atlas";
-import { mapUrl, routeUrl } from "../../lib/urls";
+import {
+  fieldChips,
+  groupsOf,
+  hasPage,
+  itemUrl,
+  langAttr,
+  refOf,
+  site,
+  text,
+  trackedCollection as c,
+  trackedItems,
+  vocabularyLabel,
+} from "../../lib/atlas";
+import { mapUrl } from "../../lib/urls";
 
 export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const readyByDomain = domains
-  .map((d) => ({ ...d, items: readyCompetencies.filter((c) => c.domain === d.id) }))
-  .filter((d) => d.items.length > 0);
-const englishText = lang === "en" ? undefined : "en";
+const title = text(site.title, lang);
+const tagline = text(site.tagline, lang);
+const withPages = trackedItems.filter(hasPage);
+const groups = groupsOf(c)
+  .map((g) => ({ ...g, label: vocabularyLabel(g.vocabulary, g.value, lang), items: g.items.filter(hasPage) }))
+  .filter((g) => g.items.length > 0);
+const listFields = (c.list_fields ?? []).filter((f) => f !== c.page_when?.field);
+const steps = ["home.step.diagnose", "home.step.read", "home.step.practice", "home.step.record"] as const;
 ---
 
 <Base lang={lang}>
-  <h1>{t("site.name")}</h1>
-  <p class="reading">{t("site.tagline")}</p>
-  <p class="reading">{t("site.method")}</p>
-  <p class="counts">
-    {
-      t("home.counts", {
-        ready: readyCompetencies.length,
-        mapped: competencies.length - readyCompetencies.length,
-        labs: labs.length,
-      })
-    }
-  </p>
-  <p>{t("home.diagnostic")}</p>
-  <p><a href={mapUrl(lang)}>{t("home.start")}</a></p>
+  <section class="hero">
+    <h1 class="display" lang={langAttr(title, lang)}>{title.value}</h1>
+    <p class="subtitle" lang={langAttr(tagline, lang)}>{tagline.value}</p>
+    <p class="muted">{t("home.method")}</p>
+    <p class="counts tabular">{t("home.counts", { ready: withPages.length, mapped: trackedItems.length - withPages.length })}</p>
+    <a class="pill pill-primary" href={mapUrl(lang)}>
+      {t("home.start")}
+      <span class="pill-icon"><Icon name="forward" /></span>
+    </a>
+  </section>
 
-  <h2>{t("home.ready.title")}</h2>
-  <p class="muted">{t("home.ready.intro")}</p>
-  {
-    readyByDomain.map((d) => (
-      <section>
-        <h3 lang={englishText}>{d.title}</h3>
-        <ul class="route-list">
-          {d.items.map((c) => (
-            <li>
-              <a href={routeUrl(lang, c.id)} lang={englishText}>
-                {c.title}
-              </a>
-              <span class="meta">
-                <code>{c.id}</code> · {routes[c.id]?.target_level} · <StatusLabel status="ready" lang={lang} />
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
-  <p class="muted">{t("home.coverage.note")}</p>
+  <section class="how" aria-labelledby="how-title">
+    <h2 id="how-title">{t("home.how")}</h2>
+    <ol>
+      {
+        steps.map((key) => (
+          <li>
+            <strong>{t(`${key}.title`)}</strong>
+            <span class="muted">{t(`${key}.body`)}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section aria-labelledby="ready-title">
+    <h2 id="ready-title">{t("home.ready.title")}</h2>
+    {
+      groups.map((g) => (
+        <section class="ready-group">
+          <h3 lang={langAttr(g.label, lang)}>{g.label.value}</h3>
+          <ul class="ready-rows">
+            {g.items.map((item) => {
+              const itemTitle = text(item.title, lang);
+              return (
+                <li>
+                  <a href={itemUrl(lang, refOf(c, item))} lang={langAttr(itemTitle, lang)}>
+                    {itemTitle.value}
+                  </a>
+                  <span class="chips">
+                    {listFields.flatMap((f) =>
+                      fieldChips(c, item, f, lang).map((chip) => (
+                        <span class="chip" lang={langAttr(chip.label, lang)}>
+                          {chip.label.value}
+                        </span>
+                      )),
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    }
+  </section>
 </Base>
 
 <style>
-  .counts {
-    font-weight: 500;
+  .hero {
+    max-width: 52rem;
+    margin-bottom: var(--space-16);
   }
 
-  .route-list {
-    list-style: none;
+  .hero .subtitle {
+    margin-bottom: var(--space-4);
+  }
+
+  .how ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-6);
+    margin: 0 0 var(--space-16);
+    padding-left: var(--space-5);
+  }
+
+  .how li {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .ready-group h3 {
+    margin-top: var(--space-8);
+  }
+
+  .ready-rows {
+    margin: 0;
     padding: 0;
-    border-top: var(--border-width) solid var(--border);
+    list-style: none;
+    border-top: var(--border-width) solid var(--line);
   }
 
-  .route-list li {
+  .ready-rows li {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--space-2);
-    padding: var(--space-2) 0;
-    border-bottom: var(--border-width) solid var(--border);
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
   }
 
-  .meta {
-    color: var(--text-muted);
-    font-size: var(--text-small);
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 </style>

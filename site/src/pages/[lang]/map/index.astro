@@ -1,35 +1,82 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import MapExplorer, { type MapGroup } from "../../../components/react/MapExplorer";
+import MapExplorer, { type MapFilter, type MapGroup } from "../../../components/react/MapExplorer";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
-import { competencies, competency, domains, projects, routes } from "../../../lib/atlas";
+import {
+  collections,
+  fieldChips,
+  groupsOf,
+  itemUrl,
+  itemsOf,
+  refOf,
+  relations,
+  relationsTo,
+  resolveRef,
+  stateLabels,
+  text,
+  trackedCollection as c,
+  trackedItems,
+  vocabularyLabel,
+} from "../../../lib/atlas";
 
 export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const groups: MapGroup[] = domains.map((d) => ({
-  id: d.id,
-  title: d.title,
-  items: competencies
-    .filter((c) => c.domain === d.id)
-    .map((c) => ({
-      id: c.id,
-      title: c.title,
-      ready: Boolean(routes[c.id]),
-      level: routes[c.id]?.target_level ?? "",
-      prerequisites: (routes[c.id]?.prerequisites ?? []).map((p) => ({
-        id: p,
-        title: competency(p)?.title ?? p,
-        ready: Boolean(routes[p]),
-      })),
-    })),
+const columns = c.list_fields ?? [];
+const titleOf = (ref: string) => {
+  const found = resolveRef(ref);
+  return found ? text(found.item.title, lang) : { value: ref, lang: "en" as const };
+};
+const groups: MapGroup[] = groupsOf(c).map((g) => ({
+  id: g.value,
+  title: vocabularyLabel(g.vocabulary, g.value, lang),
+  items: g.items.map((item) => {
+    const ref = refOf(c, item);
+    return {
+      id: ref,
+      title: text(item.title, lang),
+      href: itemUrl(lang, ref),
+      facts: columns.map((f) =>
+        fieldChips(c, item, f, lang)
+          .map((chip) => chip.label.value)
+          .join(", "),
+      ),
+      prerequisites: relationsTo("prerequisite", ref).map((r) => ({ id: r.from, title: titleOf(r.from), href: itemUrl(lang, r.from) })),
+    };
+  }),
 }));
-const projectFilters = projects.map((p) => ({ id: p.id, title: p.title, competencies: p.competencies }));
+
+// Other collections whose items point at tracked items (projects) become filters.
+const trackedRefs = new Set(trackedItems.map((i) => refOf(c, i)));
+const filters: MapFilter[] = collections
+  .filter((other) => other !== c)
+  .map((other) => ({
+    label: text(other.label, lang).value,
+    options: itemsOf(other.id)
+      .map((item) => {
+        const ref = refOf(other, item);
+        return {
+          id: ref,
+          title: text(item.title, lang),
+          members: relations.filter((r) => r.from === ref && trackedRefs.has(r.to)).map((r) => r.to),
+        };
+      })
+      .filter((o) => o.members.length > 0),
+  }))
+  .filter((f) => f.options.length > 0);
 ---
 
-<Base lang={lang} title={t("map.title")}>
-  <h1>{t("map.title")}</h1>
-  <p class="reading">{t("map.intro")}</p>
-  <MapExplorer client:load lang={lang} groups={groups} projects={projectFilters} />
+<Base lang={lang} title={t("map.title")} section="atlas">
+  <h1 class="display">{t("map.title")}</h1>
+  <p class="subtitle">{t("map.intro")}</p>
+  <MapExplorer
+    client:load
+    lang={lang}
+    itemLabel={text(c.label, lang).value}
+    columns={columns.map((f) => text(c.fields[f]?.label, lang).value)}
+    groups={groups}
+    filters={filters}
+    stateLabels={stateLabels(lang)}
+  />
 </Base>

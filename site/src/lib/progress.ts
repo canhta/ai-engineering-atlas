@@ -140,8 +140,8 @@ export function recordEvidence(
     { state, recorded_at: date, reason: input.note?.trim() || `${input.kind} evidence recorded`, evidence_refs: [evidence.id] },
   ];
   entry.next_action = nextActionFor(state);
-  const review = reviewDate(entry, state, date);
-  if (review) entry.review_on = review;
+  const reviewOn = reviewDate(entry, state, date);
+  if (reviewOn) entry.review_on = reviewOn;
   else delete entry.review_on;
 
   return { ...progress, updated_at: date, competencies: { ...progress.competencies, [id]: entry } };
