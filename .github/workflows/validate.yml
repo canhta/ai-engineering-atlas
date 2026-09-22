@@ -20,5 +20,8 @@ jobs:
       - name: Validate curriculum contracts
         run: python scripts/validate_repo.py
 
+      - name: Validate generated curriculum status
+        run: python scripts/render_status.py --check
+
       - name: Validate internal links
         run: python scripts/validate_links.py
