@@ -4,6 +4,8 @@ Reference project for the AI System and Production spines.
 
 For the first product/search/embeddings slice, use the [foundation evidence contract](foundation/) so the product brief, query set, baseline comparison, and retrieval decision remain inspectable.
 
+For chunking, reranking, and RAG evaluation, continue with the [Retrieval Quality evidence contract](retrieval-quality/) and keep the same evidence lineage instead of restarting with a new demo dataset.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -97,7 +99,24 @@ Compare them on the same query set.
 
 **Evidence:** identify query types where each method wins or fails.
 
-## Milestone 2 — hybrid retrieval and reranking
+## Milestone 2 — chunking quality
+
+Use the [Chunking](../../curriculum/07-ai-engineering/chunking/) route.
+
+Change chunk boundaries only because the Round 1 failure analysis or corpus structure gives you a reason to test them.
+
+**Experiment:**
+
+- compare at least three sensible strategies;
+- keep the corpus/query/evaluation contract fixed;
+- measure retrieval quality plus index/context cost;
+- inspect query slices and concrete boundary failures.
+
+**Decision:** choose a strategy for this corpus, not a universal chunk size.
+
+## Milestone 3 — hybrid retrieval and reranking
+
+Use the [Reranking](../../curriculum/07-ai-engineering/reranking/) route when candidate ordering remains a measured problem.
 
 Add hybrid retrieval or reranking only when the prior failure analysis supports it.
 
@@ -107,7 +126,7 @@ Add hybrid retrieval or reranking only when the prior failure analysis supports 
 - inspect false positives and false negatives;
 - record the quality/latency trade-off.
 
-## Milestone 3 — answer generation / RAG
+## Milestone 4 — answer generation / RAG
 
 Only after retrieval is measurable, add answer generation.
 
@@ -121,9 +140,11 @@ Separate evaluation into:
 
 This prevents generation quality from hiding retrieval failures.
 
-## Milestone 4 — evaluation harness
+## Milestone 5 — RAG evaluation
 
-Use the [AI Evaluation competency](../../curriculum/07-ai-engineering/evaluation/).
+Use both the [RAG Evaluation](../../curriculum/07-ai-engineering/rag-evaluation/) route and the general [AI Evaluation competency](../../curriculum/07-ai-engineering/evaluation/).
+
+Do not report one undifferentiated RAG score. Separate retrieval, supplied context, generation, and end-to-end evidence.
 
 Version:
 
@@ -142,7 +163,7 @@ Include:
 
 Create a release decision from the results.
 
-## Milestone 5 — data lifecycle
+## Milestone 6 — data lifecycle
 
 Make the corpus change.
 
@@ -157,7 +178,7 @@ If the chosen scenario has permissions, add ACL-aware retrieval and test that un
 
 **Failure exercise:** intentionally create a stale or incorrectly indexed document and diagnose it.
 
-## Milestone 6 — tool use or agent workflow
+## Milestone 7 — tool use or agent workflow
 
 Do **not** add an agent because the roadmap contains an Agents section.
 
@@ -180,7 +201,7 @@ Start with a deterministic workflow. Introduce agentic control only when flexibi
 - trajectory/tool-use evaluation;
 - failure recovery.
 
-## Milestone 7 — service and observability
+## Milestone 8 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -196,7 +217,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 8 — release gate
+## Milestone 9 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -209,7 +230,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 9 — security failure work
+## Milestone 10 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -222,7 +243,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 10 — incident and feedback loop
+## Milestone 11 — incident and feedback loop
 
 Inject or analyze one failure:
 
