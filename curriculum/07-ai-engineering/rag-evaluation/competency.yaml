@@ -1,7 +1,7 @@
 id: retrieval.rag-evaluation
 title: RAG Evaluation
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
