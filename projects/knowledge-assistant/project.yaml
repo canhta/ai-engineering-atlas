@@ -17,6 +17,8 @@ milestones:
   - abstention-policy
   - stateful-workflow
   - long-term-memory
+  - adaptive-planning
+  - verification-loop
   - service-and-observability
   - release-gate
   - security-failure-work
@@ -37,6 +39,8 @@ competencies:
   - agents.deterministic-vs-agentic
   - agents.state
   - agents.memory
+  - agents.planning
+  - agents.verification
   - security.prompt-injection
 evidence:
   - product-brief
@@ -53,6 +57,8 @@ evidence:
   - abstention-experiment
   - state-recovery-record
   - memory-evaluation-record
+  - planning-experiment
+  - verification-experiment
   - decision-records
   - traces
   - security-tests
