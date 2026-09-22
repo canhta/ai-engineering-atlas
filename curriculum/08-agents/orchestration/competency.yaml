@@ -1,0 +1,89 @@
+id: agents.orchestration
+title: AI Workflow Orchestration
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Orchestration determines which work runs next, conditionally, or in parallel and how failures propagate. Engineers should keep known branch logic deterministic, bound concurrency, verify aggregation, and only use model-directed flow when task uncertainty justifies it.
+curriculum_evidence:
+  - article.anthropic-building-effective-agents
+  - docs.openai-agent-orchestration
+  - guide.openai-practical-agents
+prerequisites:
+  - agents.deterministic-vs-agentic
+  - agents.state
+  - agents.planning
+  - agents.verification
+outcomes:
+  - Model a workflow as explicit stages, branches, dependencies, and terminal conditions.
+  - Distinguish planning from runtime orchestration decisions.
+  - Choose code-controlled, model-controlled, or hybrid flow from task uncertainty and branch testability.
+  - Keep known and testable routing conditions deterministic by default.
+  - Parallelize only work that is sufficiently independent.
+  - Define fan-out, fan-in, and aggregation behavior.
+  - Set concurrency and resource limits.
+  - Define per-stage timeout, retry, cancellation, degradation, and failure-containment behavior.
+  - Preserve correlation and state across branches.
+  - Verify the aggregate result after routed, parallel, or delegated work.
+  - Compare a simpler single-flow baseline with an orchestrated variant on the same task set.
+  - Reject multi-agent decomposition when tools, deterministic branches, or one agent provide the same benefit with less complexity.
+diagnostic:
+  tasks:
+    - Given a workflow, identify which decisions belong in deterministic code and which genuinely require model-directed routing.
+    - Identify two subtasks and prove whether they are independent enough to run concurrently.
+    - Define fan-in behavior when one of three parallel branches fails or times out.
+    - Explain what measured evidence would justify adding a multi-agent topology later.
+  pass_condition: Skip introductory material only if the learner can own routing decisions explicitly, bound parallel execution, contain branch failures, and defend orchestration against a simpler baseline.
+learning_route:
+  mental_model:
+    - source: article.anthropic-building-effective-agents
+      locator: 'Sections "Workflow: Routing", "Workflow: Parallelization", "Workflow: Orchestrator-workers", "Workflow: Evaluator-optimizer", "Agents", and "Combining and customizing these patterns"'
+      purpose: Learn the core flow patterns and select the simplest orchestration pattern from task structure.
+    - source: docs.openai-agent-orchestration
+      locator: 'Page introduction defining orchestration plus sections "Orchestrating via LLM" and "Orchestrating via code", including manager-style agents-as-tools, handoffs, chaining, evaluator loops, and parallel execution'
+      purpose: Compare model-controlled and code-controlled orchestration and treat manager/handoff patterns as optional implementations rather than the capability definition.
+    - source: guide.openai-practical-agents
+      locator: 'Sections "Orchestration" and "Single-agent systems"'
+      purpose: Reinforce single-agent-first architecture and incremental complexity when orchestration or delegation is justified.
+  guided_practice:
+    - task: Take one existing Knowledge Assistant flow and mark every routing or sequencing decision as code-controlled, model-controlled, or hybrid with a reason.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/runtime-and-orchestration/
+      task: Compare a simpler flow with one justified routed, parallel, or dynamic orchestration variant, inject a branch failure, and verify the combined outcome.
+experiments:
+  - Replace one model-directed routing decision with deterministic code and compare quality, latency, cost, and failure types.
+  - Parallelize two independent subtasks and measure whether wall-clock benefit survives fan-in and verification overhead.
+  - Inject a branch timeout or failure and test cancellation, degradation, retry, or sibling-continuation policy.
+  - Remove one orchestration stage and measure whether task quality actually degrades.
+  - Compare one-agent orchestration against a hypothetical or implemented multi-agent split and reject the split unless specialization provides measurable value.
+exit_evidence:
+  - An orchestration graph or state diagram defines stages, branches, dependencies, and terminal conditions.
+  - Each important flow decision records whether code or the model owns it and why.
+  - A simpler single-flow baseline is preserved.
+  - Concurrency and resource limits are explicit where parallel work exists.
+  - Fan-out/fan-in or aggregation behavior is defined and verified.
+  - At least one branch failure or timeout is injected and its containment behavior is recorded.
+  - Aggregate outcome verification is preserved.
+  - Task success is reported with latency, cost, and model/tool-call counts.
+  - One orchestration ablation removes or simplifies a stage.
+  - The final architecture decision explicitly chooses single flow, orchestration, or deferred multi-agent design.
+transfer:
+  task: Redesign orchestration for a workflow whose branch uncertainty, concurrency opportunities, or failure-containment requirements differ materially.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-building-effective-agents
+    - docs.openai-agent-orchestration
+    - guide.openai-practical-agents
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
