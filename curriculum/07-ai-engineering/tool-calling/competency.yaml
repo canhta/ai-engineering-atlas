@@ -1,0 +1,103 @@
+id: ai.tool-calling
+title: Tool Calling
+domain: ai-engineering
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Tool-enabled AI systems cross a boundary from model suggestions into real application behavior. Engineers must design clear tool contracts, validate model-generated arguments, enforce policy in deterministic code, handle failures and retries safely, shape tool results for context, and evaluate raw tool traces rather than only final answers.
+curriculum_evidence:
+  - docs.openai-function-calling
+  - docs.anthropic-tool-use
+  - article.anthropic-writing-tools
+  - article.aws-idempotent-apis
+  - article.openai-agent-prompt-injection
+prerequisites:
+  - ai.evaluation
+  - systems.api-service-design
+prerequisite_support:
+  systems.api-service-design:
+    diagnostic: Given a mutating create-ticket operation, define request validation, success/error responses, timeout behavior, retryable versus non-retryable failures, and how duplicate retries avoid duplicate side effects.
+    source: article.aws-idempotent-apis
+    locator: Sections "Reducing client complexity with idempotent API design" and "Retries and semantic equivalence"
+    purpose: Patch the API contract, error, retry, and idempotency reasoning required for safe tool execution without requiring the full API/service-design curriculum.
+outcomes:
+  - Design a small, distinct tool surface from a user or workflow need rather than exposing every backend endpoint.
+  - Define clear tool names, descriptions, schemas, parameter semantics, and result/error contracts.
+  - Validate model-generated tool arguments before execution.
+  - Keep identity, authorization, approval, and side-effect policy in deterministic application code that model output cannot override.
+  - Handle success, validation errors, transient failures, timeouts, retries, and non-retryable failures.
+  - Make mutating retries safe through explicit idempotency semantics.
+  - Return concise task-relevant tool results rather than dumping backend payloads into model context.
+  - Trace and evaluate tool selection, arguments, validation, execution, errors, retries, results, and final task outcome.
+  - Distinguish failures caused by tool selection, malformed arguments, execution, permissions, result shaping, or post-tool reasoning.
+diagnostic:
+  tasks:
+    - Design one tool contract for a Knowledge Assistant workflow, including schema, validation, authorization boundary, result/error shapes, timeout, and retry behavior.
+    - Explain why schema-valid model output is not authorization to execute a privileged action.
+    - For a timed-out mutating request, explain when retry is safe and what idempotency contract is required.
+    - Design an evaluation that can detect a wrong tool choice even if the final answer happens to look correct.
+  pass_condition: Skip introductory material only if the learner can design and evaluate a provider-independent tool boundary with deterministic validation, policy enforcement, safe retries, context-efficient results, and inspectable traces.
+learning_route:
+  mental_model:
+    - source: docs.anthropic-tool-use
+      locator: Tool use overview covering tool definitions with name/description/input schema and the client-side execution loop that returns tool results to the model
+      purpose: Establish the model-proposes/application-executes control flow and the structure of a tool contract.
+    - source: docs.openai-function-calling
+      locator: Function Calling overview and Structured Outputs note describing schema-constrained function arguments with strict mode
+      purpose: Show schema-constrained model output while keeping application validation/execution as a separate responsibility.
+    - source: article.anthropic-writing-tools
+      locator: Sections "Running an evaluation", "Choosing the right tools for agents", "Returning meaningful context from your tools", "Optimizing tool responses for token efficiency", and "Prompt-engineering your tool descriptions"
+      purpose: Connect tool-surface design, descriptions, result shaping, token efficiency, and raw-trace evaluation.
+    - source: article.aws-idempotent-apis
+      locator: Sections "Reducing client complexity with idempotent API design" and "Retries and semantic equivalence"
+      purpose: Make timeout/retry behavior safe for mutating operations through explicit idempotency semantics.
+    - source: article.openai-agent-prompt-injection
+      locator: Guidance on designing agent/tool boundaries so untrusted model-controlled content cannot directly authorize privileged actions
+      purpose: Reinforce that security policy and approval remain deterministic application controls even when the model chooses or parameterizes tools.
+  guided_practice:
+    - task: Take one backend endpoint and redesign it as a model-facing tool, removing fields the model should not control and making parameter semantics, result shaping, and failure behavior explicit.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/context-and-tools/
+      task: Add one justified tool-enabled Knowledge Assistant workflow, implement deterministic validation and execution controls, then evaluate realistic success, should-not-call, malformed, permission, timeout, retry, and result-shaping cases.
+experiments:
+  - Compare a broad tool surface with a smaller task-oriented tool surface on the same evaluation tasks.
+  - Inject malformed or ambiguous arguments and verify deterministic validation blocks or normalizes them before execution.
+  - Simulate timeout and transient failure; verify retries follow the declared policy.
+  - For a mutating tool, replay the same idempotency key and verify duplicate side effects do not occur.
+  - Return an oversized backend payload, then shape/filter it and measure whether tool-use quality or context cost improves.
+  - Inject adversarial retrieved/tool content and verify it cannot bypass authorization or approval controls.
+exit_evidence:
+  - A versioned tool contract defines purpose, schema, parameter semantics, validation, result/error shapes, timeout, retry, and idempotency where required.
+  - Identity, authorization, approval, and privileged side-effect controls are enforced outside model output.
+  - Traces show tool selection, proposed arguments, validation, execution, results/errors, retries, and final outcome.
+  - The evaluation includes should-call, should-not-call, malformed, permission/approval, and failure/retry cases.
+  - At least one tool-result shaping decision is justified from context quality or token/cost evidence.
+  - The learner records whether the workflow should stay deterministic or whether later agentic control is justified.
+transfer:
+  task: Redesign the tool boundary for a different external system with different permission, latency, failure, and side-effect characteristics.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.openai-function-calling
+    - docs.anthropic-tool-use
+    - article.anthropic-writing-tools
+    - article.aws-idempotent-apis
+    - article.openai-agent-prompt-injection
+  practice:
+    - docs.anthropic-tool-use
+    - article.anthropic-writing-tools
+  production-reference:
+    - article.aws-idempotent-apis
+    - article.openai-agent-prompt-injection
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
