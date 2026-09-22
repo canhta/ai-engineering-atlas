@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/resource.schema.json",
+  "title": "AI Engineering Atlas resource",
+  "type": "object",
+  "required": ["id", "type", "title", "roles", "source_verified", "last_checked"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "type": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "author": { "type": "string" },
+    "url": { "type": "string" },
+    "roles": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "covers": { "type": "array", "items": { "type": "string" } },
+    "source_verified": { "type": "boolean" },
+    "last_checked": { "type": "string" }
+  },
+  "additionalProperties": true
+}
