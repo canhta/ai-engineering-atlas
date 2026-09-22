@@ -12,6 +12,8 @@ For typed responses and answer-versus-abstain decisions, continue with the [Outp
 
 For durable execution and cross-session information, continue with the [State and Memory evidence contract](state-and-memory/). State must first prove crash/restart continuity; memory is added only after a real cross-session need is demonstrated.
 
+For adaptive decomposition and outcome checking, continue with the [Planning and Verification evidence contract](planning-and-verification/). Keep this single-agent/stateful first: prove planning and verification value before adding orchestration or multiple agents.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -300,7 +302,44 @@ Add memory only for a measured cross-session need.
 
 **Decision:** keep, change, or remove memory from evidence.
 
-## Milestone 13 — service and observability
+## Milestone 13 — adaptive planning
+
+Use the [Planning](../../curriculum/08-agents/planning/) route.
+
+Only add explicit planning for a task whose structure depends on intermediate results.
+
+**Experiment:**
+
+- preserve a no-plan baseline;
+- compare static and adaptive plans;
+- persist the plan in durable state;
+- inject a changed condition or invalidated assumption;
+- preserve the replanning trace;
+- measure task success, steps/tool calls, latency/cost, and plan churn.
+
+**Decision:** keep, simplify, or remove explicit planning from evidence.
+
+## Milestone 14 — verification loop
+
+Use the [Verification](../../curriculum/08-agents/verification/) route.
+
+Define success criteria before execution and verify real outcomes rather than trusting agent narration.
+
+**Evidence:**
+
+- verifier inventory mapped to success criteria;
+- at least one deterministic/environment verifier;
+- one seeded defect;
+- successful and failed verification traces;
+- failure attribution;
+- repair/retry/replan/abstain/escalate action;
+- verifier false-positive/false-negative evidence where applicable;
+- model-grader calibration if a model grader is used;
+- verification overhead and ablation.
+
+**Decision:** keep, simplify, or remove each verifier stage.
+
+## Milestone 15 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -316,7 +355,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 14 — release gate
+## Milestone 16 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -329,7 +368,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 15 — security failure work
+## Milestone 17 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -342,7 +381,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 16 — incident and feedback loop
+## Milestone 18 — incident and feedback loop
 
 Inject or analyze one failure:
 
