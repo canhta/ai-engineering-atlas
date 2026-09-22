@@ -1,0 +1,22 @@
+resources:
+  - id: paper.maxmin-chunking
+    type: paper
+    title: Max–Min semantic chunking of documents for RAG application
+    author: Csaba Kiss, Marcell Nagy, and Péter Szilágyi
+    url: https://link.springer.com/article/10.1007/s10791-025-09638-7
+    roles: [curriculum-evidence, teaching, reference]
+    covers: [retrieval.chunking, rag]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
+
+  - id: paper.ragas-evaluation
+    type: paper
+    title: RAGAS — Automated Evaluation of Retrieval Augmented Generation
+    author: Shahul Es, Jithin James, Luis Espinosa Anke, and Steven Schockaert
+    url: https://aclanthology.org/2024.eacl-demo.16/
+    roles: [curriculum-evidence, teaching, assessment, reference]
+    covers: [retrieval.rag-evaluation, rag]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
