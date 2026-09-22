@@ -385,6 +385,19 @@ Not proposed as a hard prerequisite because the existing ready `security.prompt-
 - catalog/generated status:
   - **no change until RFC approval and completed route validation**
 
+## Implementation outcome
+
+Approved amendment implemented on 2026-09-22.
+
+- `ai.context-engineering` promoted to `ready`.
+- `ai.tool-calling` promoted to `ready`.
+- Tool Calling uses `ai.evaluation` and `systems.api-service-design` as hard prerequisites; prompt-injection/trust-boundary behavior remains mandatory integration evidence without creating a prerequisite cycle.
+- Coverage-only prerequisites use targeted bridges with exact source locators.
+- The Knowledge Assistant now carries the context-and-tools evidence package in the same evaluation lineage as earlier slices.
+- Learner READMEs expose generated clickable source links, exact locators, and prerequisite patches.
+- Repository validation now rejects prerequisite cycles and detects learner-facing source-link drift.
+- Promotion-state validation succeeded before this implementation outcome was recorded.
+
 ## Review checklist
 
 - [x] Evidence is traceable and source locators are specific enough to author routes.
