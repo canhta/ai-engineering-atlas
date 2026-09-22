@@ -7,7 +7,8 @@ on:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    # Pinned: `ubuntu-latest` becomes Ubuntu 26 on 2026-10-19, which would change the runner under us.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
@@ -42,7 +43,7 @@ jobs:
         run: python scripts/validate_agent_docs.py
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
@@ -78,7 +79,7 @@ jobs:
         working-directory: site
 
   site:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: site
