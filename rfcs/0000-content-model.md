@@ -43,30 +43,35 @@ vocabularies:                   # every enumerated value the UI labels
 collections:
   - id: competencies
     label: L10n
-    group_by: domain            # a field whose values come from a vocabulary
-    facets: [status, level]     # fields offered as filters; each names a vocabulary
-    list_fields: [status, level]
-    page_when: { field: status, in: [seeded, ready] }   # items that get a page
+    ref_prefix?: lab            # omitted for competencies; refs to other collections are <ref_prefix>:<id>
+    fields:                     # every field items may carry, with its label and optional vocabulary
+      domain: { label: L10n, vocabulary: domain }
+      target_level: { label: L10n, vocabulary: level }
+      ...
+    group_by: domain            # a declared field whose values come from a vocabulary
+    facets: [status, target_level]        # declared fields offered as filters
+    list_fields: [status, target_level]
+    page_when: { field: status, in: [seeded, ready] }   # items that get a page; omitted = every item with blocks
     progress: { tracks: true, target_field: target_states }
 items:
   <collection id>:
     - id: ai.tool-calling
       title: L10n
-      fields: { domain: ai-engineering, status: ready, level: L3, ... }   # scalar or list values only
-      page:                     # present only when page_when matches
+      fields: { domain: ai-engineering, status: ready, target_level: L3, ... }   # scalar or list values only
+      page:                     # present only when the item gets a page
         source_path: curriculum/07-ai-engineering/tool-calling
         blocks: [Block, ...]
 relations:
   - { type: prerequisite, from: ai.evaluation, to: ai.tool-calling }
   - { type: practice, from: ai.tool-calling, to: lab:evaluation-harness }
   - { type: member, from: project:knowledge-assistant, to: ai.tool-calling }
-resources:
+resources:                      # only resources referenced by a block
   <id>: { title, url, type?, author? }
 ```
 
 `L10n` is `{ en: string, vi?: string }`. Curriculum text carries only `en` until a reviewed translation exists; the renderer falls back to `en` and marks the passage `lang="en"`.
 
-Item references across collections use `<collection-prefix>:<id>` (`lab:`, `project:`, `path:`); competency ids stay bare.
+Item references use `<ref_prefix>:<id>` (`lab:`, `project:`, `path:`); competency ids stay bare. Items are listed in source order for `file#key` sources (the catalog) and by id otherwise; relations are sorted.
 
 ### Blocks
 
@@ -79,46 +84,77 @@ Every block has `type`, `id` (stable anchor), and `title: L10n`. The renderer ke
 | `prerequisites` | `items: [{ ref, bridge?: { diagnostic?: L10n, resource, locator?: L10n, purpose?: L10n } }]` | links to referenced items that have pages |
 | `diagnostic` | `tasks: L10n[]`, `pass_condition: L10n` | answer, compare, record diagnostic evidence |
 | `sources` | `rows: [{ resource, locator: L10n, purpose: L10n }]` | per-row personal "opened" mark |
-| `practice` | `groups: [{ label: L10n, items: [{ text: L10n, ref?: string, path?: string }] }]` | links to labs and repository paths |
+| `practice` | `groups: [{ label: L10n, items: [{ text: L10n, ref?, path?, resource?, locator?: L10n }] }]` | links to labs, repository paths, and resources |
 | `data` | `value: any JSON` | generic fallback, rendered as nested lists |
 
-`resource` is a key in `resources` or an absolute URL.
+`resource` is a key in `resources` or an absolute URL. A practice item's `ref` is set when its `path` lies inside an item's repository path (`labs/self-attention/` → `lab:self-attention`).
 
 ### Presentation config
 
-`curriculum/presentation.yaml` (content side) declares, per collection, where items come from and which blocks their pages have:
+`curriculum/presentation.yaml` (content side) declares vocabularies and, per collection, where items come from, their fields, relations, and page blocks. Abridged:
 
 ```yaml
 version: 1
-site: { title: {en: AI Engineering Atlas}, tagline: {en: …, vi: …} }
+site: { title: L10n, tagline: L10n, repository: url }
+locales: [en, vi]
 vocabularies:
-  domain:  { from: curriculum/manifest.yaml }      # titles added to manifest domains (en/vi)
-  level:   { from: curriculum/manifest.yaml#levels }
-  status:  { values: { ready: {label: {en: ready, vi: sẵn sàng}}, coverage: {…} } }
+  domain: { from: "curriculum/manifest.yaml#domains", key: id, label: title }   # list: key and label fields
+  level:                                                                         # mapping: value → English label
+    from: "curriculum/manifest.yaml#levels"
+    values: { L0: {label: {vi: nhận biết}}, … }      # per-value overrides merged onto `from`; labels merge per locale
+  status: { values: { ready: {label: {en: ready, vi: sẵn sàng}}, coverage: {…} } }
   competency_type: { values: { … } }
+  state: { values: { unassessed: {…}, gap: {…}, …, applied: {…} } }
 collections:
   competencies:
-    items_from: curriculum/catalog.yaml#competencies
-    page_from: "{route}/competency.yaml"
-    fields: [domain, status, target_level, competency_types, target_states]
+    label: L10n
+    items_from: "curriculum/catalog.yaml#competencies"   # file#key list, "dir/*/" directories, or a file glob
+    id: id                                               # key holding the id (directory/file name otherwise)
+    title: title                                         # key holding the title (README or Markdown H1 otherwise)
+    page_from: "{route}/competency.yaml"                 # merged under the catalog entry; the catalog wins
+    fields:
+      domain: { label: L10n, vocabulary: domain }
+      target_level: { label: L10n, vocabulary: level }
+      …
+    group_by: domain
+    facets: [status, target_level]
+    list_fields: [status, target_level]
+    page_when: { field: status, in: [seeded, ready] }
+    progress: { tracks: true, target_field: target_states }
+    relations:
+      - { type: prerequisite, field: prerequisites, direction: in }      # in: value → item; out: item → value
+      - { type: practice, field: "learning_route.independent_practice[].artifact", direction: out, target: labs }
     blocks:
-      - { field: why, type: text, title: {en: Why, vi: Vì sao} }
-      - { field: prerequisites, type: prerequisites, support: prerequisite_support, title: … }
-      - { field: outcomes, type: list, title: … }
-      - { field: diagnostic, type: diagnostic, title: … }
-      - { field: learning_route.mental_model, type: sources, title: … }
-      - { field: learning_route, type: practice, groups: [guided_practice, independent_practice], title: … }
-      - { field: experiments, type: list, title: … }
-      - { field: exit_evidence, type: list, title: … }
-      - { field: transfer.task, type: text, title: … }
+      - { id: why, field: why, type: text, title: L10n }
+      - { id: prerequisites, field: prerequisites, type: prerequisites, support: prerequisite_support,
+          bridge: {diagnostic: diagnostic, resource: source, locator: locator, purpose: purpose}, title: L10n }
+      - { id: outcomes, field: outcomes, type: list, title: L10n }
+      - { id: diagnostic, field: diagnostic, type: diagnostic, map: {tasks: tasks, pass_condition: pass_condition}, title: L10n }
+      - { id: sources, field: learning_route.mental_model, type: sources, row: {resource: source, locator: locator, purpose: purpose}, title: L10n }
+      - { id: visual, field: learning_route.visual, type: sources, row: {…}, title: L10n }
+      - { id: practice, field: learning_route, type: practice,
+          groups: [{field: guided_practice, label: L10n}, {field: independent_practice, label: L10n}],
+          item: {text: task, path: artifact, resource: source, locator: locator}, title: L10n }
+      - { id: experiments, field: experiments, type: list, title: L10n }
+      - { id: exit-evidence, field: exit_evidence, type: list, title: L10n }
+      - { id: transfer, field: transfer.task, type: text, title: L10n }
     ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
+  labs:     { label: L10n, ref_prefix: lab, items_from: "labs/*/", fields: {path: …, files: …} }
+  projects: { label: L10n, ref_prefix: project, items_from: "projects/*/project.yaml", title: title,
+              relations: [{type: member, field: competencies, direction: out}], blocks: [purpose, milestones, evidence], … }
+  paths:    { label: L10n, ref_prefix: path, items_from: "paths/*.md", exclude: [README.md], fields: {path: …} }
 ```
 
-Block order on the page is the order in this file. `ignore` lists fields deliberately not rendered.
+- Block order on the page is the order in this file. A block whose field is absent is skipped.
+- `bridge`, `map`, `row`, and `item` map payload keys to content keys, so the adapter names no curriculum field.
+- A relation value containing `/` is a repository path, resolved to the item whose path contains it; with `target`, only items of that collection count.
+- Directory items get the derived fields `path` and `files`; file items get `path`.
+- `ignore` lists fields deliberately not rendered.
 
 ### Checks
 
-- `scripts/build_site_data.py --check` fails on a stale model, an unknown block type, a reference that does not resolve, or a missing vocabulary value; it **warns** (lists) fields that are neither mapped nor ignored.
+- `scripts/build_site_data.py --check` fails on a stale model, an unknown block type, a reference that does not resolve (prerequisite, relation, resource, practice path), a missing vocabulary value, or a schema violation.
+- Unmapped-field detection walks nested paths (`a.b`, `a.b[].c`, `*` for any mapping key). Content not covered by an item field, a relation, a block's consumed keys, or `ignore` is **warned** about (listed, exit 0) and rendered as a `data` block at the end of the page, one per path.
 - `schemas/site-data.schema.json` v2 validates the model.
 - A site test renders every block type from a fixture, including `data` with unknown shapes.
 
