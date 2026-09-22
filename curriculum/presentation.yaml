@@ -18,12 +18,12 @@ vocabularies:
   domain: {from: "curriculum/manifest.yaml#domains", key: id, label: title}
   level:
     from: "curriculum/manifest.yaml#levels"
-    values:  # merged onto the manifest entries; English stays from the manifest
-      L0: {label: {vi: nhận biết}}
-      L1: {label: {vi: kiến thức làm việc}}
-      L2: {label: {vi: năng lực thực hành}}
-      L3: {label: {vi: năng lực kỹ thuật chuyên sâu}}
-      L4: {label: {vi: chuyên sâu chuyên gia}}
+    values:  # merged onto the manifest entries
+      L0: {label: {en: awareness, vi: nhận biết}}
+      L1: {label: {en: working knowledge, vi: kiến thức làm việc}}
+      L2: {label: {en: practical competence, vi: năng lực thực hành}}
+      L3: {label: {en: deep engineering competence, vi: năng lực kỹ thuật chuyên sâu}}
+      L4: {label: {en: specialist depth, vi: chuyên sâu chuyên gia}}
   status:
     values:
       ready: {label: {en: ready, vi: sẵn sàng}}

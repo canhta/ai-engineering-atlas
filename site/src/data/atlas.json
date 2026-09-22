@@ -112,28 +112,28 @@
       },
       "L1": {
         "label": {
-          "en": "working-knowledge",
+          "en": "working knowledge",
           "vi": "kiến thức làm việc"
         },
         "order": 1
       },
       "L2": {
         "label": {
-          "en": "practical-competence",
+          "en": "practical competence",
           "vi": "năng lực thực hành"
         },
         "order": 2
       },
       "L3": {
         "label": {
-          "en": "deep-engineering-competence",
+          "en": "deep engineering competence",
           "vi": "năng lực kỹ thuật chuyên sâu"
         },
         "order": 3
       },
       "L4": {
         "label": {
-          "en": "specialist-depth",
+          "en": "specialist depth",
           "vi": "chuyên sâu chuyên gia"
         },
         "order": 4
