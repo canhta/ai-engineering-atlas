@@ -20,6 +20,8 @@ For tasks where independent specialist contexts might create measurable value, c
 
 For provider control and production diagnosis, continue with the [Production Boundary evidence contract](production-boundary/). Preserve the direct-provider path as a baseline so gateway and telemetry complexity have something real to beat.
 
+For artifact identity, progressive delivery, and rollback drills, continue with the [Release Lifecycle evidence contract](release-lifecycle/). Every evaluation, trace, rollout, and rollback decision should point to a concrete release manifest rather than a mutable environment label.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -475,20 +477,55 @@ Instrument the request path so a production failure can be explained without tre
 
 **Decision:** keep only telemetry that is actionable, privacy-safe, and worth its overhead.
 
-## Milestone 21 — release gate
+## Milestone 21 — versioned release candidate
 
-Create a pre-release check that uses the evaluation harness.
+Use the [Model Prompt and Retrieval Versioning](../../curriculum/09-production-ai/versioning/) route and the [Release Lifecycle evidence contract](release-lifecycle/).
 
-A release decision should include:
+Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, not one application image.
 
-- quality regressions;
-- critical failure cases;
-- latency/cost constraints;
-- security checks relevant to the system.
+**Evidence:**
 
-The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
+- artifact inventory;
+- release-manifest contract;
+- current known-good manifest;
+- candidate manifest;
+- manifest diff;
+- concrete model and prompt/template identities;
+- inference/runtime configuration identity;
+- retrieval data snapshot and index-build identity;
+- tool, gateway, policy, application, and feature-config identity where applicable;
+- trace-to-manifest linkage;
+- evaluation-to-manifest linkage;
+- mutable-alias resolution test;
+- unresolved latest-style reference rejection or resolution;
+- restore of one known-good manifest.
 
-## Milestone 22 — security failure work
+**Decision:** keep only identity fields that make evaluation, incident diagnosis, replay, and rollback more precise; avoid redundant version metadata that does not change behavior.
+
+## Milestone 22 — progressive release and rollback
+
+Use the [AI Release Engineering](../../curriculum/09-production-ai/release-engineering/) route and continue in the same [Release Lifecycle evidence contract](release-lifecycle/).
+
+Release a concrete candidate manifest, not a moving alias.
+
+**Evidence:**
+
+- frozen/versioned pre-release evaluation reference;
+- explicit blocking quality and operational gates;
+- rollout strategy and bounded exposure;
+- success, failure, and inconclusive analysis states;
+- live AI-quality signals separated from service-health signals;
+- one pre-release block;
+- one live abort;
+- one rollback to an explicit known-good manifest;
+- post-rollback artifact and behavior verification;
+- release decision record;
+- production failure converted into a durable regression case;
+- decision on whether progressive delivery complexity was justified.
+
+**Decision:** promote, pause, abort, roll back, or simplify the rollout process from evidence rather than deployment completion alone.
+
+## Milestone 23 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -501,7 +538,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 23 — incident and feedback loop
+## Milestone 24 — incident and feedback loop
 
 Inject or analyze one failure:
 

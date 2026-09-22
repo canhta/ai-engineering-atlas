@@ -1,0 +1,119 @@
+id: production.release-engineering
+title: "AI Release Engineering"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Evaluation evidence becomes operational only when a concrete release candidate can be exposed, analyzed, promoted, paused, aborted, and rolled back under explicit rules. AI release engineering connects immutable release identity, frozen pre-release evaluation, bounded user exposure, live quality and operational evidence, and verified rollback so healthy infrastructure cannot hide degraded AI behavior."
+curriculum_evidence:
+  - docs.google-sre-canarying
+  - docs.argo-rollouts-analysis
+  - docs.argo-rollouts-rollback
+  - docs.argo-rollouts-basic
+prerequisites:
+  - ai.evaluation
+  - production.observability
+  - production.versioning
+  - systems.cloud-infrastructure
+prerequisite_support:
+  systems.cloud-infrastructure:
+    diagnostic: "Explain rolling versus canary deployment, stable/current revision identity, bounded traffic exposure, promotion, abort, and rollback using one service change."
+    source: docs.argo-rollouts-basic
+    locator: "Sections \"Updating a Rollout\", \"Promoting a Rollout\", and \"Aborting a Rollout\""
+    purpose: "Patch the deployment-control vocabulary needed for progressive AI releases without requiring the full Cloud and Production Infrastructure curriculum."
+outcomes:
+  - "Define a release candidate by immutable release-manifest identity."
+  - "Record the current known-good manifest before rollout."
+  - "Require a versioned evaluation set and explicit offline gates before production exposure."
+  - "Distinguish blocking quality gates from informational metrics."
+  - "Define operational latency, error, and cost constraints separately from AI quality constraints."
+  - "Choose direct rollout, rolling update, canary, shadow, or no-release based on risk and reversibility."
+  - "Define canary population, duration, exposure limits, and control/current population where comparison requires it."
+  - "Account for stochastic variance and delayed outcomes before promotion."
+  - "Define success, failure, and inconclusive rollout states."
+  - "Pause rather than silently promote when evidence is inconclusive."
+  - "Promote a candidate only when declared quality and operational gates pass."
+  - "Abort or roll back when failure thresholds are crossed."
+  - "Roll back to an explicit known-good release manifest."
+  - "Distinguish application rollback from provider fallback or graceful degradation."
+  - "Verify restored behavior and artifact identity after rollback rather than treating the rollback command as success."
+  - "Convert production release failures into evaluation and regression cases."
+  - "Record the release decision, evidence, and automated or operator action."
+  - "Reject progressive-delivery complexity when a low-risk reversible change is safer with a simpler rollout."
+diagnostic:
+  tasks:
+    - "Turn an AI evaluation result into explicit release-blocking criteria and informational metrics."
+    - "Design a canary for a change where answer quality is stochastic and latency can regress independently."
+    - "Explain what should happen when infrastructure health is green but AI-quality evidence is inconclusive."
+    - "Describe exactly which release manifest a rollback restores and how you verify the rollback completed."
+  pass_condition: "Skip introductory material only if the learner can connect candidate identity, evaluation, bounded exposure, live AI and operational evidence, promotion or abort logic, and verified rollback into one release process."
+learning_route:
+  mental_model:
+    - source: docs.google-sre-canarying
+      locator: "Chapter introduction and section \"Minimizing Risk to SLOs and the Error Budget\""
+      purpose: "Model a canary as partial, time-limited exposure plus evaluation, and connect exposure size and duration to production risk."
+    - source: docs.argo-rollouts-analysis
+      locator: "Sections \"Background Analysis\", \"Inline Analysis\", \"Failure Conditions and Failure Limit\", and the success/failure/inconclusive behavior described under analysis limits"
+      purpose: "Inspect concrete progressive-delivery control semantics where measured evidence can promote, abort, or remain inconclusive."
+    - source: docs.argo-rollouts-rollback
+      locator: "Section \"Rollback Windows\""
+      purpose: "Distinguish normal progressive rollout from fast restoration of a known stable revision and reason about explicit rollback targets."
+    - source: docs.argo-rollouts-basic
+      locator: "Sections \"Updating a Rollout\", \"Promoting a Rollout\", and \"Aborting a Rollout\""
+      purpose: "Connect candidate update, manual promotion, abort, and fallback to stable revision into a concrete deployment lifecycle without requiring Argo as the platform."
+  guided_practice:
+    - task: "Given one Knowledge Assistant prompt plus retrieval change, identify the candidate manifest, frozen offline gates, production exposure plan, live AI and operational signals, success/failure/inconclusive rules, and exact rollback target."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/release-lifecycle/
+      task: "Release one versioned Knowledge Assistant candidate through frozen evaluation and bounded exposure, inject an operational regression and an AI-quality regression, exercise abort and rollback, verify restored manifest identity and behavior, and add the release failure to the regression set."
+experiments:
+  - "Fail the offline quality gate and verify no production exposure occurs."
+  - "Pass offline quality, inject a live latency or error regression, and abort the rollout."
+  - "Inject an AI-quality regression while HTTP and infrastructure health remain green and verify the release still blocks or rolls back."
+  - "Create an inconclusive analysis outcome and verify it pauses or requires an explicit decision instead of silently promoting."
+  - "Roll back to the explicit previous manifest and verify prompt, retrieval, tool, model configuration, gateway or policy, and application state match the target."
+  - "Compare progressive rollout with a direct deployment for a small reversible change and record when canary complexity is not justified."
+  - "Convert one rollout failure into the versioned evaluation or regression set."
+exit_evidence:
+  - "A candidate manifest and current known-good manifest identify the exact compared release states."
+  - "A versioned evaluation set or immutable evaluation reference is used for the pre-release gate."
+  - "Offline quality and operational release gates are explicit before result inspection."
+  - "The rollout strategy defines exposure size, duration, and any control or comparison population."
+  - "Live AI-quality signals and infrastructure or operational signals are evaluated separately."
+  - "Success, failure, and inconclusive outcomes have explicit actions."
+  - "At least one candidate is blocked before production exposure."
+  - "At least one bounded rollout is aborted after live evidence."
+  - "One rollback targets an explicit known-good manifest rather than an environment label alone."
+  - "Rollback verification confirms both artifact identity and representative system behavior."
+  - "A release decision record links candidate identity, evaluation evidence, live evidence, and the resulting promote, pause, abort, or rollback action."
+  - "At least one release failure becomes a durable regression case."
+  - "The learner records whether progressive-delivery complexity was justified for the selected change."
+transfer:
+  task: "Redesign the release process for a different AI workload with different traffic volume, delayed quality signals, rollback cost, provider constraints, and change reversibility."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.google-sre-canarying
+    - docs.argo-rollouts-analysis
+    - docs.argo-rollouts-rollback
+    - docs.argo-rollouts-basic
+  practice:
+    - docs.argo-rollouts-analysis
+    - docs.argo-rollouts-basic
+  production-reference:
+    - docs.google-sre-canarying
+    - docs.argo-rollouts-analysis
+    - docs.argo-rollouts-rollback
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

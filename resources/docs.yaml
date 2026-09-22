@@ -441,3 +441,195 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 60
+
+  - id: docs.mlflow-model-registry
+    type: documentation
+    title: MLflow — Model Registry
+    author: MLflow
+    url: https://mlflow.org/docs/latest/model-registry/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.versioning
+      - model-versioning
+      - aliases
+      - lineage
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.mlflow-model-registry-workflows
+    type: documentation
+    title: MLflow — Model Registry Workflows
+    author: MLflow
+    url: https://mlflow.org/docs/latest/ml/model-registry/workflow/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.versioning
+      - model-versions
+      - aliases
+      - tags
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.mlflow-prompt-lifecycle
+    type: documentation
+    title: MLflow Prompt Registry — Manage Prompt Lifecycles
+    author: MLflow
+    url: https://mlflow.org/docs/latest/genai/prompt-registry/manage-prompt-lifecycles-with-aliases/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.versioning
+      - prompt-versioning
+      - aliases
+      - rollback
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.mlflow-prompt-app-lineage
+    type: documentation
+    title: MLflow Prompt Registry — Use Prompts in Apps
+    author: MLflow
+    url: https://mlflow.org/docs/latest/genai/prompt-registry/use-prompts-in-apps/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.versioning
+      - prompt-lineage
+      - model-lineage
+      - reproducibility
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.dvc-command-reference
+    type: documentation
+    title: DVC — Command Reference
+    author: Iterative
+    url: https://dvc.org/doc/command-reference/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - reference
+    covers:
+      - production.versioning
+      - data-versioning
+      - pipeline-lineage
+      - reproducibility
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.pro-git-objects
+    type: guide
+    title: Pro Git — Git Objects
+    author: Scott Chacon and Ben Straub
+    url: https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+    roles:
+      - curriculum-evidence
+      - teaching
+      - reference
+    covers:
+      - production.versioning
+      - content-addressing
+      - snapshots
+      - lineage
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.google-sre-canarying
+    type: guide
+    title: Google SRE Workbook — Canarying Releases
+    author: Google
+    url: https://sre.google/workbook/canarying-releases/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.release-engineering
+      - canary
+      - progressive-delivery
+      - slo
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.argo-rollouts-analysis
+    type: documentation
+    title: Argo Rollouts — Analysis & Progressive Delivery
+    author: Argo Project
+    url: https://argo-rollouts.readthedocs.io/en/stable/features/analysis/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.release-engineering
+      - progressive-delivery
+      - analysis
+      - canary
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.argo-rollouts-rollback
+    type: documentation
+    title: Argo Rollouts — Rollback Windows
+    author: Argo Project
+    url: https://argo-rollouts.readthedocs.io/en/stable/features/rollback/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.release-engineering
+      - rollback
+      - stable-revision
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.argo-rollouts-basic
+    type: documentation
+    title: Argo Rollouts — Basic Usage
+    author: Argo Project
+    url: https://argo-rollouts.readthedocs.io/en/stable/getting-started/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.release-engineering
+      - rollout
+      - promotion
+      - abort
+      - rollback
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90

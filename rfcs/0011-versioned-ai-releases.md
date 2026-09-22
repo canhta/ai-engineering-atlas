@@ -1,8 +1,10 @@
 # RFC 0011 — Versioned AI Releases
 
-- Status: Draft
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
+- Reviewed: 2026-09-22
+- Review decision: Approved by repository owner
 
 ## Summary
 
@@ -758,18 +760,18 @@ These are evidence/examples, not required platforms.
 
 ## Review checklist
 
-- [ ] Versioning is defined across the AI behavior artifact set rather than only the model.
-- [ ] Immutable versions and mutable aliases are distinguished.
-- [ ] Prompt identity does not silently freeze mutable inference configuration.
-- [ ] Retrieval rebuild/data identity is represented.
-- [ ] Release manifests link to trace, evaluation, replay, and rollback evidence.
-- [ ] Release engineering depends on versioned candidate identity.
-- [ ] Offline AI quality gates and live operational gates remain distinct.
-- [ ] Live AI quality cannot be replaced by HTTP/service health alone.
-- [ ] Success, failure, and inconclusive rollout outcomes are explicit.
-- [ ] Progressive rollout is optional when simpler release mechanics are safer and sufficient.
-- [ ] Rollback targets and verifies a complete known-good release manifest.
-- [ ] Production failures feed durable regression evidence.
-- [ ] MLflow, DVC, Google SRE, and Argo are examples rather than mandatory frameworks.
-- [ ] `production.mlops-llmops` remains intentionally deferred.
-- [ ] Reviewer explicitly approves or requests changes before route implementation.
+- [x] Versioning is defined across the AI behavior artifact set rather than only the model.
+- [x] Immutable versions and mutable aliases are distinguished.
+- [x] Prompt identity does not silently freeze mutable inference configuration.
+- [x] Retrieval rebuild/data identity is represented.
+- [x] Release manifests link to trace, evaluation, replay, and rollback evidence.
+- [x] Release engineering depends on versioned candidate identity.
+- [x] Offline AI quality gates and live operational gates remain distinct.
+- [x] Live AI quality cannot be replaced by HTTP/service health alone.
+- [x] Success, failure, and inconclusive rollout outcomes are explicit.
+- [x] Progressive rollout is optional when simpler release mechanics are safer and sufficient.
+- [x] Rollback targets and verifies a complete known-good release manifest.
+- [x] Production failures feed durable regression evidence.
+- [x] MLflow, DVC, Google SRE, and Argo are examples rather than mandatory frameworks.
+- [x] `production.mlops-llmops` remains intentionally deferred.
+- [x] Reviewer explicitly approves or requests changes before route implementation.

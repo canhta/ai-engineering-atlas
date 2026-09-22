@@ -257,8 +257,20 @@ competencies:
       status: ready,
       route: curriculum/09-production-ai/observability,
     }
-  - { id: production.release-engineering, title: AI Release Engineering, domain: production-ai, status: coverage }
-  - { id: production.versioning, title: Model Prompt and Retrieval Versioning, domain: production-ai, status: coverage }
+  - {
+      id: production.release-engineering,
+      title: AI Release Engineering,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/release-engineering,
+    }
+  - {
+      id: production.versioning,
+      title: Model Prompt and Retrieval Versioning,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/versioning,
+    }
   - { id: production.mlops-llmops, title: MLOps and LLMOps, domain: production-ai, status: coverage }
   - { id: production.drift, title: Drift, domain: production-ai, status: coverage }
 

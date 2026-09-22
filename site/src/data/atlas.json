@@ -7679,7 +7679,341 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/release-engineering",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Evaluation evidence becomes operational only when a concrete release candidate can be exposed, analyzed, promoted, paused, aborted, and rolled back under explicit rules. AI release engineering connects immutable release identity, frozen pre-release evaluation, bounded user exposure, live quality and operational evidence, and verified rollback so healthy infrastructure cannot hide degraded AI behavior."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "production.versioning"
+                },
+                {
+                  "ref": "systems.cloud-infrastructure",
+                  "bridge": {
+                    "diagnostic": {
+                      "en": "Explain rolling versus canary deployment, stable/current revision identity, bounded traffic exposure, promotion, abort, and rollback using one service change."
+                    },
+                    "resource": "docs.argo-rollouts-basic",
+                    "locator": {
+                      "en": "Sections \"Updating a Rollout\", \"Promoting a Rollout\", and \"Aborting a Rollout\""
+                    },
+                    "purpose": {
+                      "en": "Patch the deployment-control vocabulary needed for progressive AI releases without requiring the full Cloud and Production Infrastructure curriculum."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define a release candidate by immutable release-manifest identity."
+                },
+                {
+                  "en": "Record the current known-good manifest before rollout."
+                },
+                {
+                  "en": "Require a versioned evaluation set and explicit offline gates before production exposure."
+                },
+                {
+                  "en": "Distinguish blocking quality gates from informational metrics."
+                },
+                {
+                  "en": "Define operational latency, error, and cost constraints separately from AI quality constraints."
+                },
+                {
+                  "en": "Choose direct rollout, rolling update, canary, shadow, or no-release based on risk and reversibility."
+                },
+                {
+                  "en": "Define canary population, duration, exposure limits, and control/current population where comparison requires it."
+                },
+                {
+                  "en": "Account for stochastic variance and delayed outcomes before promotion."
+                },
+                {
+                  "en": "Define success, failure, and inconclusive rollout states."
+                },
+                {
+                  "en": "Pause rather than silently promote when evidence is inconclusive."
+                },
+                {
+                  "en": "Promote a candidate only when declared quality and operational gates pass."
+                },
+                {
+                  "en": "Abort or roll back when failure thresholds are crossed."
+                },
+                {
+                  "en": "Roll back to an explicit known-good release manifest."
+                },
+                {
+                  "en": "Distinguish application rollback from provider fallback or graceful degradation."
+                },
+                {
+                  "en": "Verify restored behavior and artifact identity after rollback rather than treating the rollback command as success."
+                },
+                {
+                  "en": "Convert production release failures into evaluation and regression cases."
+                },
+                {
+                  "en": "Record the release decision, evidence, and automated or operator action."
+                },
+                {
+                  "en": "Reject progressive-delivery complexity when a low-risk reversible change is safer with a simpler rollout."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Turn an AI evaluation result into explicit release-blocking criteria and informational metrics."
+                },
+                {
+                  "en": "Design a canary for a change where answer quality is stochastic and latency can regress independently."
+                },
+                {
+                  "en": "Explain what should happen when infrastructure health is green but AI-quality evidence is inconclusive."
+                },
+                {
+                  "en": "Describe exactly which release manifest a rollback restores and how you verify the rollback completed."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can connect candidate identity, evaluation, bounded exposure, live AI and operational evidence, promotion or abort logic, and verified rollback into one release process."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.google-sre-canarying",
+                  "locator": {
+                    "en": "Chapter introduction and section \"Minimizing Risk to SLOs and the Error Budget\""
+                  },
+                  "purpose": {
+                    "en": "Model a canary as partial, time-limited exposure plus evaluation, and connect exposure size and duration to production risk."
+                  }
+                },
+                {
+                  "resource": "docs.argo-rollouts-analysis",
+                  "locator": {
+                    "en": "Sections \"Background Analysis\", \"Inline Analysis\", \"Failure Conditions and Failure Limit\", and the success/failure/inconclusive behavior described under analysis limits"
+                  },
+                  "purpose": {
+                    "en": "Inspect concrete progressive-delivery control semantics where measured evidence can promote, abort, or remain inconclusive."
+                  }
+                },
+                {
+                  "resource": "docs.argo-rollouts-rollback",
+                  "locator": {
+                    "en": "Section \"Rollback Windows\""
+                  },
+                  "purpose": {
+                    "en": "Distinguish normal progressive rollout from fast restoration of a known stable revision and reason about explicit rollback targets."
+                  }
+                },
+                {
+                  "resource": "docs.argo-rollouts-basic",
+                  "locator": {
+                    "en": "Sections \"Updating a Rollout\", \"Promoting a Rollout\", and \"Aborting a Rollout\""
+                  },
+                  "purpose": {
+                    "en": "Connect candidate update, manual promotion, abort, and fallback to stable revision into a concrete deployment lifecycle without requiring Argo as the platform."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Given one Knowledge Assistant prompt plus retrieval change, identify the candidate manifest, frozen offline gates, production exposure plan, live AI and operational signals, success/failure/inconclusive rules, and exact rollback target."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Release one versioned Knowledge Assistant candidate through frozen evaluation and bounded exposure, inject an operational regression and an AI-quality regression, exercise abort and rollback, verify restored manifest identity and behavior, and add the release failure to the regression set."
+                      },
+                      "path": "projects/knowledge-assistant/release-lifecycle/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Fail the offline quality gate and verify no production exposure occurs."
+                },
+                {
+                  "en": "Pass offline quality, inject a live latency or error regression, and abort the rollout."
+                },
+                {
+                  "en": "Inject an AI-quality regression while HTTP and infrastructure health remain green and verify the release still blocks or rolls back."
+                },
+                {
+                  "en": "Create an inconclusive analysis outcome and verify it pauses or requires an explicit decision instead of silently promoting."
+                },
+                {
+                  "en": "Roll back to the explicit previous manifest and verify prompt, retrieval, tool, model configuration, gateway or policy, and application state match the target."
+                },
+                {
+                  "en": "Compare progressive rollout with a direct deployment for a small reversible change and record when canary complexity is not justified."
+                },
+                {
+                  "en": "Convert one rollout failure into the versioned evaluation or regression set."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A candidate manifest and current known-good manifest identify the exact compared release states."
+                },
+                {
+                  "en": "A versioned evaluation set or immutable evaluation reference is used for the pre-release gate."
+                },
+                {
+                  "en": "Offline quality and operational release gates are explicit before result inspection."
+                },
+                {
+                  "en": "The rollout strategy defines exposure size, duration, and any control or comparison population."
+                },
+                {
+                  "en": "Live AI-quality signals and infrastructure or operational signals are evaluated separately."
+                },
+                {
+                  "en": "Success, failure, and inconclusive outcomes have explicit actions."
+                },
+                {
+                  "en": "At least one candidate is blocked before production exposure."
+                },
+                {
+                  "en": "At least one bounded rollout is aborted after live evidence."
+                },
+                {
+                  "en": "One rollback targets an explicit known-good manifest rather than an environment label alone."
+                },
+                {
+                  "en": "Rollback verification confirms both artifact identity and representative system behavior."
+                },
+                {
+                  "en": "A release decision record links candidate identity, evaluation evidence, live evidence, and the resulting promote, pause, abort, or rollback action."
+                },
+                {
+                  "en": "At least one release failure becomes a durable regression case."
+                },
+                {
+                  "en": "The learner records whether progressive-delivery complexity was justified for the selected change."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the release process for a different AI workload with different traffic volume, delayed quality signals, rollback cost, provider constraints, and change reversibility."
+              }
+            }
+          ]
         }
       },
       {
@@ -7689,7 +8023,338 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/versioning",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "AI application behavior is produced by a set of independently changing artifacts: model identity, inference parameters, prompts, retrieval data and index build state, tool contracts, routing policy, application code, and configuration. Production versioning creates a release identity across that set so evaluation, traces, replay, incidents, and rollback all refer to the same concrete system rather than mutable names such as production or latest."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "production.observability"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Enumerate the artifacts that can materially change an AI system's behavior."
+                },
+                {
+                  "en": "Distinguish immutable version identity from a mutable alias, stage, environment label, or deployment pointer."
+                },
+                {
+                  "en": "Resolve mutable aliases such as production, champion, or latest to the concrete version used by a request or release."
+                },
+                {
+                  "en": "Create one release manifest that pins the behavior-defining artifact set."
+                },
+                {
+                  "en": "Record requested and actual model identity when the provider exposes both."
+                },
+                {
+                  "en": "Pin or hash inference parameters instead of assuming a prompt version freezes runtime model configuration."
+                },
+                {
+                  "en": "Identify prompt or template and response-schema versions."
+                },
+                {
+                  "en": "Identify retrieval corpus or data snapshot, embedding model, chunking or index-build configuration, and retrieval or reranking configuration."
+                },
+                {
+                  "en": "Identify tool schema, gateway policy, safety policy, and relevant feature or configuration versions when they participate in behavior."
+                },
+                {
+                  "en": "Distinguish artifact version identity from validation status or deployment status."
+                },
+                {
+                  "en": "Compare two release manifests and explain exactly which behavior-defining inputs changed."
+                },
+                {
+                  "en": "Define compatibility rules for artifacts that may evolve independently."
+                },
+                {
+                  "en": "Link production traces, evaluation runs, incident records, and replay records to a release manifest."
+                },
+                {
+                  "en": "Choose a known-good rollback manifest rather than reconstructing one from memory."
+                },
+                {
+                  "en": "Reject or resolve unresolved latest-style references before a candidate crosses the release boundary."
+                },
+                {
+                  "en": "Decide when a component can inherit identity from an existing immutable snapshot instead of receiving a redundant independent version."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a Knowledge Assistant release, list every artifact whose change could alter the final answer even when application code is unchanged."
+                },
+                {
+                  "en": "Explain why recording prompt=production and model=latest is insufficient incident and rollback evidence."
+                },
+                {
+                  "en": "Design a manifest that distinguishes an old retrieval index from a rebuilt index using the same logical index name."
+                },
+                {
+                  "en": "Given a rollback request, state the minimum identity required to restore a known-good behavior set rather than only the previous application image."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can identify cross-artifact release state, distinguish immutable identity from mutable aliases, and produce a trace-, replay-, and rollback-safe release manifest."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.mlflow-model-registry",
+                  "locator": {
+                    "en": "Sections \"Why Model Registry?\" and \"Concepts\", especially Model Version, Model Alias, and Tags"
+                  },
+                  "purpose": {
+                    "en": "Distinguish specific model-version identity from mutable deployment indirection and lifecycle metadata."
+                  }
+                },
+                {
+                  "resource": "docs.mlflow-model-registry-workflows",
+                  "locator": {
+                    "en": "Sections \"Fetching an MLflow Model from the Model Registry\", \"Model version tags\", and \"Model version aliases\""
+                  },
+                  "purpose": {
+                    "en": "See how a mutable alias can move independently of production code and why release evidence must preserve the resolved concrete model version."
+                  }
+                },
+                {
+                  "resource": "docs.mlflow-prompt-lifecycle",
+                  "locator": {
+                    "en": "Sections \"Commit-based Versioning\", \"Compare Prompt Versions\", and \"Aliases\""
+                  },
+                  "purpose": {
+                    "en": "Study immutable prompt revisions, mutable environment aliases, prompt diffs, and rollback without assuming the alias itself is a release identity."
+                  }
+                },
+                {
+                  "resource": "docs.mlflow-prompt-app-lineage",
+                  "locator": {
+                    "en": "Sections \"Loading Prompts from the Registry\" and \"Linking Prompts to Logged Models for Full Lineage\""
+                  },
+                  "purpose": {
+                    "en": "Connect the exact prompt version used at runtime to model/application lineage rather than preserving only a mutable prompt alias."
+                  }
+                },
+                {
+                  "resource": "docs.dvc-command-reference",
+                  "locator": {
+                    "en": "Section \"Typical DVC workflow\""
+                  },
+                  "purpose": {
+                    "en": "Inspect one implementation pattern for versioning data and pipeline dependencies so retrieval state can identify the corpus and build configuration that produced an index."
+                  }
+                },
+                {
+                  "resource": "docs.pro-git-objects",
+                  "locator": {
+                    "en": "Sections \"Git Objects\", \"Tree Objects\", and \"Commit Objects\""
+                  },
+                  "purpose": {
+                    "en": "Build a compact content-addressed snapshot mental model for a release manifest that references multiple behavior-defining artifacts."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one successful Knowledge Assistant trace and derive the smallest release manifest that can explain its behavior-defining state without unresolved mutable aliases."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Create current and candidate Knowledge Assistant release manifests, change one behavior-defining artifact at a time, link evaluation and trace evidence to each manifest, test alias resolution and latest rejection, then restore the known-good manifest."
+                      },
+                      "path": "projects/knowledge-assistant/release-lifecycle/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Move a mutable prompt alias to a new prompt version while preserving the old release record and verify the old record still identifies the old concrete version."
+                },
+                {
+                  "en": "Change an inference parameter without changing prompt text and verify the release identity changes."
+                },
+                {
+                  "en": "Rebuild retrieval state under the same logical index or environment name and verify data snapshot and build identity distinguish the new artifact."
+                },
+                {
+                  "en": "Change one tool schema or policy configuration and verify the manifest diff exposes the change."
+                },
+                {
+                  "en": "Inject an unresolved latest-style reference into a candidate and make the release validation fail or resolve it to a concrete version before promotion."
+                },
+                {
+                  "en": "Diagnose or reconstruct one prior request using the manifest identifier preserved on its trace."
+                },
+                {
+                  "en": "Restore one known-good manifest and verify the system does not retain a newer prompt, retrieval, tool, gateway, or policy artifact."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "An artifact inventory identifies the behavior-defining state that requires release identity."
+                },
+                {
+                  "en": "A release-manifest schema or contract is inspectable."
+                },
+                {
+                  "en": "Current production and candidate manifests use concrete version identifiers."
+                },
+                {
+                  "en": "A manifest diff identifies every intentionally changed artifact."
+                },
+                {
+                  "en": "Concrete model identity and prompt or template identity are recorded."
+                },
+                {
+                  "en": "Inference or runtime model configuration identity is explicit."
+                },
+                {
+                  "en": "Retrieval data snapshot and index-build or retrieval configuration identity are explicit."
+                },
+                {
+                  "en": "Tool, gateway, policy, application, and feature configuration identities are present when applicable."
+                },
+                {
+                  "en": "Production traces link to a release manifest."
+                },
+                {
+                  "en": "Evaluation results link to the candidate manifest they evaluated."
+                },
+                {
+                  "en": "A mutable alias resolution test proves an old release record does not silently follow a newer alias target."
+                },
+                {
+                  "en": "Unresolved latest-style references are rejected or resolved before release evidence is finalized."
+                },
+                {
+                  "en": "A known-good rollback manifest restores the complete behavior set rather than only one component."
+                },
+                {
+                  "en": "At least one identity is deliberately inherited from an existing immutable snapshot instead of receiving redundant version metadata, with the reason recorded."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the release-manifest artifact graph for a different AI system in which the model is stable but the dataset, tool catalog, or policy layer changes independently."
+              }
+            }
+          ]
         }
       },
       {
@@ -8734,7 +9399,10 @@
                   "en": "observability-and-replay"
                 },
                 {
-                  "en": "release-gate"
+                  "en": "versioned-release-candidate"
+                },
+                {
+                  "en": "progressive-release-and-rollback"
                 },
                 {
                   "en": "security-failure-work"
@@ -8845,6 +9513,30 @@
                 },
                 {
                   "en": "production-overhead-record"
+                },
+                {
+                  "en": "release-manifest"
+                },
+                {
+                  "en": "release-manifest-diff"
+                },
+                {
+                  "en": "alias-resolution-test"
+                },
+                {
+                  "en": "evaluation-gate-record"
+                },
+                {
+                  "en": "release-plan"
+                },
+                {
+                  "en": "live-analysis-record"
+                },
+                {
+                  "en": "rollback-record"
+                },
+                {
+                  "en": "rollback-verification"
                 },
                 {
                   "en": "decision-records"
@@ -9074,6 +9766,16 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.release-engineering"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "production.versioning"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "retrieval.chunking"
     },
     {
@@ -9264,6 +9966,16 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
+      "to": "production.versioning"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "retrieval.chunking"
     },
     {
@@ -9343,6 +10055,21 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.versioning"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.versioning",
+      "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
       "from": "retrieval.search",
       "to": "ai.embeddings"
     },
@@ -9405,6 +10132,11 @@
       "type": "prerequisite",
       "from": "systems.api-service-design",
       "to": "production.observability"
+    },
+    {
+      "type": "prerequisite",
+      "from": "systems.cloud-infrastructure",
+      "to": "production.release-engineering"
     }
   ],
   "resources": {
@@ -9522,6 +10254,24 @@
       "author": "Anthropic",
       "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview"
     },
+    "docs.argo-rollouts-analysis": {
+      "title": "Argo Rollouts — Analysis & Progressive Delivery",
+      "type": "documentation",
+      "author": "Argo Project",
+      "url": "https://argo-rollouts.readthedocs.io/en/stable/features/analysis/"
+    },
+    "docs.argo-rollouts-basic": {
+      "title": "Argo Rollouts — Basic Usage",
+      "type": "documentation",
+      "author": "Argo Project",
+      "url": "https://argo-rollouts.readthedocs.io/en/stable/getting-started/"
+    },
+    "docs.argo-rollouts-rollback": {
+      "title": "Argo Rollouts — Rollback Windows",
+      "type": "documentation",
+      "author": "Argo Project",
+      "url": "https://argo-rollouts.readthedocs.io/en/stable/features/rollback/"
+    },
     "docs.azure-ai-gateway-multi-backend": {
       "title": "Azure Architecture Center — Gateway in front of model deployments",
       "type": "documentation",
@@ -9540,6 +10290,12 @@
       "author": "Cloudflare",
       "url": "https://developers.cloudflare.com/ai-gateway/configuration/request-handling/"
     },
+    "docs.dvc-command-reference": {
+      "title": "DVC — Command Reference",
+      "type": "documentation",
+      "author": "Iterative",
+      "url": "https://dvc.org/doc/command-reference/"
+    },
     "docs.google-adk-memory": {
       "title": "Google ADK — Memory: Long-term knowledge",
       "type": "documentation",
@@ -9557,6 +10313,12 @@
       "type": "documentation",
       "author": "Google",
       "url": "https://adk.dev/sessions/state/"
+    },
+    "docs.google-sre-canarying": {
+      "title": "Google SRE Workbook — Canarying Releases",
+      "type": "guide",
+      "author": "Google",
+      "url": "https://sre.google/workbook/canarying-releases/"
     },
     "docs.google-structured-outputs": {
       "title": "Google Gemini API — Structured outputs",
@@ -9624,6 +10386,30 @@
       "author": "Model Context Protocol",
       "url": "https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28"
     },
+    "docs.mlflow-model-registry": {
+      "title": "MLflow — Model Registry",
+      "type": "documentation",
+      "author": "MLflow",
+      "url": "https://mlflow.org/docs/latest/model-registry/"
+    },
+    "docs.mlflow-model-registry-workflows": {
+      "title": "MLflow — Model Registry Workflows",
+      "type": "documentation",
+      "author": "MLflow",
+      "url": "https://mlflow.org/docs/latest/ml/model-registry/workflow/"
+    },
+    "docs.mlflow-prompt-app-lineage": {
+      "title": "MLflow Prompt Registry — Use Prompts in Apps",
+      "type": "documentation",
+      "author": "MLflow",
+      "url": "https://mlflow.org/docs/latest/genai/prompt-registry/use-prompts-in-apps/"
+    },
+    "docs.mlflow-prompt-lifecycle": {
+      "title": "MLflow Prompt Registry — Manage Prompt Lifecycles",
+      "type": "documentation",
+      "author": "MLflow",
+      "url": "https://mlflow.org/docs/latest/genai/prompt-registry/manage-prompt-lifecycles-with-aliases/"
+    },
     "docs.openai-agent-orchestration": {
       "title": "OpenAI Agents SDK — Agent orchestration",
       "type": "documentation",
@@ -9659,6 +10445,12 @@
       "type": "documentation",
       "author": "OpenTelemetry",
       "url": "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md"
+    },
+    "docs.pro-git-objects": {
+      "title": "Pro Git — Git Objects",
+      "type": "guide",
+      "author": "Scott Chacon and Ben Straub",
+      "url": "https://git-scm.com/book/en/v2/Git-Internals-Git-Objects"
     },
     "docs.ragas-rag-metrics": {
       "title": "Ragas — RAG Evaluation Metrics",

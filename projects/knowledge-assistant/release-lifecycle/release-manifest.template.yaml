@@ -1,0 +1,40 @@
+release_id: <immutable-release-id>
+created_at: <timestamp>
+application:
+  source_revision: <commit-or-build-id>
+  artifact: <image-or-package-digest>
+model:
+  provider: <provider>
+  requested_model: <concrete-version>
+  actual_model: <concrete-version-if-reported>
+  alias_context: <optional-mutable-alias>
+  inference_config_hash: <hash-or-version>
+prompt:
+  name: <prompt-name>
+  version: <immutable-version>
+  alias_context: <optional-mutable-alias>
+response_contract:
+  version: <schema-version-or-hash>
+retrieval:
+  corpus_snapshot: <immutable-data-identity>
+  embedding_model: <concrete-version>
+  chunking_config: <version-or-hash>
+  index_build: <version-or-hash>
+  retrieval_config: <version-or-hash>
+  reranking_config: <version-or-hash-or-null>
+tools:
+  schema_set: <version-or-hash>
+  runtime_config: <version-or-hash>
+gateway:
+  route_policy: <version-or-hash-or-null>
+policy:
+  safety_policy: <version-or-hash>
+features:
+  config_snapshot: <version-or-hash>
+evidence:
+  evaluation_run: <immutable-reference>
+  trace_or_observability_release_tag: <reference>
+notes:
+  intentionally_inherited_identity:
+    - artifact: <artifact>
+      reason: <why-no-independent-version-is-needed>

@@ -1,0 +1,119 @@
+id: production.versioning
+title: "Model Prompt and Retrieval Versioning"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "AI application behavior is produced by a set of independently changing artifacts: model identity, inference parameters, prompts, retrieval data and index build state, tool contracts, routing policy, application code, and configuration. Production versioning creates a release identity across that set so evaluation, traces, replay, incidents, and rollback all refer to the same concrete system rather than mutable names such as production or latest."
+curriculum_evidence:
+  - docs.mlflow-model-registry
+  - docs.mlflow-model-registry-workflows
+  - docs.mlflow-prompt-lifecycle
+  - docs.mlflow-prompt-app-lineage
+  - docs.dvc-command-reference
+  - docs.pro-git-objects
+prerequisites:
+  - ai.evaluation
+  - production.observability
+outcomes:
+  - "Enumerate the artifacts that can materially change an AI system's behavior."
+  - "Distinguish immutable version identity from a mutable alias, stage, environment label, or deployment pointer."
+  - "Resolve mutable aliases such as production, champion, or latest to the concrete version used by a request or release."
+  - "Create one release manifest that pins the behavior-defining artifact set."
+  - "Record requested and actual model identity when the provider exposes both."
+  - "Pin or hash inference parameters instead of assuming a prompt version freezes runtime model configuration."
+  - "Identify prompt or template and response-schema versions."
+  - "Identify retrieval corpus or data snapshot, embedding model, chunking or index-build configuration, and retrieval or reranking configuration."
+  - "Identify tool schema, gateway policy, safety policy, and relevant feature or configuration versions when they participate in behavior."
+  - "Distinguish artifact version identity from validation status or deployment status."
+  - "Compare two release manifests and explain exactly which behavior-defining inputs changed."
+  - "Define compatibility rules for artifacts that may evolve independently."
+  - "Link production traces, evaluation runs, incident records, and replay records to a release manifest."
+  - "Choose a known-good rollback manifest rather than reconstructing one from memory."
+  - "Reject or resolve unresolved latest-style references before a candidate crosses the release boundary."
+  - "Decide when a component can inherit identity from an existing immutable snapshot instead of receiving a redundant independent version."
+diagnostic:
+  tasks:
+    - "Given a Knowledge Assistant release, list every artifact whose change could alter the final answer even when application code is unchanged."
+    - "Explain why recording prompt=production and model=latest is insufficient incident and rollback evidence."
+    - "Design a manifest that distinguishes an old retrieval index from a rebuilt index using the same logical index name."
+    - "Given a rollback request, state the minimum identity required to restore a known-good behavior set rather than only the previous application image."
+  pass_condition: "Skip introductory material only if the learner can identify cross-artifact release state, distinguish immutable identity from mutable aliases, and produce a trace-, replay-, and rollback-safe release manifest."
+learning_route:
+  mental_model:
+    - source: docs.mlflow-model-registry
+      locator: "Sections \"Why Model Registry?\" and \"Concepts\", especially Model Version, Model Alias, and Tags"
+      purpose: "Distinguish specific model-version identity from mutable deployment indirection and lifecycle metadata."
+    - source: docs.mlflow-model-registry-workflows
+      locator: "Sections \"Fetching an MLflow Model from the Model Registry\", \"Model version tags\", and \"Model version aliases\""
+      purpose: "See how a mutable alias can move independently of production code and why release evidence must preserve the resolved concrete model version."
+    - source: docs.mlflow-prompt-lifecycle
+      locator: "Sections \"Commit-based Versioning\", \"Compare Prompt Versions\", and \"Aliases\""
+      purpose: "Study immutable prompt revisions, mutable environment aliases, prompt diffs, and rollback without assuming the alias itself is a release identity."
+    - source: docs.mlflow-prompt-app-lineage
+      locator: "Sections \"Loading Prompts from the Registry\" and \"Linking Prompts to Logged Models for Full Lineage\""
+      purpose: "Connect the exact prompt version used at runtime to model/application lineage rather than preserving only a mutable prompt alias."
+    - source: docs.dvc-command-reference
+      locator: "Section \"Typical DVC workflow\""
+      purpose: "Inspect one implementation pattern for versioning data and pipeline dependencies so retrieval state can identify the corpus and build configuration that produced an index."
+    - source: docs.pro-git-objects
+      locator: "Sections \"Git Objects\", \"Tree Objects\", and \"Commit Objects\""
+      purpose: "Build a compact content-addressed snapshot mental model for a release manifest that references multiple behavior-defining artifacts."
+  guided_practice:
+    - task: "Take one successful Knowledge Assistant trace and derive the smallest release manifest that can explain its behavior-defining state without unresolved mutable aliases."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/release-lifecycle/
+      task: "Create current and candidate Knowledge Assistant release manifests, change one behavior-defining artifact at a time, link evaluation and trace evidence to each manifest, test alias resolution and latest rejection, then restore the known-good manifest."
+experiments:
+  - "Move a mutable prompt alias to a new prompt version while preserving the old release record and verify the old record still identifies the old concrete version."
+  - "Change an inference parameter without changing prompt text and verify the release identity changes."
+  - "Rebuild retrieval state under the same logical index or environment name and verify data snapshot and build identity distinguish the new artifact."
+  - "Change one tool schema or policy configuration and verify the manifest diff exposes the change."
+  - "Inject an unresolved latest-style reference into a candidate and make the release validation fail or resolve it to a concrete version before promotion."
+  - "Diagnose or reconstruct one prior request using the manifest identifier preserved on its trace."
+  - "Restore one known-good manifest and verify the system does not retain a newer prompt, retrieval, tool, gateway, or policy artifact."
+exit_evidence:
+  - "An artifact inventory identifies the behavior-defining state that requires release identity."
+  - "A release-manifest schema or contract is inspectable."
+  - "Current production and candidate manifests use concrete version identifiers."
+  - "A manifest diff identifies every intentionally changed artifact."
+  - "Concrete model identity and prompt or template identity are recorded."
+  - "Inference or runtime model configuration identity is explicit."
+  - "Retrieval data snapshot and index-build or retrieval configuration identity are explicit."
+  - "Tool, gateway, policy, application, and feature configuration identities are present when applicable."
+  - "Production traces link to a release manifest."
+  - "Evaluation results link to the candidate manifest they evaluated."
+  - "A mutable alias resolution test proves an old release record does not silently follow a newer alias target."
+  - "Unresolved latest-style references are rejected or resolved before release evidence is finalized."
+  - "A known-good rollback manifest restores the complete behavior set rather than only one component."
+  - "At least one identity is deliberately inherited from an existing immutable snapshot instead of receiving redundant version metadata, with the reason recorded."
+transfer:
+  task: "Redesign the release-manifest artifact graph for a different AI system in which the model is stable but the dataset, tool catalog, or policy layer changes independently."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.mlflow-model-registry
+    - docs.mlflow-model-registry-workflows
+    - docs.mlflow-prompt-lifecycle
+    - docs.mlflow-prompt-app-lineage
+    - docs.dvc-command-reference
+    - docs.pro-git-objects
+  practice:
+    - docs.mlflow-prompt-lifecycle
+    - docs.dvc-command-reference
+  production-reference:
+    - docs.mlflow-model-registry-workflows
+    - docs.mlflow-prompt-app-lineage
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
