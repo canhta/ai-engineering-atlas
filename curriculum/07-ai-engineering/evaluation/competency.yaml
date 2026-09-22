@@ -2,33 +2,75 @@ id: ai.evaluation
 title: AI Evaluation and Experimentation
 domain: ai-engineering
 status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
 target_level: L3
-why: AI system changes require repeatable measurement of quality, failures, latency, and cost.
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: AI system changes are difficult to reason about without repeatable evidence for quality, failures, variance, latency, and cost.
+curriculum_evidence:
+  - book.chip-huyen-ai-engineering
+  - repo.made-with-ml
 prerequisites:
   - ml.experimental-design
   - software.testing
 outcomes:
-  - Build versioned evaluation datasets.
-  - Separate deterministic, semantic, retrieval, and agent evaluation.
+  - Define evaluation criteria from a product or system objective.
+  - Evaluate system components separately from end-to-end behavior.
+  - Build and version representative evaluation data.
+  - Combine deterministic, semantic, retrieval, and agent evaluation where appropriate.
   - Measure repeated-run variance for stochastic systems.
-  - Analyze failure categories and production regressions.
-  - Define release gates using explicit thresholds.
+  - Perform failure analysis using categories and slices.
+  - Turn production failures into regression cases.
+  - Define release gates using explicit quality, latency, and cost constraints.
 diagnostic:
-  - Can distinguish a benchmark improvement from measurement noise.
-  - Can design a regression set from production failures.
-practice:
-  labs:
-    - labs/eval-harness
-  experiments:
-    - experiments/model-comparison
-exit_criteria:
-  - build-versioned-eval-set
-  - compare-two-systems
-  - analyze-failures
-  - define-release-gate
+  tasks:
+    - Design an evaluation plan for a prompt, retrieval, or model change without relying only on average answer quality.
+    - Explain how you would separate retrieval failure from generation failure in a RAG system.
+    - Explain when an LLM judge needs calibration and what you would calibrate it against.
+    - Decide what evidence would block a release.
+  pass_condition: Skip introductory evaluation material only if the learner can produce a concrete evaluation design with component metrics, representative data, failure analysis, repeated runs when needed, and release criteria.
+learning_route:
+  mental_model:
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 3 (Evaluation Methodology) and Chapter 4 section "Design Your Evaluation Pipeline"
+      purpose: Learn evaluation methods, model/system criteria, component evaluation, guidelines, methods, and data.
+    - source: repo.made-with-ml
+      locator: Evaluation lesson
+      purpose: Connect overall metrics to per-class, slicing, behavioral testing, and online evaluation.
+  guided_practice:
+    - task: Take one existing AI feature and write an evaluation matrix covering objective, unit of evaluation, dataset, metric, failure categories, latency, cost, and release threshold.
+  independent_practice:
+    - task: Build a small evaluation harness that compares two system configurations and stores versioned results.
+experiments:
+  - Run the same stochastic system multiple times and measure outcome variance.
+  - Compare aggregate metrics with slice-level or failure-category analysis.
+  - Calibrate one model-based judge against a small human-reviewed set.
+exit_evidence:
+  - Produce a versioned evaluation set and rationale for its coverage.
+  - Compare two system configurations using explicit metrics.
+  - Separate at least one component-level failure from an end-to-end failure.
+  - Analyze failure categories or slices rather than only aggregate scores.
+  - Define a release gate that includes quality and at least one operational constraint.
+transfer:
+  task: Redesign the evaluation for an agent workflow with tool calls, including trajectory or tool-use evidence rather than only final-answer quality.
+review:
+  suggested_intervals_days: [7, 30]
+  retrieval_tasks:
+    - Reconstruct the evaluation pipeline from objective to release decision.
+    - Given a new failure report, decide where it belongs in the eval set and how it should be measured.
+project_spines:
+  - ai-system
+  - production
 resources:
   primary:
     - book.chip-huyen-ai-engineering
+  reference:
+    - repo.made-with-ml
 metadata:
   last_reviewed: 2026-09-22
   evidence_required: true
