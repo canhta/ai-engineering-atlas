@@ -1,0 +1,6 @@
+candidate,quality_score,p95_latency_ms,cost_per_1k_tasks_usd,structured_output,deployment,data_policy_ok,notes
+A,0.90,2400,18,true,hosted,true,highest quality but misses latency
+B,0.86,1500,10,true,hosted,true,balanced hosted option
+C,0.83,900,4,true,self-hosted,true,fast but below quality target
+D,0.85,1700,15,true,self-hosted,true,acceptable quality with more operational work
+E,0.88,1400,9,false,hosted,true,missing required structured output
