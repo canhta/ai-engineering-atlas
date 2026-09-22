@@ -62,3 +62,26 @@ A learner should know exactly where to begin and why that source is there.
 - [roadmaps.yaml](roadmaps.yaml)
 - [visuals.yaml](visuals.yaml)
 - [jobs.yaml](jobs.yaml)
+
+## How resources reach the learner
+
+The registry is not the learner interface.
+
+A competency selects a resource by stable ID and adds an exact locator and purpose in `competency.yaml`. For every `seeded` or `ready` route, those fields are rendered into the route README as a clickable **Learning sources** table.
+
+```text
+resources/*.yaml
+→ resource ID + canonical URL
+→ competency.yaml exact locator + purpose
+→ generated README Learning sources block
+→ practice / experiment
+→ exit evidence
+```
+
+After changing source metadata or route locators, run:
+
+```bash
+python scripts/render_learning_sources.py --write
+make check
+```
+
