@@ -1,10 +1,11 @@
 # RFC: Context Engineering and Tool Calling Slice
 
-- Status: Accepted — implementation amendment pending review
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
 - Reviewed: 2026-09-22
 - Review decision: Approved by repository owner
+- Amendment review: Approved by repository owner on 2026-09-22
 
 ## Problem
 
@@ -303,7 +304,7 @@ Implementation will use this corrected dependency:
 - prompt-injection/trust-boundary behavior remains mandatory in Tool Calling outcomes, practice, and applied evidence;
 - the existing `security.prompt-injection` route remains the dedicated deeper security route and can reference ready Tool Calling after promotion.
 
-This is a topology correction, not a reduction of the security requirement. Because prerequisite changes are substantive under repository governance, this amendment requires explicit repository-owner review before Tool Calling is promoted to `ready`. The repository validator now rejects prerequisite cycles so this class of error cannot silently recur.
+This is a topology correction, not a reduction of the security requirement. The prerequisite amendment was explicitly approved by the repository owner before Tool Calling promotion. The repository validator now rejects prerequisite cycles so this class of error cannot silently recur.
 
 ## Knowledge Assistant integration
 
@@ -386,15 +387,15 @@ Not proposed as a hard prerequisite because the existing ready `security.prompt-
 
 ## Review checklist
 
-- [ ] Evidence is traceable and source locators are specific enough to author routes.
-- [ ] Context engineering is distinct from prompt engineering, retrieval, context-window mechanics, and memory.
-- [ ] Tool calling is distinct from structured outputs, permission architecture, and agentic control.
-- [ ] Proposed L3 depth is appropriate for an Applied AI Engineer.
-- [ ] Context-engineering prerequisites are justified.
-- [ ] Tool-calling prerequisites and API-design bridge are justified.
-- [ ] Context evidence includes ablation/failure work rather than token-count optimization alone.
-- [ ] Tool evidence includes validation, errors, retries, idempotency, and deterministic authorization.
-- [ ] Tool-result design considers context quality/token efficiency.
-- [ ] Evaluation covers raw tool traces, not final-answer quality alone.
-- [ ] Knowledge Assistant integration extends the existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before any promotion.
+- [x] Evidence is traceable and source locators are specific enough to author routes.
+- [x] Context engineering is distinct from prompt engineering, retrieval, context-window mechanics, and memory.
+- [x] Tool calling is distinct from structured outputs, permission architecture, and agentic control.
+- [x] Proposed L3 depth is appropriate for an Applied AI Engineer.
+- [x] Context-engineering prerequisites are justified.
+- [x] Tool-calling prerequisites and API-design bridge are justified.
+- [x] Context evidence includes ablation/failure work rather than token-count optimization alone.
+- [x] Tool evidence includes validation, errors, retries, idempotency, and deterministic authorization.
+- [x] Tool-result design considers context quality/token efficiency.
+- [x] Evaluation covers raw tool traces, not final-answer quality alone.
+- [x] Knowledge Assistant integration extends the existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before any promotion.
