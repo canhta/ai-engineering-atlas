@@ -2,6 +2,7 @@
 
 A gap-driven roadmap for software engineers learning modern AI engineering.
 
+[![Validate curriculum](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml/badge.svg)](https://github.com/canhta/ai-engineering-atlas/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **New here? Start with [START_HERE.md](START_HERE.md).**
@@ -26,9 +27,9 @@ target
 ## Use the Atlas
 
 1. [Start here](START_HERE.md) — choose a target, run the baseline scan, create a learner record.
-2. [Roadmap](ROADMAP.md) — see the complete audited coverage map.
+2. [Roadmap](ROADMAP.md) — browse the audited coverage map.
 3. [Applied AI Engineer path](paths/applied-ai-engineer.md) — a reference path for the main audience.
-4. [Curriculum](curriculum/) — enter domain and competency routes.
+4. [Curriculum](curriculum/) — enter domains and ready competency routes.
 5. [Projects](projects/) — integrate skills in evolving reference systems.
 6. [Progress](progress/) — record evidence instead of content completion.
 
@@ -36,7 +37,7 @@ target
 
 The repository separates **coverage** from **ready learning routes**.
 
-Broad domain coverage has been audited across software engineering, systems, data, ML/DL, LLMs, applied AI, agents, production, security, multimodal systems, and specializations.
+The canonical [competency catalog](curriculum/catalog.yaml) currently maps the audited scope with stable IDs. Coverage nodes become ready only after they have diagnostics, verified source locators, practice, and evidence criteria.
 
 Ready lifecycle-based routes currently include:
 
@@ -48,7 +49,7 @@ Reference systems:
 - [Tiny Transformer](projects/tiny-transformer/)
 - [Knowledge Assistant](projects/knowledge-assistant/)
 
-Additional coverage items are deliberately not presented as finished lessons until they have diagnostics, precise sources, practice, and evidence criteria.
+This maturity is intentional: the repository does not present a topic as a finished lesson merely because it appears on the roadmap.
 
 ## Curriculum areas
 
@@ -89,7 +90,7 @@ Read:
 - [AGENTS.md](AGENTS.md)
 - [CURRICULUM.md](CURRICULUM.md)
 
-Substantial curriculum changes should include evidence and use the RFC process.
+Run `make check` before a pull request. Substantial curriculum changes should include evidence and use the RFC process.
 
 ## Acknowledgements
 
