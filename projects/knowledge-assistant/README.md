@@ -14,6 +14,8 @@ For durable execution and cross-session information, continue with the [State an
 
 For adaptive decomposition and outcome checking, continue with the [Planning and Verification evidence contract](planning-and-verification/). Keep this single-agent/stateful first: prove planning and verification value before adding orchestration or multiple agents.
 
+For work that spans waits, restarts, routing, or parallel branches, continue with the [Runtime and Orchestration evidence contract](runtime-and-orchestration/). First make the run durable; then add orchestration only where routing or concurrency measurably improves the same task lineage.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -339,7 +341,49 @@ Define success criteria before execution and verify real outcomes rather than tr
 
 **Decision:** keep, simplify, or remove each verifier stage.
 
-## Milestone 15 — service and observability
+## Milestone 15 — long-running runtime
+
+Use the [Long-Running Agents](../../curriculum/08-agents/long-running/) route.
+
+Introduce a real or simulated wait/process boundary instead of keeping one worker alive.
+
+**Evidence:**
+
+- durable run lifecycle and ID;
+- execution budget;
+- pause/wait and resume trace;
+- worker/process replacement;
+- retryable and non-retryable failure behavior;
+- timeout/cancellation/escalation;
+- concurrent-resume protection;
+- side-effect replay/idempotency evidence;
+- partial-progress artifact;
+- final verification;
+- comparison with the simpler synchronous baseline.
+
+**Decision:** keep, simplify, or remove the durable runtime from evidence.
+
+## Milestone 16 — orchestration
+
+Use the [AI Workflow Orchestration](../../curriculum/08-agents/orchestration/) route.
+
+Keep a simpler single-flow baseline.
+
+**Experiment:**
+
+- identify a real routing, parallelism, or dynamic-subtask problem;
+- mark every flow decision as code-controlled, model-controlled, or hybrid;
+- bound concurrency;
+- define fan-out/fan-in where relevant;
+- inject a branch failure or timeout;
+- record failure-containment behavior;
+- verify the aggregate result;
+- ablate one orchestration stage;
+- compare quality, latency, cost, calls, and operational complexity.
+
+**Decision:** keep single flow, use orchestration, or defer multi-agent architecture.
+
+## Milestone 17 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -355,7 +399,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 16 — release gate
+## Milestone 18 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -368,7 +412,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 17 — security failure work
+## Milestone 19 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -381,7 +425,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 18 — incident and feedback loop
+## Milestone 20 — incident and feedback loop
 
 Inject or analyze one failure:
 
