@@ -5,8 +5,8 @@
 ## Summary
 
 - **116** catalog competencies
-- **8** ready learning routes
-- **108** coverage-only competencies
+- **11** ready learning routes
+- **105** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -20,7 +20,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | ML Foundations | 9 | 0 |
 | Deep Learning | 5 | 0 |
 | LLM Foundations | 11 | 1 |
-| AI Engineering | 26 | 5 |
+| AI Engineering | 26 | 8 |
 | Agents | 10 | 1 |
 | Production AI | 11 | 0 |
 | Security & Governance | 10 | 1 |
@@ -36,6 +36,9 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `ai.model-selection` — Model Selection | AI Engineering | [Open route](07-ai-engineering/model-selection/) |
 | `ai.embeddings` — Embeddings for AI Applications | AI Engineering | [Open route](07-ai-engineering/embeddings/) |
 | `retrieval.search` — Search and Retrieval | AI Engineering | [Open route](07-ai-engineering/search-retrieval/) |
+| `retrieval.chunking` — Chunking | AI Engineering | [Open route](07-ai-engineering/chunking/) |
+| `retrieval.reranking` — Reranking | AI Engineering | [Open route](07-ai-engineering/reranking/) |
+| `retrieval.rag-evaluation` — RAG Evaluation | AI Engineering | [Open route](07-ai-engineering/rag-evaluation/) |
 | `ai.evaluation` — AI Evaluation and Experimentation | AI Engineering | [Open route](07-ai-engineering/evaluation/) |
 | `agents.deterministic-vs-agentic` — Deterministic vs Agentic Design | Agents | [Open route](08-agents/deterministic-vs-agentic/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
