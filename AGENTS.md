@@ -4,11 +4,12 @@ Guidance for AI agents and coding assistants working in this repository.
 
 ## Read first
 
-Before changing curriculum, assessments, learning routes, labs, projects, or public-facing learning content, read:
+Before changing curriculum, assessments, learning routes, labs, projects, resources, or public-facing learning content, read:
 
 1. [LEARNING_MODEL.md](LEARNING_MODEL.md)
 2. [CURRICULUM.md](CURRICULUM.md)
-3. [CONTRIBUTING.md](CONTRIBUTING.md)
+3. [curriculum/catalog.yaml](curriculum/catalog.yaml)
+4. [CONTRIBUTING.md](CONTRIBUTING.md)
 
 The learning model takes precedence over folder conventions.
 
@@ -29,37 +30,52 @@ A curriculum change must answer:
 - What evidence proves the outcome?
 - Does transfer, delayed retrieval, or project integration matter?
 
-If these questions cannot be answered from reviewed sources, mark the competency incomplete rather than filling the gap with model-generated material.
+If these questions cannot be answered from reviewed sources, keep the item at **coverage** status rather than filling the gap with model-generated material.
+
+## Catalog-first rule
+
+[curriculum/catalog.yaml](curriculum/catalog.yaml) is the canonical registry of competency IDs.
+
+Before adding a prerequisite, project reference, progress reference, or ready route:
+
+1. search the catalog for an existing competency;
+2. reuse the existing stable ID when the capability is already represented;
+3. if genuinely missing, add a **coverage** item with evidence through the RFC process;
+4. only promote it to **ready** when the full learning-route contract is satisfied.
+
+Never create prerequisite IDs ad hoc inside a competency file.
+
+Never mark a catalog item ready merely because a README was written.
 
 ## Reference systems
 
 Use these as design references, but extract their learning mechanisms rather than copying their surface layout.
 
 - OSSU Computer Science — independent curriculum standards, prerequisites, alternate assessments, curriculum governance, final-project consolidation
-- Microsoft learning repositories — scenario, learning goals, explanation, assignment, solution, knowledge check, challenge, next step
+- Microsoft ML / GenAI learning repositories — pre-assessment, scenario, goals, activities, project, assignment, feedback, challenge, post-assessment, progress rubric
 - Made With ML — problem framing, one evolving system, evaluation, testing, production, feedback and iteration
 - roadmap.sh — learner navigation, progress UX, skill-gap and AI-assistance patterns
 - mlabonne/llm-course — resource discovery and concise technical maps
 
 Other high-quality sources may be used when they are more authoritative for a competency.
 
-## Curriculum content
-
-AI must not infer required curriculum content solely from general model knowledge.
+## Curriculum workflow
 
 When adding or changing a competency:
 
 1. Gather curriculum evidence.
-2. Define the observable capability.
-3. Identify prerequisites.
-4. Decide the competency type and appropriate evidence.
-5. Design a diagnostic that can reveal prior knowledge.
-6. Select a precise learning route through real sources.
-7. Select or design practice.
-8. Define exit evidence.
-9. Add transfer, project integration, or delayed review when the competency requires them.
-10. Check for overlap with existing competencies.
-11. Use an RFC for substantial changes.
+2. Check the canonical catalog.
+3. Define the observable capability.
+4. Identify prerequisites using catalog IDs.
+5. Decide the competency type and appropriate evidence.
+6. Design a diagnostic that can reveal prior knowledge.
+7. Select a precise learning route through real sources.
+8. Select or design practice.
+9. Define exit evidence.
+10. Add transfer, project integration, or delayed review when required.
+11. Check for overlap with existing competencies.
+12. Use an RFC for substantive changes.
+13. Run `make check`.
 
 Do not equate "covered by a book/course" with "learned."
 
@@ -82,7 +98,24 @@ Better:
 - exact visual segment;
 - exact production case or standard.
 
+For a ready route, verify the locator against the source before committing it.
+
 The repository should route learners through sources rather than become an AI-written substitute for those sources.
+
+## Practice packaging
+
+Practice should match the capability.
+
+When a lab is useful, prefer:
+
+- a clear task;
+- starter state;
+- runnable checks where appropriate;
+- failure or debugging work;
+- a transfer challenge when relevant;
+- a reference solution that is not the default path.
+
+Do not create an empty lab directory to satisfy a template.
 
 ## Assessment rules
 
@@ -97,7 +130,9 @@ Assessment must match the capability type.
 
 Do not use a generic quiz as the exit test for an engineering or production competency.
 
-Passing an immediate exit test means demonstrated, not automatically retained or applied.
+Passing an immediate exit test means demonstrated, not automatically transferred, retained, or applied.
+
+Use [assessments/evidence-rubric.md](assessments/evidence-rubric.md) when reviewing learner evidence.
 
 ## Adaptive guidance
 
@@ -131,8 +166,9 @@ AI must not:
 - create authoritative learning objectives without evidence;
 - mark learning complete because material was consumed;
 - treat self-reported confidence as mastery;
-- use an opaque LLM judgment as the sole evidence for important subjective assessments;
-- generate full lesson content and then cite itself as the source.
+- use opaque LLM judgment as the sole evidence for important subjective assessments;
+- generate full lesson content and then cite itself as the source;
+- promote a coverage node to ready without the complete contract.
 
 ## Public-facing writing
 
@@ -145,7 +181,8 @@ Prefer:
 - clear navigation;
 - tables and indexes;
 - real links;
-- verifiable claims.
+- verifiable claims;
+- explicit maturity/status.
 
 Avoid:
 
@@ -154,21 +191,24 @@ Avoid:
 - generic AI-generated prose;
 - repeated "not X, but Y" constructions;
 - decorative diagrams with no learning or navigation value;
-- empty directories created only to make the repository look complete.
-
-Detailed policy belongs in dedicated files rather than the root README.
+- empty directories created only to make the repository look complete;
+- presenting coverage nodes as finished lessons.
 
 ## Before committing
 
 Check:
 
 - Does this change follow LEARNING_MODEL.md?
+- Is every competency/reference registered in the catalog?
 - Is the competency evidence-based?
 - Is the learning route precise enough to start immediately?
+- Were source locators actually verified?
 - Does practice match the capability?
 - Does assessment measure the stated outcome?
 - Did I distinguish demonstrated, transferred, retained, and applied evidence?
 - Did I avoid generating content merely to fill a template?
+- Is maturity represented truthfully?
 - Is public wording concrete and restrained?
+- Does `make check` pass?
 
 If not, revise before committing.
