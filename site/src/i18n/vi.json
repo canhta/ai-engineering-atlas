@@ -178,5 +178,6 @@
   "progress.queueEmpty": "Chưa có gì cần ôn. Lịch ôn bắt đầu khi bạn đã làm được một kỹ năng.",
   "drawer.missingTitle": "Không tìm thấy",
   "drawer.missing": "Không có kỹ năng nào có id {id}. Có thể id đã đổi; hãy tìm trong atlas.",
-  "storage.blocked": "Trình duyệt đang chặn lưu trữ, tiến độ chỉ còn tới khi bạn rời trang. Xuất file ở trang Tiến độ để giữ lại."
+  "storage.blocked": "Trình duyệt đang chặn lưu trữ, tiến độ chỉ còn tới khi bạn rời trang. Xuất file ở trang Tiến độ để giữ lại.",
+  "progress.localNote": "Chỉ lưu trên trình duyệt này. Xuất file để giữ bản sao hoặc chuyển sang máy khác."
 }

@@ -33,7 +33,6 @@
   --scrim: #15201966; /* dims content under sheets and overlays */
 
   --shadow-float: 0 18px 48px -20px #1520194d, 0 2px 8px -2px #1520191f;
-  --shadow-bar: 0 -8px 24px -12px #15201940;
   --blur-glass: blur(18px) saturate(1.4);
 
   /* Type */
@@ -118,6 +117,5 @@
     --scrim: #000000a3;
 
     --shadow-float: 0 18px 48px -18px #000000b3, 0 2px 8px -2px #00000066;
-    --shadow-bar: 0 -8px 24px -12px #000000b3;
   }
 }

@@ -3,7 +3,7 @@
 import { useTranslations, type Lang } from "../../i18n";
 import { useStorageAvailable } from "../../lib/progress-store";
 
-export function StorageNote({ lang, className = "" }: { lang: Lang; className?: string }) {
+export function StorageNote({ lang, className = "", note = "log.localNote" }: { lang: Lang; className?: string; note?: "log.localNote" | "progress.localNote" }) {
   const t = useTranslations(lang);
   const available = useStorageAvailable();
   if (available === false) {
@@ -13,5 +13,5 @@ export function StorageNote({ lang, className = "" }: { lang: Lang; className?: 
       </p>
     );
   }
-  return <p className={`small muted ${className}`}>{t("log.localNote")}</p>;
+  return <p className={`small muted ${className}`}>{t(note)}</p>;
 }

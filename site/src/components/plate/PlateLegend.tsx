@@ -1,5 +1,5 @@
 // Plate legend (DESIGN.md → The plate): the encodings, or in progress mode one entry per learner
-// state with its count. Beyond demonstrated, the state's icon tells the full tiles apart.
+// state with its count. Only the glyph carries the state colour; labels stay ink-muted.
 import { useTranslations, type Lang } from "../../i18n";
 import { STATES, type State } from "../../lib/progress";
 import { Icon } from "../react/Icon";
@@ -20,7 +20,7 @@ export default function PlateLegend({ lang, stateLabels, counts }: Props) {
     return (
       <ul className="legend" aria-label={t("legend.label")}>
         {STATES.map((s) => (
-          <li key={s} className={`state-${s}`}>
+          <li key={s}>
             <TileGlyph fill={tileFill(true, s)} state={s} />
             {BEYOND.includes(s) && <Icon name={s} />}
             <span className="legend-label">{stateLabels[s]}</span>

@@ -91,6 +91,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
   | demonstrated | full fill | `state-demonstrated` (green) |
   | transferred, retained, applied | full fill with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
 
+- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`.
 - Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) and shows a title tooltip (hidden from assistive tech; the tile's name carries the title). Below 1024 there are no lines.
 - Modes: `overview` (Home) and `progress` (Progress): tiles are links to `/map/?item=<id>`, so they work without JavaScript; mapped tiles recede in progress mode but stay clickable. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles.
 - Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); arrow keys move within a region, Tab moves between regions; the list view is the full equivalent.

@@ -217,7 +217,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
       <p role="status" className="live-message">
         {message}
       </p>
-      <StorageNote lang={lang} />
+      <StorageNote lang={lang} note="progress.localNote" />
     </div>
   );
 }

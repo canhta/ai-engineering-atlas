@@ -178,5 +178,6 @@
   "progress.queueEmpty": "Nothing to review yet. Reviews are scheduled once you demonstrate a competency.",
   "drawer.missingTitle": "Not found",
   "drawer.missing": "No competency has the id {id}. It may have been renamed; search the atlas instead.",
-  "storage.blocked": "This browser blocks storage, so your progress lasts only until you leave this page. Export it from Progress to keep it."
+  "storage.blocked": "This browser blocks storage, so your progress lasts only until you leave this page. Export it from Progress to keep it.",
+  "progress.localNote": "Stored only in this browser. Export to keep a copy or move to another device."
 }
