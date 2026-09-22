@@ -54,7 +54,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 365
 
-- id: paper.memgpt
+  - id: paper.memgpt
     type: paper
     title: MemGPT — Towards LLMs as Operating Systems
     author: Charles Packer, Sarah Wooders, Kevin Lin, Vivian Fang, Shishir G. Patil, Ion Stoica, and Joseph E. Gonzalez
