@@ -34,7 +34,7 @@ learning_route:
   guided_practice:
     - task: Rewrite one vague "build an AI assistant" request into a one-page frame without choosing a model, vector database, or agent framework.
   independent_practice:
-    - artifact: projects/knowledge-assistant/
+    - artifact: projects/knowledge-assistant/foundation/
       task: Produce the Knowledge Assistant product brief, baseline definition, versioned representative query set, constraints, unacceptable failures, and first evaluation contract.
 experiments:
   - Remove the AI assumption and test whether a simpler search/manual workflow already satisfies the objective.
