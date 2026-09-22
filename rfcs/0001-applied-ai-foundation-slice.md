@@ -138,13 +138,17 @@ Rejected. Validators check repository contracts; they do not provide human curri
 - migration:
   - none unless review requests demotion or contract changes
 
+## Implementation outcome
+
+Approved on 2026-09-22. The existing `ai.product-framing`, `retrieval.search`, and `ai.embeddings` routes were reviewed under this RFC and retained as `ready`. Their Knowledge Assistant foundation evidence contract remains the integration target.
+
 ## Review checklist
 
-- [ ] Evidence is traceable.
-- [ ] The competencies do not duplicate existing catalog nodes.
-- [ ] Target level and target states are justified.
-- [ ] Prerequisites and the `math.dot-product` bridge are justified.
-- [ ] Exit criteria are testable.
-- [ ] The Knowledge Assistant artifacts are sufficient evidence rather than completion-by-template.
-- [ ] Resource choices do not silently redefine the competencies.
-- [ ] Reviewer explicitly accepts, requests changes, or requests demotion.
+- [x] Evidence is traceable.
+- [x] The competencies do not duplicate existing catalog nodes.
+- [x] Target level and target states are justified.
+- [x] Prerequisites and the `math.dot-product` bridge are justified.
+- [x] Exit criteria are testable.
+- [x] The Knowledge Assistant artifacts are sufficient evidence rather than completion-by-template.
+- [x] Resource choices do not silently redefine the competencies.
+- [x] Reviewer explicitly accepts, requests changes, or requests demotion.
