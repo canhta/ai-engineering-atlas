@@ -31,3 +31,69 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+- id: article.anthropic-context-engineering
+    type: article
+    title: Effective context engineering for AI agents
+    author: Anthropic Applied AI team
+    url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [ai.context-engineering, agents, context-management]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.openai-harness-engineering
+    type: article
+    title: Harness engineering — leveraging Codex in an agent-first world
+    author: OpenAI
+    url: https://openai.com/index/harness-engineering/
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [ai.context-engineering, agents, context-management]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.openai-function-calling
+    type: documentation
+    title: OpenAI — Function Calling
+    author: OpenAI
+    url: https://help.openai.com/en/articles/8555517-function-calling-in-the-openai-api
+    roles: [teaching, practice, reference]
+    covers: [ai.tool-calling, structured-outputs]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.anthropic-tool-use
+    type: documentation
+    title: Anthropic — Tool use
+    author: Anthropic
+    url: https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview
+    roles: [teaching, practice, reference]
+    covers: [ai.tool-calling, agents]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.anthropic-writing-tools
+    type: article
+    title: Writing effective tools for agents — with agents
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/writing-tools-for-agents
+    roles: [curriculum-evidence, teaching, practice, assessment, production-reference]
+    covers: [ai.tool-calling, ai.context-engineering, agents]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: article.openai-agent-prompt-injection
+    type: article
+    title: Designing AI agents to resist prompt injection
+    author: OpenAI
+    url: https://openai.com/index/designing-agents-to-resist-prompt-injection/
+    roles: [curriculum-evidence, production-reference, reference]
+    covers: [ai.tool-calling, security.prompt-injection, security.tool-permissions]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
