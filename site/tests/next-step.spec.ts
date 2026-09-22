@@ -47,12 +47,13 @@ test("an imported progress.yaml: Home leads with the due check, Progress leaves 
   await expect(rows.first()).toContainText("You started this");
   await expect(nextList(page)).not.toContainText("AI Evaluation and Experimentation");
   await expect(page.getByRole("region", { name: "Review" })).toContainText("AI Evaluation and Experimentation");
+  await expect(page.getByRole("region", { name: "Review" })).toContainText("due Jan 1, 2026");
 
   await open(page, "/en/");
   const home = nextList(page).getByRole("listitem");
   await expect(home).toHaveCount(3);
   await expect(home.first()).toContainText("AI Evaluation and Experimentation");
-  await expect(home.first()).toContainText("Check due 2026-01-01");
+  await expect(home.first()).toContainText("Check due Jan 1, 2026");
   await expect(home.first().getByRole("link")).toHaveAttribute("href", "/en/routes/ai.evaluation/#diagnostic");
   await expect(home.nth(1).getByRole("link")).toHaveAttribute("href", "/en/routes/ai.product-framing/");
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
@@ -72,7 +73,7 @@ test("@mobile the next list reads as a single column on Home and Progress", asyn
 
   await open(page, "/vi/");
   const first = page.getByRole("region", { name: "Tiếp theo cho bạn" }).getByRole("listitem").first();
-  await expect(first).toContainText("Đến hạn ôn (2026-01-01)");
+  await expect(first).toContainText("Đến hạn ôn ngày 01/01/2026");
   const box = await first.boundingBox();
   expect(box && box.x + box.width).toBeLessThanOrEqual(390);
 });

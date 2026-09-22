@@ -50,6 +50,7 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 
 - Every UI string key exists in both [src/i18n/en.json](src/i18n/en.json) and `vi.json` with the same `{params}`, and no `vi` value is longer than 1.3 × its `en` value + 12 characters; `pnpm run check:i18n` enforces it.
 - **Any Vietnamese string** → follow [VIETNAMESE_STYLE.md](../VIETNAMESE_STYLE.md): voice, glossary, word choice, punctuation, numbers, and dates. `check:i18n` enforces its mechanical rules.
+- Dates shown to learners go through `formatDate(iso, lang)` in `src/lib/dates.ts` (Intl: dd/mm/yyyy on `/vi/`, "Jan 1, 2026" on `/en/`) inside `<time dateTime={iso}>`. Files keep ISO dates.
 - Curriculum text rendered on a `/vi/` page carries `lang="en"` (WCAG 3.1.2).
 - English contracts are canonical. Vietnamese route text comes only from reviewed `competency.vi.yaml` files; a missing or stale translation shows English with `lang="en"` and the marker "chưa dịch / not yet translated". Machine translation is never rendered.
 - The repository owner reviews Vietnamese before merge.

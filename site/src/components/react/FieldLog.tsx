@@ -4,6 +4,7 @@
 import { useState, type SubmitEvent } from "react";
 import { Button, Dialog, Disclosure, DisclosurePanel, Heading, Modal, ModalOverlay } from "react-aria-components";
 import { useTranslations, type Lang } from "../../i18n";
+import { formatDate } from "../../lib/dates";
 import {
   EVIDENCE_KINDS,
   EVIDENCE_STATES,
@@ -147,7 +148,7 @@ function LogPanel({
         </div>
         <div>
           <dt>{t("log.nextReview")}</dt>
-          <dd className="tabular">{entry?.review_on ? <time dateTime={entry.review_on}>{entry.review_on}</time> : "—"}</dd>
+          <dd className="tabular">{entry?.review_on ? <time dateTime={entry.review_on}>{formatDate(entry.review_on, lang)}</time> : "—"}</dd>
         </div>
       </dl>
       {progress && <p className="log-next">{t(`log.next.${state}`)}</p>}
@@ -244,7 +245,7 @@ function LogPanel({
                 <li key={e.id}>
                   <div className="timeline-head">
                     <time className="tabular" dateTime={e.recorded_at}>
-                      {e.recorded_at}
+                      {formatDate(e.recorded_at, lang)}
                     </time>
                     <span>{(EVIDENCE_KINDS as readonly string[]).includes(e.kind) ? t(`kind.${e.kind as (typeof EVIDENCE_KINDS)[number]}`) : e.kind}</span>
                   </div>

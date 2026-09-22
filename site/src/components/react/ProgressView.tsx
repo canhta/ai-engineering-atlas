@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button, FileTrigger } from "react-aria-components";
 import { useTranslations, type Lang } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
+import { formatDate } from "../../lib/dates";
 import { fromYaml, isDemonstrated, reviewQueue, STATES, today, toYaml, type Progress, type State } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
@@ -43,6 +44,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
   for (const ref of readyRefs) counts[stateOfRef(ref)] += 1;
   const queue = progress ? reviewQueue(progress, today()) : { due: [], upcoming: [] };
 
+  const dateCell = (iso: string | undefined, empty: string) => (iso ? <time dateTime={iso}>{formatDate(iso, lang)}</time> : empty);
   const title = (ref: string) => details[ref]?.title ?? { value: ref, lang: "en" as const };
   const link = (ref: string) => {
     const detail = details[ref];
@@ -111,7 +113,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                     <li key={ref}>
                       {link(ref)}
                       <time className="muted small tabular" dateTime={when}>
-                        {t("progress.dueOn", { date: when ?? "" })}
+                        {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
                       </time>
                       {detail?.href && (
                         <a className="pill pill-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
@@ -167,8 +169,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                   </td>
                   <td>{stateLabels[entry.target_state]}</td>
                   <td className="tabular">{entry.evidence.length}</td>
-                  <td className="tabular">{entry.evidence.at(-1)?.recorded_at ?? ""}</td>
-                  <td className="tabular">{entry.review_on ?? "—"}</td>
+                  <td className="tabular">{dateCell(entry.evidence.at(-1)?.recorded_at, "")}</td>
+                  <td className="tabular">{dateCell(entry.review_on, "—")}</td>
                 </tr>
               ))}
             </tbody>

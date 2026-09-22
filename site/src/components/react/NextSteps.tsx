@@ -4,6 +4,7 @@
 import { Fragment } from "react";
 import { useTranslations, type Lang } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
+import { formatDate } from "../../lib/dates";
 import { stateOf, today, type Progress } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import { adviceFor, hasEvidence, plan, recommend, type GraphItem, type Recommendation } from "../../lib/recommend";
@@ -14,7 +15,7 @@ const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined 
 
 function useReason(lang: Lang) {
   const t = useTranslations(lang);
-  return (r: Recommendation) => t(`next.reason.${r.reason}`, { date: r.due ?? "" });
+  return (r: Recommendation) => t(`next.reason.${r.reason}`, { date: r.due ? formatDate(r.due, lang) : "" });
 }
 
 interface ListProps {
