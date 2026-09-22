@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Engineering Atlas learner progress",
+  "type": "object",
+  "required": ["version", "updated_at", "competencies"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "updated_at": { "type": "string" },
+    "competencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["state", "target_state", "evidence", "next_action"],
+        "properties": {
+          "state": {
+            "enum": ["unassessed", "gap", "learning", "demonstrated", "transferred", "retained", "applied"]
+          },
+          "target_state": {
+            "enum": ["demonstrated", "transferred", "retained", "applied"]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["kind"],
+              "properties": {
+                "kind": { "type": "string" },
+                "uri": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          },
+          "independence": { "type": "string" },
+          "next_action": { "type": "string", "minLength": 1 },
+          "review_on": { "type": "string" }
+        }
+      }
+    }
+  }
+}
