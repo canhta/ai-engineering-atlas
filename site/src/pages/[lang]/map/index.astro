@@ -14,9 +14,12 @@ const t = useTranslations(lang);
 const regions = plateRegions(lang);
 const total = regions.reduce((n, r) => n + r.tiles.length, 0);
 // The other collections have index pages of their own (labs, projects, paths).
-const others = collections
-  .filter((other) => other.id !== c.id)
-  .map((other) => ({ href: `/${lang}/${pageSegment(other)}/`, label: text(other.label, lang) }));
+const others = [
+  ...collections
+    .filter((other) => other.id !== c.id)
+    .map((other) => ({ href: `/${lang}/${pageSegment(other)}/`, label: text(other.label, lang) })),
+  { href: `/${lang}/sources/`, label: { value: t("library.title"), lang } },
+];
 ---
 
 <Base lang={lang} title={t("map.title")} section="atlas">

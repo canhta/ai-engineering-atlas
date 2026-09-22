@@ -248,5 +248,13 @@
   "collection.count": "{shown}/{total} có trang riêng",
   "collection.practisesFor": "Thực hành cho",
   "collection.all": "{total} mục",
-  "collection.also": "Còn có trong atlas"
+  "collection.also": "Còn có trong atlas",
+  "library.title": "Tài liệu",
+  "library.intro": "Tất cả tài liệu atlas dẫn bạn tới, kèm phần cần đọc của từng lộ trình.",
+  "library.search": "Tìm tài liệu",
+  "library.searchPlaceholder": "Tên, tác giả, trang…",
+  "library.kind": "Loại",
+  "library.allKinds": "Tất cả",
+  "library.results": "{shown}/{total} tài liệu",
+  "library.noResults": "Không có tài liệu nào khớp."
 }

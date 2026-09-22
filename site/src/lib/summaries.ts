@@ -14,6 +14,8 @@ import {
   relations,
   relationsTo,
   resolveRef,
+  resolveResource,
+  resources,
   targetOf,
   text,
   trackedItems,
@@ -228,4 +230,89 @@ export function nextLinks(lang: Lang, refs?: string[]): Record<string, NextLink>
     links[ref] = { title: text(item.title, lang), href, check: href && diagnostic ? `${href}#${diagnostic.id}` : href };
   }
   return links;
+}
+
+// ---------------------------------------------------------------------------------------------
+// Library (DESIGN.md → Library): every source the atlas routes through, with the items that cite
+// it and the exact locators. Built from the blocks themselves, so it cannot drift from the routes.
+
+export interface LibraryCitation {
+  ref: string;
+  title: Localized;
+  url?: string;
+  locator?: Localized;
+  purpose?: Localized;
+}
+
+export interface LibraryEntry {
+  key: string;
+  title: string;
+  url: string;
+  host: string;
+  kind?: string;
+  author?: string;
+  citations: LibraryCitation[];
+  /** Lowercased title, author, host, and citing titles, for the client-side search. */
+  haystack: string;
+}
+
+export function library(lang: Lang): LibraryEntry[] {
+  const found = new Map<string, LibraryEntry>();
+
+  const cite = (key: string | undefined, citation: LibraryCitation) => {
+    if (!key) return;
+    const resolved = resolveResource(key);
+    if (!resolved.url) return;
+    const entry = found.get(key) ?? {
+      key,
+      title: resolved.title,
+      url: resolved.url,
+      host: resolved.host,
+      kind: resolved.kind,
+      author: resources[key]?.author,
+      citations: [],
+      haystack: "",
+    };
+    const same = (a?: Localized, b?: Localized) => a?.value === b?.value;
+    if (!entry.citations.some((c) => c.ref === citation.ref && same(c.locator, citation.locator))) {
+      entry.citations.push(citation);
+    }
+    found.set(key, entry);
+  };
+
+  for (const collection of collections) {
+    for (const item of itemsOf(collection.id)) {
+      const ref = refOf(collection, item);
+      const where = { ref, title: text(item.title, lang), url: itemUrl(lang, ref) };
+      for (const block of item.page?.blocks ?? []) {
+        if (block.type === "sources") {
+          for (const row of block.rows)
+            cite(row.resource, { ...where, locator: text(row.locator, lang), purpose: text(row.purpose, lang) });
+        }
+        if (block.type === "practice") {
+          for (const group of block.groups)
+            for (const entry of group.items)
+              cite(entry.resource, { ...where, locator: entry.locator ? text(entry.locator, lang) : undefined });
+        }
+        if (block.type === "prerequisites") {
+          for (const entry of block.items)
+            if (entry.bridge)
+              cite(entry.bridge.resource, {
+                ...where,
+                locator: entry.bridge.locator ? text(entry.bridge.locator, lang) : undefined,
+              });
+        }
+      }
+    }
+  }
+
+  return [...found.values()]
+    .map((entry) => ({
+      ...entry,
+      haystack: [entry.title, entry.author, entry.host, ...entry.citations.map((c) => c.title.value)]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase(),
+    }))
+    .sort((a, b) => b.citations.length - a.citations.length || a.title.localeCompare(b.title));
 }

@@ -482,3 +482,35 @@ test("each collection has an index page, reachable from the atlas", async ({ pag
   await page.getByRole("link", { name: "Self-Attention Lab" }).click();
   await expect(page).toHaveURL(/\/en\/labs\/self-attention\/$/);
 });
+
+test("the library lists every source, searchable, linking out and back to the routes", async ({ page }) => {
+  const model = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8"));
+  const sources = Object.keys(model.resources).length;
+
+  await open(page, "/en/map/");
+  await page.getByRole("navigation", { name: "Also in the atlas" }).getByRole("link", { name: "Library" }).click();
+  await expect(page).toHaveURL(/\/en\/sources\/$/);
+  await expect(page.locator(".library > li")).toHaveCount(sources);
+
+  // Each entry links to the public resource and cites the routes that use it.
+  const first = page.locator(".library > li").first();
+  await expect(first.locator(".library-head a")).toHaveAttribute("href", /^https?:\/\//);
+  await expect(first.locator(".library-citations a").first()).toHaveAttribute("href", /\/en\/routes\//);
+
+  // The status line is driven by the same state as the list, so waiting on it avoids racing hydration.
+  const search = page.getByRole("searchbox", { name: "Search sources" });
+  await search.click();
+  await search.fill("chip huyen");
+  await expect(page.getByRole("status")).toContainText(`1 of ${sources} sources`);
+  await expect(page.locator(".library > li")).toHaveCount(1);
+
+  await search.fill("");
+  await expect(page.getByRole("status")).toContainText(`${sources} of ${sources} sources`);
+  // The type label comes from the content model (resource_type), so match it case-insensitively.
+  await page.getByRole("button", { name: /^paper/i }).click();
+  const papers = Object.values(model.resources as Record<string, { type?: string }>).filter(
+    (r) => r.type === "paper",
+  ).length;
+  await expect(page.locator(".library > li")).toHaveCount(papers);
+  await expect(page.getByRole("status")).toContainText(`${papers} of ${sources} sources`);
+});

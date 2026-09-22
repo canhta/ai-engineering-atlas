@@ -37,6 +37,7 @@ Footer: site name and licence on the left, a "Star on GitHub" pill in the middle
 /{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
 /{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
 /{lang}/<collection>/         Index of a collection (labs, projects, paths), linked from the Atlas
+/{lang}/sources/             Library: every source the routes cite, searchable
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Field log: your states, review queue, your data
 ```
@@ -175,6 +176,20 @@ The Atlas answers "what is there"; Progress answers "where do I stand". They mus
 - Empty: every ready route unassessed, and "Start with a diagnostic on any ready route" with the CTA.
 
 **Next step.** Computed by `src/lib/recommend.ts` from prerequisites, states, and review dates; advice only, never a state change. Ranked: check due, continue (gap, learning), start (prerequisites demonstrated or bridged), transfer, apply. Home shows up to 3 beside the hero once there is evidence, and keeps the start CTA; Progress shows up to 5 above the queue, without due checks (the queue has them). A row is the rank in `route`, the tile glyph and title link (a due check links to the diagnostic), and the reason as one muted line: hairline rows, no cards. In the field log it is one line under "Next:", either "Recommended next (n of 5)." with the reason or "Learn first:" with the blocking prerequisites.
+
+### Library
+
+Every source the atlas routes through, in one searchable list. We do not rewrite these sources, so
+this page is the index of that promise: what to open, and which part of it each route asks for.
+
+- Built by `library()` in `src/lib/summaries.ts` from the blocks themselves (sources, practice,
+  prerequisite bridges), so a source cannot appear here without a route citing it, or drift from it.
+- A row is the source title linking out (with the external icon), its type chip, author and host,
+  then the citing items indented on a hairline: each links to its page with the exact locator under
+  it, `lang="en"` where the locator is untranslated.
+- Filters: a search field over title, author, host and citing titles, and one chip per type with its
+  count. Both run in the browser; the list is server-rendered, so it reads and links without
+  JavaScript. Ordered by how many routes cite a source, so the load-bearing ones come first.
 
 ### Labs
 

@@ -208,6 +208,7 @@ export const langAttr = (t: Localized, pageLang: Lang) => (t.lang === pageLang ?
 export const site = atlas.site;
 export const vocabularies = atlas.vocabularies;
 export const collections = atlas.collections;
+export const resources = atlas.resources;
 export const relations = atlas.relations;
 
 export const collection = (id: string) => collections.find((c) => c.id === id);

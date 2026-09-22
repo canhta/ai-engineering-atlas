@@ -225,6 +225,71 @@
         "order": 5
       }
     },
+    "resource_type": {
+      "book": {
+        "label": {
+          "en": "book",
+          "vi": "sách"
+        },
+        "order": 0
+      },
+      "course": {
+        "label": {
+          "en": "course",
+          "vi": "khóa học"
+        },
+        "order": 1
+      },
+      "paper": {
+        "label": {
+          "en": "paper",
+          "vi": "paper"
+        },
+        "order": 2
+      },
+      "article": {
+        "label": {
+          "en": "article",
+          "vi": "bài viết"
+        },
+        "order": 3
+      },
+      "documentation": {
+        "label": {
+          "en": "documentation",
+          "vi": "docs"
+        },
+        "order": 4
+      },
+      "guide": {
+        "label": {
+          "en": "guide",
+          "vi": "hướng dẫn"
+        },
+        "order": 5
+      },
+      "standard": {
+        "label": {
+          "en": "standard",
+          "vi": "tiêu chuẩn"
+        },
+        "order": 6
+      },
+      "visual": {
+        "label": {
+          "en": "video",
+          "vi": "video"
+        },
+        "order": 7
+      },
+      "repository": {
+        "label": {
+          "en": "repository",
+          "vi": "repo"
+        },
+        "order": 8
+      }
+    },
     "state": {
       "unassessed": {
         "label": {

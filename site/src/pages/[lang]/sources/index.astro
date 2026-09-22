@@ -1,0 +1,34 @@
+---
+// Library (DESIGN.md → Library): the sources the atlas routes through, searchable, each linking to
+// the public resource and to the routes that cite it. We do not rewrite these sources; we say what
+// to open and why, so this page is the index of that promise.
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import Base from "../../../layouts/Base.astro";
+import LibraryList from "../../../components/react/LibraryList";
+import { langPaths, type Lang, useTranslations } from "../../../i18n";
+import { vocabularyLabel } from "../../../lib/atlas";
+import { library } from "../../../lib/summaries";
+import { mapUrl } from "../../../lib/urls";
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const entries = library(lang);
+
+// Resource types come from the sources themselves; the content model names them (resource_type).
+const kindLabels = Object.fromEntries(
+  [...new Set(entries.map((entry) => entry.kind).filter(Boolean))].map((kind) => [
+    kind as string,
+    vocabularyLabel("resource_type", kind as string, lang).value,
+  ]),
+);
+---
+
+<Base lang={lang} title={t("library.title")} description={t("library.intro")}>
+  <Breadcrumb lang={lang} crumbs={[{ label: t("nav.atlas"), href: mapUrl(lang) }, { label: t("library.title") }]} />
+  <h1 class="display">{t("library.title")}</h1>
+  <p class="lead">{t("library.intro")}</p>
+
+  <LibraryList client:load lang={lang} entries={entries} kindLabels={kindLabels} />
+</Base>

@@ -2341,3 +2341,94 @@
     order: 3;
   }
 }
+
+/* Library (DESIGN.md → Library): sources with the routes that cite them. */
+.library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-5);
+  margin: var(--space-8) 0 var(--space-5);
+}
+
+.library-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-min);
+  padding: var(--space-1) var(--space-4);
+  border: var(--border-width) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+  cursor: pointer;
+}
+
+.chip-button:hover,
+.chip-button[data-hovered] {
+  color: var(--ink);
+  background: var(--tray);
+}
+
+.chip-button.is-on {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--tray);
+  font-weight: 550;
+}
+
+.library {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: var(--measure);
+  margin: var(--space-6) 0 var(--space-12);
+  padding: 0;
+  list-style: none;
+}
+
+.library > li {
+  padding-bottom: var(--space-6);
+  border-bottom: var(--border-width) solid var(--line);
+}
+
+.library-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-h3);
+}
+
+.library-head a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.library > li > p {
+  margin: var(--space-1) 0 0;
+}
+
+.library-citations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0 0 0 var(--space-5);
+  border-left: var(--border-width) solid var(--line);
+  list-style: none;
+  font-size: var(--text-small);
+}
+
+.library-locator {
+  display: block;
+  color: var(--ink-muted);
+}

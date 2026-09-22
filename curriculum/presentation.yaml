@@ -43,6 +43,19 @@ vocabularies:
       system-operation: { label: { en: system operation, vi: vận hành hệ thống } }
       design-judgment: { label: { en: design judgment, vi: quyết định thiết kế } }
       production-competency: { label: { en: production competency, vi: vận hành production } }
+  # Resource types, so the library can label a source in the page language (site/DESIGN.md → Library).
+  resource_type:
+    values:
+      book: { label: { en: book, vi: sách } }
+      course: { label: { en: course, vi: khóa học } }
+      paper: { label: { en: paper, vi: paper } }
+      article: { label: { en: article, vi: bài viết } }
+      documentation: { label: { en: documentation, vi: docs } }
+      guide: { label: { en: guide, vi: hướng dẫn } }
+      standard: { label: { en: standard, vi: tiêu chuẩn } }
+      visual: { label: { en: video, vi: video } }
+      repository: { label: { en: repository, vi: repo } }
+
   state:
     values:
       unassessed: { label: { en: unassessed, vi: chưa đánh giá } }
