@@ -7,11 +7,8 @@ A gap-driven roadmap for software engineers learning modern AI engineering.
 
 **New here? Start with [START_HERE.md](START_HERE.md).**
 
-## A note from the author
-
-I'm a software engineer learning my way into AI Engineering, and this repo is where I organize and share that journey.
-
-I'm learning in public, so the roadmap will keep evolving as I study, build, and find better ways to understand things. Hopefully it can be useful to other engineers making a similar transition too.
+> [!NOTE]
+> I'm a software engineer learning my way into AI Engineering. This repo is basically my learning journey in public — I'm sharing what I learn along the way, and hopefully some of it is useful to others on the same path.
 
 ## What this repository does
 
