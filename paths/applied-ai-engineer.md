@@ -1,0 +1,179 @@
+# Applied AI Engineer Path
+
+This is the first reference path through AI Engineering Atlas.
+
+It is designed for a software engineer who wants to build, evaluate, and operate AI product features.
+
+It is **gap-driven**, not a fixed course sequence.
+
+## Target profile
+
+The learner should eventually be able to:
+
+- frame an AI problem and define a simple baseline;
+- choose models and system patterns under quality, latency, and cost constraints;
+- build retrieval/RAG systems and evaluate retrieval separately from generation;
+- design and evaluate tool/agent workflows;
+- operate AI systems with traces, release gates, security boundaries, and feedback loops;
+- reason about enough model internals to debug system behavior and make informed trade-offs.
+
+## Phase A — remove blocking software/system gaps
+
+Use the baseline scan for:
+
+- software engineering;
+- systems;
+- data engineering.
+
+Do not redo fundamentals you can already demonstrate.
+
+Exit when you can reliably reason about:
+
+- APIs and test boundaries;
+- async/concurrent work;
+- retries, timeouts, idempotency, backpressure;
+- storage and data lifecycle;
+- observability and debugging.
+
+## Phase B — ML and DL mental models
+
+Target the minimum foundation required to reason about:
+
+- train/validation/test design;
+- probability and experimental uncertainty;
+- embeddings;
+- optimization and training behavior;
+- neural network computation.
+
+If you already work comfortably here, use diagnostics and move on.
+
+## Phase C — LLM foundations
+
+Core topics:
+
+- tokenization;
+- embeddings;
+- attention;
+- transformer blocks;
+- decoding;
+- context windows and KV cache;
+- inference cost/latency.
+
+Reference project:
+
+- [Tiny Transformer](../projects/tiny-transformer/)
+
+Use the project to inspect mechanisms, not to become an LLM researcher.
+
+## Phase D — AI application core
+
+Build capability in:
+
+- problem framing and baselines;
+- model selection;
+- prompting;
+- context engineering;
+- structured outputs;
+- tool calling;
+- uncertainty and abstention.
+
+The learner should be able to justify why a chosen pattern is simpler or better than an alternative.
+
+## Phase E — retrieval and RAG
+
+Build in roughly this dependency order:
+
+```text
+lexical baseline
+→ embeddings
+→ vector retrieval
+→ hybrid retrieval
+→ reranking
+→ chunking/filtering/query transformation as needed
+→ RAG
+→ retrieval lifecycle
+→ RAG evaluation
+```
+
+Reference system:
+
+- [Knowledge Assistant](../projects/knowledge-assistant/)
+
+Do not add architecture components without a measured failure that motivates them.
+
+## Phase F — evaluation as a core engineering skill
+
+Evaluation should appear before heavy agent or production complexity.
+
+Ready route:
+
+- [AI Evaluation and Experimentation](../curriculum/07-ai-engineering/evaluation/)
+
+Exit at L3 when you can:
+
+- version evaluation data;
+- evaluate components separately;
+- measure stochastic variation;
+- analyze failures and slices;
+- calibrate subjective evaluation where needed;
+- make a release decision from evidence.
+
+## Phase G — agents
+
+Learn:
+
+- deterministic versus agentic control;
+- state and memory;
+- tool schemas and permission boundaries;
+- planning and verification;
+- retries and long-running tasks;
+- MCP;
+- trajectory/tool-use evaluation.
+
+Default rule:
+
+> Start deterministic. Introduce agentic choice only when flexibility creates measurable value.
+
+## Phase H — production and security
+
+Target L3 in:
+
+- model/provider gateway;
+- tracing and replay;
+- latency/cost;
+- versioning;
+- eval/release gates;
+- graceful degradation;
+- security boundaries;
+- prompt injection;
+- auth around data/tools;
+- incident learning.
+
+Use the production milestones in the Knowledge Assistant.
+
+## Phase I — specialize
+
+Select from:
+
+- LLM systems;
+- post-training/reasoning;
+- AI platform;
+- search/retrieval;
+- multimodal/voice/document AI;
+- developer tools.
+
+Choose from job/project requirements, not completeness anxiety.
+
+## Completion standard
+
+Do not define completion as "all roadmap boxes checked."
+
+A strong Applied AI Engineer portfolio should show:
+
+- several demonstrated/retained core competencies;
+- transferred evidence in unfamiliar tasks;
+- at least one integrated AI system;
+- evaluation artifacts;
+- one or more production/failure artifacts;
+- explicit design trade-offs;
+- evidence that unnecessary complexity was rejected as often as it was added.
