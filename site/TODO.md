@@ -56,13 +56,15 @@ Last updated: 2026-09-22
 - [x] DESIGN.md survey-plate direction; tokens (mineral ground, ink, magenta route), Hubot Sans / Newsreader / JetBrains Mono (variable, Vietnamese subsets), Phosphor light icons
 - [x] Milestone 1: global frame (floating pill nav, mobile menu overlay, breadcrumb, footer), route sheet (rail with steps and scrollspy, one-task diagnostic, sources table, field log with mobile sheet), project pages from the same renderer
 - [x] Milestone 2: the plate (`src/components/plate/`) in overview, explore, and progress modes; Home, Atlas (plate, list, filters, drawer with `?item=`, `?ready=1`, `?group=`), and Progress rebuilt on it; mobile Playwright project
-- [ ] Milestone 3: review pass against DESIGN.md, reduced-motion and before-hydration states on every surface
+- [x] Milestone 3: seven distinguishable learner states (fill and hue per state), one bridge wording, capture at 390/1440 over home, atlas, drawer, progress, and route, and tests for the states surfaces must handle (unknown `?item=`, empty review queue, import errors, storage blocked, JavaScript off, reduced motion)
+- [ ] Owner review of the survey-plate redesign on a preview deploy before merging `agent/site-v2`
+- [ ] Before-hydration pass: Atlas filters and the field log are disabled until hydration; decide whether the Atlas plate should also work without JavaScript (tiles as `?item=` links that open a server-rendered drawer)
 
 ### Phase 1 follow-ups
 
-- [ ] Graph view (React Flow + ELK): ready routes and declared prerequisites only, zoom buttons, `ariaLabelConfig` in both languages
+- [ ] Graph view (React Flow + ELK), or retire it: the plate now draws declared prerequisite lines on hover and focus (owner decision)
 - [x] Remember the language choice: `/` opens the language of the last page viewed
-- [ ] Scroll hint for wide tables on mobile (review finding)
+- [ ] Scroll hint for wide tables on mobile: sources and atlas tables stack into labelled rows; the Progress evidence table still scrolls sideways
 - [x] Home ready-route rows wrap unevenly at 375px (rebuilt in milestone 2)
 - [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)
 
