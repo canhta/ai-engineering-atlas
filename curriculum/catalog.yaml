@@ -246,8 +246,20 @@ competencies:
       status: ready,
       route: curriculum/09-production-ai/model-gateway,
     }
-  - { id: production.caching, title: AI Caching, domain: production-ai, status: coverage }
-  - { id: production.streaming, title: Streaming, domain: production-ai, status: coverage }
+  - {
+      id: production.caching,
+      title: AI Caching,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/caching,
+    }
+  - {
+      id: production.streaming,
+      title: Streaming,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/streaming,
+    }
   - {
       id: production.cost,
       title: Cost Engineering,

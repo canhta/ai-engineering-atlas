@@ -27,6 +27,8 @@ milestones:
   - observability-and-replay
   - latency-engineering
   - cost-engineering
+  - caching-engineering
+  - streaming-delivery
   - versioned-release-candidate
   - progressive-release-and-rollback
   - security-failure-work
@@ -57,6 +59,8 @@ competencies:
   - production.observability
   - production.latency
   - production.cost
+  - production.caching
+  - production.streaming
   - production.versioning
   - production.release-engineering
   - security.prompt-injection
@@ -98,6 +102,12 @@ evidence:
   - unit-economics-record
   - performance-economics-experiment
   - rejected-optimization-record
+  - cache-decision-record
+  - cache-measurement-record
+  - cache-failure-matrix
+  - stream-event-contract
+  - stream-cancellation-record
+  - stream-failure-matrix
   - release-manifest
   - release-manifest-diff
   - alias-resolution-test

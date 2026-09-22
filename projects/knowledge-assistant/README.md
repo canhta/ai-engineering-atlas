@@ -24,6 +24,8 @@ For artifact identity, progressive delivery, and rollback drills, continue with 
 
 For latency and unit-economics work, continue with the [Performance & Economics evidence contract](performance-economics/). Reuse the same representative workload, quality/evaluation lineage, traces, and release identity so an optimization cannot win by changing the task.
 
+For caching and streamed delivery, continue with the [Delivery Mechanisms evidence contract](delivery-mechanisms/). Reuse the same latency, cost, quality, and observability baselines so these mechanisms have to earn their complexity.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -527,7 +529,54 @@ Optimize the cost of useful behavior rather than raw provider spend.
 
 **Decision:** keep the configuration with better unit economics under the quality, latency, and reliability contract rather than the lowest nominal price.
 
-## Milestone 23 — versioned release candidate
+## Milestone 23 — caching engineering
+
+Use the [AI Caching](../../curriculum/09-production-ai/caching/) route and the [Delivery Mechanisms evidence contract](delivery-mechanisms/).
+
+Add only one cache whose reuse pattern and stale-data tolerance are justified by the measured latency/cost problem.
+
+**Evidence:**
+
+- cache decision and boundary;
+- cacheability and authorization scope;
+- key dimensions;
+- TTL/refresh/eviction/invalidation policy;
+- version-aware invalidation;
+- hit/miss/cached-token measurements;
+- warm/cold/no-cache comparison;
+- cache-unavailable test;
+- stale-data test;
+- concurrent-miss or thundering-herd test where applicable;
+- cross-tenant or authorization-scope test;
+- quality/latency/cost comparison;
+- one cache idea rejected or removed.
+
+**Decision:** keep the cache only when measured value exceeds freshness, correctness, security, and operational risk.
+
+## Milestone 24 — streaming delivery
+
+Use the [Streaming](../../curriculum/09-production-ai/streaming/) route and continue in the same [Delivery Mechanisms evidence contract](delivery-mechanisms/).
+
+Stream only the path where earlier partial output provides real user value.
+
+**Evidence:**
+
+- typed stream event contract;
+- TTFC and full-completion baseline;
+- non-streaming comparison;
+- partial/complete state handling;
+- client-cancel propagation;
+- disconnect/reconnect test;
+- duplicate/resume/restart policy;
+- slow-consumer/backpressure test;
+- mid-stream failure test;
+- partial structured/tool-data handling where applicable;
+- moderation/validation policy for partial output;
+- one streaming path rejected.
+
+**Decision:** keep streaming only when TTFC/user-experience benefit justifies the protocol, failure, safety, and cancellation complexity.
+
+## Milestone 25 — versioned release candidate
 
 Use the [Model Prompt and Retrieval Versioning](../../curriculum/09-production-ai/versioning/) route and the [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -552,7 +601,7 @@ Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, 
 
 **Decision:** keep only identity fields that make evaluation, incident diagnosis, replay, and rollback more precise; avoid redundant version metadata that does not change behavior.
 
-## Milestone 24 — progressive release and rollback
+## Milestone 26 — progressive release and rollback
 
 Use the [AI Release Engineering](../../curriculum/09-production-ai/release-engineering/) route and continue in the same [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -575,7 +624,7 @@ Release a concrete candidate manifest, not a moving alias.
 
 **Decision:** promote, pause, abort, roll back, or simplify the rollout process from evidence rather than deployment completion alone.
 
-## Milestone 25 — security failure work
+## Milestone 27 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -588,7 +637,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 26 — incident and feedback loop
+## Milestone 28 — incident and feedback loop
 
 Inject or analyze one failure:
 

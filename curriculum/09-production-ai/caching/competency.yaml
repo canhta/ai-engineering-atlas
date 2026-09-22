@@ -1,0 +1,104 @@
+id: production.caching
+title: "AI Caching"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Caching can reduce latency, cost, and downstream load, but it introduces stale data, hidden dependency on warm state, cache-key mistakes, invalidation problems, cold-start load spikes, thundering herds, cross-tenant leakage, and poisoning risk. AI systems add multiple cache layers—from provider prompt-prefix reuse to retrieval/tool/result caches and full response caches—so engineers must decide what is actually reusable, define freshness and authorization boundaries, measure real hit value, and prove the uncached path remains safe."
+curriculum_evidence:
+  - article.aws-caching-strategies
+  - docs.openai-prompt-caching
+prerequisites:
+  - production.latency
+  - production.cost
+  - production.observability
+  - ai.evaluation
+outcomes:
+  - "Distinguish provider prompt-prefix caching from application response, retrieval, embedding, tool-result, and other application caches."
+  - "Decide whether a workload has enough reuse and stale-data tolerance to justify caching."
+  - "Define cacheability separately for public, tenant-scoped, user-scoped, permission-sensitive, and rapidly changing data."
+  - "Design cache keys that include the behavior, data, authorization, and configuration dimensions required for correctness."
+  - "Avoid putting raw secrets or unnecessary sensitive content into cache keys or shared cache values."
+  - "Define TTL, refresh, eviction, and invalidation behavior from freshness requirements instead of arbitrary defaults."
+  - "Use versioned namespaces or identifiers when prompt, model, retrieval, tool, or policy changes should invalidate old entries."
+  - "Measure hit, miss, write, stale-use, and downstream-request behavior."
+  - "Measure prompt cached-token usage separately from full response-cache hits."
+  - "Detect when low reuse makes a cache operational overhead without meaningful value."
+  - "Handle cache unavailability without creating an uncontrolled downstream traffic surge."
+  - "Design cold-start and mass-invalidation behavior so dependencies do not brown out."
+  - "Use request coalescing or equivalent protection against thundering-herd misses when appropriate."
+  - "Define negative-cache or stale-on-error behavior only when product correctness allows it."
+  - "Test cache poisoning, cross-tenant leakage, and timing or probing risks relevant to the cache boundary."
+  - "Compare latency, cost, quality, freshness, and error behavior with caching enabled and disabled."
+  - "Remove or simplify a cache when measured value does not justify the correctness and operational risk."
+diagnostic:
+  tasks:
+    - "Given a Knowledge Assistant request, identify which intermediate or final artifacts are safe to reuse and which are not, and explain the freshness and authorization constraints."
+    - "Design a cache key for one reusable result and name every system change that should invalidate or bypass it."
+    - "Explain why a high cache hit rate can still be wrong or unsafe."
+    - "Predict what happens to downstream load when the cache is flushed or unavailable during peak traffic."
+  pass_condition: "Skip introductory material only if the learner can distinguish cache layers, define cacheability and key scope, reason about freshness and invalidation, protect the uncached path, and produce correctness/security evidence rather than only a hit-rate chart."
+learning_route:
+  mental_model:
+    - source: article.aws-caching-strategies
+      locator: "Sections \"When we use caching\", \"Cache expiration\", \"Other considerations\", and \"Amazon best practices and considerations\""
+      purpose: "Build the production cache mental model: justify reuse, tolerate staleness deliberately, measure hit/miss behavior, survive cold or unavailable caches, prevent thundering herds, and account for security risks."
+    - source: docs.openai-prompt-caching
+      locator: "Sections \"Why prompt caching matters\", \"What is the prompt cache?\", \"Which settings affect the cached prefix?\", and \"Prompt cache keys\""
+      purpose: "Distinguish provider-side prompt-prefix reuse from response caching, understand prefix matching and key scoping, and measure cached-token reuse instead of assuming any repeated request is a cache hit."
+  guided_practice:
+    - task: "Map the Knowledge Assistant request path and label every possible cache boundary: provider prompt prefix, retrieval, tool result, derived data, and final response. For each, decide cacheability, key scope, freshness tolerance, invalidation signal, and security boundary."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/delivery-mechanisms/
+      task: "Add one justified cache to the existing Knowledge Assistant, preserve an uncached baseline, define key/freshness/invalidation rules, inject stale, cold, unavailable, concurrent-miss, and tenant-scope failures, then decide whether the measured latency/cost benefit earns the added risk."
+experiments:
+  - "Run the representative workload with the cache disabled, cold, and warm and compare latency, cost, errors, and downstream calls."
+  - "Change one prompt, model, retrieval, tool, or policy version that should invalidate the cached artifact and verify the old entry cannot silently survive."
+  - "Attempt a cross-tenant or cross-user cache-key collision and verify protected data is not reused across authorization boundaries."
+  - "Trigger many concurrent misses for the same expensive dependency and verify request coalescing, load shedding, or another declared protection prevents an uncontrolled thundering herd."
+  - "Make the cache unavailable and verify the fallback path stays within downstream load limits."
+  - "Serve or reject stale data according to the declared freshness contract and prove the application does not silently exceed that contract."
+  - "Measure provider prompt cached tokens or application cache hit/miss behavior and connect the result to actual latency and cost savings."
+  - "Reject or remove at least one cache layer because reuse, correctness, freshness, security, or operational value is insufficient."
+exit_evidence:
+  - "A cache-decision record explains why the chosen layer is cacheable and why the expected reuse is meaningful."
+  - "The cache type and boundary are explicit: prompt prefix, retrieval, tool/result, response, or another identified layer."
+  - "Cache keys include the required tenant/user/authorization, behavior, data, and configuration dimensions."
+  - "TTL, refresh, eviction, invalidation, and stale-use behavior are explicit."
+  - "Version or namespace changes invalidate entries that should no longer be reusable."
+  - "Hit/miss/write or cached-token measurements are linked to latency and cost evidence."
+  - "A no-cache or cold-cache baseline is preserved."
+  - "Cache unavailability is tested without overwhelming the downstream dependency."
+  - "A concurrent-miss or cold-start load test exercises thundering-herd protection where the risk applies."
+  - "A stale-data test proves the declared freshness contract."
+  - "A cross-tenant or authorization-scope test proves protected values are not reused across the wrong boundary."
+  - "Relevant poisoning, probing, or sensitive-data risks are addressed."
+  - "Quality and correctness are compared between cached and uncached behavior."
+  - "At least one cache idea is rejected or removed because it does not earn its complexity."
+  - "The final decision records the measured benefit and the remaining failure mode most likely to invalidate the caching strategy."
+transfer:
+  task: "Redesign the caching strategy for a different AI workflow with different reuse patterns, freshness tolerance, tenant isolation, dependency load, and failure cost."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.aws-caching-strategies
+    - docs.openai-prompt-caching
+  practice:
+    - article.aws-caching-strategies
+    - docs.openai-prompt-caching
+  production-reference:
+    - article.aws-caching-strategies
+    - docs.openai-prompt-caching
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

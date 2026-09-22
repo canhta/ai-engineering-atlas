@@ -1,0 +1,124 @@
+id: production.streaming
+title: Streaming
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Streaming can reduce time to first useful output and improve perceived responsiveness without reducing full model completion time. It also creates a long-lived event protocol with partial state, disconnects, cancellation, buffering, backpressure, duplicate or resumed events, partial moderation risk, and incomplete structured/tool data. Engineers must design the stream contract and failure semantics explicitly rather than treating stream=true as a UI switch."
+curriculum_evidence:
+  - docs.openai-streaming-responses
+  - docs.mdn-server-sent-events
+  - docs.mdn-streams-concepts
+  - docs.mdn-abort-controller
+  - docs.otel-genai-metrics
+prerequisites:
+  - production.latency
+  - production.observability
+  - systems.networking
+prerequisite_support:
+  systems.networking:
+    diagnostic: "Explain how an HTTP server can keep a response open, how server-sent events frame messages, what happens on disconnect/reconnect, and how a client terminates the stream."
+    source: docs.mdn-server-sent-events
+    locator: "Sections \"Receiving events from the server\", \"Error handling\", \"Closing event streams\", and \"Event stream format\""
+    purpose: "Patch the HTTP/SSE transport concepts needed for production response streaming without requiring the full Networking curriculum."
+outcomes:
+  - "Explain that streaming primarily changes time to first useful output and perceived latency, not necessarily total completion time."
+  - "Choose a one-way SSE-style response stream versus a bidirectional transport based on interaction requirements."
+  - "Define a typed event contract with explicit created, delta, completed, failed, and cancellation semantics."
+  - "Treat partial output as incomplete state rather than as a final response."
+  - "Assemble text, structured-output fragments, or tool-call arguments only when the event contract says the data is complete enough to consume."
+  - "Measure time to first chunk separately from total workflow or completion latency."
+  - "Detect proxy, server, or client buffering that destroys incremental delivery."
+  - "Propagate client cancellation to upstream model, tool, or retrieval work when safe so disconnected users do not leave unnecessary work running."
+  - "Define slow-consumer and backpressure behavior so producers do not create unbounded queues."
+  - "Define disconnect, reconnect, resume, restart, and duplicate-event behavior."
+  - "Use event IDs or another application mechanism when resume or deduplication requires stable event identity."
+  - "Handle a stream that fails after partial output has already been shown."
+  - "Expose incomplete or failed state honestly in the client rather than presenting a truncated response as complete."
+  - "Account for the fact that partial model output can be harder to moderate or validate than a completed response."
+  - "Keep side effects out of incomplete tool or structured-output fragments."
+  - "Measure cancellation rate, incomplete-stream rate, TTFC, completion latency, and error behavior where they matter."
+  - "Reject streaming when the output is short, moderation/validation requires full output first, or transport complexity does not improve the user experience."
+diagnostic:
+  tasks:
+    - "Explain which user-visible metric improves when a model response is streamed but generation speed is unchanged."
+    - "Design a minimal event lifecycle for a streamed answer that can fail after several deltas have already reached the client."
+    - "Explain what should happen when the browser disconnects while the provider is still generating an expensive response."
+    - "Describe how a slow client or reconnect can create buffering, duplicate, or partial-state bugs."
+  pass_condition: "Skip introductory material only if the learner can separate TTFC from completion latency, design explicit event/failure/cancel semantics, handle partial state and reconnection, and prove the transport remains correct under disconnect and slow-consumer failures."
+learning_route:
+  mental_model:
+    - source: docs.openai-streaming-responses
+      locator: "Sections \"Enable streaming\", semantic events around the typed event examples, \"Read the responses\", \"Advanced use cases\", and \"Moderation risk\""
+      purpose: "Study a typed AI streaming lifecycle, incremental deltas, completion/error events, advanced partial tool/structured data, and the moderation cost of exposing partial output."
+    - source: docs.mdn-server-sent-events
+      locator: "Sections \"Receiving events from the server\", \"Error handling\", \"Closing event streams\", and \"Event stream format\""
+      purpose: "Ground SSE as a one-way event transport with message framing, event IDs, reconnect timing, errors, and explicit close semantics."
+    - source: docs.mdn-streams-concepts
+      locator: "Sections \"Backpressure\" and \"Internal queues and queuing strategies\""
+      purpose: "Build the slow-consumer mental model and avoid treating producer throughput as independent of client or downstream capacity."
+    - source: docs.mdn-abort-controller
+      locator: "Method \"abort()\" and its description of aborting fetch requests, response-body consumption, or streams"
+      purpose: "Connect user cancellation and disconnect handling to actual termination of application or transport work."
+    - source: docs.otel-genai-metrics
+      locator: "Metric \"gen_ai.client.operation.time_to_first_chunk\" together with operation and workflow duration metrics"
+      purpose: "Measure the benefit streaming claims to provide without confusing first chunk, provider duration, and whole-workflow completion."
+  guided_practice:
+    - task: "Draw the Knowledge Assistant stream lifecycle from request creation through deltas to completion, then add branches for client cancel, provider error, network disconnect, reconnect, slow consumer, and partial structured/tool output."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/delivery-mechanisms/
+      task: "Add streamed answer delivery to the existing Knowledge Assistant, preserve a non-streaming baseline, define typed event and partial-state semantics, propagate cancellation, inject disconnect/backpressure/error cases, and decide whether TTFC/user experience gains justify the transport and safety complexity."
+experiments:
+  - "Compare streaming and non-streaming delivery for the same representative workload and record TTFC and total completion separately."
+  - "Abort the client mid-stream and verify upstream generation or other expensive work stops according to the declared cancellation policy."
+  - "Inject a provider or application error after several deltas and verify the client marks the answer incomplete or failed rather than complete."
+  - "Simulate a network disconnect and reconnect and verify restart, resume, and duplicate-event behavior matches the declared policy."
+  - "Throttle the consumer and verify buffering/backpressure remains bounded or load is shed according to the contract."
+  - "Stream a structured or tool-related response and verify no side effect is triggered from incomplete fragments."
+  - "Exercise partial-output safety or moderation handling and document what cannot be validated until the full output exists."
+  - "Reject streaming for at least one path where short outputs, full-output validation, or operational complexity makes it a net loss."
+exit_evidence:
+  - "A stream event contract names lifecycle, delta, completion, failure, and cancellation states."
+  - "TTFC and full completion latency are measured separately against the non-streaming baseline."
+  - "Partial output is visibly distinguished from complete output."
+  - "Client cancellation propagates to upstream work according to an inspectable policy."
+  - "A disconnect/reconnect test proves restart, resume, and duplicate handling."
+  - "A slow-consumer test exercises buffering or backpressure behavior."
+  - "A mid-stream error test proves incomplete output is not presented as successfully completed."
+  - "Structured or tool fragments are not acted on before the required completion boundary."
+  - "Partial-output moderation or validation risk is explicitly handled or accepted with rationale."
+  - "Stream error, cancellation, incomplete, and completion metrics are available where they matter."
+  - "The chosen transport is justified relative to the required directionality and interaction pattern."
+  - "At least one candidate streaming path is rejected because TTFC/user-experience value does not justify the complexity."
+  - "The final decision records whether streaming improves the declared user experience without unacceptable correctness, safety, cost, or operational regressions."
+transfer:
+  task: "Redesign the stream contract for a different workload with different transport directionality, partial-result value, moderation needs, client reliability, and cancellation cost."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.openai-streaming-responses
+    - docs.mdn-server-sent-events
+    - docs.mdn-streams-concepts
+    - docs.mdn-abort-controller
+    - docs.otel-genai-metrics
+  practice:
+    - docs.openai-streaming-responses
+    - docs.mdn-server-sent-events
+    - docs.mdn-streams-concepts
+  production-reference:
+    - docs.openai-streaming-responses
+    - docs.mdn-server-sent-events
+    - docs.otel-genai-metrics
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

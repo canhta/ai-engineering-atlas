@@ -7338,7 +7338,317 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/caching",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Caching can reduce latency, cost, and downstream load, but it introduces stale data, hidden dependency on warm state, cache-key mistakes, invalidation problems, cold-start load spikes, thundering herds, cross-tenant leakage, and poisoning risk. AI systems add multiple cache layers—from provider prompt-prefix reuse to retrieval/tool/result caches and full response caches—so engineers must decide what is actually reusable, define freshness and authorization boundaries, measure real hit value, and prove the uncached path remains safe."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.latency"
+                },
+                {
+                  "ref": "production.cost"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "ai.evaluation"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Distinguish provider prompt-prefix caching from application response, retrieval, embedding, tool-result, and other application caches."
+                },
+                {
+                  "en": "Decide whether a workload has enough reuse and stale-data tolerance to justify caching."
+                },
+                {
+                  "en": "Define cacheability separately for public, tenant-scoped, user-scoped, permission-sensitive, and rapidly changing data."
+                },
+                {
+                  "en": "Design cache keys that include the behavior, data, authorization, and configuration dimensions required for correctness."
+                },
+                {
+                  "en": "Avoid putting raw secrets or unnecessary sensitive content into cache keys or shared cache values."
+                },
+                {
+                  "en": "Define TTL, refresh, eviction, and invalidation behavior from freshness requirements instead of arbitrary defaults."
+                },
+                {
+                  "en": "Use versioned namespaces or identifiers when prompt, model, retrieval, tool, or policy changes should invalidate old entries."
+                },
+                {
+                  "en": "Measure hit, miss, write, stale-use, and downstream-request behavior."
+                },
+                {
+                  "en": "Measure prompt cached-token usage separately from full response-cache hits."
+                },
+                {
+                  "en": "Detect when low reuse makes a cache operational overhead without meaningful value."
+                },
+                {
+                  "en": "Handle cache unavailability without creating an uncontrolled downstream traffic surge."
+                },
+                {
+                  "en": "Design cold-start and mass-invalidation behavior so dependencies do not brown out."
+                },
+                {
+                  "en": "Use request coalescing or equivalent protection against thundering-herd misses when appropriate."
+                },
+                {
+                  "en": "Define negative-cache or stale-on-error behavior only when product correctness allows it."
+                },
+                {
+                  "en": "Test cache poisoning, cross-tenant leakage, and timing or probing risks relevant to the cache boundary."
+                },
+                {
+                  "en": "Compare latency, cost, quality, freshness, and error behavior with caching enabled and disabled."
+                },
+                {
+                  "en": "Remove or simplify a cache when measured value does not justify the correctness and operational risk."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a Knowledge Assistant request, identify which intermediate or final artifacts are safe to reuse and which are not, and explain the freshness and authorization constraints."
+                },
+                {
+                  "en": "Design a cache key for one reusable result and name every system change that should invalidate or bypass it."
+                },
+                {
+                  "en": "Explain why a high cache hit rate can still be wrong or unsafe."
+                },
+                {
+                  "en": "Predict what happens to downstream load when the cache is flushed or unavailable during peak traffic."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can distinguish cache layers, define cacheability and key scope, reason about freshness and invalidation, protect the uncached path, and produce correctness/security evidence rather than only a hit-rate chart."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "article.aws-caching-strategies",
+                  "locator": {
+                    "en": "Sections \"When we use caching\", \"Cache expiration\", \"Other considerations\", and \"Amazon best practices and considerations\""
+                  },
+                  "purpose": {
+                    "en": "Build the production cache mental model: justify reuse, tolerate staleness deliberately, measure hit/miss behavior, survive cold or unavailable caches, prevent thundering herds, and account for security risks."
+                  }
+                },
+                {
+                  "resource": "docs.openai-prompt-caching",
+                  "locator": {
+                    "en": "Sections \"Why prompt caching matters\", \"What is the prompt cache?\", \"Which settings affect the cached prefix?\", and \"Prompt cache keys\""
+                  },
+                  "purpose": {
+                    "en": "Distinguish provider-side prompt-prefix reuse from response caching, understand prefix matching and key scoping, and measure cached-token reuse instead of assuming any repeated request is a cache hit."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Map the Knowledge Assistant request path and label every possible cache boundary: provider prompt prefix, retrieval, tool result, derived data, and final response. For each, decide cacheability, key scope, freshness tolerance, invalidation signal, and security boundary."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Add one justified cache to the existing Knowledge Assistant, preserve an uncached baseline, define key/freshness/invalidation rules, inject stale, cold, unavailable, concurrent-miss, and tenant-scope failures, then decide whether the measured latency/cost benefit earns the added risk."
+                      },
+                      "path": "projects/knowledge-assistant/delivery-mechanisms/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Run the representative workload with the cache disabled, cold, and warm and compare latency, cost, errors, and downstream calls."
+                },
+                {
+                  "en": "Change one prompt, model, retrieval, tool, or policy version that should invalidate the cached artifact and verify the old entry cannot silently survive."
+                },
+                {
+                  "en": "Attempt a cross-tenant or cross-user cache-key collision and verify protected data is not reused across authorization boundaries."
+                },
+                {
+                  "en": "Trigger many concurrent misses for the same expensive dependency and verify request coalescing, load shedding, or another declared protection prevents an uncontrolled thundering herd."
+                },
+                {
+                  "en": "Make the cache unavailable and verify the fallback path stays within downstream load limits."
+                },
+                {
+                  "en": "Serve or reject stale data according to the declared freshness contract and prove the application does not silently exceed that contract."
+                },
+                {
+                  "en": "Measure provider prompt cached tokens or application cache hit/miss behavior and connect the result to actual latency and cost savings."
+                },
+                {
+                  "en": "Reject or remove at least one cache layer because reuse, correctness, freshness, security, or operational value is insufficient."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A cache-decision record explains why the chosen layer is cacheable and why the expected reuse is meaningful."
+                },
+                {
+                  "en": "The cache type and boundary are explicit: prompt prefix, retrieval, tool/result, response, or another identified layer."
+                },
+                {
+                  "en": "Cache keys include the required tenant/user/authorization, behavior, data, and configuration dimensions."
+                },
+                {
+                  "en": "TTL, refresh, eviction, invalidation, and stale-use behavior are explicit."
+                },
+                {
+                  "en": "Version or namespace changes invalidate entries that should no longer be reusable."
+                },
+                {
+                  "en": "Hit/miss/write or cached-token measurements are linked to latency and cost evidence."
+                },
+                {
+                  "en": "A no-cache or cold-cache baseline is preserved."
+                },
+                {
+                  "en": "Cache unavailability is tested without overwhelming the downstream dependency."
+                },
+                {
+                  "en": "A concurrent-miss or cold-start load test exercises thundering-herd protection where the risk applies."
+                },
+                {
+                  "en": "A stale-data test proves the declared freshness contract."
+                },
+                {
+                  "en": "A cross-tenant or authorization-scope test proves protected values are not reused across the wrong boundary."
+                },
+                {
+                  "en": "Relevant poisoning, probing, or sensitive-data risks are addressed."
+                },
+                {
+                  "en": "Quality and correctness are compared between cached and uncached behavior."
+                },
+                {
+                  "en": "At least one cache idea is rejected or removed because it does not earn its complexity."
+                },
+                {
+                  "en": "The final decision records the measured benefit and the remaining failure mode most likely to invalidate the caching strategy."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the caching strategy for a different AI workflow with different reuse patterns, freshness tolerance, tenant isolation, dependency load, and failure cost."
+              }
+            }
+          ]
         }
       },
       {
@@ -7348,7 +7658,347 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/streaming",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Streaming can reduce time to first useful output and improve perceived responsiveness without reducing full model completion time. It also creates a long-lived event protocol with partial state, disconnects, cancellation, buffering, backpressure, duplicate or resumed events, partial moderation risk, and incomplete structured/tool data. Engineers must design the stream contract and failure semantics explicitly rather than treating stream=true as a UI switch."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.latency"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "systems.networking",
+                  "bridge": {
+                    "diagnostic": {
+                      "en": "Explain how an HTTP server can keep a response open, how server-sent events frame messages, what happens on disconnect/reconnect, and how a client terminates the stream."
+                    },
+                    "resource": "docs.mdn-server-sent-events",
+                    "locator": {
+                      "en": "Sections \"Receiving events from the server\", \"Error handling\", \"Closing event streams\", and \"Event stream format\""
+                    },
+                    "purpose": {
+                      "en": "Patch the HTTP/SSE transport concepts needed for production response streaming without requiring the full Networking curriculum."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Explain that streaming primarily changes time to first useful output and perceived latency, not necessarily total completion time."
+                },
+                {
+                  "en": "Choose a one-way SSE-style response stream versus a bidirectional transport based on interaction requirements."
+                },
+                {
+                  "en": "Define a typed event contract with explicit created, delta, completed, failed, and cancellation semantics."
+                },
+                {
+                  "en": "Treat partial output as incomplete state rather than as a final response."
+                },
+                {
+                  "en": "Assemble text, structured-output fragments, or tool-call arguments only when the event contract says the data is complete enough to consume."
+                },
+                {
+                  "en": "Measure time to first chunk separately from total workflow or completion latency."
+                },
+                {
+                  "en": "Detect proxy, server, or client buffering that destroys incremental delivery."
+                },
+                {
+                  "en": "Propagate client cancellation to upstream model, tool, or retrieval work when safe so disconnected users do not leave unnecessary work running."
+                },
+                {
+                  "en": "Define slow-consumer and backpressure behavior so producers do not create unbounded queues."
+                },
+                {
+                  "en": "Define disconnect, reconnect, resume, restart, and duplicate-event behavior."
+                },
+                {
+                  "en": "Use event IDs or another application mechanism when resume or deduplication requires stable event identity."
+                },
+                {
+                  "en": "Handle a stream that fails after partial output has already been shown."
+                },
+                {
+                  "en": "Expose incomplete or failed state honestly in the client rather than presenting a truncated response as complete."
+                },
+                {
+                  "en": "Account for the fact that partial model output can be harder to moderate or validate than a completed response."
+                },
+                {
+                  "en": "Keep side effects out of incomplete tool or structured-output fragments."
+                },
+                {
+                  "en": "Measure cancellation rate, incomplete-stream rate, TTFC, completion latency, and error behavior where they matter."
+                },
+                {
+                  "en": "Reject streaming when the output is short, moderation/validation requires full output first, or transport complexity does not improve the user experience."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Explain which user-visible metric improves when a model response is streamed but generation speed is unchanged."
+                },
+                {
+                  "en": "Design a minimal event lifecycle for a streamed answer that can fail after several deltas have already reached the client."
+                },
+                {
+                  "en": "Explain what should happen when the browser disconnects while the provider is still generating an expensive response."
+                },
+                {
+                  "en": "Describe how a slow client or reconnect can create buffering, duplicate, or partial-state bugs."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can separate TTFC from completion latency, design explicit event/failure/cancel semantics, handle partial state and reconnection, and prove the transport remains correct under disconnect and slow-consumer failures."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.openai-streaming-responses",
+                  "locator": {
+                    "en": "Sections \"Enable streaming\", semantic events around the typed event examples, \"Read the responses\", \"Advanced use cases\", and \"Moderation risk\""
+                  },
+                  "purpose": {
+                    "en": "Study a typed AI streaming lifecycle, incremental deltas, completion/error events, advanced partial tool/structured data, and the moderation cost of exposing partial output."
+                  }
+                },
+                {
+                  "resource": "docs.mdn-server-sent-events",
+                  "locator": {
+                    "en": "Sections \"Receiving events from the server\", \"Error handling\", \"Closing event streams\", and \"Event stream format\""
+                  },
+                  "purpose": {
+                    "en": "Ground SSE as a one-way event transport with message framing, event IDs, reconnect timing, errors, and explicit close semantics."
+                  }
+                },
+                {
+                  "resource": "docs.mdn-streams-concepts",
+                  "locator": {
+                    "en": "Sections \"Backpressure\" and \"Internal queues and queuing strategies\""
+                  },
+                  "purpose": {
+                    "en": "Build the slow-consumer mental model and avoid treating producer throughput as independent of client or downstream capacity."
+                  }
+                },
+                {
+                  "resource": "docs.mdn-abort-controller",
+                  "locator": {
+                    "en": "Method \"abort()\" and its description of aborting fetch requests, response-body consumption, or streams"
+                  },
+                  "purpose": {
+                    "en": "Connect user cancellation and disconnect handling to actual termination of application or transport work."
+                  }
+                },
+                {
+                  "resource": "docs.otel-genai-metrics",
+                  "locator": {
+                    "en": "Metric \"gen_ai.client.operation.time_to_first_chunk\" together with operation and workflow duration metrics"
+                  },
+                  "purpose": {
+                    "en": "Measure the benefit streaming claims to provide without confusing first chunk, provider duration, and whole-workflow completion."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Draw the Knowledge Assistant stream lifecycle from request creation through deltas to completion, then add branches for client cancel, provider error, network disconnect, reconnect, slow consumer, and partial structured/tool output."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Add streamed answer delivery to the existing Knowledge Assistant, preserve a non-streaming baseline, define typed event and partial-state semantics, propagate cancellation, inject disconnect/backpressure/error cases, and decide whether TTFC/user experience gains justify the transport and safety complexity."
+                      },
+                      "path": "projects/knowledge-assistant/delivery-mechanisms/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Compare streaming and non-streaming delivery for the same representative workload and record TTFC and total completion separately."
+                },
+                {
+                  "en": "Abort the client mid-stream and verify upstream generation or other expensive work stops according to the declared cancellation policy."
+                },
+                {
+                  "en": "Inject a provider or application error after several deltas and verify the client marks the answer incomplete or failed rather than complete."
+                },
+                {
+                  "en": "Simulate a network disconnect and reconnect and verify restart, resume, and duplicate-event behavior matches the declared policy."
+                },
+                {
+                  "en": "Throttle the consumer and verify buffering/backpressure remains bounded or load is shed according to the contract."
+                },
+                {
+                  "en": "Stream a structured or tool-related response and verify no side effect is triggered from incomplete fragments."
+                },
+                {
+                  "en": "Exercise partial-output safety or moderation handling and document what cannot be validated until the full output exists."
+                },
+                {
+                  "en": "Reject streaming for at least one path where short outputs, full-output validation, or operational complexity makes it a net loss."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A stream event contract names lifecycle, delta, completion, failure, and cancellation states."
+                },
+                {
+                  "en": "TTFC and full completion latency are measured separately against the non-streaming baseline."
+                },
+                {
+                  "en": "Partial output is visibly distinguished from complete output."
+                },
+                {
+                  "en": "Client cancellation propagates to upstream work according to an inspectable policy."
+                },
+                {
+                  "en": "A disconnect/reconnect test proves restart, resume, and duplicate handling."
+                },
+                {
+                  "en": "A slow-consumer test exercises buffering or backpressure behavior."
+                },
+                {
+                  "en": "A mid-stream error test proves incomplete output is not presented as successfully completed."
+                },
+                {
+                  "en": "Structured or tool fragments are not acted on before the required completion boundary."
+                },
+                {
+                  "en": "Partial-output moderation or validation risk is explicitly handled or accepted with rationale."
+                },
+                {
+                  "en": "Stream error, cancellation, incomplete, and completion metrics are available where they matter."
+                },
+                {
+                  "en": "The chosen transport is justified relative to the required directionality and interaction pattern."
+                },
+                {
+                  "en": "At least one candidate streaming path is rejected because TTFC/user-experience value does not justify the complexity."
+                },
+                {
+                  "en": "The final decision records whether streaming improves the declared user experience without unacceptable correctness, safety, cost, or operational regressions."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the stream contract for a different workload with different transport directionality, partial-result value, moderation needs, client reliability, and cancellation cost."
+              }
+            }
+          ]
         }
       },
       {
@@ -10064,6 +10714,12 @@
                   "en": "cost-engineering"
                 },
                 {
+                  "en": "caching-engineering"
+                },
+                {
+                  "en": "streaming-delivery"
+                },
+                {
                   "en": "versioned-release-candidate"
                 },
                 {
@@ -10196,6 +10852,24 @@
                 },
                 {
                   "en": "rejected-optimization-record"
+                },
+                {
+                  "en": "cache-decision-record"
+                },
+                {
+                  "en": "cache-measurement-record"
+                },
+                {
+                  "en": "cache-failure-matrix"
+                },
+                {
+                  "en": "stream-event-contract"
+                },
+                {
+                  "en": "stream-cancellation-record"
+                },
+                {
+                  "en": "stream-failure-matrix"
                 },
                 {
                   "en": "release-manifest"
@@ -10439,6 +11113,11 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.caching"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "production.cost"
     },
     {
@@ -10460,6 +11139,11 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "production.release-engineering"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "production.streaming"
     },
     {
       "type": "member",
@@ -10649,6 +11333,11 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.caching"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "production.cost"
     },
     {
@@ -10763,6 +11452,26 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.cost",
+      "to": "production.caching"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.latency",
+      "to": "production.caching"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.latency",
+      "to": "production.streaming"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.caching"
+    },
+    {
+      "type": "prerequisite",
       "from": "production.observability",
       "to": "production.cost"
     },
@@ -10775,6 +11484,11 @@
       "type": "prerequisite",
       "from": "production.observability",
       "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.streaming"
     },
     {
       "type": "prerequisite",
@@ -10858,6 +11572,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "systems.networking",
+      "to": "production.streaming"
+    },
+    {
+      "type": "prerequisite",
       "from": "systems.performance-engineering",
       "to": "production.latency"
     }
@@ -10910,6 +11629,12 @@
       "type": "article",
       "author": "Anthropic",
       "url": "https://www.anthropic.com/engineering/writing-tools-for-agents"
+    },
+    "article.aws-caching-strategies": {
+      "title": "Amazon Builders' Library — Caching challenges and strategies",
+      "type": "article",
+      "author": "Amazon Web Services",
+      "url": "https://aws.amazon.com/builders-library/caching-challenges-and-strategies/"
     },
     "article.aws-idempotent-apis": {
       "title": "Making retries safe with idempotent APIs",
@@ -11133,6 +11858,24 @@
       "author": "Model Context Protocol",
       "url": "https://ts.sdk.modelcontextprotocol.io/v2/migration/support-2026-07-28"
     },
+    "docs.mdn-abort-controller": {
+      "title": "MDN — AbortController.abort()",
+      "type": "documentation",
+      "author": "MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort"
+    },
+    "docs.mdn-server-sent-events": {
+      "title": "MDN — Using server-sent events",
+      "type": "documentation",
+      "author": "MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events"
+    },
+    "docs.mdn-streams-concepts": {
+      "title": "MDN — Streams API concepts",
+      "type": "documentation",
+      "author": "MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Concepts"
+    },
     "docs.mlflow-model-registry": {
       "title": "MLflow — Model Registry",
       "type": "documentation",
@@ -11192,6 +11935,18 @@
       "type": "documentation",
       "author": "OpenAI",
       "url": "https://developers.openai.com/api/docs/guides/latency-optimization"
+    },
+    "docs.openai-prompt-caching": {
+      "title": "OpenAI — Prompt caching",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://developers.openai.com/api/docs/guides/prompt-caching"
+    },
+    "docs.openai-streaming-responses": {
+      "title": "OpenAI — Streaming API responses",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://developers.openai.com/api/docs/guides/streaming-responses"
     },
     "docs.otel-genai-metrics": {
       "title": "OpenTelemetry GenAI semantic conventions — metrics",

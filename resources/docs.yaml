@@ -753,3 +753,124 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: article.aws-caching-strategies
+    type: article
+    title: Amazon Builders' Library — Caching challenges and strategies
+    author: Amazon Web Services
+    url: https://aws.amazon.com/builders-library/caching-challenges-and-strategies/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.caching
+      - cacheability
+      - ttl
+      - invalidation
+      - thundering-herd
+      - cache-security
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.openai-prompt-caching
+    type: documentation
+    title: OpenAI — Prompt caching
+    author: OpenAI
+    url: https://developers.openai.com/api/docs/guides/prompt-caching
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.caching
+      - prompt-caching
+      - prefix-reuse
+      - cached-tokens
+      - cache-key
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.openai-streaming-responses
+    type: documentation
+    title: OpenAI — Streaming API responses
+    author: OpenAI
+    url: https://developers.openai.com/api/docs/guides/streaming-responses
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.streaming
+      - streaming-events
+      - partial-output
+      - moderation-risk
+      - sse
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.mdn-server-sent-events
+    type: documentation
+    title: MDN — Using server-sent events
+    author: MDN
+    url: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.streaming
+      - server-sent-events
+      - reconnect
+      - event-id
+      - event-format
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.mdn-streams-concepts
+    type: documentation
+    title: MDN — Streams API concepts
+    author: MDN
+    url: https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Concepts
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - reference
+    covers:
+      - production.streaming
+      - backpressure
+      - buffering
+      - queues
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.mdn-abort-controller
+    type: documentation
+    title: MDN — AbortController.abort()
+    author: MDN
+    url: https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    roles:
+      - curriculum-evidence
+      - teaching
+      - reference
+    covers:
+      - production.streaming
+      - cancellation
+      - abort
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
