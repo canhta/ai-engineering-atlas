@@ -1,0 +1,53 @@
+id: retrieval.search
+title: Search and Retrieval
+domain: ai-engineering
+status: ready
+competency_types: [engineering-skill, design-judgment]
+target_level: L3
+target_states: [demonstrated, transferred, applied]
+why: Retrieval systems need a measurable baseline before semantic search, RAG, reranking, or agents can be justified. Engineers must be able to represent queries and documents, rank results, evaluate relevance, and diagnose lexical failure modes.
+curriculum_evidence: [book.stanford-ir, book.chip-huyen-ai-engineering]
+prerequisites: [ai.product-framing]
+outcomes:
+  - Build a lexical ranked-retrieval baseline over a real document collection.
+  - Explain term weighting, document/query representations, scoring, and top-k ranking at an engineering level.
+  - Create relevance judgments and measure retrieval quality separately from answer generation.
+  - Diagnose misses caused by vocabulary mismatch, rare terms, document structure, filters, or stale content.
+  - Use baseline evidence to decide whether semantic retrieval or another technique is justified.
+diagnostic:
+  tasks:
+    - Given a document collection and ten queries, describe a lexical baseline, relevance labels, ranking metric, and failure-analysis process.
+    - Explain why returning documents containing all query terms is not the same as useful ranked retrieval.
+    - For one failed query, identify evidence that would distinguish vocabulary mismatch from indexing or relevance-label problems.
+  pass_condition: Skip introductory material only if the learner can implement and evaluate a ranked lexical baseline, explain its scoring, and use failures to motivate the next retrieval change.
+learning_route:
+  mental_model:
+    - source: book.stanford-ir
+      locator: Chapter 6 "Scoring, term weighting and the vector space model", especially §§6.2-6.3; Chapter 8 "Evaluation in information retrieval", especially ranked-retrieval evaluation
+      purpose: Learn term weighting, query/document vector scoring, ranking, relevance judgments, and retrieval evaluation.
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 6 "RAG and Agents" → "RAG" → "Retrieval Algorithms" (pp. 253-268, especially retrieval algorithms from p. 257)
+      purpose: Place term-based retrieval beside embedding-based retrieval inside modern AI application architecture.
+  guided_practice:
+    - task: For five queries, manually inspect top results from a lexical search, label relevance, and classify each miss before changing the algorithm.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/
+      task: Implement the Knowledge Assistant lexical baseline and record the corpus version, query set, relevance labels, top-k results, retrieval metric, latency, and failure taxonomy.
+experiments:
+  - Change tokenization, stop-word handling, or term weighting and measure whether the same query set improves or regresses.
+  - Identify at least three vocabulary-mismatch queries and predict whether semantic retrieval should help before implementing embeddings.
+exit_evidence:
+  - A reproducible lexical retrieval baseline exists over a versioned corpus and query set.
+  - The learner can explain the scoring/ranking mechanism rather than only calling a search library.
+  - Retrieval quality is measured with explicit relevance judgments and a ranked-retrieval metric.
+  - Misses are categorized with concrete examples.
+  - The decision to add semantic retrieval is tied to observed baseline failures.
+transfer:
+  task: Design the lexical baseline and evaluation for a different corpus with different constraints, such as support tickets with IDs/error codes or policy documents with metadata filters.
+project_spines: [ai-system]
+resources:
+  teaching: [book.stanford-ir, book.chip-huyen-ai-engineering]
+  assessment: [book.stanford-ir]
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
