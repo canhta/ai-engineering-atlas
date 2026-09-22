@@ -23,7 +23,8 @@ repos:
 
       - id: eslint
         name: eslint
-        entry: bash -c 'cd site && pnpm exec eslint --fix --no-warn-ignored "${@#site/}"' --
+        # The local binary, not `pnpm exec`: git hooks can run with a PATH that has no pnpm.
+        entry: bash -c 'cd site && node_modules/.bin/eslint --fix --no-warn-ignored "${@#site/}"' --
         language: system
         files: ^site/.*\.(ts|tsx|mjs|js)$
         exclude: ^site/(dist|\.astro|\.wrangler|src/data)/
