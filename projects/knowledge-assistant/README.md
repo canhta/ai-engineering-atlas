@@ -6,6 +6,8 @@ For the first product/search/embeddings slice, use the [foundation evidence cont
 
 For chunking, reranking, and RAG evaluation, continue with the [Retrieval Quality evidence contract](retrieval-quality/) and keep the same evidence lineage instead of restarting with a new demo dataset.
 
+For runtime context and external actions, continue with the [Context and Tools evidence contract](context-and-tools/). Reuse the same evaluation lineage so context/tool changes can be compared against the measured RAG system.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -178,7 +180,24 @@ If the chosen scenario has permissions, add ACL-aware retrieval and test that un
 
 **Failure exercise:** intentionally create a stale or incorrectly indexed document and diagnose it.
 
-## Milestone 7 — tool use or agent workflow
+## Milestone 7 — context engineering
+
+Use the [Context Engineering](../../curriculum/07-ai-engineering/context-engineering/) route.
+
+Inventory what actually reaches the model and compare context policies before adding new autonomy.
+
+**Experiment:**
+
+- minimal high-signal context;
+- broader/noisier context;
+- dynamically selected or compacted context;
+- stale/distractor failure case.
+
+**Decision:** record what is deliberately kept, excluded, loaded just in time, or compacted.
+
+## Milestone 8 — tool use or agent workflow
+
+Use the [Tool Calling](../../curriculum/07-ai-engineering/tool-calling/) route for the tool boundary.
 
 Do **not** add an agent because the roadmap contains an Agents section.
 
@@ -195,13 +214,15 @@ Start with a deterministic workflow. Introduce agentic control only when flexibi
 
 **Evidence:**
 
-- tool schema;
-- authorization boundary;
+- tool contract/schema and parameter semantics;
+- deterministic validation and authorization/approval boundary;
 - idempotency/retry behavior;
-- trajectory/tool-use evaluation;
-- failure recovery.
+- raw tool-call traces and tool-use evaluation;
+- result-shaping decision;
+- failure recovery;
+- explicit decision to stay deterministic or justify later agentic control.
 
-## Milestone 8 — service and observability
+## Milestone 9 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -217,7 +238,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 9 — release gate
+## Milestone 10 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -230,7 +251,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 10 — security failure work
+## Milestone 11 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -243,7 +264,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 11 — incident and feedback loop
+## Milestone 12 — incident and feedback loop
 
 Inject or analyze one failure:
 
