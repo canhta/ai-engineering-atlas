@@ -5,8 +5,8 @@
 ## Summary
 
 - **116** catalog competencies
-- **13** ready learning routes
-- **103** coverage-only competencies
+- **15** ready learning routes
+- **101** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -20,7 +20,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | ML Foundations | 9 | 0 |
 | Deep Learning | 5 | 0 |
 | LLM Foundations | 11 | 1 |
-| AI Engineering | 26 | 10 |
+| AI Engineering | 26 | 12 |
 | Agents | 10 | 1 |
 | Production AI | 11 | 0 |
 | Security & Governance | 10 | 1 |
@@ -35,6 +35,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `ai.product-framing` — AI Product and Problem Framing | AI Engineering | [Open route](07-ai-engineering/product-framing/) |
 | `ai.model-selection` — Model Selection | AI Engineering | [Open route](07-ai-engineering/model-selection/) |
 | `ai.context-engineering` — Context Engineering | AI Engineering | [Open route](07-ai-engineering/context-engineering/) |
+| `ai.structured-outputs` — Structured Outputs | AI Engineering | [Open route](07-ai-engineering/structured-outputs/) |
 | `ai.tool-calling` — Tool Calling | AI Engineering | [Open route](07-ai-engineering/tool-calling/) |
 | `ai.embeddings` — Embeddings for AI Applications | AI Engineering | [Open route](07-ai-engineering/embeddings/) |
 | `retrieval.search` — Search and Retrieval | AI Engineering | [Open route](07-ai-engineering/search-retrieval/) |
@@ -42,6 +43,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `retrieval.reranking` — Reranking | AI Engineering | [Open route](07-ai-engineering/reranking/) |
 | `retrieval.rag-evaluation` — RAG Evaluation | AI Engineering | [Open route](07-ai-engineering/rag-evaluation/) |
 | `ai.evaluation` — AI Evaluation and Experimentation | AI Engineering | [Open route](07-ai-engineering/evaluation/) |
+| `ai.uncertainty-abstention-trust` — Uncertainty Abstention and Trust | AI Engineering | [Open route](07-ai-engineering/uncertainty-abstention-trust/) |
 | `agents.deterministic-vs-agentic` — Deterministic vs Agentic Design | Agents | [Open route](08-agents/deterministic-vs-agentic/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
 
