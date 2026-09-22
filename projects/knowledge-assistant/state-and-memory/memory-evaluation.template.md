@@ -42,11 +42,11 @@ Include:
 
 ## Policy comparison
 
-| Policy | Task quality | Harmful recall | Relevant-memory precision | Latency | Context/token cost |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| No memory | | | | | |
-| Policy A | | | | | |
-| Policy B | | | | | |
+| Policy    | Task quality | Harmful recall | Relevant-memory precision | Latency | Context/token cost |
+| --------- | -----------: | -------------: | ------------------------: | ------: | -----------------: |
+| No memory |              |                |                           |         |                    |
+| Policy A  |              |                |                           |         |                    |
+| Policy B  |              |                |                           |         |                    |
 
 ## Trace evidence
 

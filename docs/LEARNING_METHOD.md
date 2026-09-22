@@ -16,7 +16,7 @@ For a domain or competency:
 
 A useful learning sequence is:
 
-~~~text
+```text
 Why does this matter?
       ↓
 Build the mental model
@@ -34,7 +34,7 @@ Explain the result
 Exit test
       ↓
 Transfer to a different problem
-~~~
+```
 
 Important skills should later be used inside one of the project spines and recalled again after a delay.
 

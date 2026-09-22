@@ -18,12 +18,12 @@ Examples: chunk size, overlap, boundary strategy, candidate-set size, reranker.
 ## Configurations
 
 | Configuration | Exact settings | Why included |
-| --- | --- | --- |
+| ------------- | -------------- | ------------ |
 
 ## Results
 
 | Configuration | Recall@K | Ranking metric | p50 latency | p95 latency | Index/context cost |
-| --- | ---: | ---: | ---: | ---: | ---: |
+| ------------- | -------: | -------------: | ----------: | ----------: | -----------------: |
 
 ## Slice results
 

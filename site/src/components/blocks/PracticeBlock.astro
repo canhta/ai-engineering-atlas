@@ -31,56 +31,54 @@ const groups = block.groups.map((g) => ({
 ---
 
 <div class="practice">
-  {
-    groups.map((g) => (
-      <section class="practice-group">
-        <h3 lang={langAttr(g.label, lang)}>{g.label.value}</h3>
-        <ul>
-          {g.items.map((i) => (
-            <li>
-              <p class="reading" lang={langAttr(i.body, lang)}>
-                {i.body.value}
-              </p>
-              {(i.refTitle || i.path || i.resource) && (
-                <div class="practice-links">
-                  {i.refTitle && i.page && (
-                    <a class="pill" href={i.page}>
-                      <span lang={langAttr(i.refCollection!, lang)}>{i.refCollection!.value}</span>
-                      <span class="pill-strong" lang={langAttr(i.refTitle, lang)}>
+  {groups.map((g) => (
+    <section class="practice-group">
+      <h3 lang={langAttr(g.label, lang)}>{g.label.value}</h3>
+      <ul>
+        {g.items.map((i) => (
+          <li>
+            <p class="reading" lang={langAttr(i.body, lang)}>
+              {i.body.value}
+            </p>
+            {(i.refTitle || i.path || i.resource) && (
+              <div class="practice-links">
+                {i.refTitle && i.page && (
+                  <a class="pill" href={i.page}>
+                    <span lang={langAttr(i.refCollection!, lang)}>{i.refCollection!.value}</span>
+                    <span class="pill-strong" lang={langAttr(i.refTitle, lang)}>
+                      {i.refTitle.value}
+                    </span>
+                    <Icon name="forward" />
+                  </a>
+                )}
+                {i.path && (
+                  <a class="practice-path" href={repoUrl(i.path)}>
+                    {i.refTitle && !i.page && (
+                      <span class="practice-ref" lang={langAttr(i.refTitle, lang)}>
                         {i.refTitle.value}
                       </span>
-                      <Icon name="forward" />
-                    </a>
-                  )}
-                  {i.path && (
-                    <a class="practice-path" href={repoUrl(i.path)}>
-                      {i.refTitle && !i.page && (
-                        <span class="practice-ref" lang={langAttr(i.refTitle, lang)}>
-                          {i.refTitle.value}
-                        </span>
-                      )}
-                      <code>{i.path}</code>
-                      <span class="visually-hidden">({t("link.repository")})</span>
-                    </a>
-                  )}
-                  {i.resource && (
-                    <div class="practice-resource">
-                      <ResourceLink resource={i.resource} lang={lang} />
-                      {i.locator && (
-                        <p class="small" lang={langAttr(i.locator, lang)}>
-                          {i.locator.value}
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
+                    )}
+                    <code>{i.path}</code>
+                    <span class="visually-hidden">({t("link.repository")})</span>
+                  </a>
+                )}
+                {i.resource && (
+                  <div class="practice-resource">
+                    <ResourceLink resource={i.resource} lang={lang} />
+                    {i.locator && (
+                      <p class="small" lang={langAttr(i.locator, lang)}>
+                        {i.locator.value}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </div>
 
 <style>

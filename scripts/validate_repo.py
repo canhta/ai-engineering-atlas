@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from pathlib import Path
-from datetime import date, timedelta
 import sys
+from datetime import date, timedelta
+from pathlib import Path
+
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -109,29 +110,19 @@ else:
             errors.append(f"curriculum/catalog.yaml: '{cid}' missing title")
 
         if domain not in domain_ids:
-            errors.append(
-                f"curriculum/catalog.yaml: '{cid}' references unknown domain '{domain}'"
-            )
+            errors.append(f"curriculum/catalog.yaml: '{cid}' references unknown domain '{domain}'")
 
         if status not in VALID_CATALOG_STATUS:
-            errors.append(
-                f"curriculum/catalog.yaml: '{cid}' has invalid status '{status}'"
-            )
+            errors.append(f"curriculum/catalog.yaml: '{cid}' has invalid status '{status}'")
 
         route = item.get("route")
         if status == "ready":
             if not route:
-                errors.append(
-                    f"curriculum/catalog.yaml: ready competency '{cid}' requires route"
-                )
+                errors.append(f"curriculum/catalog.yaml: ready competency '{cid}' requires route")
             elif not (ROOT / route).exists():
-                errors.append(
-                    f"curriculum/catalog.yaml: ready competency '{cid}' route does not exist: {route}"
-                )
+                errors.append(f"curriculum/catalog.yaml: ready competency '{cid}' route does not exist: {route}")
         elif route:
-            errors.append(
-                f"curriculum/catalog.yaml: coverage competency '{cid}' must not declare route"
-            )
+            errors.append(f"curriculum/catalog.yaml: coverage competency '{cid}' must not declare route")
 
 
 # ---------------------------------------------------------------------------
@@ -176,14 +167,10 @@ for path in sorted((ROOT / "resources").glob("*.yaml")):
 
         for role in roles:
             if role not in VALID_RESOURCE_ROLES:
-                errors.append(
-                    f"{path.relative_to(ROOT)}: {rid} invalid role '{role}'"
-                )
+                errors.append(f"{path.relative_to(ROOT)}: {rid} invalid role '{role}'")
 
         if item.get("source_verified") is not True:
-            errors.append(
-                f"{path.relative_to(ROOT)}: {rid} must explicitly set source_verified: true"
-            )
+            errors.append(f"{path.relative_to(ROOT)}: {rid} must explicitly set source_verified: true")
 
 
 def check_resource_ref(ref, context, *, require_verified=False):
@@ -246,13 +233,9 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
         route_competencies[cid] = {"data": data, "path": path}
 
         if cid not in catalog:
-            errors.append(
-                f"{rel}: competency id '{cid}' is not registered in curriculum/catalog.yaml"
-            )
+            errors.append(f"{rel}: competency id '{cid}' is not registered in curriculum/catalog.yaml")
         elif data.get("status") == "ready" and catalog[cid].get("status") != "ready":
-            errors.append(
-                f"{rel}: route is ready but catalog status for '{cid}' is not ready"
-            )
+            errors.append(f"{rel}: route is ready but catalog status for '{cid}' is not ready")
 
         catalog_route = (catalog.get(cid) or {}).get("route")
         if data.get("status") == "ready" and catalog_route:
@@ -269,8 +252,7 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
 
     if cid in catalog and data.get("domain") != catalog[cid].get("domain"):
         errors.append(
-            f"{rel}: domain does not match catalog for '{cid}' "
-            f"({data.get('domain')} != {catalog[cid].get('domain')})"
+            f"{rel}: domain does not match catalog for '{cid}' ({data.get('domain')} != {catalog[cid].get('domain')})"
         )
 
     if data.get("target_level") not in VALID_LEVELS:
@@ -301,25 +283,20 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
             errors.append(f"{rel}: competency cannot depend on itself")
             continue
         if prereq not in catalog:
-            errors.append(
-                f"{rel}: prerequisite '{prereq}' is not registered in curriculum/catalog.yaml"
-            )
+            errors.append(f"{rel}: prerequisite '{prereq}' is not registered in curriculum/catalog.yaml")
             continue
 
         if data.get("status") == "ready" and catalog[prereq].get("status") != "ready":
             bridge = prerequisite_support.get(prereq)
             if not isinstance(bridge, dict):
                 errors.append(
-                    f"{rel}: ready route prerequisite '{prereq}' is coverage-only "
-                    "and requires prerequisite_support"
+                    f"{rel}: ready route prerequisite '{prereq}' is coverage-only and requires prerequisite_support"
                 )
                 continue
 
             for field in ["diagnostic", "source", "locator", "purpose"]:
                 if not bridge.get(field):
-                    errors.append(
-                        f"{rel}: prerequisite_support.{prereq} missing '{field}'"
-                    )
+                    errors.append(f"{rel}: prerequisite_support.{prereq} missing '{field}'")
 
             if bridge.get("source"):
                 check_resource_ref(
@@ -330,9 +307,7 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
 
     for bridge_id in prerequisite_support:
         if bridge_id not in prerequisites:
-            errors.append(
-                f"{rel}: prerequisite_support contains non-prerequisite '{bridge_id}'"
-            )
+            errors.append(f"{rel}: prerequisite_support contains non-prerequisite '{bridge_id}'")
 
     diagnostic = data.get("diagnostic") or {}
     if not isinstance(diagnostic, dict):
@@ -397,22 +372,16 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
 
             for field in ["source", "locator", "purpose"]:
                 if not item.get(field):
-                    errors.append(
-                        f"{rel}: ready mental_model item missing '{field}'"
-                    )
+                    errors.append(f"{rel}: ready mental_model item missing '{field}'")
 
         for item in route.get("independent_practice", []) or []:
             if not isinstance(item, dict) or not item.get("task"):
-                errors.append(
-                    f"{rel}: ready independent practice requires a task"
-                )
+                errors.append(f"{rel}: ready independent practice requires a task")
                 continue
 
             artifact = item.get("artifact")
             if artifact and not (ROOT / artifact).exists():
-                errors.append(
-                    f"{rel}: practice artifact does not exist: {artifact}"
-                )
+                errors.append(f"{rel}: practice artifact does not exist: {artifact}")
 
         if "transferred" in states and not data.get("transfer"):
             errors.append(f"{rel}: target state transferred requires transfer task")
@@ -424,17 +393,12 @@ for path in sorted((ROOT / "curriculum").rglob("competency.yaml")):
             errors.append(f"{rel}: target state applied requires project_spines")
 
 
-
 # ---------------------------------------------------------------------------
 # Prerequisite cycle validation
 # ---------------------------------------------------------------------------
 
 route_graph = {
-    cid: [
-        prereq
-        for prereq in (route["data"].get("prerequisites") or [])
-        if prereq in route_competencies
-    ]
+    cid: [prereq for prereq in (route["data"].get("prerequisites") or []) if prereq in route_competencies]
     for cid, route in route_competencies.items()
 }
 
@@ -442,13 +406,12 @@ visited = set()
 active = []
 active_set = set()
 
+
 def visit_prerequisite(cid):
     if cid in active_set:
         start = active.index(cid)
         cycle = active[start:] + [cid]
-        errors.append(
-            "curriculum prerequisite cycle: " + " -> ".join(cycle)
-        )
+        errors.append("curriculum prerequisite cycle: " + " -> ".join(cycle))
         return
 
     if cid in visited:
@@ -464,6 +427,7 @@ def visit_prerequisite(cid):
     active_set.remove(cid)
     visited.add(cid)
 
+
 for cid in sorted(route_graph):
     visit_prerequisite(cid)
 
@@ -474,14 +438,9 @@ for cid, item in catalog.items():
         continue
 
     if cid not in route_competencies:
-        errors.append(
-            f"curriculum/catalog.yaml: ready competency '{cid}' has no competency.yaml route"
-        )
+        errors.append(f"curriculum/catalog.yaml: ready competency '{cid}' has no competency.yaml route")
     elif route_competencies[cid]["data"].get("status") != "ready":
-        errors.append(
-            f"curriculum/catalog.yaml: '{cid}' is ready but its competency.yaml "
-            "route status is not ready"
-        )
+        errors.append(f"curriculum/catalog.yaml: '{cid}' is ready but its competency.yaml route status is not ready")
 
 
 # ---------------------------------------------------------------------------
@@ -576,23 +535,16 @@ if progress_path.exists():
 
     for cid, entry in (progress.get("competencies") or {}).items():
         if cid not in catalog:
-            errors.append(
-                f"progress/progress.example.yaml: unknown catalog competency '{cid}'"
-            )
+            errors.append(f"progress/progress.example.yaml: unknown catalog competency '{cid}'")
 
         current_state = entry.get("current_state")
         target = entry.get("target_state")
 
         if current_state not in VALID_STATES:
-            errors.append(
-                f"progress/progress.example.yaml: invalid current_state "
-                f"'{current_state}' for {cid}"
-            )
+            errors.append(f"progress/progress.example.yaml: invalid current_state '{current_state}' for {cid}")
 
         if target not in VALID_TARGET_STATES:
-            errors.append(
-                f"progress/progress.example.yaml: invalid target_state '{target}' for {cid}"
-            )
+            errors.append(f"progress/progress.example.yaml: invalid target_state '{target}' for {cid}")
 
         evidence = entry.get("evidence") or []
         evidence_ids = set()
@@ -600,28 +552,21 @@ if progress_path.exists():
         for item in evidence:
             eid = item.get("id")
             if not eid:
-                errors.append(
-                    f"progress/progress.example.yaml: {cid} evidence item missing id"
-                )
+                errors.append(f"progress/progress.example.yaml: {cid} evidence item missing id")
                 continue
             if eid in evidence_ids:
-                errors.append(
-                    f"progress/progress.example.yaml: {cid} duplicate evidence id '{eid}'"
-                )
+                errors.append(f"progress/progress.example.yaml: {cid} duplicate evidence id '{eid}'")
             evidence_ids.add(eid)
 
             supported = item.get("supports_state")
             if supported not in VALID_STATES - {"unassessed"}:
                 errors.append(
-                    f"progress/progress.example.yaml: {cid} evidence '{eid}' has "
-                    f"invalid supports_state '{supported}'"
+                    f"progress/progress.example.yaml: {cid} evidence '{eid}' has invalid supports_state '{supported}'"
                 )
 
         history = entry.get("state_history") or []
         if not history:
-            errors.append(
-                f"progress/progress.example.yaml: {cid} requires state_history"
-            )
+            errors.append(f"progress/progress.example.yaml: {cid} requires state_history")
         else:
             last_state = history[-1].get("state")
             if last_state != current_state:
@@ -635,37 +580,23 @@ if progress_path.exists():
             refs = event.get("evidence_refs") or []
 
             if state not in VALID_STATES:
-                errors.append(
-                    f"progress/progress.example.yaml: {cid} history has "
-                    f"invalid state '{state}'"
-                )
+                errors.append(f"progress/progress.example.yaml: {cid} history has invalid state '{state}'")
 
             for ref in refs:
                 if ref not in evidence_ids:
-                    errors.append(
-                        f"progress/progress.example.yaml: {cid} history references "
-                        f"unknown evidence '{ref}'"
-                    )
+                    errors.append(f"progress/progress.example.yaml: {cid} history references unknown evidence '{ref}'")
 
             if state in {"demonstrated", "transferred", "retained", "applied"}:
                 if not refs:
-                    errors.append(
-                        f"progress/progress.example.yaml: {cid} state '{state}' "
-                        "requires evidence_refs"
-                    )
-                elif not any(
-                    item.get("id") in refs and item.get("supports_state") == state
-                    for item in evidence
-                ):
+                    errors.append(f"progress/progress.example.yaml: {cid} state '{state}' requires evidence_refs")
+                elif not any(item.get("id") in refs and item.get("supports_state") == state for item in evidence):
                     errors.append(
                         f"progress/progress.example.yaml: {cid} state '{state}' "
                         "requires referenced evidence supporting the same state"
                     )
 
         if not entry.get("next_action"):
-            errors.append(
-                f"progress/progress.example.yaml: {cid} requires next_action"
-            )
+            errors.append(f"progress/progress.example.yaml: {cid} requires next_action")
 
 
 # ---------------------------------------------------------------------------
@@ -685,27 +616,19 @@ for rid in sorted(ready_source_ids):
         try:
             checked = date.fromisoformat(str(raw_checked))
         except Exception:
-            errors.append(
-                f"resource '{rid}' has invalid last_checked '{raw_checked}'"
-            )
+            errors.append(f"resource '{rid}' has invalid last_checked '{raw_checked}'")
             continue
 
     if checked > today:
-        errors.append(
-            f"resource '{rid}' last_checked is in the future: {checked.isoformat()}"
-        )
+        errors.append(f"resource '{rid}' last_checked is in the future: {checked.isoformat()}")
 
     if not isinstance(interval, int) or interval <= 0:
-        errors.append(
-            f"resource '{rid}' is used by a ready route and requires "
-            "positive review_interval_days"
-        )
+        errors.append(f"resource '{rid}' is used by a ready route and requires positive review_interval_days")
         continue
 
     if checked + timedelta(days=interval) < today:
         errors.append(
-            f"resource '{rid}' is stale for a ready route: "
-            f"checked {checked.isoformat()}, interval {interval} days"
+            f"resource '{rid}' is stale for a ready route: checked {checked.isoformat()}, interval {interval} days"
         )
 
 
@@ -719,10 +642,7 @@ if errors:
         print(f"- {error}")
     sys.exit(1)
 
-ready_count = sum(
-    1 for item in catalog.values()
-    if item.get("status") == "ready"
-)
+ready_count = sum(1 for item in catalog.values() if item.get("status") == "ready")
 coverage_count = len(catalog) - ready_count
 
 print(

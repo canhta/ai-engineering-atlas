@@ -6,17 +6,17 @@ What is the actual task and user-facing success condition?
 
 ## Hard constraints
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Evaluation evidence
 
 Evaluation set/version:
 
 | Candidate | Feasible? | Quality | p95 latency | Cost | Operational notes |
-| --- | --- | ---: | ---: | ---: | --- |
-| | | | | | |
+| --------- | --------- | ------: | ----------: | ---: | ----------------- |
+|           |           |         |             |      |                   |
 
 ## Decision rule
 

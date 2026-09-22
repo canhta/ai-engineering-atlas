@@ -7,7 +7,8 @@ import { join, relative } from "node:path";
 const root = new URL("..", import.meta.url).pathname;
 const REGISTRY = "src/lib/icons.ts";
 const PLATE = "src/components/plate/";
-const ICON_PACKAGES = /from\s+["'](@carbon\/icons[\w/-]*|lucide[\w/-]*|@phosphor-icons\/[\w-]+|@tabler\/icons[\w-]*|@heroicons\/[\w/-]+|react-icons[\w/-]*|@radix-ui\/react-icons)["']/;
+const ICON_PACKAGES =
+  /from\s+["'](@carbon\/icons[\w/-]*|lucide[\w/-]*|@phosphor-icons\/[\w-]+|@tabler\/icons[\w-]*|@heroicons\/[\w/-]+|react-icons[\w/-]*|@radix-ui\/react-icons)["']/;
 
 function* walk(dir) {
   for (const name of readdirSync(dir)) {

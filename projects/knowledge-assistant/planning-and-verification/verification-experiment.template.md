@@ -10,7 +10,7 @@
 ## Success criteria and verifier inventory
 
 | Criterion | Verifier | Evidence source | Deterministic? | Version |
-| --- | --- | --- | --- | --- |
+| --------- | -------- | --------------- | -------------- | ------- |
 
 Prefer environment state, executable tests, invariants, or authoritative data where possible.
 

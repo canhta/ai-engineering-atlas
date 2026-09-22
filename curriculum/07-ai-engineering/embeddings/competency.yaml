@@ -33,7 +33,7 @@ learning_route:
       locator: Chapter 3 "Introduction to Embedding" (from p. 134) and Chapter 6 "Retrieval Algorithms" (from p. 257)
       purpose: Connect embedding representations to semantic retrieval in AI applications.
     - source: docs.sentence-transformers-semantic-search
-      locator: 'Semantic Search page: Symmetric vs. Asymmetric Semantic Search; implementation with encode_query, encode_document, cosine similarity, and semantic_search'
+      locator: "Semantic Search page: Symmetric vs. Asymmetric Semantic Search; implementation with encode_query, encode_document, cosine similarity, and semantic_search"
       purpose: Make query/document task asymmetry and concrete embedding-search mechanics operational.
     - source: book.stanford-ir
       locator: Chapter 6 §6.3 "The vector space model for scoring"

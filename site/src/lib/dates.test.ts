@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import { formatDate } from "./dates.ts";
 
 test("dates follow the page locale: dd/mm/yyyy in Vietnamese, the en format in English", () => {

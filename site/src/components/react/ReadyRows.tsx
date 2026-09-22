@@ -1,5 +1,5 @@
 // Home: ready routes by group as compact rows (title, level, number of sources, your state).
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
@@ -13,7 +13,15 @@ export interface ReadyGroup {
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function ReadyRows({ lang, groups, stateLabels }: { lang: Lang; groups: ReadyGroup[]; stateLabels: Record<string, string> }) {
+export default function ReadyRows({
+  lang,
+  groups,
+  stateLabels,
+}: {
+  lang: Lang;
+  groups: ReadyGroup[];
+  stateLabels: Record<string, string>;
+}) {
   const t = useTranslations(lang);
   const [progress] = useProgress();
   return (
@@ -37,8 +45,12 @@ export default function ReadyRows({ lang, groups, stateLabels }: { lang: Lang; g
                         {chip}
                       </span>
                     ))}
-                    <span className="muted small tabular">{row.sources === 1 ? t("drawer.sourceOne") : t("drawer.sources", { count: row.sources })}</span>
-                    <span className="ready-state">{state && <StateBadge state={state} label={stateLabels[state]} />}</span>
+                    <span className="muted small tabular">
+                      {row.sources === 1 ? t("drawer.sourceOne") : t("drawer.sources", { count: row.sources })}
+                    </span>
+                    <span className="ready-state">
+                      {state && <StateBadge state={state} label={stateLabels[state]} />}
+                    </span>
                   </span>
                 </li>
               );

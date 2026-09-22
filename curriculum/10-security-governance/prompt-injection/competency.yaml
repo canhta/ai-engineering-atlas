@@ -32,7 +32,7 @@ prerequisite_support:
   ai.tool-calling:
     diagnostic: Explain the difference between a model proposing a tool invocation and application code authorizing and executing it.
     source: article.anthropic-building-effective-agents
-    locator: 'Building block: The augmented LLM; Appendix 2: Prompt engineering your tools.'
+    locator: "Building block: The augmented LLM; Appendix 2: Prompt engineering your tools."
     purpose: Patch the model/tool interaction needed to reason about compromised tool requests.
 outcomes:
   - Distinguish direct from indirect prompt injection and explain why RAG or fine-tuning does not eliminate the risk.

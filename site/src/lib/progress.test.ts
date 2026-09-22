@@ -1,17 +1,17 @@
-import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parse } from "yaml";
+import { test } from "node:test";
 import Ajv2020 from "ajv/dist/2020.js";
+import { parse } from "yaml";
 import {
   addDays,
+  type EvidenceInput,
   emptyProgress,
   fromYaml,
   recordEvidence,
   reviewQueue,
   stateOf,
   toYaml,
-  type EvidenceInput,
 } from "./progress.ts";
 
 const DAY = "2026-09-22";
@@ -42,7 +42,13 @@ test("recording evidence moves the state and links history to the evidence", () 
 });
 
 test("demonstrated schedules a delayed review; each successful retrieval lengthens it", () => {
-  let p = recordEvidence(emptyProgress(DAY), "x", evidence({ kind: "implementation", supports_state: "demonstrated" }), "retained", DAY);
+  let p = recordEvidence(
+    emptyProgress(DAY),
+    "x",
+    evidence({ kind: "implementation", supports_state: "demonstrated" }),
+    "retained",
+    DAY,
+  );
   assert.equal(p.competencies.x.review_on, addDays(DAY, 7));
   const later = addDays(DAY, 7);
   p = recordEvidence(p, "x", evidence({ kind: "retrieval", supports_state: "retained" }), "retained", later);
@@ -51,7 +57,13 @@ test("demonstrated schedules a delayed review; each successful retrieval lengthe
 });
 
 test("a failed retrieval moves the state backward and clears the review date", () => {
-  let p = recordEvidence(emptyProgress(DAY), "x", evidence({ kind: "implementation", supports_state: "demonstrated" }), "retained", DAY);
+  let p = recordEvidence(
+    emptyProgress(DAY),
+    "x",
+    evidence({ kind: "implementation", supports_state: "demonstrated" }),
+    "retained",
+    DAY,
+  );
   p = recordEvidence(p, "x", evidence({ kind: "retrieval", supports_state: "learning" }), "retained", addDays(DAY, 7));
   assert.equal(p.competencies.x.current_state, "learning");
   assert.equal(p.competencies.x.review_on, undefined);
@@ -66,8 +78,20 @@ test("evidence ids are unique within a day", () => {
 });
 
 test("review queue splits due and upcoming", () => {
-  let p = recordEvidence(emptyProgress(DAY), "a", evidence({ kind: "implementation", supports_state: "demonstrated" }), "retained", DAY);
-  p = recordEvidence(p, "b", evidence({ kind: "implementation", supports_state: "demonstrated" }), "retained", addDays(DAY, 3));
+  let p = recordEvidence(
+    emptyProgress(DAY),
+    "a",
+    evidence({ kind: "implementation", supports_state: "demonstrated" }),
+    "retained",
+    DAY,
+  );
+  p = recordEvidence(
+    p,
+    "b",
+    evidence({ kind: "implementation", supports_state: "demonstrated" }),
+    "retained",
+    addDays(DAY, 3),
+  );
   const q = reviewQueue(p, addDays(DAY, 7));
   assert.deepEqual(q.due, ["a"]);
   assert.deepEqual(q.upcoming, ["b"]);
@@ -75,7 +99,18 @@ test("review queue splits due and upcoming", () => {
 
 test("exported YAML validates against schemas/progress.schema.json and round-trips", () => {
   let p = recordEvidence(emptyProgress(DAY), "ai.tool-calling", evidence({}), "applied", DAY);
-  p = recordEvidence(p, "ai.tool-calling", evidence({ kind: "implementation", supports_state: "demonstrated", independence: "reference-open", review_method: "automated" }), "applied", DAY);
+  p = recordEvidence(
+    p,
+    "ai.tool-calling",
+    evidence({
+      kind: "implementation",
+      supports_state: "demonstrated",
+      independence: "reference-open",
+      review_method: "automated",
+    }),
+    "applied",
+    DAY,
+  );
   const yaml = toYaml(p);
   assert.ok(validate(parse(yaml)), JSON.stringify(validate.errors));
   const back = fromYaml(yaml);

@@ -55,20 +55,20 @@ This maturity model is intentional: a topic is not presented as a finished lesso
 
 ## Curriculum areas
 
-| Area | Main concern |
-| --- | --- |
-| [Software Engineering](curriculum/01-software-engineering/) | programming, testing, architecture, delivery |
-| [Systems](curriculum/02-systems/) | concurrency, networking, storage, distributed systems, cloud, observability |
-| [Data Engineering](curriculum/03-data-engineering/) | pipelines, quality, lineage, lifecycle |
-| [ML Foundations](curriculum/04-ml-foundations/) | math, statistics, classical ML, experimentation |
-| [Deep Learning](curriculum/05-deep-learning/) | optimization, backpropagation, representations |
-| [LLM Foundations](curriculum/06-llm-foundations/) | tokenization, transformers, attention, inference |
-| [AI Engineering](curriculum/07-ai-engineering/) | model decisions, context, retrieval, evaluation, adaptation |
-| [Agents](curriculum/08-agents/) | tools, state, planning, memory, MCP, evaluation |
-| [Production AI](curriculum/09-production-ai/) | serving, gateways, tracing, releases, reliability, cost |
-| [Security & Governance](curriculum/10-security-governance/) | trust boundaries, permissions, privacy, governance |
-| [Multimodal](curriculum/11-multimodal/) | vision, voice, document and multimodal systems |
-| [Specializations](curriculum/12-specializations/) | LLM systems, post-training, search, platforms |
+| Area                                                        | Main concern                                                                |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [Software Engineering](curriculum/01-software-engineering/) | programming, testing, architecture, delivery                                |
+| [Systems](curriculum/02-systems/)                           | concurrency, networking, storage, distributed systems, cloud, observability |
+| [Data Engineering](curriculum/03-data-engineering/)         | pipelines, quality, lineage, lifecycle                                      |
+| [ML Foundations](curriculum/04-ml-foundations/)             | math, statistics, classical ML, experimentation                             |
+| [Deep Learning](curriculum/05-deep-learning/)               | optimization, backpropagation, representations                              |
+| [LLM Foundations](curriculum/06-llm-foundations/)           | tokenization, transformers, attention, inference                            |
+| [AI Engineering](curriculum/07-ai-engineering/)             | model decisions, context, retrieval, evaluation, adaptation                 |
+| [Agents](curriculum/08-agents/)                             | tools, state, planning, memory, MCP, evaluation                             |
+| [Production AI](curriculum/09-production-ai/)               | serving, gateways, tracing, releases, reliability, cost                     |
+| [Security & Governance](curriculum/10-security-governance/) | trust boundaries, permissions, privacy, governance                          |
+| [Multimodal](curriculum/11-multimodal/)                     | vision, voice, document and multimodal systems                              |
+| [Specializations](curriculum/12-specializations/)           | LLM systems, post-training, search, platforms                               |
 
 ## Learning design
 

@@ -25,28 +25,28 @@ This RFC records the missing governance decision. It does **not** assume that CI
 - Made With ML — Product Design  
   https://madewithml.com/courses/mlops/product-design/  
   Verified sections: **Background**, **Value proposition**, **Objectives**, **Solution**, **Feasibility**.
-- Chip Huyen — *AI Engineering*  
+- Chip Huyen — _AI Engineering_  
   Chapter 1 route currently uses **Planning AI Applications**, especially **Use Case Evaluation**, **Setting Expectations**, **Milestone Planning**, and **Maintenance**.
 
 These sources support a product-first capability that separates user/problem framing, success criteria, constraints, alternatives, and feasibility from implementation choice.
 
 ### Search and retrieval
 
-- Manning, Raghavan, Schütze — *Introduction to Information Retrieval*  
+- Manning, Raghavan, Schütze — _Introduction to Information Retrieval_  
   https://nlp.stanford.edu/IR-book/  
   Route uses Chapter 6 §§6.2–6.3 for term weighting/vector-space ranking and Chapter 8 for ranked-retrieval evaluation.
-- Chip Huyen — *AI Engineering*  
+- Chip Huyen — _AI Engineering_  
   Chapter 6 **RAG and Agents** → **Retrieval Algorithms** (starts p.257 in the published table of contents).
 
 These sources support a lexical ranked-retrieval baseline, relevance judgments, ranking evaluation, and failure analysis before semantic complexity.
 
 ### Embeddings for AI applications
 
-- Chip Huyen — *AI Engineering*  
+- Chip Huyen — _AI Engineering_  
   Chapter 3 embedding material and Chapter 6 retrieval material.
 - Sentence Transformers — Semantic Search  
   https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html
-- Manning, Raghavan, Schütze — *Introduction to Information Retrieval*, Chapter 6 §6.3 for vector scoring.
+- Manning, Raghavan, Schütze — _Introduction to Information Retrieval_, Chapter 6 §6.3 for vector scoring.
 
 The route uses these sources to distinguish semantic representation from retrieval evaluation and to require a controlled lexical-vs-semantic comparison.
 
@@ -128,8 +128,8 @@ Rejected. Validators check repository contracts; they do not provide human curri
   - `ai.embeddings`
 - resource changes:
   - Made With ML Product Design
-  - *AI Engineering*
-  - *Introduction to Information Retrieval*
+  - _AI Engineering_
+  - _Introduction to Information Retrieval_
   - Sentence Transformers Semantic Search
 - project impact:
   - `projects/knowledge-assistant/foundation/`

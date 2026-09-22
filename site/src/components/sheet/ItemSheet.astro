@@ -53,7 +53,11 @@ const group = groupOf(c, item, lang);
 const crumbs: Crumb[] = [
   { label: t("nav.atlas"), href: mapUrl(lang) },
   group
-    ? { label: group.label.value, href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}`, lang: langAttr(group.label, lang) }
+    ? {
+        label: group.label.value,
+        href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}`,
+        lang: langAttr(group.label, lang),
+      }
     : { label: text(c.label, lang).value, lang: langAttr(text(c.label, lang), lang) },
   { label: title.value, lang: langAttr(title, lang) },
 ];
@@ -63,7 +67,9 @@ const chips = headerChips(c, item, lang);
 // Learner progress: only for collections that track it.
 const declaredTarget = targetOf(c, item);
 const target: TargetState | undefined = c.progress?.tracks
-  ? ((TARGET_STATES as readonly string[]).includes(declaredTarget ?? "") ? (declaredTarget as TargetState) : "demonstrated")
+  ? (TARGET_STATES as readonly string[]).includes(declaredTarget ?? "")
+    ? (declaredTarget as TargetState)
+    : "demonstrated"
   : undefined;
 
 const prereqBlock = page.blocks.find((b) => b.type === "prerequisites");
@@ -82,7 +88,10 @@ const prereqs: PrereqEntry[] =
 
 // Next-step line in the field log: the whole graph (ranking needs it) and links for this item's prerequisites.
 const graph = target ? nextGraph() : [];
-const adviceLinks = nextLinks(lang, (graph.find((g) => g.id === ref)?.needs ?? []).map((n) => n.id));
+const adviceLinks = nextLinks(
+  lang,
+  (graph.find((g) => g.id === ref)?.needs ?? []).map((n) => n.id),
+);
 
 // Tracked items that point at this one (the competencies a lab practises), with their state glyph.
 const practisedBy: PrereqEntry[] = trackedItemsPointingAt(ref).map((i) => ({
@@ -115,34 +124,30 @@ const railEntries: RailEntry[] = blocks.map((b) => {
   <article class:list={["sheet", { tracked: Boolean(target) }]}>
     <header class="sheet-head">
       <Breadcrumb lang={lang} crumbs={crumbs} />
-      <h1 class="display" lang={langAttr(title, lang)}>{title.value}</h1>
-      {
-        subtitle && (
-          <p class="lead" lang={langAttr(subtitle, lang)}>
-            {subtitle.value}
-          </p>
-        )
-      }
-      {
-        untranslated && (
-          <p class="untranslated small" role="note">
-            {t("translation.missing")}
-          </p>
-        )
-      }
+      <h1 class="display" lang={langAttr(title, lang)}>
+        {title.value}
+      </h1>
+      {subtitle && (
+        <p class="lead" lang={langAttr(subtitle, lang)}>
+          {subtitle.value}
+        </p>
+      )}
+      {untranslated && (
+        <p class="untranslated small" role="note">
+          {t("translation.missing")}
+        </p>
+      )}
       <div class="sheet-meta">
-        {
-          chips.length > 0 && (
-            <ul class="chips" aria-label={t("sheet.facts")}>
-              {chips.map((chip) => (
-                <li class="chip" lang={langAttr(chip.label, lang)} title={text(c.fields[chip.field]?.label, lang).value}>
-                  {chip.value.length <= 3 && chip.value !== chip.label.value && <code>{chip.value}</code>}
-                  {chip.label.value}
-                </li>
-              ))}
-            </ul>
-          )
-        }
+        {chips.length > 0 && (
+          <ul class="chips" aria-label={t("sheet.facts")}>
+            {chips.map((chip) => (
+              <li class="chip" lang={langAttr(chip.label, lang)} title={text(c.fields[chip.field]?.label, lang).value}>
+                {chip.value.length <= 3 && chip.value !== chip.label.value && <code>{chip.value}</code>}
+                {chip.label.value}
+              </li>
+            ))}
+          </ul>
+        )}
         <div class="sheet-actions">
           <a class="button-quiet" href={repoUrl(page.source_path)} rel="noopener noreferrer">
             {t("sheet.contract")}
@@ -158,68 +163,92 @@ const railEntries: RailEntry[] = blocks.map((b) => {
       </div>
       {prereqs.length > 0 && <PrereqLine client:idle lang={lang} entries={prereqs} />}
       {practisedBy.length > 0 && <PrereqLine client:idle lang={lang} entries={practisedBy} lead={t("lab.practises")} />}
-      {
-        runner && (
-          <a class="button-quiet bench-jump" href={`#${runner.id}`}>
-            <Icon name="code" />
-            {t("lab.toCode")}
-          </a>
-        )
-      }
+      {runner && (
+        <a class="button-quiet bench-jump" href={`#${runner.id}`}>
+          <Icon name="code" />
+          {t("lab.toCode")}
+        </a>
+      )}
     </header>
 
-    {
-      runner ? (
-        <div class="bench-grid">
-          <div class="sheet-content">
-            {reading.map((b) => (
-              <section id={b.id} class:list={["block", `block-${b.type}`]} aria-labelledby={`${b.id}-title`}>
-                <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
-                  {text(b.title, lang).value}
-                </h2>
-                <Block block={b} lang={lang} itemRef={ref} target={target} after={[]} headingId={`${b.id}-title`} sourcePath={page.source_path} />
-              </section>
-            ))}
-          </div>
-          <section id={runner.id} class="bench" aria-labelledby={`${runner.id}-title`}>
-            <h2 id={`${runner.id}-title`} class="bench-title" lang={langAttr(text(runner.title, lang), lang)}>
-              {text(runner.title, lang).value}
-            </h2>
-            <Block block={runner} lang={lang} itemRef={ref} target={target} after={[]} headingId={`${runner.id}-title`} sourcePath={page.source_path} />
-          </section>
+    {runner ? (
+      <div class="bench-grid">
+        <div class="sheet-content">
+          {reading.map((b) => (
+            <section id={b.id} class:list={["block", `block-${b.type}`]} aria-labelledby={`${b.id}-title`}>
+              <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
+                {text(b.title, lang).value}
+              </h2>
+              <Block
+                block={b}
+                lang={lang}
+                itemRef={ref}
+                target={target}
+                after={[]}
+                headingId={`${b.id}-title`}
+                sourcePath={page.source_path}
+              />
+            </section>
+          ))}
         </div>
-      ) : (
-        <div class="sheet-grid">
-          <StepRail client:load lang={lang} itemRef={ref} entries={railEntries} />
-          <div class="sheet-content">
-            {blocks.map((b, i) => (
-              <section id={b.id} class:list={["block", `block-${b.type}`, { step: b.step }]} aria-labelledby={`${b.id}-title`}>
-                <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
-                  {railEntries[i].step && (
-                    <span class="block-step tabular" aria-hidden="true">
-                      {railEntries[i].step}
-                    </span>
-                  )}
-                  {text(b.title, lang).value}
-                </h2>
-                <Block
-                  block={b}
-                  lang={lang}
-                  itemRef={ref}
-                  target={target}
-                  after={blocks.slice(i + 1)}
-                  headingId={`${b.id}-title`}
-                  sourcePath={page.source_path}
-                />
-              </section>
-            ))}
-          </div>
-          {target && (
-            <FieldLog client:load lang={lang} itemRef={ref} target={target} stateLabels={stateLabels(lang)} graph={graph} links={adviceLinks} />
-          )}
+        <section id={runner.id} class="bench" aria-labelledby={`${runner.id}-title`}>
+          <h2 id={`${runner.id}-title`} class="bench-title" lang={langAttr(text(runner.title, lang), lang)}>
+            {text(runner.title, lang).value}
+          </h2>
+          <Block
+            block={runner}
+            lang={lang}
+            itemRef={ref}
+            target={target}
+            after={[]}
+            headingId={`${runner.id}-title`}
+            sourcePath={page.source_path}
+          />
+        </section>
+      </div>
+    ) : (
+      <div class="sheet-grid">
+        <StepRail client:load lang={lang} itemRef={ref} entries={railEntries} />
+        <div class="sheet-content">
+          {blocks.map((b, i) => (
+            <section
+              id={b.id}
+              class:list={["block", `block-${b.type}`, { step: b.step }]}
+              aria-labelledby={`${b.id}-title`}
+            >
+              <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
+                {railEntries[i].step && (
+                  <span class="block-step tabular" aria-hidden="true">
+                    {railEntries[i].step}
+                  </span>
+                )}
+                {text(b.title, lang).value}
+              </h2>
+              <Block
+                block={b}
+                lang={lang}
+                itemRef={ref}
+                target={target}
+                after={blocks.slice(i + 1)}
+                headingId={`${b.id}-title`}
+                sourcePath={page.source_path}
+              />
+            </section>
+          ))}
         </div>
-      )
-    }
+        {target && (
+          <FieldLog
+            client:load
+            lang={lang}
+            itemRef={ref}
+            target={target}
+            stateLabels={stateLabels(lang)}
+            graph={graph}
+            links={adviceLinks}
+          />
+        )}
+      </div>
+    )}
   </article>
 </Base>
 

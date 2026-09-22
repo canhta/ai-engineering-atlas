@@ -77,16 +77,16 @@ Item references use `<ref_prefix>:<id>` (`lab:`, `project:`, `path:`); competenc
 
 Every block has `type`, `id` (stable anchor), and `title: L10n`, and may have `step: true` when it is something the learner does (diagnostic, sources, practice, exit evidence, transfer); the flag is omitted otherwise and set per block in `presentation.yaml`. The renderer keeps one component per type; unknown types render as `data`.
 
-| type | payload | interactive behaviour |
-|---|---|---|
-| `text` | `body: L10n`, `format?: markdown` | none; a Markdown body renders at build time with headings one level down, relative links resolved against the item's `source_path` (to the atlas page of the item at that path, else to the repository), and raw HTML escaped |
-| `list` | `items: L10n[]`, `ordered: bool` | none |
-| `prerequisites` | `items: [{ ref, bridge?: { diagnostic?: L10n, resource, locator?: L10n, purpose?: L10n } }]` | links to referenced items that have pages |
-| `diagnostic` | `tasks: L10n[]`, `pass_condition: L10n` | answer, compare, record diagnostic evidence |
-| `sources` | `rows: [{ resource, locator: L10n, purpose: L10n }]` | per-row personal "opened" mark |
-| `practice` | `groups: [{ label: L10n, items: [{ text: L10n, ref?, path?, resource?, locator?: L10n }] }]` | links to labs, repository paths, and resources |
-| `runner` | `runtime: pyodide`, `editable`, `run`, `reference`, `files: { name: text }`, `packages?: string[]` | edit `editable`, run `run` as `__main__` in the browser, show the result, reveal `reference` on a confirmed request, record evidence for the tracked items that point at this item |
-| `data` | `value: any JSON` | generic fallback, rendered as nested lists |
+| type            | payload                                                                                            | interactive behaviour                                                                                                                                                                                                         |
+| --------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`          | `body: L10n`, `format?: markdown`                                                                  | none; a Markdown body renders at build time with headings one level down, relative links resolved against the item's `source_path` (to the atlas page of the item at that path, else to the repository), and raw HTML escaped |
+| `list`          | `items: L10n[]`, `ordered: bool`                                                                   | none                                                                                                                                                                                                                          |
+| `prerequisites` | `items: [{ ref, bridge?: { diagnostic?: L10n, resource, locator?: L10n, purpose?: L10n } }]`       | links to referenced items that have pages                                                                                                                                                                                     |
+| `diagnostic`    | `tasks: L10n[]`, `pass_condition: L10n`                                                            | answer, compare, record diagnostic evidence                                                                                                                                                                                   |
+| `sources`       | `rows: [{ resource, locator: L10n, purpose: L10n }]`                                               | per-row personal "opened" mark                                                                                                                                                                                                |
+| `practice`      | `groups: [{ label: L10n, items: [{ text: L10n, ref?, path?, resource?, locator?: L10n }] }]`       | links to labs, repository paths, and resources                                                                                                                                                                                |
+| `runner`        | `runtime: pyodide`, `editable`, `run`, `reference`, `files: { name: text }`, `packages?: string[]` | edit `editable`, run `run` as `__main__` in the browser, show the result, reveal `reference` on a confirmed request, record evidence for the tracked items that point at this item                                            |
+| `data`          | `value: any JSON`                                                                                  | generic fallback, rendered as nested lists                                                                                                                                                                                    |
 
 `resource` is a key in `resources` or an absolute URL. A practice item's `ref` is set when its `path` lies inside an item's repository path (`labs/self-attention/` → `lab:self-attention`).
 

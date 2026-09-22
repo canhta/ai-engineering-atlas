@@ -10,7 +10,10 @@ export function getStaticPaths() {
     .filter((c) => !c.page_when)
     .flatMap((c) => pagedItems(c).map((item) => ({ c, item })))
     .flatMap(({ c, item }) =>
-      langs.map((lang) => ({ params: { lang, collection: pageSegment(c), id: item.id }, props: { collection: c, item } })),
+      langs.map((lang) => ({
+        params: { lang, collection: pageSegment(c), id: item.id },
+        props: { collection: c, item },
+      })),
     );
 }
 

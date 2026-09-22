@@ -3,16 +3,26 @@
 // Serve the build first (`pnpm run preview`), since `_headers` apply only there.
 // CAPTURE_PROGRESS=<progress.yaml> seeds that learner progress into every page (learner-state surfaces).
 import { mkdirSync, readFileSync } from "node:fs";
-import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { chromium } from "@playwright/test";
 import { parse } from "yaml";
 
-const seeded = process.env.CAPTURE_PROGRESS ? JSON.stringify(parse(readFileSync(process.env.CAPTURE_PROGRESS, "utf8"))) : null;
+const seeded = process.env.CAPTURE_PROGRESS
+  ? JSON.stringify(parse(readFileSync(process.env.CAPTURE_PROGRESS, "utf8")))
+  : null;
 
-const [baseUrl = `http://127.0.0.1:${process.env.ATLAS_PORT ?? 8787}`, outDir = "ui-review", ...paths] = process.argv.slice(2);
+const [baseUrl = `http://127.0.0.1:${process.env.ATLAS_PORT ?? 8787}`, outDir = "ui-review", ...paths] =
+  process.argv.slice(2);
 const pages = paths.length
   ? paths
-  : ["/{lang}/", "/{lang}/map/", "/{lang}/map/?item=ai.tool-calling", "/{lang}/progress/", "/{lang}/routes/ai.tool-calling/", "/{lang}/labs/evaluation-harness/"];
+  : [
+      "/{lang}/",
+      "/{lang}/map/",
+      "/{lang}/map/?item=ai.tool-calling",
+      "/{lang}/progress/",
+      "/{lang}/routes/ai.tool-calling/",
+      "/{lang}/labs/evaluation-harness/",
+    ];
 const langs = ["en", "vi"];
 const schemes = ["light", "dark"];
 const widths = [390, 1440];
@@ -54,7 +64,7 @@ for (const scheme of schemes) {
 await browser.close();
 console.log(`Captured ${schemes.length * widths.length * langs.length * pages.length} screenshots in ${outDir}/`);
 if (problems.length) {
-  console.error("\nProblems:\n" + problems.map((p) => `- ${p}`).join("\n"));
+  console.error(`\nProblems:\n${problems.map((p) => `- ${p}`).join("\n")}`);
   process.exit(1);
 }
 console.log("OK: no HTTP, header, overflow, or axe problems");

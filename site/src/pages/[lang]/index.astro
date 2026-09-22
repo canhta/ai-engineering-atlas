@@ -43,15 +43,23 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
 <Base lang={lang}>
   <div class="hero-row">
     <section class="hero" aria-labelledby="home-title">
-      <h1 id="home-title" class="display home-title" lang={langAttr(title, lang)}>{title.value}</h1>
-      <p class="subtitle home-subtitle" lang={langAttr(tagline, lang)}>{tagline.value}</p>
+      <h1 id="home-title" class="display home-title" lang={langAttr(title, lang)}>
+        {title.value}
+      </h1>
+      <p class="subtitle home-subtitle" lang={langAttr(tagline, lang)}>
+        {tagline.value}
+      </p>
       <p class="muted">{t("home.method")}</p>
       <div class="hero-actions">
         <a class="pill pill-primary" href={`${mapUrl(lang)}?ready=1`}>
           {t("home.start")}
-          <span class="pill-icon"><Icon name="forward" /></span>
+          <span class="pill-icon">
+            <Icon name="forward" />
+          </span>
         </a>
-        <a class="button-quiet" href="#how">{t("home.how")}</a>
+        <a class="button-quiet" href="#how">
+          {t("home.how")}
+        </a>
       </div>
     </section>
     <NextSteps client:load lang={lang} graph={nextGraph()} links={nextLinks(lang)} limit={3} onlyWithEvidence />
@@ -59,27 +67,36 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
 
   <section class="home-plate" aria-labelledby="plate-title">
     <div class="plate-head">
-      <h2 id="plate-title" class="visually-hidden">{t("home.plate")}</h2>
+      <h2 id="plate-title" class="visually-hidden">
+        {t("home.plate")}
+      </h2>
       <p class="muted tabular">{t("home.counts", { ready, mapped: tiles.length - ready })}</p>
       <PlateLegend lang={lang} stateLabels={stateLabels(lang)} />
     </div>
-    <Plate client:load lang={lang} mode="overview" regions={regions} stateLabels={stateLabels(lang)} atlasUrl={mapUrl(lang)} regionHeading="h3" reveal />
+    <Plate
+      client:load
+      lang={lang}
+      mode="overview"
+      regions={regions}
+      stateLabels={stateLabels(lang)}
+      atlasUrl={mapUrl(lang)}
+      regionHeading="h3"
+      reveal
+    />
   </section>
 
   <section id="how" class="how" aria-labelledby="how-title">
     <h2 id="how-title">{t("home.how")}</h2>
     <ol>
-      {
-        steps.map((step, i) => (
-          <li>
-            <span class="how-num tabular" aria-hidden="true">
-              {i + 1}
-            </span>
-            <strong>{t(`home.step.${step}.title`)}</strong>
-            <span class="muted">{t(`home.step.${step}.body`)}</span>
-          </li>
-        ))
-      }
+      {steps.map((step, i) => (
+        <li>
+          <span class="how-num tabular" aria-hidden="true">
+            {i + 1}
+          </span>
+          <strong>{t(`home.step.${step}.title`)}</strong>
+          <span class="muted">{t(`home.step.${step}.body`)}</span>
+        </li>
+      ))}
     </ol>
   </section>
 

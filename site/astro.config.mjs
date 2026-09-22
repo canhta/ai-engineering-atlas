@@ -1,7 +1,7 @@
 import { copyFileSync, createReadStream, mkdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { defineConfig, fontProviders } from "astro/config";
 import react from "@astrojs/react";
+import { defineConfig, fontProviders } from "astro/config";
 
 // Every family must ship the `vietnamese` subset (DESIGN.md → Typography).
 const subsets = ["latin", "vietnamese"];
@@ -14,7 +14,12 @@ const pyodideVersion = JSON.parse(readFileSync(`${pyodideDir}package.json`, "utf
 const PYODIDE_BASE = `/pyodide/${pyodideVersion}/`;
 const PYODIDE_FILES = ["pyodide.mjs", "pyodide.asm.mjs", "pyodide.asm.wasm", "python_stdlib.zip", "pyodide-lock.json"];
 const ASSET_LIMIT = 25 * 1024 * 1024; // Cloudflare Workers static assets: 25 MiB per file
-const MIME = { ".mjs": "text/javascript", ".wasm": "application/wasm", ".zip": "application/zip", ".json": "application/json" };
+const MIME = {
+  ".mjs": "text/javascript",
+  ".wasm": "application/wasm",
+  ".zip": "application/zip",
+  ".json": "application/json",
+};
 
 function selfHostedPyodide() {
   return {
@@ -33,7 +38,8 @@ function selfHostedPyodide() {
         mkdirSync(out, { recursive: true });
         for (const name of PYODIDE_FILES) {
           const size = statSync(pyodideDir + name).size;
-          if (size > ASSET_LIMIT) throw new Error(`pyodide/${name} is ${size} bytes, over the 25 MiB static-asset limit`);
+          if (size > ASSET_LIMIT)
+            throw new Error(`pyodide/${name} is ${size} bytes, over the 25 MiB static-asset limit`);
           copyFileSync(pyodideDir + name, out + name);
         }
       },

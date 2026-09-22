@@ -15,7 +15,23 @@ const repo = join(site, "..");
 const readJson = (path) => JSON.parse(readFileSync(join(repo, path), "utf8"));
 
 // Payload keys of content-model blocks that happen to share a name with a content key.
-const PAYLOAD_KEYS = ["tasks", "pass_condition", "items", "rows", "locator", "purpose", "resource", "body", "title", "id", "type", "step", "fields", "ref", "path"];
+const PAYLOAD_KEYS = [
+  "tasks",
+  "pass_condition",
+  "items",
+  "rows",
+  "locator",
+  "purpose",
+  "resource",
+  "body",
+  "title",
+  "id",
+  "type",
+  "step",
+  "fields",
+  "ref",
+  "path",
+];
 // Words the site's own learner-evidence vocabulary uses (progress.yaml evidence kinds, docs/LEARNING_MODEL.md).
 const EVIDENCE_KINDS = ["transfer"];
 
@@ -24,7 +40,8 @@ function schemaNames(schema, { values = false } = {}) {
   const walk = (node) => {
     if (Array.isArray(node)) return node.forEach(walk);
     if (!node || typeof node !== "object") return;
-    if (node.properties && typeof node.properties === "object") Object.keys(node.properties).forEach((k) => names.add(k));
+    if (node.properties && typeof node.properties === "object")
+      for (const k of Object.keys(node.properties)) names.add(k);
     if (values) {
       for (const value of node.enum ?? []) if (typeof value === "string") names.add(value);
       if (typeof node.const === "string") names.add(node.const);
@@ -37,10 +54,16 @@ function schemaNames(schema, { values = false } = {}) {
 
 function presentationNames(config) {
   const names = new Set();
-  const addPath = (path) => String(path).split(/[.\[\]]+/).filter(Boolean).forEach((s) => names.add(s));
-  const mappingSources = (mapping) => Object.values(mapping ?? {}).forEach(addPath);
+  const addPath = (path) =>
+    String(path)
+      .split(/[.[\]]+/)
+      .filter(Boolean)
+      .map((s) => names.add(s));
+  const mappingSources = (mapping) => {
+    for (const value of Object.values(mapping ?? {})) addPath(value);
+  };
   for (const c of Object.values(config.collections ?? {})) {
-    Object.keys(c.fields ?? {}).forEach((k) => names.add(k));
+    for (const k of Object.keys(c.fields ?? {})) names.add(k);
     for (const r of c.relations ?? []) addPath(r.field);
     for (const b of c.blocks ?? []) {
       if (b.field) addPath(b.field);
@@ -81,7 +104,8 @@ const stripComments = (text) =>
 
 const errors = [];
 const check = (rel, word, where) => {
-  if (forbidden.has(word)) errors.push(`${rel}: "${word}" (${where}) is a curriculum field name; render it from the content model`);
+  if (forbidden.has(word))
+    errors.push(`${rel}: "${word}" (${where}) is a curriculum field name; render it from the content model`);
 };
 
 for (const path of walk(join(site, "src"))) {
@@ -92,7 +116,8 @@ for (const path of walk(join(site, "src"))) {
 
   if (rel.endsWith(".json")) {
     // UI dictionaries: keys are interface chrome; values are prose.
-    for (const key of Object.keys(JSON.parse(raw))) for (const part of key.split(/[.\-]/)) check(rel, part, `key ${key}`);
+    for (const key of Object.keys(JSON.parse(raw)))
+      for (const part of key.split(/[.-]/)) check(rel, part, `key ${key}`);
     continue;
   }
 
@@ -101,7 +126,7 @@ for (const path of walk(join(site, "src"))) {
   // String literals that look like identifiers or paths ("why", "a.b[].c") are checked per segment;
   // prose strings are skipped.
   code = code.replace(/(["'`])((?:\\.|(?!\1)[^\\\n])*)\1/g, (_, _q, body) => {
-    if (/^[\w.\[\]]+$/.test(body)) for (const part of body.split(/[.\[\]]+/)) check(rel, part, `string "${body}"`);
+    if (/^[\w.[\]]+$/.test(body)) for (const part of body.split(/[.[\]]+/)) check(rel, part, `string "${body}"`);
     return " ";
   });
   for (const [word] of code.matchAll(/[A-Za-z_][\w]*/g)) check(rel, word, "identifier");

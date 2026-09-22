@@ -2,7 +2,7 @@
 // numbered and show their local status. The current section is marked by a scrollspy.
 // Below 1024px the rail collapses into a sticky "Step n of N, <title>" bar with a menu.
 import { useEffect, useRef, useState } from "react";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { useDraft, useOpened, useProgress } from "../../lib/progress-store";
 import { Icon } from "./Icon";
@@ -49,7 +49,7 @@ export default function StepRail({ lang, itemRef, entries }: Props) {
       },
       { rootMargin: "-30% 0px -60% 0px" },
     );
-    sections.forEach((s) => observer.observe(s));
+    for (const s of sections) observer.observe(s);
     return () => observer.disconnect();
   }, [entries]);
 

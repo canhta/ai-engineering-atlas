@@ -1,7 +1,7 @@
 // Browser storage for learner progress and personal marks. Local-first: nothing leaves the
 // browser except through export. Storage can be unavailable (private mode), so every access is guarded.
 import { useCallback, useSyncExternalStore } from "react";
-import { emptyProgress, today, type Progress } from "./progress";
+import { emptyProgress, type Progress, today } from "./progress";
 
 const PROGRESS_KEY = "atlas.progress.v2";
 const OPENED_KEY = "atlas.opened.v1";
@@ -31,7 +31,7 @@ function write<T>(key: string, value: T) {
   } catch {
     // Keep the in-memory value; the page still works for this session.
   }
-  listeners.forEach((l) => l());
+  for (const l of listeners) l();
 }
 
 function subscribe(listener: Listener) {

@@ -32,7 +32,7 @@ diagnostic:
 learning_route:
   mental_model:
     - source: docs.sentence-transformers-retrieve-rerank
-      locator: 'Sections Retrieve & Re-Rank Pipeline; Retrieval: Bi-Encoder; and Re-Ranker: Cross-Encoder'
+      locator: "Sections Retrieve & Re-Rank Pipeline; Retrieval: Bi-Encoder; and Re-Ranker: Cross-Encoder"
       purpose: Make the two-stage candidate-generation versus expensive pair-scoring architecture concrete while showing that the first stage may be lexical or dense.
     - source: book.stanford-ir
       locator: Chapter 8 "Evaluation in information retrieval", especially ranked-retrieval evaluation

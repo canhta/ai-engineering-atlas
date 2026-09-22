@@ -1,11 +1,12 @@
-import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { expect, type Page, test } from "@playwright/test";
 import { withReference } from "../src/lib/lab-run.ts";
 
 // Browser labs (DESIGN.md → Labs) under the real CSP and isolation headers. The first run loads
 // Pyodide from the same origin, so these tests allow for it.
 const LAB = "/en/labs/prompt-injection-boundaries/";
-const lab = (name: string) => readFileSync(new URL(`../../labs/prompt-injection-boundaries/${name}`, import.meta.url), "utf8");
+const lab = (name: string) =>
+  readFileSync(new URL(`../../labs/prompt-injection-boundaries/${name}`, import.meta.url), "utf8");
 const LOAD = { timeout: 90_000 };
 
 // Every test fails on a console error (page or worker), an uncaught exception, or a CSP violation.
@@ -16,7 +17,9 @@ test.beforeEach(async ({ page }) => {
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("worker", (w) => w.on("console", (m) => m.type() === "error" && errors.push(`worker: ${m.text()}`)));
   await page.addInitScript(() => {
-    document.addEventListener("securitypolicyviolation", (e) => console.error(`CSP: ${e.violatedDirective} ${e.blockedURI}`));
+    document.addEventListener("securitypolicyviolation", (e) =>
+      console.error(`CSP: ${e.violatedDirective} ${e.blockedURI}`),
+    );
   });
 });
 test.afterEach(() => {
@@ -48,14 +51,20 @@ test("a lab page renders the README and links back to the competency it practise
   await open(page);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Prompt Injection Trust-Boundary Lab");
   await expect(page.getByRole("heading", { name: "Task 2 — implement authorization outside the model" })).toBeVisible();
-  await expect(page.locator(".prereq-line").getByRole("link", { name: /Prompt Injection/ })).toHaveAttribute("href", "/en/routes/security.prompt-injection/");
+  await expect(page.locator(".prereq-line").getByRole("link", { name: /Prompt Injection/ })).toHaveAttribute(
+    "href",
+    "/en/routes/security.prompt-injection/",
+  );
   // The reference solution is not a tab until the learner opens it.
   await expect(page.getByRole("tab", { name: /solution\.py/ })).toHaveCount(0);
 });
 
 test("the route's practice item links to the lab page", async ({ page }) => {
   await open(page, "/en/routes/ai.evaluation/");
-  await page.locator("#practice").getByRole("link", { name: /Evaluation Harness Lab/ }).click();
+  await page
+    .locator("#practice")
+    .getByRole("link", { name: /Evaluation Harness Lab/ })
+    .click();
   await expect(page).toHaveURL(/\/en\/labs\/evaluation-harness\/$/);
 });
 
@@ -98,14 +107,21 @@ test("a passing run records automated implementation evidence with the code's ha
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
     return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
   }, code);
-  await expect(page.getByLabel("What does the artifact show?")).toHaveValue(new RegExp(`tests\\.py passed in the browser \\(Pyodide [\\d.]+\\)\\. starter\\.py SHA-256: ${hash}`));
+  await expect(page.getByLabel("What does the artifact show?")).toHaveValue(
+    new RegExp(`tests\\.py passed in the browser \\(Pyodide [\\d.]+\\)\\. starter\\.py SHA-256: ${hash}`),
+  );
   await page.getByLabel("This shows the capability is").selectOption("demonstrated");
   await page.getByRole("button", { name: "Save evidence" }).click();
   await expect(page.getByText("Saved. Your state is now demonstrated.")).toBeVisible();
 
   const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("atlas.progress.v2") ?? "{}"));
   const evidence = stored.competencies["security.prompt-injection"].evidence[0];
-  expect(evidence).toMatchObject({ kind: "implementation", review_method: "automated", independence: "independent", supports_state: "demonstrated" });
+  expect(evidence).toMatchObject({
+    kind: "implementation",
+    review_method: "automated",
+    independence: "independent",
+    supports_state: "demonstrated",
+  });
   expect(evidence.note).toContain(hash);
 });
 
@@ -133,7 +149,9 @@ test("the reference solution opens only after confirming and marks later evidenc
 test("the draft survives a reload, and Reset to starter asks first", async ({ page }) => {
   await open(page);
   await setCode(page, "print('draft')\n");
-  await expect.poll(() => page.evaluate(() => localStorage.getItem("atlas.lab-code.v1.lab:prompt-injection-boundaries"))).toContain("draft");
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem("atlas.lab-code.v1.lab:prompt-injection-boundaries")))
+    .toContain("draft");
   await page.reload();
   await page.waitForFunction(() => document.querySelectorAll("astro-island[ssr]").length === 0);
   await expect(editor(page)).toContainText("print('draft')");

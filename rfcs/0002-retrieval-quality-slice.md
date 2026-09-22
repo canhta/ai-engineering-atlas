@@ -22,12 +22,12 @@ This RFC proposes the capability contracts and dependency boundaries for those n
 
 ### Retrieval optimization / chunking context
 
-- Chip Huyen — *AI Engineering*, Chapter 6 **RAG and Agents**  
+- Chip Huyen — _AI Engineering_, Chapter 6 **RAG and Agents**  
   Published table of contents places **Retrieval Algorithms** at p.257 and **Retrieval Optimization** at p.268.  
   https://github.com/chiphuyen/aie-book/blob/main/ToC.md
 - Chip Huyen's Chapter 6 resource list explicitly includes chunking resources under RAG.  
   https://github.com/chiphuyen/aie-book/blob/main/resources.md
-- Kiss, Nagy, Szilágyi — *Max–Min semantic chunking of documents for RAG application* (2025)  
+- Kiss, Nagy, Szilágyi — _Max–Min semantic chunking of documents for RAG application_ (2025)  
   https://link.springer.com/article/10.1007/s10791-025-09638-7  
   Useful here as experiment-design evidence, not as a recommendation to adopt Max–Min. Section 4 holds the retrieval/generation setup fixed while varying chunking; §4.2 compares multiple chunking methods in the same RAG pipeline.
 

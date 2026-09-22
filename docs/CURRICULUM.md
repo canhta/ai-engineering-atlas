@@ -57,13 +57,13 @@ The exact chapter, lecture, assignment, or documentation locator belongs in the 
 
 ## Competency levels
 
-| Level | Expected capability |
-| --- | --- |
-| L0 | Recognize the concept and its purpose |
-| L1 | Explain, distinguish, and reason about common use cases and trade-offs |
-| L2 | Perform the skill and diagnose common failures |
-| L3 | Transfer the skill, design under constraints, compare alternatives, and optimize |
-| L4 | Reproduce, extend, deeply optimize, or teach specialist techniques |
+| Level | Expected capability                                                              |
+| ----- | -------------------------------------------------------------------------------- |
+| L0    | Recognize the concept and its purpose                                            |
+| L1    | Explain, distinguish, and reason about common use cases and trade-offs           |
+| L2    | Perform the skill and diagnose common failures                                   |
+| L3    | Transfer the skill, design under constraints, compare alternatives, and optimize |
+| L4    | Reproduce, extend, deeply optimize, or teach specialist techniques               |
 
 These levels describe capability depth. Retention and real-system application are tracked separately.
 

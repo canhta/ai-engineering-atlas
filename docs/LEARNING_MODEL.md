@@ -20,13 +20,13 @@ OSSU maps courses to independent curricular guidelines, keeps prerequisites expl
 
 The important pattern is:
 
-~~~text
+```text
 learning outcome
     ↓
 coverage requirement
     ↓
 course / book / assessment
-~~~
+```
 
 The resource can change without redefining the outcome.
 
@@ -43,7 +43,7 @@ Microsoft learning repositories often connect a concrete scenario with learning 
 
 A useful abstraction is:
 
-~~~text
+```text
 scenario
   ↓
 learning goals
@@ -57,7 +57,7 @@ feedback / solution
 knowledge check
   ↓
 challenge / transfer
-~~~
+```
 
 The assignment is not an appendix. It is part of the learning loop.
 
@@ -73,7 +73,7 @@ Each new technique is tied back to the same system and its constraints.
 
 The important pattern is:
 
-~~~text
+```text
 user problem
   ↓
 product objective
@@ -87,7 +87,7 @@ evaluation
 production
   ↓
 feedback and iteration
-~~~
+```
 
 References:
 
@@ -116,7 +116,7 @@ These findings guide the design. They are not used to claim that one fixed sched
 
 A learner should move through the following lifecycle.
 
-~~~text
+```text
 Goal / role
     ↓
 Baseline scan
@@ -142,7 +142,7 @@ Project integration
 Delayed retrieval
     ↓
 Applied competence
-~~~
+```
 
 Not every competency requires every step at the same depth.
 
@@ -183,7 +183,7 @@ A diagnostic result should point to the smallest meaningful gap.
 
 Example:
 
-~~~text
+```text
 "RAG" is too broad.
 
 Possible gaps:
@@ -194,7 +194,7 @@ Possible gaps:
 - retrieval evaluation
 - ACL-aware retrieval
 - freshness and deletion
-~~~
+```
 
 Study should target the gap rather than restart the whole subject.
 
@@ -223,7 +223,6 @@ Possible material:
 - a small trace through an algorithm.
 
 The goal is not broad content coverage. The goal is enough structure to reason about the next task.
-
 
 ## 6. Guided practice
 
@@ -333,15 +332,15 @@ Examples include:
 
 Progress should not be represented by a single "done" checkbox.
 
-| State | Meaning |
-| --- | --- |
-| unassessed | No meaningful evidence yet |
-| gap | Diagnostic found missing capability |
-| learning | Instruction or guided practice is in progress |
-| demonstrated | Exit evidence was produced successfully |
-| transferred | Capability was used on a sufficiently different task |
-| retained | Capability was retrieved successfully after a delay |
-| applied | Capability was used in an integrated or real system |
+| State        | Meaning                                              |
+| ------------ | ---------------------------------------------------- |
+| unassessed   | No meaningful evidence yet                           |
+| gap          | Diagnostic found missing capability                  |
+| learning     | Instruction or guided practice is in progress        |
+| demonstrated | Exit evidence was produced successfully              |
+| transferred  | Capability was used on a sufficiently different task |
+| retained     | Capability was retrieved successfully after a delay  |
+| applied      | Capability was used in an integrated or real system  |
 
 These states are evidence states, not badges for time spent.
 
@@ -353,14 +352,14 @@ A competency does not have to reach applied for every learner. Required state de
 
 Different competencies require different forms of proof.
 
-| Competency type | Typical evidence |
-| --- | --- |
-| Concept | explain, distinguish, recall, calculate |
-| Mechanism | trace, visualize, implement, predict behavior |
-| Engineering skill | build, test, debug, modify |
-| System operation | configure, observe, recover, automate |
-| Design judgment | compare alternatives, reason from constraints, defend a choice |
-| Production competency | ship, measure, detect failure, mitigate, rollback or improve |
+| Competency type       | Typical evidence                                               |
+| --------------------- | -------------------------------------------------------------- |
+| Concept               | explain, distinguish, recall, calculate                        |
+| Mechanism             | trace, visualize, implement, predict behavior                  |
+| Engineering skill     | build, test, debug, modify                                     |
+| System operation      | configure, observe, recover, automate                          |
+| Design judgment       | compare alternatives, reason from constraints, defend a choice |
+| Production competency | ship, measure, detect failure, mitigate, rollback or improve   |
 
 ## Example: cosine similarity
 
@@ -410,7 +409,7 @@ Appropriate evidence:
 
 The roadmap should separate several questions that are often collapsed into "Do I know this?"
 
-~~~text
+```text
 Can I recognize it?
 Can I explain it?
 Can I perform it?
@@ -418,11 +417,11 @@ Can I diagnose it?
 Can I use it in a new context?
 Can I still do it later?
 Can I use it inside a real system?
-~~~
+```
 
 A competency's required depth should specify which of these are necessary.
 
-~~~text
+```text
 L1 working knowledge
 → explain + distinguish
 
@@ -434,10 +433,9 @@ L3 deep engineering competence
 
 L4 specialist depth
 → reproduce, optimize, extend, or teach the mechanism
-~~~
+```
 
 Retention and applied evidence are tracked separately because a learner may demonstrate L2 today and still fail delayed retrieval later.
-
 
 ---
 
@@ -515,15 +513,15 @@ A single source may fill more than one role.
 
 Avoid mappings such as:
 
-~~~yaml
+```yaml
 resource: Stanford CS336
 covers:
   - transformers
-~~~
+```
 
 Prefer mappings precise enough that a learner can start immediately:
 
-~~~yaml
+```yaml
 learn:
   source: Stanford CS336
   lecture: "..."
@@ -539,7 +537,7 @@ practice:
 visual:
   source: "..."
   segment: "..."
-~~~
+```
 
 The roadmap should route learners to material, not merely list resources.
 
@@ -576,7 +574,7 @@ Purpose: expose model internals.
 
 Possible progression:
 
-~~~text
+```text
 numerical operations
 → autograd
 → small neural network
@@ -585,7 +583,7 @@ numerical operations
 → transformer
 → decoding
 → simple inference measurements
-~~~
+```
 
 ## AI system spine
 
@@ -593,7 +591,7 @@ Purpose: build an increasingly capable AI application.
 
 Possible progression:
 
-~~~text
+```text
 keyword search
 → embeddings
 → vector search
@@ -604,7 +602,7 @@ keyword search
 → tool use
 → agent workflow
 → multimodal input
-~~~
+```
 
 ## Production spine
 
@@ -612,7 +610,7 @@ Purpose: turn AI code into a reliable service.
 
 Possible progression:
 
-~~~text
+```text
 API
 → model/provider abstraction
 → structured logging
@@ -623,10 +621,9 @@ API
 → deployment
 → incident simulation
 → production feedback loop
-~~~
+```
 
 The spines are not three mandatory mega-projects. They are persistent contexts into which competencies can be integrated.
-
 
 ---
 
@@ -721,7 +718,7 @@ The repository structure should serve this lifecycle.
 
 A mature competency may eventually contain or reference:
 
-~~~text
+```text
 competency.yaml        required capability and depth
 README.md              context and learner route
 diagnostic.*           baseline evidence
@@ -731,7 +728,7 @@ experiments/           measurement or failure tasks
 assessment/            exit and transfer tasks
 review.yaml            delayed retrieval prompts
 project-links.yaml     integration points into project spines
-~~~
+```
 
 Not every competency needs every file.
 

@@ -60,10 +60,10 @@ learning_route:
       locator: 'Sections "Frontend design: making subjective quality gradable", "Scaling to full-stack coding" → "The architecture" (Evaluator), and "Removing the sprint construct"'
       purpose: Study explicit grading criteria, Playwright/environment verification, evaluator calibration, and ablation of evaluator overhead.
     - source: paper.critic-tool-interactive
-      locator: 'Abstract and method framing comparing unsupported self-correction with tool-interactive critique'
+      locator: "Abstract and method framing comparing unsupported self-correction with tool-interactive critique"
       purpose: Reinforce that external feedback can provide stronger correction evidence than unconstrained self-critique.
     - source: paper.swe-bench
-      locator: 'Abstract and benchmark formulation using real repository issues and test suites to grade patches'
+      locator: "Abstract and benchmark formulation using real repository issues and test suites to grade patches"
       purpose: Ground verification in outcome artifacts and executable environment checks rather than plausible-looking trajectories.
   guided_practice:
     - task: Take one Knowledge Assistant success criterion and replace a narrative or model-only check with a deterministic, environment, or authoritative-data verifier where possible.

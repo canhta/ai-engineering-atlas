@@ -22,12 +22,12 @@ Use shorter intervals for sources that change frequently.
 
 Typical defaults:
 
-| Source type | Suggested interval |
-| --- | ---: |
-| Static book / paper / stable visual | 365 days |
-| Maintained course or documentation | 180 days |
-| Fast-moving roadmap / product documentation | 90 days |
-| Job-market evidence | 30-90 days |
+| Source type                                 | Suggested interval |
+| ------------------------------------------- | -----------------: |
+| Static book / paper / stable visual         |           365 days |
+| Maintained course or documentation          |           180 days |
+| Fast-moving roadmap / product documentation |            90 days |
+| Job-market evidence                         |         30-90 days |
 
 The interval is metadata, not a claim that the content becomes wrong on that date.
 

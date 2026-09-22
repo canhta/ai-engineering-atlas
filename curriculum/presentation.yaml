@@ -6,7 +6,7 @@
 version: 1
 
 site:
-  title: {en: AI Engineering Atlas, vi: AI Engineering Atlas}
+  title: { en: AI Engineering Atlas, vi: AI Engineering Atlas }
   tagline:
     en: A gap-driven roadmap for software engineers learning modern AI engineering.
     vi: Lộ trình AI engineering cho kỹ sư phần mềm, học đúng phần mình còn thiếu.
@@ -15,136 +15,142 @@ site:
 locales: [en, vi]
 
 vocabularies:
-  domain: {from: "curriculum/manifest.yaml#domains", key: id, label: title}
+  domain: { from: "curriculum/manifest.yaml#domains", key: id, label: title }
   level:
     from: "curriculum/manifest.yaml#levels"
-    values:  # merged onto the manifest entries
-      L0: {label: {en: awareness, vi: nhận biết}}
-      L1: {label: {en: working knowledge, vi: biết dùng}}
-      L2: {label: {en: practical competence, vi: làm được}}
-      L3: {label: {en: deep engineering competence, vi: hiểu sâu}}
-      L4: {label: {en: specialist depth, vi: chuyên gia}}
+    values: # merged onto the manifest entries
+      L0: { label: { en: awareness, vi: nhận biết } }
+      L1: { label: { en: working knowledge, vi: biết dùng } }
+      L2: { label: { en: practical competence, vi: làm được } }
+      L3: { label: { en: deep engineering competence, vi: hiểu sâu } }
+      L4: { label: { en: specialist depth, vi: chuyên gia } }
   status:
     values:
-      ready: {label: {en: ready, vi: có lộ trình}}
-      coverage: {label: {en: "mapped, no route", vi: "chưa có lộ trình"}}
+      ready: { label: { en: ready, vi: có lộ trình } }
+      coverage: { label: { en: "mapped, no route", vi: "chưa có lộ trình" } }
   competency_type:
     values:
-      concept: {label: {en: concept, vi: khái niệm}}
-      mechanism: {label: {en: mechanism, vi: cơ chế}}
-      engineering-skill: {label: {en: engineering skill, vi: kỹ năng kỹ thuật}}
-      system-operation: {label: {en: system operation, vi: vận hành hệ thống}}
-      design-judgment: {label: {en: design judgment, vi: quyết định thiết kế}}
-      production-competency: {label: {en: production competency, vi: vận hành production}}
+      concept: { label: { en: concept, vi: khái niệm } }
+      mechanism: { label: { en: mechanism, vi: cơ chế } }
+      engineering-skill: { label: { en: engineering skill, vi: kỹ năng kỹ thuật } }
+      system-operation: { label: { en: system operation, vi: vận hành hệ thống } }
+      design-judgment: { label: { en: design judgment, vi: quyết định thiết kế } }
+      production-competency: { label: { en: production competency, vi: vận hành production } }
   state:
     values:
-      unassessed: {label: {en: unassessed, vi: chưa đánh giá}}
-      gap: {label: {en: gap, vi: còn thiếu}}
-      learning: {label: {en: learning, vi: đang học}}
-      demonstrated: {label: {en: demonstrated, vi: đã làm được}}
-      transferred: {label: {en: transferred, vi: vận dụng được}}
-      retained: {label: {en: retained, vi: nhớ lâu}}
-      applied: {label: {en: applied, vi: dùng trong dự án}}
+      unassessed: { label: { en: unassessed, vi: chưa đánh giá } }
+      gap: { label: { en: gap, vi: còn thiếu } }
+      learning: { label: { en: learning, vi: đang học } }
+      demonstrated: { label: { en: demonstrated, vi: đã làm được } }
+      transferred: { label: { en: transferred, vi: vận dụng được } }
+      retained: { label: { en: retained, vi: nhớ lâu } }
+      applied: { label: { en: applied, vi: dùng trong dự án } }
 
 collections:
   competencies:
-    label: {en: Competencies, vi: Kỹ năng}
+    label: { en: Competencies, vi: Kỹ năng }
     items_from: "curriculum/catalog.yaml#competencies"
     id: id
     title: title
     page_from: "{route}/competency.yaml"
     fields:
-      domain: {label: {en: Domain, vi: Lĩnh vực}, vocabulary: domain}
-      status: {label: {en: Status, vi: Tình trạng}, vocabulary: status}
-      target_level: {label: {en: Target level, vi: Mức mục tiêu}, vocabulary: level}
-      competency_types: {label: {en: Capability type, vi: Loại kỹ năng}, vocabulary: competency_type}
-      target_states: {label: {en: Target, vi: Mục tiêu}, vocabulary: state}
+      domain: { label: { en: Domain, vi: Lĩnh vực }, vocabulary: domain }
+      status: { label: { en: Status, vi: Tình trạng }, vocabulary: status }
+      target_level: { label: { en: Target level, vi: Mức mục tiêu }, vocabulary: level }
+      competency_types: { label: { en: Capability type, vi: Loại kỹ năng }, vocabulary: competency_type }
+      target_states: { label: { en: Target, vi: Mục tiêu }, vocabulary: state }
     group_by: domain
     facets: [status, target_level]
     list_fields: [status, target_level]
-    page_when: {field: status, in: [seeded, ready]}
-    progress: {tracks: true, target_field: target_states}
+    page_when: { field: status, in: [seeded, ready] }
+    progress: { tracks: true, target_field: target_states }
     relations:
-      - {type: prerequisite, field: prerequisites, direction: in}
-      - {type: practice, field: "learning_route.independent_practice[].artifact", direction: out, target: labs}
+      - { type: prerequisite, field: prerequisites, direction: in }
+      - { type: practice, field: "learning_route.independent_practice[].artifact", direction: out, target: labs }
     blocks:
-      - {id: why, field: why, type: text, title: {en: Why, vi: Vì sao cần học}}
+      - { id: why, field: why, type: text, title: { en: Why, vi: Vì sao cần học } }
       - id: prerequisites
         field: prerequisites
         type: prerequisites
         support: prerequisite_support
-        bridge: {diagnostic: diagnostic, resource: source, locator: locator, purpose: purpose}
-        title: {en: Prerequisites, vi: Cần biết trước}
-      - {id: outcomes, field: outcomes, type: list, title: {en: Outcomes, vi: Bạn sẽ làm được}}
+        bridge: { diagnostic: diagnostic, resource: source, locator: locator, purpose: purpose }
+        title: { en: Prerequisites, vi: Cần biết trước }
+      - { id: outcomes, field: outcomes, type: list, title: { en: Outcomes, vi: Bạn sẽ làm được } }
       - id: diagnostic
         step: true
         field: diagnostic
         type: diagnostic
-        map: {tasks: tasks, pass_condition: pass_condition}
-        title: {en: Diagnostic, vi: Kiểm tra đầu vào}
+        map: { tasks: tasks, pass_condition: pass_condition }
+        title: { en: Diagnostic, vi: Kiểm tra đầu vào }
       - id: sources
         step: true
         field: learning_route.mental_model
         type: sources
-        row: {resource: source, locator: locator, purpose: purpose}
-        title: {en: Learning route, vi: Tài liệu cần đọc}
+        row: { resource: source, locator: locator, purpose: purpose }
+        title: { en: Learning route, vi: Tài liệu cần đọc }
       - id: visual
         step: true
         field: learning_route.visual
         type: sources
-        row: {resource: source, locator: locator, purpose: purpose}
-        title: {en: Visual explanation, vi: Minh họa trực quan}
+        row: { resource: source, locator: locator, purpose: purpose }
+        title: { en: Visual explanation, vi: Minh họa trực quan }
       - id: practice
         step: true
         field: learning_route
         type: practice
         groups:
-          - {field: guided_practice, label: {en: Guided, vi: Có hướng dẫn}}
-          - {field: independent_practice, label: {en: Independent, vi: Tự làm}}
-        item: {text: task, path: artifact, resource: source, locator: locator}
-        title: {en: Practice, vi: Thực hành}
-      - {id: experiments, field: experiments, type: list, title: {en: Experiments, vi: Thử nghiệm}}
-      - {id: exit-evidence, step: true, field: exit_evidence, type: list, title: {en: Exit evidence, vi: Bằng chứng hoàn thành}}
-      - {id: transfer, step: true, field: transfer.task, type: text, title: {en: Transfer, vi: Vận dụng}}
+          - { field: guided_practice, label: { en: Guided, vi: Có hướng dẫn } }
+          - { field: independent_practice, label: { en: Independent, vi: Tự làm } }
+        item: { text: task, path: artifact, resource: source, locator: locator }
+        title: { en: Practice, vi: Thực hành }
+      - { id: experiments, field: experiments, type: list, title: { en: Experiments, vi: Thử nghiệm } }
+      - {
+          id: exit-evidence,
+          step: true,
+          field: exit_evidence,
+          type: list,
+          title: { en: Exit evidence, vi: Bằng chứng hoàn thành },
+        }
+      - { id: transfer, step: true, field: transfer.task, type: text, title: { en: Transfer, vi: Vận dụng } }
     ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
 
   labs:
-    label: {en: Labs, vi: Lab}
+    label: { en: Labs, vi: Lab }
     ref_prefix: lab
     items_from: "labs/*/"
-    content_from: lab.yaml  # optional per lab; a `browser:` contract adds the runner block
+    content_from: lab.yaml # optional per lab; a `browser:` contract adds the runner block
     fields:
-      path: {label: {en: Repository path, vi: Đường dẫn repo}}
-      files: {label: {en: Files, vi: File}}
+      path: { label: { en: Repository path, vi: Đường dẫn repo } }
+      files: { label: { en: Files, vi: File } }
     blocks:
-      - {id: brief, file: README.md, type: text, format: markdown, title: {en: Lab brief, vi: Đề bài}}
+      - { id: brief, file: README.md, type: text, format: markdown, title: { en: Lab brief, vi: Đề bài } }
       - id: runner
         step: true
         field: browser
         type: runner
-        map: {runtime: runtime, editable: editable, run: run, reference: reference, files: files, packages: packages}
-        title: {en: Run the tests, vi: Chạy test}
+        map: { runtime: runtime, editable: editable, run: run, reference: reference, files: files, packages: packages }
+        title: { en: Run the tests, vi: Chạy test }
 
   projects:
-    label: {en: Projects, vi: Dự án}
+    label: { en: Projects, vi: Dự án }
     ref_prefix: project
     items_from: "projects/*/project.yaml"
     title: title
     fields:
-      path: {label: {en: Repository path, vi: Đường dẫn repo}}
-      spines: {label: {en: Spines, vi: Nhóm}}
+      path: { label: { en: Repository path, vi: Đường dẫn repo } }
+      spines: { label: { en: Spines, vi: Nhóm } }
     relations:
-      - {type: member, field: competencies, direction: out}
+      - { type: member, field: competencies, direction: out }
     blocks:
-      - {id: purpose, field: purpose, type: text, title: {en: Purpose, vi: Mục đích}}
-      - {id: milestones, field: milestones, type: list, ordered: true, title: {en: Milestones, vi: Các mốc}}
-      - {id: evidence, field: evidence, type: list, title: {en: Evidence, vi: Bằng chứng}}
+      - { id: purpose, field: purpose, type: text, title: { en: Purpose, vi: Mục đích } }
+      - { id: milestones, field: milestones, type: list, ordered: true, title: { en: Milestones, vi: Các mốc } }
+      - { id: evidence, field: evidence, type: list, title: { en: Evidence, vi: Bằng chứng } }
     ignore: [id, title]
 
   paths:
-    label: {en: Paths, vi: Lộ trình theo vai trò}
+    label: { en: Paths, vi: Lộ trình theo vai trò }
     ref_prefix: path
     items_from: "paths/*.md"
     exclude: [README.md]
     fields:
-      path: {label: {en: Repository path, vi: Đường dẫn repo}}
+      path: { label: { en: Repository path, vi: Đường dẫn repo } }

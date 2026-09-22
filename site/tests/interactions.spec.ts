@@ -1,5 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { expect, type Page, test } from "@playwright/test";
 
 const ROUTE = "/en/routes/ai.tool-calling/";
 
@@ -72,7 +72,10 @@ test("plate keyboard: arrows move within a region, Tab moves to the next region"
   await expect(page.locator("#region-software-engineering .tile").nth(1)).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.locator("#region-systems .tile").first()).toBeFocused();
-  await expect(tile(page, "ai.tool-calling")).toHaveAttribute("aria-label", "Tool Calling, ready, your state: unassessed");
+  await expect(tile(page, "ai.tool-calling")).toHaveAttribute(
+    "aria-label",
+    "Tool Calling, ready, your state: unassessed",
+  );
 });
 
 test("a tile opens the drawer; Esc closes it and returns focus to the tile", async ({ page }) => {
@@ -174,7 +177,10 @@ test("recorded evidence shows on the route, the progress plate, and the atlas fi
   await open(page, "/en/progress/");
   await expect(page.getByText(/^1 of 19 ready routes demonstrated or beyond$/)).toBeVisible();
   await expect(tile(page, "ai.tool-calling")).toHaveClass(/tile-full/);
-  await expect(tile(page, "ai.tool-calling")).toHaveAttribute("aria-label", "Tool Calling, ready, your state: demonstrated");
+  await expect(tile(page, "ai.tool-calling")).toHaveAttribute(
+    "aria-label",
+    "Tool Calling, ready, your state: demonstrated",
+  );
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 
   await open(page, "/en/map/");
@@ -236,14 +242,19 @@ test("an unknown ?item= opens the drawer with a not-found message", async ({ pag
 test("progress with no evidence shows the empty review queue and the start action", async ({ page }) => {
   await open(page, "/en/progress/");
   await expect(page.getByText("Nothing to review yet.", { exact: false })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Find your starting point" })).toHaveAttribute("href", "/en/map/?ready=1");
+  await expect(page.getByRole("link", { name: "Find your starting point" })).toHaveAttribute(
+    "href",
+    "/en/map/?ready=1",
+  );
 });
 
 test("an invalid progress.yaml is rejected with reasons listed inline", async ({ page }) => {
   await open(page, "/en/progress/");
   const chooser = page.waitForEvent("filechooser");
   await page.getByRole("button", { name: "Import progress.yaml" }).click();
-  await (await chooser).setFiles({
+  await (
+    await chooser
+  ).setFiles({
     name: "progress.yaml",
     mimeType: "application/yaml",
     buffer: Buffer.from("version: 2\ncompetencies:\n  x:\n    current_state: mastered\n"),
@@ -272,9 +283,15 @@ test("without JavaScript the plate tiles are links into the atlas", async ({ bro
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/en/");
-  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute("href", "/en/map/?item=ai.tool-calling");
+  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute(
+    "href",
+    "/en/map/?item=ai.tool-calling",
+  );
   await page.goto("/en/progress/");
-  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute("href", "/en/map/?item=ai.tool-calling");
+  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute(
+    "href",
+    "/en/map/?item=ai.tool-calling",
+  );
   await page.goto(ROUTE);
   await expect(page.getByRole("heading", { level: 1, name: "Tool Calling" })).toBeVisible();
   await context.close();

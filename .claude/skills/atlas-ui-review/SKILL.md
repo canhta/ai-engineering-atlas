@@ -16,9 +16,10 @@ The design source of truth is [site/DESIGN.md](../../../site/DESIGN.md). This sk
 5. **Report.** One table:
 
    | Severity | Page · variant | DESIGN.md rule | Evidence | Fix (file) |
-   |---|---|---|---|---|
+   | -------- | -------------- | -------------- | -------- | ---------- |
 
    Severity: `blocker` (automated failure, broken rule), `should` (weakens a rule), `nit`.
+
 6. **Fix and re-capture.** Fix what the task allows, then repeat steps 2–4 for the affected pages.
 7. **Stop the preview server.**
 

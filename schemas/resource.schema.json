@@ -3,15 +3,7 @@
   "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/resource.schema.json",
   "title": "AI Engineering Atlas resource",
   "type": "object",
-  "required": [
-    "id",
-    "type",
-    "title",
-    "url",
-    "roles",
-    "source_verified",
-    "last_checked"
-  ],
+  "required": ["id", "type", "title", "url", "roles", "source_verified", "last_checked"],
   "properties": {
     "id": {
       "type": "string",

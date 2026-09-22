@@ -2,12 +2,12 @@
 // shown as a ranked list (Home, Progress) or as one line in a route's field log. Advice only:
 // nothing here changes a state.
 import { Fragment } from "react";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { formatDate } from "../../lib/dates";
-import { stateOf, today, type Progress } from "../../lib/progress";
+import { type Progress, stateOf, today } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import { adviceFor, hasEvidence, plan, recommend, type GraphItem, type Recommendation } from "../../lib/recommend";
+import { adviceFor, type GraphItem, hasEvidence, plan, type Recommendation, recommend } from "../../lib/recommend";
 import type { NextLink } from "../../lib/summaries";
 import { TileGlyph, tileFill } from "../plate/TileGlyph";
 
@@ -95,7 +95,8 @@ export function RouteAdvice({
   if (next && position <= limit) {
     return (
       <p className="log-advice">
-        <strong>{t("next.recommended", { n: position, total: Math.min(limit, result.next.length) })}</strong> {reason(next)}
+        <strong>{t("next.recommended", { n: position, total: Math.min(limit, result.next.length) })}</strong>{" "}
+        {reason(next)}
       </p>
     );
   }

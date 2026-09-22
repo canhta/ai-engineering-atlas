@@ -1,0 +1,36 @@
+# Git hooks (https://pre-commit.com). Install once with `make hooks`.
+# Python tools come from this file; the JavaScript tools are the ones already in site/,
+# so there is one version of each formatter in the repository.
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.8
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: site/node_modules/.bin/prettier --write --ignore-path .prettierignore
+        language: system
+        pass_filenames: true
+        types_or: [markdown, yaml, css, ts, tsx, javascript, json]
+        exclude: ^(curriculum/(STATUS\.md|.*/README\.md)|site/(dist|\.astro|\.wrangler|src/data)/|.*\.lock$)
+
+      - id: eslint
+        name: eslint
+        entry: bash -c 'cd site && pnpm exec eslint --fix --no-warn-ignored "${@#site/}"' --
+        language: system
+        files: ^site/.*\.(ts|tsx|mjs|js)$
+        exclude: ^site/(dist|\.astro|\.wrangler|src/data)/
+
+      - id: make-check
+        name: make check
+        entry: make check
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

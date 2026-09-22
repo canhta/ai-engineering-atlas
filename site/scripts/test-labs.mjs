@@ -37,7 +37,8 @@ function cpython(block, code) {
   // Real path: tracebacks name /private/var/… on macOS, where tmpdir() is /var/….
   const dir = realpathSync(mkdtempSync(join(tmpdir(), "atlas-lab-")));
   try {
-    for (const [name, text] of Object.entries({ ...block.files, [block.editable]: code })) writeFileSync(join(dir, name), text);
+    for (const [name, text] of Object.entries({ ...block.files, [block.editable]: code }))
+      writeFileSync(join(dir, name), text);
     const result = spawnSync(python, ["-B", block.run], { cwd: dir, encoding: "utf8", timeout: 60_000 });
     if (result.error) throw result.error;
     if (result.status === 0) return { verdict: "pass" };
@@ -46,14 +47,19 @@ function cpython(block, code) {
       .filter((m) => m[1].startsWith(dir))
       .map((m) => ({ file: m[1].slice(dir.length + 1), line: Number(m[2]) }));
     const last = stderr.trimEnd().split("\n").at(-1) ?? "";
-    const type = last.match(/^([\w.]+)(:|$)/)?.[1]?.split(".").at(-1) ?? "unknown";
+    const type =
+      last
+        .match(/^([\w.]+)(:|$)/)?.[1]
+        ?.split(".")
+        .at(-1) ?? "unknown";
     return { verdict: type === "AssertionError" ? "fail" : "error", type, at: frames.at(-1), stderr };
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
 }
 
-const summary = (r) => (r.verdict === "pass" ? "pass" : `${r.verdict} ${r.type} at ${r.at ? `${r.at.file}:${r.at.line}` : "?"}`);
+const summary = (r) =>
+  r.verdict === "pass" ? "pass" : `${r.verdict} ${r.type} at ${r.at ? `${r.at.file}:${r.at.line}` : "?"}`;
 
 const pyodide = await loadPyodide();
 const failures = [];
@@ -65,8 +71,14 @@ for (const { ref, id, block } of labs) {
   // (a) reference applied: passes in both runtimes.
   const refPyodide = runLab(pyodide, request(solved));
   const refCpython = cpython(block, solved);
-  for (const [runtime, result] of [["Pyodide", refPyodide], ["CPython", refCpython]]) {
-    if (result.verdict !== "pass") failures.push(`${ref}: reference fails under ${runtime}: ${summary(result)}\n${result.stderr ?? JSON.stringify(result)}`);
+  for (const [runtime, result] of [
+    ["Pyodide", refPyodide],
+    ["CPython", refCpython],
+  ]) {
+    if (result.verdict !== "pass")
+      failures.push(
+        `${ref}: reference fails under ${runtime}: ${summary(result)}\n${result.stderr ?? JSON.stringify(result)}`,
+      );
   }
 
   // (b) unmodified starter: same verdict in both runtimes.
@@ -74,10 +86,16 @@ for (const { ref, id, block } of labs) {
   const want = cpython(block, starter);
   const same =
     got.verdict === want.verdict &&
-    (want.verdict === "pass" || (got.type === want.type && got.at?.file === want.at?.file && got.at?.line === want.at?.line));
-  if (!same) failures.push(`${ref}: starter under Pyodide is "${summary(got)}", CPython "python ${block.run}" is "${summary(want)}"`);
+    (want.verdict === "pass" ||
+      (got.type === want.type && got.at?.file === want.at?.file && got.at?.line === want.at?.line));
+  if (!same)
+    failures.push(
+      `${ref}: starter under Pyodide is "${summary(got)}", CPython "python ${block.run}" is "${summary(want)}"`,
+    );
 
-  console.log(`${same && refPyodide.verdict === "pass" && refCpython.verdict === "pass" ? "ok  " : "FAIL"} ${ref}: reference passes; starter ${summary(got)} (CPython: ${summary(want)})`);
+  console.log(
+    `${same && refPyodide.verdict === "pass" && refCpython.verdict === "pass" ? "ok  " : "FAIL"} ${ref}: reference passes; starter ${summary(got)} (CPython: ${summary(want)})`,
+  );
 }
 
 if (failures.length) {

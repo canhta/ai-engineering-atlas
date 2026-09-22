@@ -2,26 +2,26 @@
 // time. Islands import only the types from here, never the model itself.
 import type { Lang } from "../i18n";
 import {
+  trackedCollection as c,
   collections,
   fieldChips,
   groupsOf,
   hasPage,
   headerChips,
-  itemUrl,
   itemsOf,
+  itemUrl,
+  type Localized,
   relations,
   relationsTo,
   resolveRef,
   targetOf,
   text,
-  trackedCollection as c,
   trackedItems,
   vocabularyLabel,
   vocabularyValues,
-  type Localized,
 } from "./atlas";
+import { type GraphItem, graphOf } from "./recommend";
 import { refOf, refPrefix } from "./refs";
-import { graphOf, type GraphItem } from "./recommend";
 
 export interface TileData {
   ref: string;
@@ -88,7 +88,12 @@ const maturityOf = (item: (typeof trackedItems)[number], lang: Lang) => {
 };
 
 export function plateRegions(lang: Lang): RegionData[] {
-  const others = new Set(collections.filter((o) => o !== c).map((o) => o.ref_prefix).filter(Boolean));
+  const others = new Set(
+    collections
+      .filter((o) => o !== c)
+      .map((o) => o.ref_prefix)
+      .filter(Boolean),
+  );
   return groupsOf(c).map((g) => ({
     value: g.value,
     label: vocabularyLabel(g.vocabulary, g.value, lang),
@@ -101,7 +106,9 @@ export function plateRegions(lang: Lang): RegionData[] {
         href: itemUrl(lang, ref),
         maturity: maturityOf(item, lang),
         needs: relationsTo("prerequisite", ref).map((r) => r.from),
-        values: Object.fromEntries(Object.keys(c.fields).map((f) => [f, fieldChips(c, item, f, lang).map((chip) => chip.value)])),
+        values: Object.fromEntries(
+          Object.keys(c.fields).map((f) => [f, fieldChips(c, item, f, lang).map((chip) => chip.value)]),
+        ),
         relatedTo: relations.filter((r) => r.to === ref && others.has(refPrefix(r.from))).map((r) => r.from),
         list: (c.list_fields ?? []).map((f) =>
           fieldChips(c, item, f, lang)
@@ -120,7 +127,9 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
     const blocks = item.page?.blocks ?? [];
     const lead = blocks.find((b) => b.type === "text");
     const prereqBlock = blocks.find((b) => b.type === "prerequisites");
-    const bridged = new Set(prereqBlock?.type === "prerequisites" ? prereqBlock.items.filter((p) => p.bridge).map((p) => p.ref) : []);
+    const bridged = new Set(
+      prereqBlock?.type === "prerequisites" ? prereqBlock.items.filter((p) => p.bridge).map((p) => p.ref) : [],
+    );
     const diagnostic = blocks.find((b) => b.type === "diagnostic");
     const groupField = c.group_by;
     const groupValue = groupField ? String(item.fields[groupField] ?? "") : "";
@@ -175,7 +184,10 @@ export function facets(lang: Lang): FacetData[] {
       return {
         field,
         label: text(c.fields[field]?.label, lang).value,
-        options: (vocabulary ? vocabularyValues(vocabulary) : []).map((value) => ({ value, label: vocabularyLabel(vocabulary, value, lang) })),
+        options: (vocabulary ? vocabularyValues(vocabulary) : []).map((value) => ({
+          value,
+          label: vocabularyLabel(vocabulary, value, lang),
+        })),
       };
     });
 }

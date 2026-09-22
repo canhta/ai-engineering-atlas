@@ -10,14 +10,14 @@ The atlas is a map, so the map is the design. One element carries the identity: 
 
 Proven patterns, reused rather than invented:
 
-| Pattern | From | Used for |
-|---|---|---|
-| One tile per skill, filled by state, legend above the grid | Khan Academy course grid | Plate tiles, legend, Progress |
-| Node opens a side drawer over the dimmed map | roadmap.sh | Map drawer (without Learning/Done/Skip toggles) |
-| Tabs with underline, breadcrumb, large title, larger one-line subtitle, page-actions row | Stripe docs | Global nav, route header |
-| Left course rail with the current section marked | Stripe docs, Hugging Face course | Route waypoint rail |
-| "Not feeling ready? …" prerequisite line | Khan Academy, master.dev | Route prerequisite line |
-| Labelled AI actions inside the item panel | roadmap.sh node panel | Phase 2 tutor actions |
+| Pattern                                                                                  | From                             | Used for                                        |
+| ---------------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------- |
+| One tile per skill, filled by state, legend above the grid                               | Khan Academy course grid         | Plate tiles, legend, Progress                   |
+| Node opens a side drawer over the dimmed map                                             | roadmap.sh                       | Map drawer (without Learning/Done/Skip toggles) |
+| Tabs with underline, breadcrumb, large title, larger one-line subtitle, page-actions row | Stripe docs                      | Global nav, route header                        |
+| Left course rail with the current section marked                                         | Stripe docs, Hugging Face course | Route waypoint rail                             |
+| "Not feeling ready? …" prerequisite line                                                 | Khan Academy, master.dev         | Route prerequisite line                         |
+| Labelled AI actions inside the item panel                                                | roadmap.sh node panel            | Phase 2 tutor actions                           |
 
 ## Principles
 
@@ -82,13 +82,13 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 - Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in the wide display width, sentence case, with "N ready of M".
 - Tiles: one per item, in content order. Every state has its own fill or icon and its own hue; colour is never the only cue:
 
-  | State | Tile | Hue token |
-  |---|---|---|
-  | mapped (no page) | dotted outline, no fill | `line-strong` |
-  | ready, unassessed | ink outline | `ink` |
-  | gap | half fill | `state-gap` (amber) |
-  | learning | three-quarter fill | `state-learning` (blue) |
-  | demonstrated | full fill | `state-demonstrated` (green) |
+  | State                          | Tile                            | Hue token                                                                        |
+  | ------------------------------ | ------------------------------- | -------------------------------------------------------------------------------- |
+  | mapped (no page)               | dotted outline, no fill         | `line-strong`                                                                    |
+  | ready, unassessed              | ink outline                     | `ink`                                                                            |
+  | gap                            | half fill                       | `state-gap` (amber)                                                              |
+  | learning                       | three-quarter fill              | `state-learning` (blue)                                                          |
+  | demonstrated                   | full fill                       | `state-demonstrated` (green)                                                     |
   | transferred, retained, applied | full fill with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
 
 - Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`.
@@ -203,15 +203,15 @@ Every lab has a page that renders its README (a Markdown `text` block). A lab wi
 - Editor: JetBrains Mono without ligatures (code must look as typed), syntax colours from the `code-*` tokens, `lang="en"`, the bezel core as background. Before hydration the files show as plain `pre`.
 - Results panel, one `role="status"` line with icon, label, and time; colour is never the only cue:
 
-  | State | Line | Detail |
-  |---|---|---|
-  | idle | muted: what Run does and the one-time ~13 MB download | none |
-  | loading runtime, running | muted, pulsing dot (static with reduced motion) | Stop enabled while running |
-  | pass | check icon, `state-demonstrated` | output open; Record evidence |
-  | fail | cross icon, `state-gap` | file and line of the failing assert, its source, the assertion message; Show in editor selects the line |
-  | error | warning icon, `state-gap` | exception type and message, the line in the learner's file when the traceback passes through it, traceback in lab files (collapsed) |
-  | stopped | stop icon, muted | Python raised KeyboardInterrupt; the next run reuses the runtime |
-  | timeout | timer icon, `state-gap` | after 20 s the worker is terminated; the next run starts a fresh one |
+  | State                    | Line                                                  | Detail                                                                                                                              |
+  | ------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+  | idle                     | muted: what Run does and the one-time ~13 MB download | none                                                                                                                                |
+  | loading runtime, running | muted, pulsing dot (static with reduced motion)       | Stop enabled while running                                                                                                          |
+  | pass                     | check icon, `state-demonstrated`                      | output open; Record evidence                                                                                                        |
+  | fail                     | cross icon, `state-gap`                               | file and line of the failing assert, its source, the assertion message; Show in editor selects the line                             |
+  | error                    | warning icon, `state-gap`                             | exception type and message, the line in the learner's file when the traceback passes through it, traceback in lab files (collapsed) |
+  | stopped                  | stop icon, muted                                      | Python raised KeyboardInterrupt; the next run reuses the runtime                                                                    |
+  | timeout                  | timer icon, `state-gap`                               | after 20 s the worker is terminated; the next run starts a fresh one                                                                |
 
 - Reset to starter and Show the reference solution each open an inline confirmation (focus moves to its first button). Opening the reference is remembered per lab and marks later evidence `reference-open`, which the form states.
 - Evidence (after pass only): the competency (radio when several), the state it supports (learning or demonstrated, starting at learning), a note pre-filled with the run file, runtime version, and the SHA-256 of the code. Kind `implementation`, review `automated`.
@@ -225,27 +225,27 @@ Before hydration (controls disabled, no learner state drawn); empty; filtered to
 
 ### Colour roles
 
-| Role | Use |
-|---|---|
-| `ground` | page background: pale mineral grey-green (light), night chart (dark) |
-| `sheet` | raised surfaces: plate core, drawer, field log core |
-| `ink`, `ink-muted` | text; muted for secondary text |
-| `line` | hairlines and contour strokes: translucent ink, not flat grey |
-| `route` | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
-| `water` | teal: links |
-| `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied` | one hue per learner state (see The plate); always with shape and label |
-| `code-keyword`, `code-string`, `code-number`, `code-definition`, `code-comment`, `code-selection`, `code-gutter` | lab editor syntax and chrome only (see Labs) |
+| Role                                                                                                             | Use                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `ground`                                                                                                         | page background: pale mineral grey-green (light), night chart (dark)                                       |
+| `sheet`                                                                                                          | raised surfaces: plate core, drawer, field log core                                                        |
+| `ink`, `ink-muted`                                                                                               | text; muted for secondary text                                                                             |
+| `line`                                                                                                           | hairlines and contour strokes: translucent ink, not flat grey                                              |
+| `route`                                                                                                          | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
+| `water`                                                                                                          | teal: links                                                                                                |
+| `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied`      | one hue per learner state (see The plate); always with shape and label                                     |
+| `code-keyword`, `code-string`, `code-number`, `code-definition`, `code-comment`, `code-selection`, `code-gutter` | lab editor syntax and chrome only (see Labs)                                                               |
 
 `pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
 
 ### Type
 
-| Role | Family | Setting |
-|---|---|---|
-| Display | Hubot Sans, wide (wdth 118–125), 700 | 40–72px, leading 1.05 |
-| UI | Hubot Sans, normal width, 400–600 | 15–16px, tabular numbers for counts |
-| Reading | Newsreader (optical sizes) | 18px, line-height 1.65, ≤ 68ch |
-| Code and IDs | JetBrains Mono | code, and IDs in the drawer and route chips only |
+| Role         | Family                               | Setting                                          |
+| ------------ | ------------------------------------ | ------------------------------------------------ |
+| Display      | Hubot Sans, wide (wdth 118–125), 700 | 40–72px, leading 1.05                            |
+| UI           | Hubot Sans, normal width, 400–600    | 15–16px, tabular numbers for counts              |
+| Reading      | Newsreader (optical sizes)           | 18px, line-height 1.65, ≤ 68ch                   |
+| Code and IDs | JetBrains Mono                       | code, and IDs in the drawer and route chips only |
 
 Every family ships the `vietnamese` subset. Render test: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`. Labels are sentence case, never tracked capitals.
 
@@ -283,13 +283,13 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ## Review tells
 
-| Tell | Replace with |
-|---|---|
-| Identical card grid with one radius and shadow everywhere | Plate tiles, rows, and the four double-bezel surfaces only |
-| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips, sentence case, monospace only for code and IDs |
-| Marketing headline, percent rings, streaks, XP, "N of M complete" | Ready and mapped counts, evidence states, due reviews |
-| Learning/Done/Skip toggles on items | Record evidence in the field log |
-| Floating "Ask anything" input, sparkles | Labelled AI actions inside the drawer or a block (Phase 2) |
-| `→` appended to links | A trailing icon inside the primary pill only |
-| Scroll-triggered fade-ins on every section | The single plate reveal |
-| Colour-only status | Shape, label, and colour |
+| Tell                                                                   | Replace with                                               |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Identical card grid with one radius and shadow everywhere              | Plate tiles, rows, and the four double-bezel surfaces only |
+| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips, sentence case, monospace only for code and IDs      |
+| Marketing headline, percent rings, streaks, XP, "N of M complete"      | Ready and mapped counts, evidence states, due reviews      |
+| Learning/Done/Skip toggles on items                                    | Record evidence in the field log                           |
+| Floating "Ask anything" input, sparkles                                | Labelled AI actions inside the drawer or a block (Phase 2) |
+| `→` appended to links                                                  | A trailing icon inside the primary pill only               |
+| Scroll-triggered fade-ins on every section                             | The single plate reveal                                    |
+| Colour-only status                                                     | Shape, label, and colour                                   |

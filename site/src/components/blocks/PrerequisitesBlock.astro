@@ -3,7 +3,16 @@
 // patch a mapped prerequisite without its full route).
 import type { Lang } from "../../i18n";
 import { useTranslations } from "../../i18n";
-import { bridgeAnchor, hasPage, itemUrl, langAttr, resolveRef, resolveResource, text, type PrerequisitesBlock } from "../../lib/atlas";
+import {
+  bridgeAnchor,
+  hasPage,
+  itemUrl,
+  langAttr,
+  resolveRef,
+  resolveResource,
+  text,
+  type PrerequisitesBlock,
+} from "../../lib/atlas";
 import { TileGlyph } from "../plate/TileGlyph";
 import ResourceLink from "./ResourceLink.astro";
 
@@ -27,59 +36,57 @@ const entries = block.items.map((entry) => {
 
 {entries.length === 0 && <p class="muted">{t("prereq.none")}</p>}
 <ul class="prereq-list">
-  {
-    entries.map((e) => {
-      const b = e.bridge;
-      const locator = b?.locator && text(b.locator, lang);
-      const purpose = b?.purpose && text(b.purpose, lang);
-      const question = b?.diagnostic && text(b.diagnostic, lang);
-      return (
-        <li id={b ? bridgeAnchor(e.ref) : undefined}>
-          <p class="prereq-head">
-            <TileGlyph fill={e.ready ? "ready" : "mapped"} />
-            {e.url ? (
-              <a href={e.url} lang={langAttr(e.title, lang)}>
-                {e.title.value}
-              </a>
-            ) : (
-              <span lang={langAttr(e.title, lang)}>{e.title.value}</span>
-            )}
-            <span class="muted small">{t(e.ready ? "prereq.ready" : "prereq.mapped")}</span>
-          </p>
-          {b && (
-            <div class="bridge">
-              <p class="bridge-label">{t("prereq.bridgeLabel")}</p>
-              {question && (
-                <p class="reading" lang={langAttr(question, lang)}>
-                  {question.value}
-                </p>
-              )}
-              <dl class="bridge-facts">
-                <div>
-                  <dt>{t("sources.col.resource")}</dt>
-                  <dd>
-                    <ResourceLink resource={resolveResource(b.resource)} lang={lang} />
-                  </dd>
-                </div>
-                {locator && (
-                  <div>
-                    <dt>{t("sources.col.locator")}</dt>
-                    <dd lang={langAttr(locator, lang)}>{locator.value}</dd>
-                  </div>
-                )}
-                {purpose && (
-                  <div>
-                    <dt>{t("sources.col.purpose")}</dt>
-                    <dd lang={langAttr(purpose, lang)}>{purpose.value}</dd>
-                  </div>
-                )}
-              </dl>
-            </div>
+  {entries.map((e) => {
+    const b = e.bridge;
+    const locator = b?.locator && text(b.locator, lang);
+    const purpose = b?.purpose && text(b.purpose, lang);
+    const question = b?.diagnostic && text(b.diagnostic, lang);
+    return (
+      <li id={b ? bridgeAnchor(e.ref) : undefined}>
+        <p class="prereq-head">
+          <TileGlyph fill={e.ready ? "ready" : "mapped"} />
+          {e.url ? (
+            <a href={e.url} lang={langAttr(e.title, lang)}>
+              {e.title.value}
+            </a>
+          ) : (
+            <span lang={langAttr(e.title, lang)}>{e.title.value}</span>
           )}
-        </li>
-      );
-    })
-  }
+          <span class="muted small">{t(e.ready ? "prereq.ready" : "prereq.mapped")}</span>
+        </p>
+        {b && (
+          <div class="bridge">
+            <p class="bridge-label">{t("prereq.bridgeLabel")}</p>
+            {question && (
+              <p class="reading" lang={langAttr(question, lang)}>
+                {question.value}
+              </p>
+            )}
+            <dl class="bridge-facts">
+              <div>
+                <dt>{t("sources.col.resource")}</dt>
+                <dd>
+                  <ResourceLink resource={resolveResource(b.resource)} lang={lang} />
+                </dd>
+              </div>
+              {locator && (
+                <div>
+                  <dt>{t("sources.col.locator")}</dt>
+                  <dd lang={langAttr(locator, lang)}>{locator.value}</dd>
+                </div>
+              )}
+              {purpose && (
+                <div>
+                  <dt>{t("sources.col.purpose")}</dt>
+                  <dd lang={langAttr(purpose, lang)}>{purpose.value}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
+      </li>
+    );
+  })}
 </ul>
 
 <style>

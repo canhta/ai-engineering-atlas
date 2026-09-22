@@ -17,8 +17,8 @@
 
 ## State transitions
 
-| From | Event / condition | To | Side effect? | Checkpoint after transition? |
-| --- | --- | --- | --- | --- |
+| From | Event / condition | To  | Side effect? | Checkpoint after transition? |
+| ---- | ----------------- | --- | ------------ | ---------------------------- |
 
 ## Checkpoint / event strategy
 

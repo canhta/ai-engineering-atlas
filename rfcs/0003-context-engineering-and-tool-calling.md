@@ -170,7 +170,7 @@ The bridge should only patch the minimum needed capability:
 - use of a few representative examples when justified;
 - prompt changes evaluated against explicit failures rather than intuition.
 
-A suitable bridge source is Chip Huyen, *AI Engineering*, Chapter 5 **Introduction to Prompting** and **Prompt Engineering Best Practices**.
+A suitable bridge source is Chip Huyen, _AI Engineering_, Chapter 5 **Introduction to Prompting** and **Prompt Engineering Best Practices**.
 
 ### Boundary with adjacent competencies
 

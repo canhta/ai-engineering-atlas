@@ -4,14 +4,15 @@
 The adapter is generic: curriculum/presentation.yaml names the collections, the
 fields, and the blocks. Contract: rfcs/0000-content-model.md.
 """
+
 from __future__ import annotations
 
-from datetime import date, datetime
-from pathlib import Path
 import argparse
 import json
 import re
 import sys
+from datetime import date, datetime
+from pathlib import Path
 
 import yaml
 from jsonschema import Draft202012Validator
@@ -277,11 +278,13 @@ def block_sources(spec, value, content, ctx):
     field = spec["field"]
     rows = []
     for row in value if isinstance(value, list) else []:
-        rows.append({
-            "resource": ctx.resource(row.get(mapping["resource"])),
-            "locator": ctx.text(row.get(mapping["locator"]), f"{field} locator"),
-            "purpose": ctx.text(row.get(mapping["purpose"]), f"{field} purpose"),
-        })
+        rows.append(
+            {
+                "resource": ctx.resource(row.get(mapping["resource"])),
+                "locator": ctx.text(row.get(mapping["locator"]), f"{field} locator"),
+                "purpose": ctx.text(row.get(mapping["purpose"]), f"{field} purpose"),
+            }
+        )
     return {"rows": rows}, [f"{field}[].{k}" for k in mapping.values()]
 
 
@@ -373,11 +376,11 @@ def slug(path: str) -> str:
 
 
 def matches(pattern: list[str], path: list[str]) -> bool:
-    return len(pattern) == len(path) and all(p == "*" or p == q for p, q in zip(pattern, path))
+    return len(pattern) == len(path) and all(p == "*" or p == q for p, q in zip(pattern, path, strict=False))
 
 
 def is_prefix(pattern: list[str], path: list[str]) -> bool:
-    return len(pattern) > len(path) and all(p == "*" or p == q for p, q in zip(pattern, path))
+    return len(pattern) > len(path) and all(p == "*" or p == q for p, q in zip(pattern, path, strict=False))
 
 
 def split(path: str) -> list[str]:
@@ -498,7 +501,10 @@ def check_config(presentation: dict, vocabularies: dict):
             if vocab and vocab not in vocabularies:
                 errors.append(f"presentation: {name}.fields.{field} names unknown vocabulary '{vocab}'")
         named = [config.get("group_by")] + list(config.get("facets", [])) + list(config.get("list_fields", []))
-        named += [(config.get("progress") or {}).get("target_field"), (config.get("page_when") or {}).get("field")]
+        named += [
+            (config.get("progress") or {}).get("target_field"),
+            (config.get("page_when") or {}).get("field"),
+        ]
         for field in filter(None, named):
             if field not in fields:
                 errors.append(f"presentation: {name} refers to undeclared field '{field}'")
@@ -506,13 +512,19 @@ def check_config(presentation: dict, vocabularies: dict):
             if ("field" in block) == ("file" in block):
                 errors.append(f"presentation: {name} block '{block.get('id')}' needs exactly one of `field` or `file`")
             if "file" in block and not config.get("items_from", "").endswith("/"):
-                errors.append(f"presentation: {name} block '{block.get('id')}' reads a file, but items are not directories")
+                errors.append(
+                    f"presentation: {name} block '{block.get('id')}' reads a file, but items are not directories"
+                )
             if block.get("type") not in BLOCK_TYPES:
-                errors.append(f"presentation: {name} block '{block.get('field')}' has unknown type '{block.get('type')}'")
+                errors.append(
+                    f"presentation: {name} block '{block.get('field')}' has unknown type '{block.get('type')}'"
+                )
         for relation in config.get("relations", []) or []:
             target = relation.get("target")
             if target and target not in presentation["collections"]:
-                errors.append(f"presentation: {name} relation '{relation['type']}' targets unknown collection '{target}'")
+                errors.append(
+                    f"presentation: {name} relation '{relation['type']}' targets unknown collection '{target}'"
+                )
 
 
 def collection_model(name: str, config: dict) -> dict:
@@ -571,7 +583,9 @@ def build():
                         v = str(v)
                         if "/" in v:
                             other = resolver.path_ref(v)
-                            if other is None or (relation.get("target") and resolver.collection_of(other) != relation["target"]):
+                            if other is None or (
+                                relation.get("target") and resolver.collection_of(other) != relation["target"]
+                            ):
                                 continue
                         else:
                             other = resolver.ref(v, label)
@@ -596,13 +610,15 @@ def build():
                         continue
                     payload, consumed = handler(spec, value, content, ctx)
                     covered += consumed
-                    blocks.append({
-                        "type": spec["type"],
-                        "id": spec.get("id") or slug(spec.get("field") or spec["file"]),
-                        "title": spec["title"],
-                        **({"step": True} if spec.get("step") else {}),
-                        **payload,
-                    })
+                    blocks.append(
+                        {
+                            "type": spec["type"],
+                            "id": spec.get("id") or slug(spec.get("field") or spec["file"]),
+                            "title": spec["title"],
+                            **({"step": True} if spec.get("step") else {}),
+                            **payload,
+                        }
+                    )
                 for path, values in sorted(unmapped(content, covered).items()):
                     warnings.append(f"{label}: field '{path}' is neither mapped nor ignored; rendered as a data block")
                     value = values if "[]" in path else values[0]

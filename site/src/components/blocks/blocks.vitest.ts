@@ -1,9 +1,10 @@
 // Renders every block type from a fixture, including an unknown type and `data` with unknown
 // shapes (rfcs/0000-content-model.md → Checks). Refs and resources are real model keys so link
 // resolution is exercised too.
-import { experimental_AstroContainer as AstroContainer } from "astro/container";
+
 import { loadRenderers } from "astro:container";
 import { getContainerRenderer } from "@astrojs/react/container-renderer";
+import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { beforeAll, describe, expect, test } from "vitest";
 import type { Block as BlockData } from "../../lib/atlas";
 import Block from "./Block.astro";
@@ -11,7 +12,13 @@ import Block from "./Block.astro";
 const title = { en: "Fixture", vi: "Mẫu" };
 const fixture: Record<string, unknown> = {
   text: { type: "text", id: "lead", title, body: { en: "First paragraph.\n\nSecond paragraph." } },
-  list: { type: "list", id: "steps", title, ordered: true, items: [{ en: "Step one" }, { en: "Step two", vi: "Bước hai" }] },
+  list: {
+    type: "list",
+    id: "steps",
+    title,
+    ordered: true,
+    items: [{ en: "Step one" }, { en: "Step two", vi: "Bước hai" }],
+  },
   prerequisites: {
     type: "prerequisites",
     id: "needs",
@@ -20,11 +27,22 @@ const fixture: Record<string, unknown> = {
       { ref: "ai.evaluation" },
       {
         ref: "systems.api-service-design",
-        bridge: { diagnostic: { en: "Bridge question" }, resource: "article.aws-idempotent-apis", locator: { en: "Bridge locator" } },
+        bridge: {
+          diagnostic: { en: "Bridge question" },
+          resource: "article.aws-idempotent-apis",
+          locator: { en: "Bridge locator" },
+        },
       },
     ],
   },
-  diagnostic: { type: "diagnostic", id: "check", title, step: true, tasks: [{ en: "Task A" }, { en: "Task B" }], pass_condition: { en: "Pass rule" } },
+  diagnostic: {
+    type: "diagnostic",
+    id: "check",
+    title,
+    step: true,
+    tasks: [{ en: "Task A" }, { en: "Task B" }],
+    pass_condition: { en: "Pass rule" },
+  },
   sources: {
     type: "sources",
     id: "read",
@@ -51,7 +69,9 @@ const fixture: Record<string, unknown> = {
     id: "brief",
     title,
     format: "markdown",
-    body: { en: "## Task 1\n\nOpen [cases](cases.jsonl) and [the route](../../curriculum/07-ai-engineering/evaluation/).\n\n<script>alert(1)</script>" },
+    body: {
+      en: "## Task 1\n\nOpen [cases](cases.jsonl) and [the route](../../curriculum/07-ai-engineering/evaluation/).\n\n<script>alert(1)</script>",
+    },
   },
   runner: {
     type: "runner",
@@ -62,7 +82,11 @@ const fixture: Record<string, unknown> = {
     editable: "starter.py",
     run: "tests.py",
     reference: "solution.py",
-    files: { "starter.py": "def answer():\n    raise NotImplementedError\n", "tests.py": "import starter\n", "solution.py": "def answer():\n    return 42\n" },
+    files: {
+      "starter.py": "def answer():\n    raise NotImplementedError\n",
+      "tests.py": "import starter\n",
+      "solution.py": "def answer():\n    return 42\n",
+    },
   },
   data: { type: "data", id: "extra", title, value: { nested: [1, true, { en: "Localised leaf" }, { deeper: ["x"] }] } },
   unknown: { type: "timeline", id: "odd", title, entries: [{ year: 2026, note: "Unknown shape" }] },
@@ -89,7 +113,7 @@ const render = (name: string, lang: "en" | "vi" = "en") =>
 describe("block renderer", () => {
   test("text splits paragraphs", async () => {
     const html = await render("text");
-    expect(html).toContain("<p class=\"reading\"");
+    expect(html).toContain('<p class="reading"');
     expect(html).toContain("Second paragraph.");
   });
 
@@ -132,7 +156,9 @@ describe("block renderer", () => {
   test("markdown text shifts headings, resolves relative links, and escapes raw HTML", async () => {
     const html = await render("markdown");
     expect(html).toContain("<h3>Task 1</h3>");
-    expect(html).toContain('href="https://github.com/canhta/ai-engineering-atlas/tree/main/labs/evaluation-harness/cases.jsonl"');
+    expect(html).toContain(
+      'href="https://github.com/canhta/ai-engineering-atlas/tree/main/labs/evaluation-harness/cases.jsonl"',
+    );
     expect(html).toContain('href="/en/routes/ai.evaluation/"');
     expect(html).not.toContain("<script>alert");
   });

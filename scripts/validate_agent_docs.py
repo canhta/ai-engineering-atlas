@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Keep agent-facing docs loadable, within budget, and pointing at real commands."""
+
 from __future__ import annotations
 
-from pathlib import Path
 import json
 import re
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {"node_modules", ".git", ".astro", "dist", "worktrees"}
@@ -71,7 +72,9 @@ for path in agents_files:
 makefile = (ROOT / "Makefile").read_text(encoding="utf-8")
 make_targets = set(TARGET_RE.findall(makefile))
 site_package = ROOT / "site" / "package.json"
-site_scripts = set(json.loads(site_package.read_text(encoding="utf-8")).get("scripts", {})) if site_package.exists() else set()
+site_scripts = (
+    set(json.loads(site_package.read_text(encoding="utf-8")).get("scripts", {})) if site_package.exists() else set()
+)
 doc_files = agents_files + skill_files + design_files + [ROOT / "CONTRIBUTING.md"]
 
 for path in doc_files:

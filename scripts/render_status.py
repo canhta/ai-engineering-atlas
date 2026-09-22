@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import argparse
 import sys
+from pathlib import Path
+
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,7 +53,7 @@ def render():
         f"- **{ready_count}** ready learning routes",
         f"- **{coverage_count}** coverage-only competencies",
         "",
-        "A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.",
+        "A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.",  # noqa: E501
         "",
         "## By domain",
         "",
@@ -62,9 +63,7 @@ def render():
 
     for domain in DOMAIN_LABELS:
         value = counts.get(domain, {"total": 0, "ready": 0})
-        lines.append(
-            f"| {DOMAIN_LABELS[domain]} | {value['total']} | {value['ready']} |"
-        )
+        lines.append(f"| {DOMAIN_LABELS[domain]} | {value['total']} | {value['ready']} |")
 
     lines += [
         "",
@@ -78,7 +77,7 @@ def render():
         route = item["route"]
         prefix = "curriculum/"
         if route.startswith(prefix):
-            route = route[len(prefix):]
+            route = route[len(prefix) :]
         lines.append(
             f"| `{item['id']}` — {item['title']} | "
             f"{DOMAIN_LABELS.get(item['domain'], item['domain'])} | "
@@ -89,7 +88,7 @@ def render():
         "",
         "## Promotion rule",
         "",
-        "A coverage item becomes ready only when it satisfies the contract in [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md), including:",
+        "A coverage item becomes ready only when it satisfies the contract in [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md), including:",  # noqa: E501
         "",
         "- diagnostic;",
         "- verified source locator;",

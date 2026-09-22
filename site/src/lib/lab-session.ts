@@ -17,7 +17,8 @@ export class LabSession {
   private worker: Worker | undefined;
   private ready: Promise<string> | undefined;
   private interrupt: Uint8Array | undefined;
-  private pending: { id: number; resolve: (outcome: LabOutcome) => void; started: number; timers: number[] } | undefined;
+  private pending:
+    { id: number; resolve: (outcome: LabOutcome) => void; started: number; timers: number[] } | undefined;
   private nextId = 1;
 
   /** Pyodide version once loaded. */
@@ -39,7 +40,14 @@ export class LabSession {
         } else if (message.type === "result") {
           this.settle(message.id, { ...message.result, ms: 0 });
         } else if (this.pending) {
-          this.settle(this.pending.id, { verdict: "error", type: "RuntimeError", message: message.message, stdout: "", stderr: "", ms: 0 });
+          this.settle(this.pending.id, {
+            verdict: "error",
+            type: "RuntimeError",
+            message: message.message,
+            stdout: "",
+            stderr: "",
+            ms: 0,
+          });
         } else {
           this.reset();
           reject(new Error(message.message));
@@ -67,7 +75,7 @@ export class LabSession {
     return new Promise<LabOutcome>((resolve) => {
       const timeout = window.setTimeout(() => this.kill(id, { verdict: "timeout", ms: RUN_LIMIT_MS }), RUN_LIMIT_MS);
       this.pending = { id, resolve, started: performance.now(), timers: [timeout] };
-      this.worker!.postMessage({ type: "run", id, request, packages } satisfies WorkerRequest);
+      this.worker?.postMessage({ type: "run", id, request, packages } satisfies WorkerRequest);
     });
   }
 
@@ -75,7 +83,14 @@ export class LabSession {
   stop() {
     const pending = this.pending;
     if (!pending) return;
-    const stopped: LabOutcome = { verdict: "stopped", type: "KeyboardInterrupt", message: "", stdout: "", stderr: "", ms: 0 };
+    const stopped: LabOutcome = {
+      verdict: "stopped",
+      type: "KeyboardInterrupt",
+      message: "",
+      stdout: "",
+      stderr: "",
+      ms: 0,
+    };
     if (!this.interrupt) {
       this.kill(pending.id, stopped);
       return;
@@ -85,7 +100,7 @@ export class LabSession {
   }
 
   dispose() {
-    this.pending?.timers.forEach((t) => window.clearTimeout(t));
+    for (const t of this.pending?.timers ?? []) window.clearTimeout(t);
     this.pending = undefined;
     this.reset();
   }
@@ -93,7 +108,7 @@ export class LabSession {
   private settle(id: number, outcome: LabOutcome) {
     const pending = this.pending;
     if (!pending || pending.id !== id) return;
-    pending.timers.forEach((t) => window.clearTimeout(t));
+    for (const t of pending.timers) window.clearTimeout(t);
     this.pending = undefined;
     pending.resolve({ ...outcome, ms: outcome.ms || Math.round(performance.now() - pending.started) });
   }

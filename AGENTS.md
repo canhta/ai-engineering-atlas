@@ -17,6 +17,10 @@ For work under `site/` (web atlas, Cloudflare Worker), read [site/AGENTS.md](sit
 
 For any Vietnamese text, follow [docs/VIETNAMESE_STYLE.md](docs/VIETNAMESE_STYLE.md).
 
+## Commands
+
+`make check` (curriculum and docs, Python only), `make site-check` (the web atlas), `make format` and `make lint` (ruff for Python; prettier and eslint for everything else), `make hooks` (install the git hooks: formatters on commit, `make check` on push). Dependencies: `pip install -r requirements-dev.txt`, and `pnpm install` in `site/`.
+
 Do not create content merely because a directory or schema field exists.
 
 ## One version of everything

@@ -105,6 +105,8 @@ Last updated: 2026-09-22
 
 ### Harness upkeep
 
+- [x] Formatting and linting: ruff (Python), prettier and eslint (everything else), pre-commit hooks, and a `lint` CI job
+
 - [x] Root `AGENTS.md` pruned to 175 lines; the budget in `validate_agent_docs.py` is now 200
 - [ ] Owner decision on updating the global `writing-for-agents` skill (differences listed in the agent-harness research)
 

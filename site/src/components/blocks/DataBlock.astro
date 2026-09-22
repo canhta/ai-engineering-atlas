@@ -11,40 +11,41 @@ interface Props {
 
 const { value, lang } = Astro.props;
 const isL10n = (v: unknown): v is L10n =>
-  typeof v === "object" && v !== null && !Array.isArray(v) && typeof (v as L10n).en === "string" &&
+  typeof v === "object" &&
+  v !== null &&
+  !Array.isArray(v) &&
+  typeof (v as L10n).en === "string" &&
   Object.keys(v).every((k) => k === "en" || k === "vi");
 const localized = isL10n(value) ? text(value, lang) : undefined;
 const Self = Astro.self;
 ---
 
-{
-  localized ? (
-    <span lang={langAttr(localized, lang)}>{localized.value}</span>
-  ) : Array.isArray(value) ? (
-    <ul class="data-list">
-      {value.map((v) => (
-        <li>
+{localized ? (
+  <span lang={langAttr(localized, lang)}>{localized.value}</span>
+) : Array.isArray(value) ? (
+  <ul class="data-list">
+    {value.map((v) => (
+      <li>
+        <Self value={v} lang={lang} />
+      </li>
+    ))}
+  </ul>
+) : typeof value === "object" && value !== null ? (
+  <dl class="data-map">
+    {Object.entries(value).map(([k, v]) => (
+      <div>
+        <dt>
+          <code>{k}</code>
+        </dt>
+        <dd>
           <Self value={v} lang={lang} />
-        </li>
-      ))}
-    </ul>
-  ) : typeof value === "object" && value !== null ? (
-    <dl class="data-map">
-      {Object.entries(value).map(([k, v]) => (
-        <div>
-          <dt>
-            <code>{k}</code>
-          </dt>
-          <dd>
-            <Self value={v} lang={lang} />
-          </dd>
-        </div>
-      ))}
-    </dl>
-  ) : (
-    <span lang="en">{String(value ?? "")}</span>
-  )
-}
+        </dd>
+      </div>
+    ))}
+  </dl>
+) : (
+  <span lang="en">{String(value ?? "")}</span>
+)}
 
 <style>
   .data-list {

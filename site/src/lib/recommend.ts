@@ -15,7 +15,7 @@
 // Ties within a rule follow the content model's item order. With `{ due: false }` (Progress, where
 // the review queue sits beside the list) items with a due check are left out entirely.
 import type { Collection, Item, Relation } from "./atlas.ts";
-import { isDemonstrated, rank, type Progress, type State } from "./progress.ts";
+import { isDemonstrated, type Progress, rank, type State } from "./progress.ts";
 import { refOf } from "./refs.ts";
 
 export interface PlanOptions {
@@ -49,7 +49,9 @@ export function graphOf(c: Collection, items: readonly Item[], relations: readon
   return items.map((item, order) => {
     const id = refOf(c, item);
     const bridged = new Set(
-      (item.page?.blocks ?? []).flatMap((b) => (b.type === "prerequisites" ? b.items.filter((p) => p.bridge).map((p) => p.ref) : [])),
+      (item.page?.blocks ?? []).flatMap((b) =>
+        b.type === "prerequisites" ? b.items.filter((p) => p.bridge).map((p) => p.ref) : [],
+      ),
     );
     const targets = targetField === undefined ? [] : [item.fields[targetField] ?? []].flat().map(String);
     return {
@@ -57,7 +59,9 @@ export function graphOf(c: Collection, items: readonly Item[], relations: readon
       order,
       page: Boolean(item.page),
       target: targets.at(-1),
-      needs: relations.filter((r) => r.type === "prerequisite" && r.to === id).map((r) => ({ id: r.from, bridged: bridged.has(r.from) })),
+      needs: relations
+        .filter((r) => r.type === "prerequisite" && r.to === id)
+        .map((r) => ({ id: r.from, bridged: bridged.has(r.from) })),
     };
   });
 }
@@ -86,9 +90,15 @@ export interface Plan {
 
 export const NEXT_LIMIT = 5;
 
-const stateIn = (progress: Progress | null, id: string): State => progress?.competencies[id]?.current_state ?? "unassessed";
+const stateIn = (progress: Progress | null, id: string): State =>
+  progress?.competencies[id]?.current_state ?? "unassessed";
 
-export function plan(graph: readonly GraphItem[], progress: Progress | null, today: string, options: PlanOptions = {}): Plan {
+export function plan(
+  graph: readonly GraphItem[],
+  progress: Progress | null,
+  today: string,
+  options: PlanOptions = {},
+): Plan {
   const items = [...graph].sort((a, b) => a.order - b.order || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const orderOf = new Map(items.map((item) => [item.id, item.order]));
   const byOrder = (a: string, b: string) =>
@@ -110,7 +120,8 @@ export function plan(graph: readonly GraphItem[], progress: Progress | null, tod
     const target = entry?.target_state ?? item.target ?? "demonstrated";
 
     if (entry?.review_on && entry.review_on <= today) {
-      if (options.due ?? true) buckets.due.push({ id: item.id, reason: "due", prerequisites: [], due: entry.review_on });
+      if (options.due ?? true)
+        buckets.due.push({ id: item.id, reason: "due", prerequisites: [], due: entry.review_on });
       continue;
     }
     if (rank(state) >= rank(target as State)) continue;

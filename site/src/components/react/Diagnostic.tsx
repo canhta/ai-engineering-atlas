@@ -3,9 +3,9 @@
 // condition stays hidden until every task has an answer. Recording writes diagnostic evidence.
 import { useEffect, useRef, useState } from "react";
 import { Button, Label, RadioButton, RadioField, RadioGroup, TextArea, TextField } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
-import { recordEvidence, today, type TargetState } from "../../lib/progress";
+import { recordEvidence, type TargetState, today } from "../../lib/progress";
 import { useDraft, useProgress } from "../../lib/progress-store";
 import { Icon } from "./Icon";
 
@@ -149,7 +149,12 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
             ))}
           </ol>
         </details>
-        <RadioGroup className="radio-group" value={result} onChange={(v) => setResult(v as Result)} isDisabled={recorded !== null}>
+        <RadioGroup
+          className="radio-group"
+          value={result}
+          onChange={(v) => setResult(v as Result)}
+          isDisabled={recorded !== null}
+        >
           <Label className="radio-legend">{t("diag.result")}</Label>
           <RadioField value="meets">
             <RadioButton className="radio">{t("diag.result.meets")}</RadioButton>

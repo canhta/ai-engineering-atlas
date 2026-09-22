@@ -1,9 +1,17 @@
 // Where learner data lives (DESIGN.md → States): this browser, or, when storage is blocked
 // (private mode), only this page session, said once where progress is shown.
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import { useStorageAvailable } from "../../lib/progress-store";
 
-export function StorageNote({ lang, className = "", note = "log.localNote" }: { lang: Lang; className?: string; note?: "log.localNote" | "progress.localNote" }) {
+export function StorageNote({
+  lang,
+  className = "",
+  note = "log.localNote",
+}: {
+  lang: Lang;
+  className?: string;
+  note?: "log.localNote" | "progress.localNote";
+}) {
   const t = useTranslations(lang);
   const available = useStorageAvailable();
   if (available === false) {

@@ -19,23 +19,21 @@ const t = useTranslations(lang);
 
 <nav class="breadcrumb" aria-label={t("nav.breadcrumb")}>
   <ol>
-    {
-      crumbs.map((c, i) => (
-        <li>
-          {i === crumbs.length - 1 ? (
-            <span aria-current="page" lang={c.lang}>
-              {c.label}
-            </span>
-          ) : c.href ? (
-            <a href={c.href} lang={c.lang}>
-              {c.label}
-            </a>
-          ) : (
-            <span lang={c.lang}>{c.label}</span>
-          )}
-        </li>
-      ))
-    }
+    {crumbs.map((c, i) => (
+      <li>
+        {i === crumbs.length - 1 ? (
+          <span aria-current="page" lang={c.lang}>
+            {c.label}
+          </span>
+        ) : c.href ? (
+          <a href={c.href} lang={c.lang}>
+            {c.label}
+          </a>
+        ) : (
+          <span lang={c.lang}>{c.label}</span>
+        )}
+      </li>
+    ))}
   </ol>
 </nav>
 

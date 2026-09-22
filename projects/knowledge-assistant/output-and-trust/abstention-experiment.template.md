@@ -19,14 +19,14 @@
 ## Candidate signals
 
 | Signal | Provenance | Expected relationship to risk | Known limitations |
-| --- | --- | --- | --- |
+| ------ | ---------- | ----------------------------- | ----------------- |
 
 ## Validation sweep
 
 For each threshold/policy candidate record:
 
 | Policy / threshold | Coverage | Answered-case risk/quality | False abstention | Unsafe answers | Fallback success |
-| --- | ---: | ---: | ---: | ---: | ---: |
+| ------------------ | -------: | -------------------------: | ---------------: | -------------: | ---------------: |
 
 Use validation data to choose the policy.
 

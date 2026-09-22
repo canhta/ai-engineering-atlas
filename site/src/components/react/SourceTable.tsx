@@ -2,7 +2,7 @@
 // a personal "Opened" mark. Opened marks are not progress and never change a learner state.
 // On narrow screens each row stacks with inline labels.
 import { CheckboxButton, CheckboxField } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { useOpened } from "../../lib/progress-store";
 import { Icon } from "./Icon";
@@ -20,7 +20,15 @@ export interface SourceTableRow {
 
 const langOf = (text: Localized, page: Lang) => (text.lang === page ? undefined : text.lang);
 
-export default function SourceTable({ lang, labelledBy, rows }: { lang: Lang; labelledBy: string; rows: SourceTableRow[] }) {
+export default function SourceTable({
+  lang,
+  labelledBy,
+  rows,
+}: {
+  lang: Lang;
+  labelledBy: string;
+  rows: SourceTableRow[];
+}) {
   const t = useTranslations(lang);
   const [opened, setOpened] = useOpened();
   const count = opened ? rows.filter((r) => opened[r.key]).length : 0;
@@ -88,7 +96,9 @@ export default function SourceTable({ lang, labelledBy, rows }: { lang: Lang; la
         </tbody>
       </table>
       <p className="small muted">
-        {opened !== null && <span className="tabular">{t("sources.openedCount", { n: count, total: rows.length })}. </span>}
+        {opened !== null && (
+          <span className="tabular">{t("sources.openedCount", { n: count, total: rows.length })}. </span>
+        )}
         {t("sources.openedNote")}
       </p>
     </div>

@@ -2,7 +2,7 @@
 // (mapped, ready, or filled by the learner's state after hydration) and a link to its page or
 // to the bridge on this page.
 import { Fragment } from "react";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
@@ -29,7 +29,8 @@ export default function PrereqLine({ lang, entries, lead }: { lang: Lang; entrie
       <span className="prereq-lead">{lead ?? t("prereq.lead")}</span>{" "}
       {parts.map((part, i) => {
         if (part.type === "literal") return <Fragment key={i}>{part.value}</Fragment>;
-        const e = byRef.get(part.value)!;
+        const e = byRef.get(part.value);
+        if (!e) return null;
         const state = progress ? stateOf(progress, e.ref) : null;
         const href = e.url ?? (e.bridgeAnchor ? `#${e.bridgeAnchor}` : undefined);
         const label = (

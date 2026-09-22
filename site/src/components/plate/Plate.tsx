@@ -4,9 +4,18 @@
 // Modes: overview (Home: tiles link to the Atlas drawer), explore (Atlas: filters dim, select opens
 // the drawer), progress (Progress: tiles link to the Atlas drawer, mapped tiles recede).
 // This folder is the only place allowed to emit SVG, and only from data.
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { useTranslations, type Lang } from "../../i18n";
-import { stateOf, type State } from "../../lib/progress";
+import {
+  type CSSProperties,
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { type Lang, useTranslations } from "../../i18n";
+import { type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import type { RegionData, TileData } from "../../lib/summaries";
 import { Icon } from "../react/Icon";
@@ -41,7 +50,19 @@ interface Line {
   key: string;
 }
 
-export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matches = null, selected = null, onSelect, focusGroup, reveal, regionHeading = "h2" }: Props) {
+export default function Plate({
+  lang,
+  mode,
+  regions,
+  stateLabels,
+  atlasUrl,
+  matches = null,
+  selected = null,
+  onSelect,
+  focusGroup,
+  reveal,
+  regionHeading = "h2",
+}: Props) {
   const t = useTranslations(lang);
   const [progress] = useProgress();
   const hydrated = progress !== null;
@@ -51,7 +72,10 @@ export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matc
   const [lines, setLines] = useState<Line[]>([]);
   const [tip, setTip] = useState<{ x: number; y: number; text: string; lang?: string } | null>(null);
   const [tabStop, setTabStop] = useState<Record<string, string>>({});
-  const byRef = useMemo(() => new Map(regions.flatMap((r) => r.tiles.map((tile) => [tile.ref, tile] as const))), [regions]);
+  const byRef = useMemo(
+    () => new Map(regions.flatMap((r) => r.tiles.map((tile) => [tile.ref, tile] as const))),
+    [regions],
+  );
 
   // Prerequisite lines and the tooltip for the active tile (desktop widths only).
   useLayoutEffect(() => {
@@ -78,7 +102,12 @@ export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matc
       }),
     );
     const r = el.getBoundingClientRect();
-    setTip({ x: r.left - box.left + r.width / 2, y: r.top - box.top, text: tile.title.value, lang: langOf(tile.title, lang) });
+    setTip({
+      x: r.left - box.left + r.width / 2,
+      y: r.top - box.top,
+      text: tile.title.value,
+      lang: langOf(tile.title, lang),
+    });
   }, [active, byRef, lang]);
 
   // `?group=`: bring the region into view once.
@@ -98,7 +127,7 @@ export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matc
   // Arrow keys move within a region (Tab moves between regions: one tab stop each).
   const onKey = (region: RegionData, index: number) => (event: KeyboardEvent<HTMLElement>) => {
     const list = region.tiles;
-    let next = -1;
+    let next: number;
     if (event.key === "ArrowRight") next = Math.min(index + 1, list.length - 1);
     else if (event.key === "ArrowLeft") next = Math.max(index - 1, 0);
     else if (event.key === "Home") next = 0;
@@ -153,7 +182,9 @@ export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matc
             >
               <RegionHeading className="plate-region-label" id={`region-${region.value}-label`}>
                 <span lang={langOf(region.label, lang)}>{region.label.value}</span>
-                <span className="plate-region-count tabular">{t("plate.regionCount", { ready, total: region.tiles.length })}</span>
+                <span className="plate-region-count tabular">
+                  {t("plate.regionCount", { ready, total: region.tiles.length })}
+                </span>
               </RegionHeading>
               <div className="plate-tiles">
                 {region.tiles.map((tile, i) => {
@@ -185,6 +216,7 @@ export default function Plate({ lang, mode, regions, stateLabels, atlasUrl, matc
                     onMouseEnter: () => setActive(tile.ref),
                     onMouseLeave: () => setActive((a) => (a === tile.ref ? null : a)),
                   };
+                  // biome-ignore lint/correctness/useJsxKeyInIterable: one element inside the tile, not a list item.
                   const mark = state && BEYOND.includes(state) ? <Icon name={state} size={16} /> : null;
                   return mode === "explore" ? (
                     <button key={tile.ref} type="button" {...common} onClick={() => onSelect?.(tile.ref)}>

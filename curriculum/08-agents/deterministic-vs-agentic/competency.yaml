@@ -21,7 +21,7 @@ prerequisite_support:
   ai.tool-calling:
     diagnostic: Describe a tool schema, what the model chooses versus what application code executes, and one validation boundary for tool arguments.
     source: article.anthropic-building-effective-agents
-    locator: 'Building block: The augmented LLM; Appendix 2: Prompt engineering your tools.'
+    locator: "Building block: The augmented LLM; Appendix 2: Prompt engineering your tools."
     purpose: Patch the model-to-tool interface needed before comparing agentic control strategies.
   software.testing:
     diagnostic: Explain how a regression test differs from a happy-path example and where an end-to-end agent test belongs relative to unit tests.

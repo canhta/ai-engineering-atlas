@@ -14,7 +14,7 @@ Document stages, branches, dependencies, terminal conditions, and state passed b
 ## Control ownership
 
 | Decision | Owner: code / model / hybrid | Why | Verification |
-| --- | --- | --- | --- |
+| -------- | ---------------------------- | --- | ------------ |
 
 Keep known/testable branch conditions deterministic by default.
 

@@ -3,10 +3,7 @@ import { readFileSync } from "node:fs";
 
 const text = readFileSync(new URL("../public/_headers", import.meta.url), "utf8");
 const block = text.split(/\n(?=\S)/).find((b) => b.startsWith("/*\n")) ?? "";
-const required = [
-  "Cross-Origin-Opener-Policy: same-origin",
-  "Cross-Origin-Embedder-Policy: require-corp",
-];
+const required = ["Cross-Origin-Opener-Policy: same-origin", "Cross-Origin-Embedder-Policy: require-corp"];
 const missing = required.filter((h) => !block.split("\n").some((line) => line.trim() === h));
 
 if (missing.length) {

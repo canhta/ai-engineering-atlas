@@ -1,0 +1,14 @@
+# Generated: rewriting these would make `make check` fail on the next regeneration.
+curriculum/STATUS.md
+curriculum/**/README.md
+site/src/data/
+
+# Not ours.
+node_modules/
+site/node_modules/
+site/dist/
+site/.astro/
+.claude/worktrees/
+pnpm-lock.yaml
+site/pnpm-lock.yaml
+.wrangler/

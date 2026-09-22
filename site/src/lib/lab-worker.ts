@@ -3,7 +3,7 @@
 // under /pyodide/<version>/ (copied at build time by astro.config.mjs) and loaded on the first
 // message. Runs are synchronous inside the worker; the page interrupts them through the shared
 // interrupt buffer, or terminates the worker when a run outlives its time limit.
-import { runLab, type LabRunRequest, type PyodideLike } from "./lab-run";
+import { type LabRunRequest, type PyodideLike, runLab } from "./lab-run";
 
 declare const __PYODIDE_BASE__: string;
 

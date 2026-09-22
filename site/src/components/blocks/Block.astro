@@ -60,50 +60,48 @@ const competencies: LabCompetency[] =
           ref: refOf(trackedCollection, item),
           title: title.value,
           lang: title.lang === lang ? undefined : title.lang,
-          target: (TARGET_STATES as readonly string[]).includes(declared ?? "") ? (declared as TargetState) : "demonstrated",
+          target: (TARGET_STATES as readonly string[]).includes(declared ?? "")
+            ? (declared as TargetState)
+            : "demonstrated",
         };
       })
     : [];
 ---
 
 {block.type === "text" && <TextBlock block={block} lang={lang} sourcePath={sourcePath} />}
-{
-  block.type === "runner" && (
-    <LabRunner
-      client:load
-      lang={lang}
-      labRef={itemRef}
-      files={block.files}
-      editable={block.editable}
-      run={block.run}
-      reference={block.reference}
-      packages={block.packages}
-      competencies={competencies}
-      stateLabels={stateLabels(lang)}
-    />
-  )
-}
+{block.type === "runner" && (
+  <LabRunner
+    client:load
+    lang={lang}
+    labRef={itemRef}
+    files={block.files}
+    editable={block.editable}
+    run={block.run}
+    reference={block.reference}
+    packages={block.packages}
+    competencies={competencies}
+    stateLabels={stateLabels(lang)}
+  />
+)}
 {block.type === "list" && <ListBlock block={block} lang={lang} />}
 {block.type === "prerequisites" && <PrerequisitesBlock block={block} lang={lang} />}
 {block.type === "practice" && <PracticeBlock block={block} lang={lang} />}
 {block.type === "sources" && <SourceTable client:load lang={lang} labelledBy={headingId} rows={sourceRows} />}
-{
-  block.type === "diagnostic" &&
-    (target ? (
-      <Diagnostic
-        client:load
-        lang={lang}
-        itemRef={itemRef}
-        target={target}
-        tasks={tasks}
-        passCondition={text(block.pass_condition, lang)}
-        next={{
-          gap: link(after.find((b) => b.type === "sources")),
-          meets: link(after.find((b) => b.type === "practice")),
-        }}
-      />
-    ) : (
-      <ListBlock block={{ ...block, type: "list", items: block.tasks, ordered: true }} lang={lang} />
-    ))
-}
+{block.type === "diagnostic" &&
+  (target ? (
+    <Diagnostic
+      client:load
+      lang={lang}
+      itemRef={itemRef}
+      target={target}
+      tasks={tasks}
+      passCondition={text(block.pass_condition, lang)}
+      next={{
+        gap: link(after.find((b) => b.type === "sources")),
+        meets: link(after.find((b) => b.type === "practice")),
+      }}
+    />
+  ) : (
+    <ListBlock block={{ ...block, type: "list", items: block.tasks, ordered: true }} lang={lang} />
+  ))}
 {(block.type === "data" || !known) && <DataBlock value={"value" in block ? block.value : block} lang={lang} />}

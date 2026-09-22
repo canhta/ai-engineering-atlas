@@ -3,9 +3,9 @@
 // returns to the tile or row that opened it.
 import { useState } from "react";
 import { Button, Dialog, Modal, ModalOverlay } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
-import { stateOf, type State } from "../../lib/progress";
+import { type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import type { ItemDetail } from "../../lib/summaries";
 import { TileGlyph, tileFill } from "../plate/TileGlyph";
@@ -36,7 +36,9 @@ export default function ItemDrawer({ lang, detail, missing, details, stateLabels
     >
       <Modal className="drawer">
         <Dialog className="drawer-dialog" aria-labelledby="drawer-title">
-          {detail && <DrawerBody key={detail.ref} {...{ lang, detail, details, stateLabels, contributeUrl, onClose }} />}
+          {detail && (
+            <DrawerBody key={detail.ref} {...{ lang, detail, details, stateLabels, contributeUrl, onClose }} />
+          )}
           {!detail && missing && (
             <div className="drawer-body">
               <div className="drawer-head">
@@ -108,7 +110,9 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
           <dl className="drawer-facts">
             <div>
               <dt>{t("log.state")}</dt>
-              <dd>{state ? <StateBadge state={state} label={stateLabels[state]} /> : <span className="muted">…</span>}</dd>
+              <dd>
+                {state ? <StateBadge state={state} label={stateLabels[state]} /> : <span className="muted">…</span>}
+              </dd>
             </div>
             {detail.target && (
               <div>
@@ -123,7 +127,12 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
               <p className={`reading${more ? "" : " is-clamped"}`} id="drawer-lead" lang={langOf(detail.lead, lang)}>
                 {detail.lead.value}
               </p>
-              <Button className="button-quiet" aria-expanded={more} aria-controls="drawer-lead" onPress={() => setMore((v) => !v)}>
+              <Button
+                className="button-quiet"
+                aria-expanded={more}
+                aria-controls="drawer-lead"
+                onPress={() => setMore((v) => !v)}
+              >
                 {t(more ? "drawer.less" : "drawer.more")}
               </Button>
             </div>
@@ -146,7 +155,9 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
                         <span lang={langOf(need.title, lang)}>{need.title.value}</span>
                       )}
                       {need.bridged && <span className="muted small">{t("prereq.bridge")}</span>}
-                      {!need.href && !need.bridged && details[need.ref] && <span className="muted small">{details[need.ref].maturity}</span>}
+                      {!need.href && !need.bridged && details[need.ref] && (
+                        <span className="muted small">{details[need.ref].maturity}</span>
+                      )}
                     </li>
                   );
                 })}
@@ -155,7 +166,9 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
           )}
 
           <ul className="drawer-counts tabular">
-            {detail.sources > 0 && <li>{detail.sources === 1 ? t("drawer.sourceOne") : t("drawer.sources", { count: detail.sources })}</li>}
+            {detail.sources > 0 && (
+              <li>{detail.sources === 1 ? t("drawer.sourceOne") : t("drawer.sources", { count: detail.sources })}</li>
+            )}
             {detail.tasks > 0 && <li>{t("drawer.tasks", { count: detail.tasks })}</li>}
           </ul>
         </>

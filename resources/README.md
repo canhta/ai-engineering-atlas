@@ -6,15 +6,15 @@ Resources are external material used by learning routes. They are not the curric
 
 A competency may use different sources for different jobs.
 
-| Role | Question it answers |
-| --- | --- |
-| curriculum evidence | Why does this capability belong in the roadmap? |
-| teaching | What source builds the mental model well? |
-| visual | What makes the mechanism easier to inspect? |
-| practice | Where can the learner perform the skill? |
-| assessment | What can help verify the outcome? |
-| production reference | What shows real operational constraints or failure modes? |
-| benchmark | What external curriculum/repository is used to audit coverage or design? |
+| Role                 | Question it answers                                                      |
+| -------------------- | ------------------------------------------------------------------------ |
+| curriculum evidence  | Why does this capability belong in the roadmap?                          |
+| teaching             | What source builds the mental model well?                                |
+| visual               | What makes the mechanism easier to inspect?                              |
+| practice             | Where can the learner perform the skill?                                 |
+| assessment           | What can help verify the outcome?                                        |
+| production reference | What shows real operational constraints or failure modes?                |
+| benchmark            | What external curriculum/repository is used to audit coverage or design? |
 
 The global YAML files identify sources. **Exact chapter/lecture/assignment locators belong in the competency's learning route**, because the useful portion differs by competency.
 
@@ -84,4 +84,3 @@ After changing source metadata or route locators, run:
 python scripts/render_learning_sources.py --write
 make check
 ```
-

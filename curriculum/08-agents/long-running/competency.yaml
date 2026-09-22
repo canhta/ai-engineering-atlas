@@ -51,10 +51,10 @@ learning_route:
       locator: 'Sections "Decouple the brain from the hands", "Recovering from harness failure", "Many brains, many hands", and "Conclusion"'
       purpose: Separate durable session state from replaceable harness and execution processes and examine recovery after runtime failure.
     - source: docs.temporal-overview
-      locator: 'Documentation overview of durable execution and resuming workflows after crashes, network failures, or infrastructure outages'
+      locator: "Documentation overview of durable execution and resuming workflows after crashes, network failures, or infrastructure outages"
       purpose: Ground long-duration runtime semantics in a production durable-execution model without requiring Temporal.
     - source: docs.openai-agents-running
-      locator: 'Sections covering the agent loop and turn limits, state/conversation management, human-in-the-loop pause/resume, durable execution integrations, and exceptions'
+      locator: "Sections covering the agent loop and turn limits, state/conversation management, human-in-the-loop pause/resume, durable execution integrations, and exceptions"
       purpose: Inspect concrete runtime controls for bounded runs, interruptions, persisted state, and durable waits.
     - source: docs.openai-agents-results
       locator: 'Section "Interruptions and run state", including serialization/resume, failed resumed-session write recovery, and unrecoverable terminal-state boundaries'

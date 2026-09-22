@@ -1,23 +1,23 @@
 // Field log (DESIGN.md → Route sheet): the learner's state for one item and the only place a
 // state changes, by recording evidence. Desktop: a sticky double-bezel panel. Mobile: a bottom
 // bar opening the same panel as a sheet (focus trapped, Esc closes, focus returns).
-import { useState, type SubmitEvent } from "react";
+import { type SubmitEvent, useState } from "react";
 import { Button, Dialog, Disclosure, DisclosurePanel, Heading, Modal, ModalOverlay } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import { formatDate } from "../../lib/dates";
 import {
   EVIDENCE_KINDS,
   EVIDENCE_STATES,
+  type EvidenceState,
   INDEPENDENCE,
+  type Independence,
   recordEvidence,
   stateOf,
-  today,
-  type EvidenceState,
-  type Independence,
   type TargetState,
+  today,
 } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
+import { type GraphItem, NEXT_LIMIT } from "../../lib/recommend";
 import type { NextLink } from "../../lib/summaries";
 import { Icon } from "./Icon";
 import { RouteAdvice } from "./NextSteps";
@@ -54,7 +54,12 @@ export default function FieldLog(props: Props) {
       </aside>
 
       <div className="log-bar">
-        <Button className="log-bar-state" isDisabled={!progress} onPress={() => setSheet("log")} aria-label={t("log.open")}>
+        <Button
+          className="log-bar-state"
+          isDisabled={!progress}
+          onPress={() => setSheet("log")}
+          aria-label={t("log.open")}
+        >
           {progress ? <StateBadge state={state} label={props.stateLabels[state]} /> : <span className="muted">…</span>}
           <Icon name="expand" />
         </Button>
@@ -140,7 +145,9 @@ function LogPanel({
       <dl className="log-facts">
         <div>
           <dt>{t("log.state")}</dt>
-          <dd>{progress ? <StateBadge state={state} label={stateLabels[state]} /> : <span className="muted">…</span>}</dd>
+          <dd>
+            {progress ? <StateBadge state={state} label={stateLabels[state]} /> : <span className="muted">…</span>}
+          </dd>
         </div>
         <div>
           <dt>{t("log.target")}</dt>
@@ -148,11 +155,15 @@ function LogPanel({
         </div>
         <div>
           <dt>{t("log.nextReview")}</dt>
-          <dd className="tabular">{entry?.review_on ? <time dateTime={entry.review_on}>{formatDate(entry.review_on, lang)}</time> : "—"}</dd>
+          <dd className="tabular">
+            {entry?.review_on ? <time dateTime={entry.review_on}>{formatDate(entry.review_on, lang)}</time> : "—"}
+          </dd>
         </div>
       </dl>
       {progress && <p className="log-next">{t(`log.next.${state}`)}</p>}
-      {progress && <RouteAdvice lang={lang} itemRef={itemRef} graph={graph} links={links} limit={NEXT_LIMIT} progress={progress} />}
+      {progress && (
+        <RouteAdvice lang={lang} itemRef={itemRef} graph={graph} links={links} limit={NEXT_LIMIT} progress={progress} />
+      )}
 
       {!formOpen && (
         <Button className="pill pill-primary log-record" isDisabled={!progress} onPress={() => setFormOpen(true)}>
@@ -247,7 +258,11 @@ function LogPanel({
                     <time className="tabular" dateTime={e.recorded_at}>
                       {formatDate(e.recorded_at, lang)}
                     </time>
-                    <span>{(EVIDENCE_KINDS as readonly string[]).includes(e.kind) ? t(`kind.${e.kind as (typeof EVIDENCE_KINDS)[number]}`) : e.kind}</span>
+                    <span>
+                      {(EVIDENCE_KINDS as readonly string[]).includes(e.kind)
+                        ? t(`kind.${e.kind as (typeof EVIDENCE_KINDS)[number]}`)
+                        : e.kind}
+                    </span>
                   </div>
                   <StateBadge state={e.supports_state} label={stateLabels[e.supports_state]} />
                   <span className="chip">{t(`independence.${e.independence}`)}</span>

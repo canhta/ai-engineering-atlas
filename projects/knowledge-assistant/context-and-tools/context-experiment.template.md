@@ -11,17 +11,17 @@
 ## Context inventory
 
 | Component | Source/version | Always present? | Selection rule | Approx. size | Why included |
-| --- | --- | --- | --- | ---: | --- |
+| --------- | -------------- | --------------- | -------------- | -----------: | ------------ |
 
 ## Configurations
 
 | Configuration | Included context | Excluded context | Selection/compaction rule | Token/context size |
-| --- | --- | --- | --- | ---: |
+| ------------- | ---------------- | ---------------- | ------------------------- | -----------------: |
 
 ## Results
 
 | Configuration | Quality metric(s) | p50 latency | p95 latency | Cost | Critical failures |
-| --- | ---: | ---: | ---: | ---: | --- |
+| ------------- | ----------------: | ----------: | ----------: | ---: | ----------------- |
 
 ## Ablation / failure cases
 

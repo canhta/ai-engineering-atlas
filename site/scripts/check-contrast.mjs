@@ -1,8 +1,7 @@
 // Verify WCAG 2.2 AA contrast for semantic token pairs in light and dark themes.
 import { readFileSync } from "node:fs";
 
-const css = readFileSync(new URL("../src/styles/tokens.css", import.meta.url), "utf8")
-  .replace(/\/\*[\s\S]*?\*\//g, "");
+const css = readFileSync(new URL("../src/styles/tokens.css", import.meta.url), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
 
 const DECL = /(--[\w-]+)\s*:\s*([^;]+);/g;
 const darkMatch = css.match(/@media\s*\(prefers-color-scheme:\s*dark\)\s*\{([\s\S]*?\})\s*\}/);

@@ -1,6 +1,6 @@
 // Due-review count beside the Progress tab (DESIGN.md → Global frame). Renders nothing before
 // hydration or when nothing is due.
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import { reviewQueue, today } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 

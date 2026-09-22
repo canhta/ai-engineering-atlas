@@ -1,12 +1,12 @@
 // Lab workbench (DESIGN.md → Labs): file tabs with the editor, Run / Stop / Reset, the results
 // panel, the reference solution behind a confirmed reveal, and evidence for a passing run.
 // Python runs in a worker (lib/lab-session.ts) that loads only when the learner presses Run.
-import { useEffect, useId, useRef, useState, type SubmitEvent } from "react";
-import { Button, Tab, TabList, TabPanel, Tabs, type Key } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type SubmitEvent, useEffect, useId, useRef, useState } from "react";
+import { Button, type Key, Tab, TabList, TabPanel, Tabs } from "react-aria-components";
+import { type Lang, useTranslations } from "../../i18n";
 import type { LabFrame } from "../../lib/lab-run";
-import { LabSession, RUN_LIMIT_MS, type LabOutcome } from "../../lib/lab-session";
-import { recordEvidence, today, type EvidenceState, type TargetState } from "../../lib/progress";
+import { type LabOutcome, LabSession, RUN_LIMIT_MS } from "../../lib/lab-session";
+import { type EvidenceState, recordEvidence, type TargetState, today } from "../../lib/progress";
 import { useLabCode, useProgress, useReferenceOpened } from "../../lib/progress-store";
 import { CodeEditor } from "./CodeEditor";
 import { Icon } from "./Icon";
@@ -65,7 +65,9 @@ export default function LabRunner(props: Props) {
 
   // Hydrate the saved draft once, then keep saving edits (debounced).
   const loaded = useRef(false);
+  // The draft lives in localStorage, which the server render cannot read.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     if (!loaded.current && stored !== null) {
       loaded.current = true;
@@ -99,7 +101,10 @@ export default function LabRunner(props: Props) {
     setPhase("running");
     const submitted = code;
     const version = current.version;
-    const result = await current.run({ lab: labRef.replace(/[^\w.-]/g, "-"), files, editable, code: submitted, run }, props.packages);
+    const result = await current.run(
+      { lab: labRef.replace(/[^\w.-]/g, "-"), files, editable, code: submitted, run },
+      props.packages,
+    );
     setOutcome({ ...result, code: submitted, version });
     setPhase("idle");
   };
@@ -234,7 +239,13 @@ export default function LabRunner(props: Props) {
   );
 }
 
-function Confirm(props: { message: string; action: string; cancel: string; onConfirm: () => void; onCancel: () => void }) {
+function Confirm(props: {
+  message: string;
+  action: string;
+  cancel: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
   const first = useRef<HTMLButtonElement>(null);
   useEffect(() => first.current?.focus(), []);
   return (
@@ -266,11 +277,13 @@ function Results(props: {
   let line: { icon?: "pass" | "fail" | "error" | "stop" | "timeout"; text: string; tone: string };
   if (phase === "loading") line = { text: t("lab.verdict.loading"), tone: "busy" };
   else if (phase === "running") line = { text: t("lab.verdict.running", { file: props.run }), tone: "busy" };
-  else if (props.loadError) line = { icon: "error", text: t("lab.verdict.loadFailed", { message: props.loadError }), tone: "error" };
+  else if (props.loadError)
+    line = { icon: "error", text: t("lab.verdict.loadFailed", { message: props.loadError }), tone: "error" };
   else if (!outcome) line = { text: t("lab.verdict.idle"), tone: "idle" };
   else if (outcome.verdict === "pass") line = { icon: "pass", text: t("lab.verdict.pass"), tone: "pass" };
   else if (outcome.verdict === "fail") line = { icon: "fail", text: t("lab.verdict.fail"), tone: "fail" };
-  else if (outcome.verdict === "error") line = { icon: "error", text: t("lab.verdict.error", { type: outcome.type ?? "" }), tone: "error" };
+  else if (outcome.verdict === "error")
+    line = { icon: "error", text: t("lab.verdict.error", { type: outcome.type ?? "" }), tone: "error" };
   else if (outcome.verdict === "stopped") line = { icon: "stop", text: t("lab.verdict.stopped"), tone: "idle" };
   else line = { icon: "timeout", text: t("lab.verdict.timeout", { seconds: RUN_LIMIT_MS / 1000 }), tone: "error" };
 
@@ -279,12 +292,17 @@ function Results(props: {
   const output = outcome && "stdout" in outcome ? `${outcome.stdout}${outcome.stderr}` : "";
 
   return (
-    <div className={`lab-result lab-result-${line.tone}`} data-verdict={phase === "idle" ? (outcome?.verdict ?? "idle") : phase}>
+    <div
+      className={`lab-result lab-result-${line.tone}`}
+      data-verdict={phase === "idle" ? (outcome?.verdict ?? "idle") : phase}
+    >
       <p className="lab-verdict" role="status">
         {line.icon && <Icon name={line.icon} size={20} />}
         <span>{line.text}</span>
         {outcome && phase === "idle" && outcome.verdict !== "timeout" && (
-          <span className="muted small tabular">{t("lab.duration", { ms: new Intl.NumberFormat(props.lang).format(outcome.ms) })}</span>
+          <span className="muted small tabular">
+            {t("lab.duration", { ms: new Intl.NumberFormat(props.lang).format(outcome.ms) })}
+          </span>
         )}
       </p>
       {at && (
@@ -311,7 +329,7 @@ function Results(props: {
         <details className="lab-trace">
           <summary>{t("lab.traceback")}</summary>
           <ol lang="en">
-            {detail.frames!.map((f, i) => (
+            {(detail.frames ?? []).map((f, i) => (
               <li key={i} className={f.file === props.editable ? "is-learner" : undefined}>
                 <code>
                   {f.file}:{f.line} in {f.name}

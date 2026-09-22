@@ -7,7 +7,14 @@ export const STATES = ["unassessed", "gap", "learning", "demonstrated", "transfe
 export const TARGET_STATES = ["demonstrated", "transferred", "retained", "applied"] as const;
 export const EVIDENCE_STATES = ["gap", "learning", "demonstrated", "transferred", "retained", "applied"] as const;
 export const INDEPENDENCE = ["independent", "minimal-hints", "guided", "reference-open", "unknown"] as const;
-export const REVIEW_METHODS = ["self", "peer", "automated", "automated-and-self", "ai-assisted", "human-and-ai"] as const;
+export const REVIEW_METHODS = [
+  "self",
+  "peer",
+  "automated",
+  "automated-and-self",
+  "ai-assisted",
+  "human-and-ai",
+] as const;
 export const EVIDENCE_KINDS = [
   "diagnostic",
   "explanation",
@@ -137,7 +144,12 @@ export function recordEvidence(
   entry.current_state = state;
   entry.state_history = [
     ...previous.state_history,
-    { state, recorded_at: date, reason: input.note?.trim() || `${input.kind} evidence recorded`, evidence_refs: [evidence.id] },
+    {
+      state,
+      recorded_at: date,
+      reason: input.note?.trim() || `${input.kind} evidence recorded`,
+      evidence_refs: [evidence.id],
+    },
   ];
   entry.next_action = nextActionFor(state);
   const reviewOn = reviewDate(entry, state, date);
@@ -150,7 +162,11 @@ export function recordEvidence(
 export function setTarget(progress: Progress, id: string, target: TargetState, date: string): Progress {
   const entry = progress.competencies[id];
   if (!entry) return progress;
-  return { ...progress, updated_at: date, competencies: { ...progress.competencies, [id]: { ...entry, target_state: target } } };
+  return {
+    ...progress,
+    updated_at: date,
+    competencies: { ...progress.competencies, [id]: { ...entry, target_state: target } },
+  };
 }
 
 export interface ReviewQueue {
@@ -201,7 +217,8 @@ export function fromYaml(text: string): { progress?: Progress; errors: string[] 
     }
   }
   if (errors.length) return { errors };
-  const recordedAt = (value: unknown) => (value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? ""));
+  const recordedAt = (value: unknown) =>
+    value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? "");
   return {
     progress: { ...(doc as Progress), version: 2, updated_at: recordedAt(doc.updated_at) },
     errors,

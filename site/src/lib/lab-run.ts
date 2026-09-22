@@ -55,7 +55,7 @@ export interface PyodideLike {
 
 // Runs the file with runpy as __main__ from inside the lab directory, after dropping every module
 // imported from that directory, so the learner's edits and the reference are re-imported each run.
-const HARNESS = String.raw`
+const HARNESS = `
 import io, json, linecache, os, runpy, sys, traceback, importlib
 
 def _atlas_run_lab(workdir, run_file, editable):
@@ -133,7 +133,8 @@ export function runLab(pyodide: PyodideLike, request: LabRunRequest): LabRunResu
   }
   const dir = `/labs/${request.lab}`;
   if (pyodide.FS.analyzePath(dir).exists) {
-    for (const name of pyodide.FS.readdir(dir)) if (name !== "." && name !== ".." && name !== "__pycache__") pyodide.FS.unlink(`${dir}/${name}`);
+    for (const name of pyodide.FS.readdir(dir))
+      if (name !== "." && name !== ".." && name !== "__pycache__") pyodide.FS.unlink(`${dir}/${name}`);
   } else {
     pyodide.FS.mkdirTree(dir);
   }

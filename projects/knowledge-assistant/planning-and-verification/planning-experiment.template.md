@@ -24,11 +24,11 @@ What task property makes direct execution insufficient?
 
 ## Variants
 
-| Variant | Planning behavior | Task success | Steps/tool calls | Latency | Cost | Plan churn |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| No plan | | | | | | |
-| Static plan | | | | | | |
-| Adaptive plan | | | | | | |
+| Variant       | Planning behavior | Task success | Steps/tool calls | Latency | Cost | Plan churn |
+| ------------- | ----------------- | -----------: | ---------------: | ------: | ---: | ---------: |
+| No plan       |                   |              |                  |         |      |            |
+| Static plan   |                   |              |                  |         |      |            |
+| Adaptive plan |                   |              |                  |         |      |            |
 
 ## Replanning case
 

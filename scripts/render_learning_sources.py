@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import argparse
 import sys
+from pathlib import Path
+
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,15 +61,17 @@ def render_block(data, resources):
         )
 
     if bridges:
-        lines.extend([
-            "",
-            "### Prerequisite patches",
-            "",
-            "Use these only when the diagnostic exposes the specific gap.",
-            "",
-            "| Gap | Source | Read / inspect | Why |",
-            "| --- | --- | --- | --- |",
-        ])
+        lines.extend(
+            [
+                "",
+                "### Prerequisite patches",
+                "",
+                "Use these only when the diagnostic exposes the specific gap.",
+                "",
+                "| Gap | Source | Read / inspect | Why |",
+                "| --- | --- | --- | --- |",
+            ]
+        )
         for gap, bridge in bridges.items():
             if not isinstance(bridge, dict):
                 continue
@@ -76,7 +79,7 @@ def render_block(data, resources):
             if not source:
                 continue
             lines.append(
-                f"| `{clean(gap)}` | {source_cell(source, resources)} | {clean(bridge.get('locator'))} | {clean(bridge.get('purpose'))} |"
+                f"| `{clean(gap)}` | {source_cell(source, resources)} | {clean(bridge.get('locator'))} | {clean(bridge.get('purpose'))} |"  # noqa: E501
             )
 
     lines.extend([END, ""])
@@ -131,9 +134,7 @@ def main():
         if args.write:
             readme.write_text(expected, encoding="utf-8")
         else:
-            drift.append(
-                f"{readme.relative_to(ROOT)}: learning source block is missing or stale"
-            )
+            drift.append(f"{readme.relative_to(ROOT)}: learning source block is missing or stale")
 
     if drift:
         print("Learning source rendering check failed:\n")

@@ -1,13 +1,14 @@
 // CodeMirror 6 editor for lab files (DESIGN.md → Labs). Themed only through tokens. Tab indents;
 // Esc then Tab leaves the editor (CodeMirror's tab-focus escape), which the description says.
-import { useEffect, useRef } from "react";
-import { basicSetup } from "codemirror";
+
 import { indentWithTab } from "@codemirror/commands";
 import { python } from "@codemirror/lang-python";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
+import { basicSetup } from "codemirror";
+import { useEffect, useRef } from "react";
 
 const theme = EditorView.theme({
   "&": {
@@ -33,16 +34,26 @@ const theme = EditorView.theme({
   ".cm-activeLineGutter": { backgroundColor: "transparent", color: "var(--ink)" },
   ".cm-foldPlaceholder": { backgroundColor: "transparent", border: "none", color: "var(--ink-muted)" },
   ".cm-matchingBracket": { backgroundColor: "var(--code-selection)", outline: "none" },
-  ".cm-tooltip": { backgroundColor: "var(--sheet)", border: "var(--border-width) solid var(--line)", color: "var(--ink)" },
+  ".cm-tooltip": {
+    backgroundColor: "var(--sheet)",
+    border: "var(--border-width) solid var(--line)",
+    color: "var(--ink)",
+  },
   ".cm-panels": { backgroundColor: "var(--sheet)", color: "var(--ink)" },
   ".cm-lineNumbers .cm-gutterElement": { padding: "0 var(--space-2) 0 var(--space-3)" },
 });
 
 const highlight = HighlightStyle.define([
-  { tag: [tags.keyword, tags.controlKeyword, tags.operatorKeyword, tags.definitionKeyword, tags.moduleKeyword], color: "var(--code-keyword)" },
+  {
+    tag: [tags.keyword, tags.controlKeyword, tags.operatorKeyword, tags.definitionKeyword, tags.moduleKeyword],
+    color: "var(--code-keyword)",
+  },
   { tag: [tags.string, tags.special(tags.string)], color: "var(--code-string)" },
   { tag: [tags.number, tags.bool, tags.null, tags.atom], color: "var(--code-number)" },
-  { tag: [tags.function(tags.definition(tags.variableName)), tags.definition(tags.className)], color: "var(--code-definition)" },
+  {
+    tag: [tags.function(tags.definition(tags.variableName)), tags.definition(tags.className)],
+    color: "var(--code-definition)",
+  },
   { tag: [tags.comment, tags.docString], color: "var(--code-comment)", fontStyle: "italic" },
   { tag: tags.invalid, color: "var(--route)" },
 ]);
@@ -63,7 +74,11 @@ export function CodeEditor({ value, onChange, readOnly = false, label, described
   const host = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const change = useRef(onChange);
-  change.current = onChange;
+  useEffect(() => {
+    change.current = onChange;
+  }, [onChange]);
+  // The editor owns its document after mount; external value changes go through the effect below,
+  // and label/describedBy are read once at mount.
   useEffect(() => {
     const state = EditorState.create({
       doc: value,
@@ -88,12 +103,12 @@ export function CodeEditor({ value, onChange, readOnly = false, label, described
         }),
       ],
     });
-    view.current = new EditorView({ state, parent: host.current! });
+    if (!host.current) return;
+    view.current = new EditorView({ state, parent: host.current });
     return () => {
       view.current?.destroy();
       view.current = null;
     };
-    // The editor owns its document after mount; external value changes go through the effect below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [readOnly]);
 

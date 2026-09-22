@@ -6,22 +6,22 @@
   "required": ["version", "site", "locales", "vocabularies", "collections", "items", "relations", "resources"],
   "additionalProperties": false,
   "properties": {
-    "version": {"const": 2},
+    "version": { "const": 2 },
     "site": {
       "type": "object",
       "required": ["title", "tagline", "repository"],
       "additionalProperties": false,
       "properties": {
-        "title": {"$ref": "#/$defs/l10n"},
-        "tagline": {"$ref": "#/$defs/l10n"},
-        "repository": {"type": "string", "format": "uri", "minLength": 1}
+        "title": { "$ref": "#/$defs/l10n" },
+        "tagline": { "$ref": "#/$defs/l10n" },
+        "repository": { "type": "string", "format": "uri", "minLength": 1 }
       }
     },
     "locales": {
       "type": "array",
       "minItems": 1,
-      "items": {"type": "string", "minLength": 2},
-      "contains": {"const": "en"}
+      "items": { "type": "string", "minLength": 2 },
+      "contains": { "const": "en" }
     },
     "vocabularies": {
       "type": "object",
@@ -32,22 +32,22 @@
           "required": ["label", "order"],
           "additionalProperties": false,
           "properties": {
-            "label": {"$ref": "#/$defs/l10n"},
-            "order": {"type": "integer"},
-            "description": {"$ref": "#/$defs/l10n"}
+            "label": { "$ref": "#/$defs/l10n" },
+            "order": { "type": "integer" },
+            "description": { "$ref": "#/$defs/l10n" }
           }
         }
       }
     },
     "collections": {
       "type": "array",
-      "items": {"$ref": "#/$defs/collection"}
+      "items": { "$ref": "#/$defs/collection" }
     },
     "items": {
       "type": "object",
       "additionalProperties": {
         "type": "array",
-        "items": {"$ref": "#/$defs/item"}
+        "items": { "$ref": "#/$defs/item" }
       }
     },
     "relations": {
@@ -57,9 +57,9 @@
         "required": ["type", "from", "to"],
         "additionalProperties": false,
         "properties": {
-          "type": {"type": "string", "minLength": 1},
-          "from": {"$ref": "#/$defs/ref"},
-          "to": {"$ref": "#/$defs/ref"}
+          "type": { "type": "string", "minLength": 1 },
+          "from": { "$ref": "#/$defs/ref" },
+          "to": { "$ref": "#/$defs/ref" }
         }
       }
     },
@@ -70,10 +70,10 @@
         "required": ["title", "url"],
         "additionalProperties": false,
         "properties": {
-          "title": {"type": "string", "minLength": 1},
-          "url": {"type": "string", "minLength": 1},
-          "type": {"type": "string"},
-          "author": {"type": "string"}
+          "title": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "minLength": 1 },
+          "type": { "type": "string" },
+          "author": { "type": "string" }
         }
       }
     }
@@ -84,8 +84,8 @@
       "required": ["en"],
       "additionalProperties": false,
       "properties": {
-        "en": {"type": "string"},
-        "vi": {"type": "string"}
+        "en": { "type": "string" },
+        "vi": { "type": "string" }
       }
     },
     "ref": {
@@ -98,15 +98,15 @@
       "type": "string",
       "minLength": 1
     },
-    "scalar": {"type": ["string", "number", "boolean"]},
+    "scalar": { "type": ["string", "number", "boolean"] },
     "collection": {
       "type": "object",
       "required": ["id", "label", "fields"],
       "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "label": {"$ref": "#/$defs/l10n"},
-        "ref_prefix": {"type": "string", "minLength": 1},
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "$ref": "#/$defs/l10n" },
+        "ref_prefix": { "type": "string", "minLength": 1 },
         "fields": {
           "type": "object",
           "additionalProperties": {
@@ -114,21 +114,21 @@
             "required": ["label"],
             "additionalProperties": false,
             "properties": {
-              "label": {"$ref": "#/$defs/l10n"},
-              "vocabulary": {"type": "string", "minLength": 1}
+              "label": { "$ref": "#/$defs/l10n" },
+              "vocabulary": { "type": "string", "minLength": 1 }
             }
           }
         },
-        "group_by": {"type": "string"},
-        "facets": {"type": "array", "items": {"type": "string"}},
-        "list_fields": {"type": "array", "items": {"type": "string"}},
+        "group_by": { "type": "string" },
+        "facets": { "type": "array", "items": { "type": "string" } },
+        "list_fields": { "type": "array", "items": { "type": "string" } },
         "page_when": {
           "type": "object",
           "required": ["field", "in"],
           "additionalProperties": false,
           "properties": {
-            "field": {"type": "string"},
-            "in": {"type": "array", "items": {"type": "string"}}
+            "field": { "type": "string" },
+            "in": { "type": "array", "items": { "type": "string" } }
           }
         },
         "progress": {
@@ -136,8 +136,8 @@
           "required": ["tracks"],
           "additionalProperties": false,
           "properties": {
-            "tracks": {"type": "boolean"},
-            "target_field": {"type": "string"}
+            "tracks": { "type": "boolean" },
+            "target_field": { "type": "string" }
           }
         }
       }
@@ -147,15 +147,12 @@
       "required": ["id", "title", "fields"],
       "additionalProperties": false,
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "title": {"$ref": "#/$defs/l10n"},
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "$ref": "#/$defs/l10n" },
         "fields": {
           "type": "object",
           "additionalProperties": {
-            "anyOf": [
-              {"$ref": "#/$defs/scalar"},
-              {"type": "array", "items": {"$ref": "#/$defs/scalar"}}
-            ]
+            "anyOf": [{ "$ref": "#/$defs/scalar" }, { "type": "array", "items": { "$ref": "#/$defs/scalar" } }]
           }
         },
         "page": {
@@ -163,8 +160,8 @@
           "required": ["source_path", "blocks"],
           "additionalProperties": false,
           "properties": {
-            "source_path": {"type": "string", "minLength": 1},
-            "blocks": {"type": "array", "items": {"$ref": "#/$defs/block"}}
+            "source_path": { "type": "string", "minLength": 1 },
+            "blocks": { "type": "array", "items": { "$ref": "#/$defs/block" } }
           }
         }
       }
@@ -174,44 +171,59 @@
       "type": "object",
       "required": ["type", "id", "title"],
       "properties": {
-        "type": {"enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"]},
-        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
-        "title": {"$ref": "#/$defs/l10n"},
-        "step": {"const": true, "description": "The block is a learner step (the site may number it or track it)."}
+        "type": { "enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"] },
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "title": { "$ref": "#/$defs/l10n" },
+        "step": { "const": true, "description": "The block is a learner step (the site may number it or track it)." }
       },
       "allOf": [
-        {"if": {"properties": {"type": {"const": "text"}}}, "then": {"$ref": "#/$defs/textBlock"}},
-        {"if": {"properties": {"type": {"const": "list"}}}, "then": {"$ref": "#/$defs/listBlock"}},
-        {"if": {"properties": {"type": {"const": "prerequisites"}}}, "then": {"$ref": "#/$defs/prerequisitesBlock"}},
-        {"if": {"properties": {"type": {"const": "diagnostic"}}}, "then": {"$ref": "#/$defs/diagnosticBlock"}},
-        {"if": {"properties": {"type": {"const": "sources"}}}, "then": {"$ref": "#/$defs/sourcesBlock"}},
-        {"if": {"properties": {"type": {"const": "practice"}}}, "then": {"$ref": "#/$defs/practiceBlock"}},
-        {"if": {"properties": {"type": {"const": "runner"}}}, "then": {"$ref": "#/$defs/runnerBlock"}},
-        {"if": {"properties": {"type": {"const": "data"}}}, "then": {"$ref": "#/$defs/dataBlock"}}
+        { "if": { "properties": { "type": { "const": "text" } } }, "then": { "$ref": "#/$defs/textBlock" } },
+        { "if": { "properties": { "type": { "const": "list" } } }, "then": { "$ref": "#/$defs/listBlock" } },
+        {
+          "if": { "properties": { "type": { "const": "prerequisites" } } },
+          "then": { "$ref": "#/$defs/prerequisitesBlock" }
+        },
+        {
+          "if": { "properties": { "type": { "const": "diagnostic" } } },
+          "then": { "$ref": "#/$defs/diagnosticBlock" }
+        },
+        { "if": { "properties": { "type": { "const": "sources" } } }, "then": { "$ref": "#/$defs/sourcesBlock" } },
+        { "if": { "properties": { "type": { "const": "practice" } } }, "then": { "$ref": "#/$defs/practiceBlock" } },
+        { "if": { "properties": { "type": { "const": "runner" } } }, "then": { "$ref": "#/$defs/runnerBlock" } },
+        { "if": { "properties": { "type": { "const": "data" } } }, "then": { "$ref": "#/$defs/dataBlock" } }
       ]
     },
     "textBlock": {
       "required": ["body"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
-        "body": {"$ref": "#/$defs/l10n"},
-        "format": {"const": "markdown", "description": "The body is Markdown; omitted for plain paragraphs."}
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "body": { "$ref": "#/$defs/l10n" },
+        "format": { "const": "markdown", "description": "The body is Markdown; omitted for plain paragraphs." }
       },
       "additionalProperties": false
     },
     "listBlock": {
       "required": ["items", "ordered"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
-        "items": {"type": "array", "items": {"$ref": "#/$defs/l10n"}},
-        "ordered": {"type": "boolean"}
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "items": { "type": "array", "items": { "$ref": "#/$defs/l10n" } },
+        "ordered": { "type": "boolean" }
       },
       "additionalProperties": false
     },
     "prerequisitesBlock": {
       "required": ["items"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
         "items": {
           "type": "array",
           "items": {
@@ -219,16 +231,16 @@
             "required": ["ref"],
             "additionalProperties": false,
             "properties": {
-              "ref": {"$ref": "#/$defs/ref"},
+              "ref": { "$ref": "#/$defs/ref" },
               "bridge": {
                 "type": "object",
                 "required": ["resource"],
                 "additionalProperties": false,
                 "properties": {
-                  "diagnostic": {"$ref": "#/$defs/l10n"},
-                  "resource": {"$ref": "#/$defs/resourceRef"},
-                  "locator": {"$ref": "#/$defs/l10n"},
-                  "purpose": {"$ref": "#/$defs/l10n"}
+                  "diagnostic": { "$ref": "#/$defs/l10n" },
+                  "resource": { "$ref": "#/$defs/resourceRef" },
+                  "locator": { "$ref": "#/$defs/l10n" },
+                  "purpose": { "$ref": "#/$defs/l10n" }
                 }
               }
             }
@@ -240,16 +252,22 @@
     "diagnosticBlock": {
       "required": ["tasks", "pass_condition"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
-        "tasks": {"type": "array", "items": {"$ref": "#/$defs/l10n"}},
-        "pass_condition": {"$ref": "#/$defs/l10n"}
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "tasks": { "type": "array", "items": { "$ref": "#/$defs/l10n" } },
+        "pass_condition": { "$ref": "#/$defs/l10n" }
       },
       "additionalProperties": false
     },
     "sourcesBlock": {
       "required": ["rows"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
         "rows": {
           "type": "array",
           "items": {
@@ -257,9 +275,9 @@
             "required": ["resource", "locator", "purpose"],
             "additionalProperties": false,
             "properties": {
-              "resource": {"$ref": "#/$defs/resourceRef"},
-              "locator": {"$ref": "#/$defs/l10n"},
-              "purpose": {"$ref": "#/$defs/l10n"}
+              "resource": { "$ref": "#/$defs/resourceRef" },
+              "locator": { "$ref": "#/$defs/l10n" },
+              "purpose": { "$ref": "#/$defs/l10n" }
             }
           }
         }
@@ -269,7 +287,10 @@
     "practiceBlock": {
       "required": ["groups"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
         "groups": {
           "type": "array",
           "items": {
@@ -277,7 +298,7 @@
             "required": ["label", "items"],
             "additionalProperties": false,
             "properties": {
-              "label": {"$ref": "#/$defs/l10n"},
+              "label": { "$ref": "#/$defs/l10n" },
               "items": {
                 "type": "array",
                 "items": {
@@ -285,11 +306,11 @@
                   "required": ["text"],
                   "additionalProperties": false,
                   "properties": {
-                    "text": {"$ref": "#/$defs/l10n"},
-                    "ref": {"$ref": "#/$defs/ref"},
-                    "path": {"type": "string", "minLength": 1},
-                    "resource": {"$ref": "#/$defs/resourceRef"},
-                    "locator": {"$ref": "#/$defs/l10n"}
+                    "text": { "$ref": "#/$defs/l10n" },
+                    "ref": { "$ref": "#/$defs/ref" },
+                    "path": { "type": "string", "minLength": 1 },
+                    "resource": { "$ref": "#/$defs/resourceRef" },
+                    "locator": { "$ref": "#/$defs/l10n" }
                   }
                 }
               }
@@ -303,19 +324,35 @@
       "description": "A lab the site runs in the browser: the files it ships and which one the learner edits.",
       "required": ["runtime", "editable", "run", "reference", "files"],
       "properties": {
-        "type": true, "id": true, "title": true, "step": true,
-        "runtime": {"enum": ["pyodide"]},
-        "editable": {"type": "string", "minLength": 1, "description": "File the learner edits; a key of files."},
-        "run": {"type": "string", "minLength": 1, "description": "File run as __main__; a key of files."},
-        "reference": {"type": "string", "minLength": 1, "description": "Reference solution, shown only on request; a key of files."},
-        "files": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string"}, "description": "File name to text."},
-        "packages": {"type": "array", "items": {"type": "string", "minLength": 1}, "description": "Runtime packages to load before running."}
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "runtime": { "enum": ["pyodide"] },
+        "editable": { "type": "string", "minLength": 1, "description": "File the learner edits; a key of files." },
+        "run": { "type": "string", "minLength": 1, "description": "File run as __main__; a key of files." },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reference solution, shown only on request; a key of files."
+        },
+        "files": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string" },
+          "description": "File name to text."
+        },
+        "packages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Runtime packages to load before running."
+        }
       },
       "additionalProperties": false
     },
     "dataBlock": {
       "required": ["value"],
-      "properties": {"type": true, "id": true, "title": true, "step": true, "value": true},
+      "properties": { "type": true, "id": true, "title": true, "step": true, "value": true },
       "additionalProperties": false
     }
   }

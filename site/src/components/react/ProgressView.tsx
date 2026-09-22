@@ -3,12 +3,21 @@
 // export/import (schemas/progress.schema.json). Only demonstrated-or-beyond counts as done.
 import { useState } from "react";
 import { Button, FileTrigger } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
 import { formatDate } from "../../lib/dates";
-import { fromYaml, isDemonstrated, reviewQueue, STATES, today, toYaml, type Progress, type State } from "../../lib/progress";
+import {
+  fromYaml,
+  isDemonstrated,
+  type Progress,
+  reviewQueue,
+  STATES,
+  type State,
+  today,
+  toYaml,
+} from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
-import { NEXT_LIMIT, type GraphItem } from "../../lib/recommend";
+import { type GraphItem, NEXT_LIMIT } from "../../lib/recommend";
 import type { ItemDetail, NextLink, RegionData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
@@ -44,7 +53,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
   for (const ref of readyRefs) counts[stateOfRef(ref)] += 1;
   const queue = progress ? reviewQueue(progress, today()) : { due: [], upcoming: [] };
 
-  const dateCell = (iso: string | undefined, empty: string) => (iso ? <time dateTime={iso}>{formatDate(iso, lang)}</time> : empty);
+  const dateCell = (iso: string | undefined, empty: string) =>
+    iso ? <time dateTime={iso}>{formatDate(iso, lang)}</time> : empty;
   const title = (ref: string) => details[ref]?.title ?? { value: ref, lang: "en" as const };
   const link = (ref: string) => {
     const detail = details[ref];
@@ -94,44 +104,44 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
         <div className="progress-side">
           <NextSteps lang={lang} graph={graph} links={links} limit={NEXT_LIMIT} due={false} />
           <section className="progress-queue" aria-labelledby="queue-title">
-          <h2 id="queue-title">{t("progress.queue")}</h2>
-          <p className="queue-counts tabular">
-            <span>
-              {t("progress.dueToday")} <strong>{queue.due.length}</strong>
-            </span>
-            <span>
-              {t("progress.nextWeek")} <strong>{queue.upcoming.length}</strong>
-            </span>
-          </p>
-          {queue.due.length + queue.upcoming.length > 0 ? (
-            <>
-              <ul className="queue-rows">
-                {[...queue.due, ...queue.upcoming].map((ref) => {
-                  const detail = details[ref];
-                  const when = progress?.competencies[ref]?.review_on;
-                  return (
-                    <li key={ref}>
-                      {link(ref)}
-                      <time className="muted small tabular" dateTime={when}>
-                        {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
-                      </time>
-                      {detail?.href && (
-                        <a className="pill pill-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
-                          {t("progress.startReview")}
-                          <span className="pill-icon">
-                            <Icon name="forward" />
-                          </span>
-                        </a>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p className="muted small">{t("progress.queueHint")}</p>
-            </>
-          ) : (
-            <p className="muted">{t("progress.queueEmpty")}</p>
-          )}
+            <h2 id="queue-title">{t("progress.queue")}</h2>
+            <p className="queue-counts tabular">
+              <span>
+                {t("progress.dueToday")} <strong>{queue.due.length}</strong>
+              </span>
+              <span>
+                {t("progress.nextWeek")} <strong>{queue.upcoming.length}</strong>
+              </span>
+            </p>
+            {queue.due.length + queue.upcoming.length > 0 ? (
+              <>
+                <ul className="queue-rows">
+                  {[...queue.due, ...queue.upcoming].map((ref) => {
+                    const detail = details[ref];
+                    const when = progress?.competencies[ref]?.review_on;
+                    return (
+                      <li key={ref}>
+                        {link(ref)}
+                        <time className="muted small tabular" dateTime={when}>
+                          {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
+                        </time>
+                        {detail?.href && (
+                          <a className="pill pill-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
+                            {t("progress.startReview")}
+                            <span className="pill-icon">
+                              <Icon name="forward" />
+                            </span>
+                          </a>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p className="muted small">{t("progress.queueHint")}</p>
+              </>
+            ) : (
+              <p className="muted">{t("progress.queueEmpty")}</p>
+            )}
           </section>
         </div>
       </div>
@@ -148,6 +158,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           </a>
         </div>
       ) : (
+        // A scrollable region needs a tab stop so keyboard users can reach the scrollbar (WCAG 2.1.1).
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         <div className="table-stack" role="region" tabIndex={0} aria-label={t("progress.withEvidence")}>
           <table className="evidence-table">
             <thead>
@@ -199,7 +211,12 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
       </div>
       {pending && (
         <div className="confirm" role="alert">
-          <p>{t("progress.import.confirm", { current: entries.length, incoming: Object.keys(pending.competencies).length })}</p>
+          <p>
+            {t("progress.import.confirm", {
+              current: entries.length,
+              incoming: Object.keys(pending.competencies).length,
+            })}
+          </p>
           <div className="actions">
             <Button
               className="pill pill-primary"

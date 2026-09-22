@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-from datetime import date, datetime
 import json
-from pathlib import Path
 import sys
+from datetime import date, datetime
+from pathlib import Path
 
 import yaml
 from jsonschema import Draft202012Validator

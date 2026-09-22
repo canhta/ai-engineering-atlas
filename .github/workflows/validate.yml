@@ -41,6 +41,42 @@ jobs:
       - name: Validate agent docs
         run: python scripts/validate_agent_docs.py
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - run: pip install -r requirements-dev.txt
+
+      - name: Ruff (Python lint and format)
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: site/package.json
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: site/.node-version
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: site
+
+      - name: Prettier (formatting across the repository)
+        run: site/node_modules/.bin/prettier --check .
+
+      - name: ESLint
+        run: pnpm exec eslint .
+        working-directory: site
+
   site:
     runs-on: ubuntu-latest
     defaults:

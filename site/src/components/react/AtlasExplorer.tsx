@@ -2,7 +2,7 @@
 // item drawer. URL parameters: ?item=<ref> opens the drawer, ?ready=1 shows ready items only,
 // ?group=<value> focuses a region, ?view=list opens the list. The server-rendered plate and list
 // work before hydration; controls stay disabled until then.
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import {
   Button,
   CheckboxButton,
@@ -13,15 +13,15 @@ import {
   DisclosurePanel,
   Heading,
   Input,
+  type Key,
   Label,
   Modal,
   ModalOverlay,
   SearchField,
-  type Key,
 } from "react-aria-components";
-import { useTranslations, type Lang } from "../../i18n";
+import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
-import { isDemonstrated, stateOf, type State } from "../../lib/progress";
+import { isDemonstrated, type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import type { FacetData, ItemDetail, RegionData, RelatedFacetData, TileData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
@@ -66,7 +66,20 @@ function setParam(name: string, value: string | null) {
 }
 
 export default function AtlasExplorer(props: Props) {
-  const { lang, title, intro, atlasUrl, contributeUrl, regions, details, facets, relatedFacets, itemLabel, listColumns, stateLabels } = props;
+  const {
+    lang,
+    title,
+    intro,
+    atlasUrl,
+    contributeUrl,
+    regions,
+    details,
+    facets,
+    relatedFacets,
+    itemLabel,
+    listColumns,
+    stateLabels,
+  } = props;
   const t = useTranslations(lang);
   const [progress] = useProgress();
   const hydrated = progress !== null;
@@ -80,9 +93,13 @@ export default function AtlasExplorer(props: Props) {
   const [missing, setMissing] = useState<string | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [expanded, setExpanded] = useState<Set<Key>>(() => new Set(regions.filter((r) => r.tiles.some((tile) => tile.href)).map((r) => r.value)));
+  const [expanded, setExpanded] = useState<Set<Key>>(
+    () => new Set(regions.filter((r) => r.tiles.some((tile) => tile.href)).map((r) => r.value)),
+  );
 
-  // Read the URL once after hydration.
+  // Read the URL once after hydration: the server render has no URL parameters, so this state
+  // cannot be set during render without a hydration mismatch.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
     if (params.get("ready") === "1") setReadyOnly(true);
@@ -96,6 +113,7 @@ export default function AtlasExplorer(props: Props) {
       setExpanded((e) => new Set([...e, g]));
     }
   }, [details, regions]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const select = (ref: string | null) => {
     setMissing(null);
@@ -117,7 +135,9 @@ export default function AtlasExplorer(props: Props) {
     const ok = (tile: TileData) =>
       (!q || tile.title.value.toLowerCase().includes(q) || tile.ref.includes(q)) &&
       (!readyOnly || Boolean(tile.href)) &&
-      Object.entries(facetValues).every(([field, value]) => !value || value === "any" || (tile.values[field] ?? []).includes(value)) &&
+      Object.entries(facetValues).every(
+        ([field, value]) => !value || value === "any" || (tile.values[field] ?? []).includes(value),
+      ) &&
       related.every((ref) => ref === "any" || tile.relatedTo.includes(ref)) &&
       (stateFilter === "any" || (Boolean(tile.href) && matchesState(stateOf(progress, tile.ref), stateFilter)));
     return new Set(all.filter(ok).map((tile) => tile.ref));
@@ -154,7 +174,11 @@ export default function AtlasExplorer(props: Props) {
       ))}
       <label className="field">
         <span>{t("map.filter.state")}</span>
-        <select value={stateFilter} disabled={!hydrated} onChange={(e) => setStateFilter(e.target.value as StateFilter)}>
+        <select
+          value={stateFilter}
+          disabled={!hydrated}
+          onChange={(e) => setStateFilter(e.target.value as StateFilter)}
+        >
           <option value="any">{t("map.filter.state.any")}</option>
           <option value="notStarted">{t("map.filter.state.notStarted")}</option>
           <option value="inProgress">{t("map.filter.state.inProgress")}</option>
@@ -164,7 +188,11 @@ export default function AtlasExplorer(props: Props) {
       {relatedFacets.map((f, i) => (
         <label className="field" key={f.label}>
           <span>{f.label}</span>
-          <select value={related[i]} disabled={!hydrated} onChange={(e) => setRelated((r) => r.map((v, j) => (j === i ? e.target.value : v)))}>
+          <select
+            value={related[i]}
+            disabled={!hydrated}
+            onChange={(e) => setRelated((r) => r.map((v, j) => (j === i ? e.target.value : v)))}
+          >
             <option value="any">{t("map.filter.any")}</option>
             {f.options.map((o) => (
               <option key={o.ref} value={o.ref} lang={langOf(o.title, lang)}>
@@ -202,19 +230,34 @@ export default function AtlasExplorer(props: Props) {
           <h1 className="display">{title}</h1>
           <p className="lead">{intro}</p>
         </div>
-        <div className="view-toggle" role="group" aria-label={t("map.view")}>
-          <button type="button" aria-pressed={view === "plate"} onClick={() => { setView("plate"); setParam("view", null); }}>
+        <fieldset className="view-toggle">
+          <legend className="visually-hidden">{t("map.view")}</legend>
+          <button
+            type="button"
+            aria-pressed={view === "plate"}
+            onClick={() => {
+              setView("plate");
+              setParam("view", null);
+            }}
+          >
             <Icon name="plateView" />
             {t("map.view.plate")}
           </button>
-          <button type="button" aria-pressed={view === "list"} onClick={() => { setView("list"); setParam("view", "list"); }}>
+          <button
+            type="button"
+            aria-pressed={view === "list"}
+            onClick={() => {
+              setView("list");
+              setParam("view", "list");
+            }}
+          >
             <Icon name="listView" />
             {t("map.view.list")}
           </button>
-        </div>
+        </fieldset>
       </div>
 
-      <div className="filter-bar" role="search">
+      <search className="filter-bar">
         <SearchField value={query} onChange={setQuery} className="field filter-search" isDisabled={!hydrated}>
           <Label>{t("map.search")}</Label>
           <div className="input-row">
@@ -232,7 +275,7 @@ export default function AtlasExplorer(props: Props) {
         <Button className="pill filter-open" isDisabled={!hydrated} onPress={() => setFiltersOpen(true)}>
           {t("map.filters", { count: activeFilters - (query.trim() ? 1 : 0) })}
         </Button>
-      </div>
+      </search>
 
       <div className="results">
         <p role="status" className="tabular">
@@ -269,7 +312,11 @@ export default function AtlasExplorer(props: Props) {
           focusGroup={group}
         />
       ) : (
-        <DisclosureGroup allowsMultipleExpanded expandedKeys={expandedKeys} onExpandedChange={(keys) => !filtering && setExpanded(new Set(keys))}>
+        <DisclosureGroup
+          allowsMultipleExpanded
+          expandedKeys={expandedKeys}
+          onExpandedChange={(keys) => !filtering && setExpanded(new Set(keys))}
+        >
           {visibleRegions.map((r) => {
             const ready = r.tiles.filter((tile) => tile.href).length;
             return (

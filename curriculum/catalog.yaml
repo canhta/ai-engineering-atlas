@@ -4,141 +4,312 @@ description: Stable competency IDs for the audited curriculum coverage map. Cove
 
 competencies:
   # Software Engineering
-  - {id: software.programming-fundamentals, title: Programming Fundamentals, domain: software-engineering, status: coverage}
-  - {id: software.python-ai, title: Python for AI Engineering, domain: software-engineering, status: coverage}
-  - {id: software.data-structures-algorithms, title: Data Structures and Algorithms, domain: software-engineering, status: coverage}
-  - {id: software.design-paradigms, title: Object-Oriented and Functional Design, domain: software-engineering, status: coverage}
-  - {id: software.testing, title: Testing and Quality Engineering, domain: software-engineering, status: coverage}
-  - {id: software.architecture-maintainability, title: Software Architecture and Maintainability, domain: software-engineering, status: coverage}
-  - {id: software.requirements-delivery, title: Requirements Delivery and Engineering Process, domain: software-engineering, status: coverage}
-  - {id: software.pl-compilers, title: Programming Languages and Compilers, domain: software-engineering, status: coverage}
+  - {
+      id: software.programming-fundamentals,
+      title: Programming Fundamentals,
+      domain: software-engineering,
+      status: coverage,
+    }
+  - { id: software.python-ai, title: Python for AI Engineering, domain: software-engineering, status: coverage }
+  - {
+      id: software.data-structures-algorithms,
+      title: Data Structures and Algorithms,
+      domain: software-engineering,
+      status: coverage,
+    }
+  - {
+      id: software.design-paradigms,
+      title: Object-Oriented and Functional Design,
+      domain: software-engineering,
+      status: coverage,
+    }
+  - { id: software.testing, title: Testing and Quality Engineering, domain: software-engineering, status: coverage }
+  - {
+      id: software.architecture-maintainability,
+      title: Software Architecture and Maintainability,
+      domain: software-engineering,
+      status: coverage,
+    }
+  - {
+      id: software.requirements-delivery,
+      title: Requirements Delivery and Engineering Process,
+      domain: software-engineering,
+      status: coverage,
+    }
+  - {
+      id: software.pl-compilers,
+      title: Programming Languages and Compilers,
+      domain: software-engineering,
+      status: coverage,
+    }
 
   # Systems
-  - {id: systems.os-concurrency, title: Operating Systems and Concurrency, domain: systems, status: coverage}
-  - {id: systems.networking, title: Networking, domain: systems, status: coverage}
-  - {id: systems.databases-storage, title: Databases and Storage, domain: systems, status: coverage}
-  - {id: systems.distributed-systems, title: Distributed Systems, domain: systems, status: coverage}
-  - {id: systems.api-service-design, title: API and Service Design, domain: systems, status: coverage}
-  - {id: systems.cloud-infrastructure, title: Cloud and Production Infrastructure, domain: systems, status: coverage}
-  - {id: systems.observability, title: Observability, domain: systems, status: coverage}
-  - {id: systems.computer-architecture, title: Computer Architecture, domain: systems, status: coverage}
-  - {id: systems.performance-engineering, title: Performance Engineering, domain: systems, status: coverage}
+  - { id: systems.os-concurrency, title: Operating Systems and Concurrency, domain: systems, status: coverage }
+  - { id: systems.networking, title: Networking, domain: systems, status: coverage }
+  - { id: systems.databases-storage, title: Databases and Storage, domain: systems, status: coverage }
+  - { id: systems.distributed-systems, title: Distributed Systems, domain: systems, status: coverage }
+  - { id: systems.api-service-design, title: API and Service Design, domain: systems, status: coverage }
+  - { id: systems.cloud-infrastructure, title: Cloud and Production Infrastructure, domain: systems, status: coverage }
+  - { id: systems.observability, title: Observability, domain: systems, status: coverage }
+  - { id: systems.computer-architecture, title: Computer Architecture, domain: systems, status: coverage }
+  - { id: systems.performance-engineering, title: Performance Engineering, domain: systems, status: coverage }
 
   # Data Engineering
-  - {id: data.foundation, title: Data Engineering Foundation, domain: data-engineering, status: coverage}
-  - {id: data.ai-data-engineering, title: AI Data Engineering, domain: data-engineering, status: coverage}
-  - {id: data.dataset-quality, title: Dataset Quality, domain: data-engineering, status: coverage}
-  - {id: data.annotation, title: Data Annotation, domain: data-engineering, status: coverage}
-  - {id: data.synthetic-data, title: Synthetic Data, domain: data-engineering, status: coverage}
-  - {id: data.feedback-loops, title: Feedback Loops, domain: data-engineering, status: coverage}
+  - { id: data.foundation, title: Data Engineering Foundation, domain: data-engineering, status: coverage }
+  - { id: data.ai-data-engineering, title: AI Data Engineering, domain: data-engineering, status: coverage }
+  - { id: data.dataset-quality, title: Dataset Quality, domain: data-engineering, status: coverage }
+  - { id: data.annotation, title: Data Annotation, domain: data-engineering, status: coverage }
+  - { id: data.synthetic-data, title: Synthetic Data, domain: data-engineering, status: coverage }
+  - { id: data.feedback-loops, title: Feedback Loops, domain: data-engineering, status: coverage }
 
   # ML / Math Foundations
-  - {id: math.linear-algebra, title: Linear Algebra, domain: ml-foundations, status: coverage}
-  - {id: math.dot-product, title: Dot Products and Vector Similarity, domain: ml-foundations, status: coverage}
-  - {id: math.calculus, title: Calculus, domain: ml-foundations, status: coverage}
-  - {id: math.probability, title: Probability, domain: ml-foundations, status: coverage}
-  - {id: math.statistics, title: Statistics, domain: ml-foundations, status: coverage}
-  - {id: math.discrete-math, title: Discrete Mathematics and CS Reasoning, domain: ml-foundations, status: coverage}
-  - {id: math.numerical-computing, title: Numerical Computing and Floating Point, domain: ml-foundations, status: coverage}
-  - {id: ml.classical-ml, title: Classical Machine Learning, domain: ml-foundations, status: coverage}
-  - {id: ml.experimental-design, title: Experimental Design, domain: ml-foundations, status: coverage}
+  - { id: math.linear-algebra, title: Linear Algebra, domain: ml-foundations, status: coverage }
+  - { id: math.dot-product, title: Dot Products and Vector Similarity, domain: ml-foundations, status: coverage }
+  - { id: math.calculus, title: Calculus, domain: ml-foundations, status: coverage }
+  - { id: math.probability, title: Probability, domain: ml-foundations, status: coverage }
+  - { id: math.statistics, title: Statistics, domain: ml-foundations, status: coverage }
+  - { id: math.discrete-math, title: Discrete Mathematics and CS Reasoning, domain: ml-foundations, status: coverage }
+  - {
+      id: math.numerical-computing,
+      title: Numerical Computing and Floating Point,
+      domain: ml-foundations,
+      status: coverage,
+    }
+  - { id: ml.classical-ml, title: Classical Machine Learning, domain: ml-foundations, status: coverage }
+  - { id: ml.experimental-design, title: Experimental Design, domain: ml-foundations, status: coverage }
 
   # Deep Learning
-  - {id: dl.foundations, title: Deep Learning Foundation, domain: deep-learning, status: coverage}
-  - {id: dl.backpropagation, title: Backpropagation and Computation Graphs, domain: deep-learning, status: coverage}
-  - {id: dl.optimization, title: Optimization and Training Dynamics, domain: deep-learning, status: coverage}
-  - {id: dl.embeddings, title: Embeddings and Representation Learning, domain: deep-learning, status: coverage}
-  - {id: dl.softmax, title: Softmax and Normalized Scores, domain: deep-learning, status: coverage}
+  - { id: dl.foundations, title: Deep Learning Foundation, domain: deep-learning, status: coverage }
+  - { id: dl.backpropagation, title: Backpropagation and Computation Graphs, domain: deep-learning, status: coverage }
+  - { id: dl.optimization, title: Optimization and Training Dynamics, domain: deep-learning, status: coverage }
+  - { id: dl.embeddings, title: Embeddings and Representation Learning, domain: deep-learning, status: coverage }
+  - { id: dl.softmax, title: Softmax and Normalized Scores, domain: deep-learning, status: coverage }
 
   # LLM Foundations
-  - {id: llm.tokenization, title: Tokenization, domain: llm-foundations, status: coverage}
-  - {id: llm.embeddings, title: LLM Embeddings and Input Representations, domain: llm-foundations, status: coverage}
-  - {id: llm.transformer, title: Transformer Architecture, domain: llm-foundations, status: coverage}
-  - {id: llm.self-attention, title: Self-Attention, domain: llm-foundations, status: ready, route: curriculum/06-llm-foundations/self-attention}
-  - {id: llm.positional-information, title: Positional Information, domain: llm-foundations, status: coverage}
-  - {id: llm.training, title: Language Model Training, domain: llm-foundations, status: coverage}
-  - {id: llm.decoding-sampling, title: Decoding and Sampling, domain: llm-foundations, status: coverage}
-  - {id: llm.context-windows, title: Context Windows, domain: llm-foundations, status: coverage}
-  - {id: llm.kv-cache, title: KV Cache, domain: llm-foundations, status: coverage}
-  - {id: llm.quantization, title: Quantization and Compression, domain: llm-foundations, status: coverage}
-  - {id: llm.inference, title: LLM Inference Behavior, domain: llm-foundations, status: coverage}
+  - { id: llm.tokenization, title: Tokenization, domain: llm-foundations, status: coverage }
+  - { id: llm.embeddings, title: LLM Embeddings and Input Representations, domain: llm-foundations, status: coverage }
+  - { id: llm.transformer, title: Transformer Architecture, domain: llm-foundations, status: coverage }
+  - {
+      id: llm.self-attention,
+      title: Self-Attention,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/self-attention,
+    }
+  - { id: llm.positional-information, title: Positional Information, domain: llm-foundations, status: coverage }
+  - { id: llm.training, title: Language Model Training, domain: llm-foundations, status: coverage }
+  - { id: llm.decoding-sampling, title: Decoding and Sampling, domain: llm-foundations, status: coverage }
+  - { id: llm.context-windows, title: Context Windows, domain: llm-foundations, status: coverage }
+  - { id: llm.kv-cache, title: KV Cache, domain: llm-foundations, status: coverage }
+  - { id: llm.quantization, title: Quantization and Compression, domain: llm-foundations, status: coverage }
+  - { id: llm.inference, title: LLM Inference Behavior, domain: llm-foundations, status: coverage }
 
   # Applied AI Engineering
-  - {id: ai.product-framing, title: AI Product and Problem Framing, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/product-framing}
-  - {id: ai.model-selection, title: Model Selection, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/model-selection}
-  - {id: ai.prompt-engineering, title: Prompt Engineering, domain: ai-engineering, status: coverage}
-  - {id: ai.context-engineering, title: Context Engineering, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/context-engineering}
-  - {id: ai.structured-outputs, title: Structured Outputs, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/structured-outputs}
-  - {id: ai.tool-calling, title: Tool Calling, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/tool-calling}
-  - {id: ai.embeddings, title: Embeddings for AI Applications, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/embeddings}
-  - {id: retrieval.search, title: Search and Retrieval, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/search-retrieval}
-  - {id: retrieval.vector-search, title: Vector Search Internals, domain: ai-engineering, status: coverage}
-  - {id: retrieval.chunking, title: Chunking, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/chunking}
-  - {id: retrieval.filtering, title: Retrieval Filtering, domain: ai-engineering, status: coverage}
-  - {id: retrieval.reranking, title: Reranking, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/reranking}
-  - {id: retrieval.query-transformation, title: Query Transformation, domain: ai-engineering, status: coverage}
-  - {id: retrieval.advanced-rag, title: Advanced RAG Patterns, domain: ai-engineering, status: coverage}
-  - {id: retrieval.rag-evaluation, title: RAG Evaluation, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/rag-evaluation}
-  - {id: retrieval.data-lifecycle, title: Retrieval Data Lifecycle, domain: ai-engineering, status: coverage}
-  - {id: ai.evaluation, title: AI Evaluation and Experimentation, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/evaluation}
-  - {id: ai.evaluation-reliability, title: Evaluation Reliability and Statistical Discipline, domain: ai-engineering, status: coverage}
-  - {id: ai.uncertainty-abstention-trust, title: Uncertainty Abstention and Trust, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/uncertainty-abstention-trust}
-  - {id: ai.finetuning, title: Fine-Tuning Decisions, domain: ai-engineering, status: coverage}
-  - {id: ai.sft, title: Supervised Fine-Tuning, domain: ai-engineering, status: coverage}
-  - {id: ai.peft-lora, title: PEFT and LoRA, domain: ai-engineering, status: coverage}
-  - {id: ai.preference-optimization, title: Preference Optimization, domain: ai-engineering, status: coverage}
-  - {id: ai.distillation, title: Distillation, domain: ai-engineering, status: coverage}
-  - {id: ai.human-feedback-analytics, title: Human Feedback and Product Analytics, domain: ai-engineering, status: coverage}
-  - {id: ai.human-ai-ux, title: Human-AI Interaction and AI UX, domain: ai-engineering, status: coverage}
+  - {
+      id: ai.product-framing,
+      title: AI Product and Problem Framing,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/product-framing,
+    }
+  - {
+      id: ai.model-selection,
+      title: Model Selection,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/model-selection,
+    }
+  - { id: ai.prompt-engineering, title: Prompt Engineering, domain: ai-engineering, status: coverage }
+  - {
+      id: ai.context-engineering,
+      title: Context Engineering,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/context-engineering,
+    }
+  - {
+      id: ai.structured-outputs,
+      title: Structured Outputs,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/structured-outputs,
+    }
+  - {
+      id: ai.tool-calling,
+      title: Tool Calling,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/tool-calling,
+    }
+  - {
+      id: ai.embeddings,
+      title: Embeddings for AI Applications,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/embeddings,
+    }
+  - {
+      id: retrieval.search,
+      title: Search and Retrieval,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/search-retrieval,
+    }
+  - { id: retrieval.vector-search, title: Vector Search Internals, domain: ai-engineering, status: coverage }
+  - {
+      id: retrieval.chunking,
+      title: Chunking,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/chunking,
+    }
+  - { id: retrieval.filtering, title: Retrieval Filtering, domain: ai-engineering, status: coverage }
+  - {
+      id: retrieval.reranking,
+      title: Reranking,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/reranking,
+    }
+  - { id: retrieval.query-transformation, title: Query Transformation, domain: ai-engineering, status: coverage }
+  - { id: retrieval.advanced-rag, title: Advanced RAG Patterns, domain: ai-engineering, status: coverage }
+  - {
+      id: retrieval.rag-evaluation,
+      title: RAG Evaluation,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/rag-evaluation,
+    }
+  - { id: retrieval.data-lifecycle, title: Retrieval Data Lifecycle, domain: ai-engineering, status: coverage }
+  - {
+      id: ai.evaluation,
+      title: AI Evaluation and Experimentation,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/evaluation,
+    }
+  - {
+      id: ai.evaluation-reliability,
+      title: Evaluation Reliability and Statistical Discipline,
+      domain: ai-engineering,
+      status: coverage,
+    }
+  - {
+      id: ai.uncertainty-abstention-trust,
+      title: Uncertainty Abstention and Trust,
+      domain: ai-engineering,
+      status: ready,
+      route: curriculum/07-ai-engineering/uncertainty-abstention-trust,
+    }
+  - { id: ai.finetuning, title: Fine-Tuning Decisions, domain: ai-engineering, status: coverage }
+  - { id: ai.sft, title: Supervised Fine-Tuning, domain: ai-engineering, status: coverage }
+  - { id: ai.peft-lora, title: PEFT and LoRA, domain: ai-engineering, status: coverage }
+  - { id: ai.preference-optimization, title: Preference Optimization, domain: ai-engineering, status: coverage }
+  - { id: ai.distillation, title: Distillation, domain: ai-engineering, status: coverage }
+  - {
+      id: ai.human-feedback-analytics,
+      title: Human Feedback and Product Analytics,
+      domain: ai-engineering,
+      status: coverage,
+    }
+  - { id: ai.human-ai-ux, title: Human-AI Interaction and AI UX, domain: ai-engineering, status: coverage }
 
   # Agents
-  - {id: agents.fundamentals, title: Agent Fundamentals, domain: agents, status: coverage}
-  - {id: agents.deterministic-vs-agentic, title: Deterministic vs Agentic Design, domain: agents, status: ready, route: curriculum/08-agents/deterministic-vs-agentic}
-  - {id: agents.state, title: Agent State, domain: agents, status: ready, route: curriculum/08-agents/state}
-  - {id: agents.memory, title: Agent Memory, domain: agents, status: ready, route: curriculum/08-agents/memory}
-  - {id: agents.planning, title: Planning, domain: agents, status: ready, route: curriculum/08-agents/planning}
-  - {id: agents.verification, title: Verification, domain: agents, status: ready, route: curriculum/08-agents/verification}
-  - {id: agents.multi-agent, title: Multi-Agent Systems, domain: agents, status: coverage}
-  - {id: agents.long-running, title: Long-Running Agents, domain: agents, status: coverage}
-  - {id: agents.mcp, title: Model Context Protocol, domain: agents, status: coverage}
-  - {id: agents.orchestration, title: AI Workflow Orchestration, domain: agents, status: coverage}
+  - { id: agents.fundamentals, title: Agent Fundamentals, domain: agents, status: coverage }
+  - {
+      id: agents.deterministic-vs-agentic,
+      title: Deterministic vs Agentic Design,
+      domain: agents,
+      status: ready,
+      route: curriculum/08-agents/deterministic-vs-agentic,
+    }
+  - { id: agents.state, title: Agent State, domain: agents, status: ready, route: curriculum/08-agents/state }
+  - { id: agents.memory, title: Agent Memory, domain: agents, status: ready, route: curriculum/08-agents/memory }
+  - { id: agents.planning, title: Planning, domain: agents, status: ready, route: curriculum/08-agents/planning }
+  - {
+      id: agents.verification,
+      title: Verification,
+      domain: agents,
+      status: ready,
+      route: curriculum/08-agents/verification,
+    }
+  - { id: agents.multi-agent, title: Multi-Agent Systems, domain: agents, status: coverage }
+  - { id: agents.long-running, title: Long-Running Agents, domain: agents, status: coverage }
+  - { id: agents.mcp, title: Model Context Protocol, domain: agents, status: coverage }
+  - { id: agents.orchestration, title: AI Workflow Orchestration, domain: agents, status: coverage }
 
   # Production AI
-  - {id: production.architecture, title: AI Production Architecture, domain: production-ai, status: coverage}
-  - {id: production.model-gateway, title: Model Provider and Gateway Architecture, domain: production-ai, status: coverage}
-  - {id: production.caching, title: AI Caching, domain: production-ai, status: coverage}
-  - {id: production.streaming, title: Streaming, domain: production-ai, status: coverage}
-  - {id: production.cost, title: Cost Engineering, domain: production-ai, status: coverage}
-  - {id: production.latency, title: Latency Engineering, domain: production-ai, status: coverage}
-  - {id: production.observability, title: AI Observability and Request Replay, domain: production-ai, status: coverage}
-  - {id: production.release-engineering, title: AI Release Engineering, domain: production-ai, status: coverage}
-  - {id: production.versioning, title: Model Prompt and Retrieval Versioning, domain: production-ai, status: coverage}
-  - {id: production.mlops-llmops, title: MLOps and LLMOps, domain: production-ai, status: coverage}
-  - {id: production.drift, title: Drift, domain: production-ai, status: coverage}
+  - { id: production.architecture, title: AI Production Architecture, domain: production-ai, status: coverage }
+  - {
+      id: production.model-gateway,
+      title: Model Provider and Gateway Architecture,
+      domain: production-ai,
+      status: coverage,
+    }
+  - { id: production.caching, title: AI Caching, domain: production-ai, status: coverage }
+  - { id: production.streaming, title: Streaming, domain: production-ai, status: coverage }
+  - { id: production.cost, title: Cost Engineering, domain: production-ai, status: coverage }
+  - { id: production.latency, title: Latency Engineering, domain: production-ai, status: coverage }
+  - {
+      id: production.observability,
+      title: AI Observability and Request Replay,
+      domain: production-ai,
+      status: coverage,
+    }
+  - { id: production.release-engineering, title: AI Release Engineering, domain: production-ai, status: coverage }
+  - { id: production.versioning, title: Model Prompt and Retrieval Versioning, domain: production-ai, status: coverage }
+  - { id: production.mlops-llmops, title: MLOps and LLMOps, domain: production-ai, status: coverage }
+  - { id: production.drift, title: Drift, domain: production-ai, status: coverage }
 
   # Security and Governance
-  - {id: security.prompt-injection, title: Prompt Injection and Trust Boundaries, domain: security-governance, status: ready, route: curriculum/10-security-governance/prompt-injection}
-  - {id: security.data-exfiltration, title: Data Exfiltration, domain: security-governance, status: coverage}
-  - {id: security.tool-permissions, title: Tool Permissions, domain: security-governance, status: coverage}
-  - {id: security.sandboxing, title: Sandboxing, domain: security-governance, status: coverage}
-  - {id: security.auth, title: Authentication and Authorization, domain: security-governance, status: coverage}
-  - {id: security.multi-tenant, title: Multi-Tenant Isolation, domain: security-governance, status: coverage}
-  - {id: security.guardrails, title: Guardrails, domain: security-governance, status: coverage}
-  - {id: security.safety-governance, title: AI Safety and Governance, domain: security-governance, status: coverage}
-  - {id: security.supply-chain-data, title: AI Supply Chain and Data Security, domain: security-governance, status: coverage}
-  - {id: security.privacy-legal, title: Privacy Governance Legal and Responsible AI, domain: security-governance, status: coverage}
+  - {
+      id: security.prompt-injection,
+      title: Prompt Injection and Trust Boundaries,
+      domain: security-governance,
+      status: ready,
+      route: curriculum/10-security-governance/prompt-injection,
+    }
+  - { id: security.data-exfiltration, title: Data Exfiltration, domain: security-governance, status: coverage }
+  - { id: security.tool-permissions, title: Tool Permissions, domain: security-governance, status: coverage }
+  - { id: security.sandboxing, title: Sandboxing, domain: security-governance, status: coverage }
+  - { id: security.auth, title: Authentication and Authorization, domain: security-governance, status: coverage }
+  - { id: security.multi-tenant, title: Multi-Tenant Isolation, domain: security-governance, status: coverage }
+  - { id: security.guardrails, title: Guardrails, domain: security-governance, status: coverage }
+  - { id: security.safety-governance, title: AI Safety and Governance, domain: security-governance, status: coverage }
+  - {
+      id: security.supply-chain-data,
+      title: AI Supply Chain and Data Security,
+      domain: security-governance,
+      status: coverage,
+    }
+  - {
+      id: security.privacy-legal,
+      title: Privacy Governance Legal and Responsible AI,
+      domain: security-governance,
+      status: coverage,
+    }
 
   # Multimodal
-  - {id: multimodal.foundations, title: Multimodal AI, domain: multimodal, status: coverage}
-  - {id: multimodal.voice, title: Voice AI, domain: multimodal, status: coverage}
-  - {id: multimodal.document, title: Document AI, domain: multimodal, status: coverage}
+  - { id: multimodal.foundations, title: Multimodal AI, domain: multimodal, status: coverage }
+  - { id: multimodal.voice, title: Voice AI, domain: multimodal, status: coverage }
+  - { id: multimodal.document, title: Document AI, domain: multimodal, status: coverage }
 
   # Specializations
-  - {id: specialization.open-source-models, title: Open-Source Models, domain: specializations, status: coverage}
-  - {id: specialization.local-serving, title: Local Model Serving, domain: specializations, status: coverage}
-  - {id: specialization.llm-systems, title: LLM Systems, domain: specializations, status: coverage}
-  - {id: specialization.post-training-reasoning, title: Post-Training and Reasoning, domain: specializations, status: coverage}
-  - {id: specialization.ml-research, title: ML Research, domain: specializations, status: coverage}
-  - {id: specialization.ai-platform, title: AI Platform Engineering, domain: specializations, status: coverage}
-  - {id: specialization.ai-devtools, title: AI Developer Tools, domain: specializations, status: coverage}
-  - {id: specialization.search-retrieval, title: Search and Retrieval Systems, domain: specializations, status: coverage}
+  - { id: specialization.open-source-models, title: Open-Source Models, domain: specializations, status: coverage }
+  - { id: specialization.local-serving, title: Local Model Serving, domain: specializations, status: coverage }
+  - { id: specialization.llm-systems, title: LLM Systems, domain: specializations, status: coverage }
+  - {
+      id: specialization.post-training-reasoning,
+      title: Post-Training and Reasoning,
+      domain: specializations,
+      status: coverage,
+    }
+  - { id: specialization.ml-research, title: ML Research, domain: specializations, status: coverage }
+  - { id: specialization.ai-platform, title: AI Platform Engineering, domain: specializations, status: coverage }
+  - { id: specialization.ai-devtools, title: AI Developer Tools, domain: specializations, status: coverage }
+  - {
+      id: specialization.search-retrieval,
+      title: Search and Retrieval Systems,
+      domain: specializations,
+      status: coverage,
+    }

@@ -8,11 +8,11 @@ For the learner workflow, start at [START_HERE.md](START_HERE.md).
 
 ## Status model
 
-| Status | Meaning |
-| --- | --- |
-| Coverage | The topic is in the maintained scope map; per-node sources/evidence may still need normalization before promotion |
-| Ready route | Diagnostic, precise sources, practice, exit evidence, transfer/review where needed |
-| Project integration | The capability has a defined place in a reference project |
+| Status              | Meaning                                                                                                           |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Coverage            | The topic is in the maintained scope map; per-node sources/evidence may still need normalization before promotion |
+| Ready route         | Diagnostic, precise sources, practice, exit evidence, transfer/review where needed                                |
+| Project integration | The capability has a defined place in a reference project                                                         |
 
 The repository currently has broad **coverage** and is progressively converting high-value topics into **ready routes**.
 

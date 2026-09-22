@@ -11,7 +11,7 @@
 ## Lifecycle
 
 | State | Enter condition | Exit condition | Durable? |
-| --- | --- | --- | --- |
+| ----- | --------------- | -------------- | -------- |
 
 Include waiting/paused, terminal, timeout/cancelled, and failure states where relevant.
 

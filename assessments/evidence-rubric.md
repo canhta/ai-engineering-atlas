@@ -10,16 +10,16 @@ A quiz can support a concept outcome. It cannot by itself prove a production eng
 
 ## Quality dimensions
 
-| Dimension | Weak evidence | Strong evidence |
-| --- | --- | --- |
-| Independence | followed a step-by-step solution | completed with minimal guidance |
-| Observability | "I understand it" | code, trace, explanation, benchmark, decision record |
-| Correctness | happy path only | tests important cases and failure modes |
-| Reasoning | gives a choice | explains constraints and trade-offs |
-| Debugging | can build | can diagnose a broken version |
-| Transfer | repeats same example | succeeds in a changed context |
-| Retention | immediate recall | retrieves after a meaningful delay |
-| Integration | isolated exercise | changes or improves a larger system |
+| Dimension     | Weak evidence                    | Strong evidence                                      |
+| ------------- | -------------------------------- | ---------------------------------------------------- |
+| Independence  | followed a step-by-step solution | completed with minimal guidance                      |
+| Observability | "I understand it"                | code, trace, explanation, benchmark, decision record |
+| Correctness   | happy path only                  | tests important cases and failure modes              |
+| Reasoning     | gives a choice                   | explains constraints and trade-offs                  |
+| Debugging     | can build                        | can diagnose a broken version                        |
+| Transfer      | repeats same example             | succeeds in a changed context                        |
+| Retention     | immediate recall                 | retrieves after a meaningful delay                   |
+| Integration   | isolated exercise                | changes or improves a larger system                  |
 
 ## State changes
 

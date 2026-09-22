@@ -1,14 +1,20 @@
-import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { emptyProgress, fromYaml, recordEvidence, type EvidenceInput, type Progress, type State } from "./progress.ts";
-import { adviceFor, graphOf, hasEvidence, NEXT_LIMIT, plan, REASONS, recommend, type GraphItem } from "./recommend.ts";
+import { test } from "node:test";
+import { type EvidenceInput, emptyProgress, fromYaml, type Progress, recordEvidence, type State } from "./progress.ts";
+import { adviceFor, type GraphItem, graphOf, hasEvidence, NEXT_LIMIT, plan, REASONS, recommend } from "./recommend.ts";
 
 const DAY = "2026-09-22";
 
 // A small graph: two roots, a chain, a bridged coverage prerequisite, and an unbridged one.
 //   a (root) → b → d ;  c (root) ;  x (no page) bridged on e ;  y (no page) not bridged on f
-const node = (id: string, order: number, needs: [string, boolean][] = [], page = true, target = "applied"): GraphItem => ({
+const node = (
+  id: string,
+  order: number,
+  needs: [string, boolean][] = [],
+  page = true,
+  target = "applied",
+): GraphItem => ({
   id,
   order,
   page,
@@ -38,7 +44,8 @@ const evidence = (supports: State): EvidenceInput => ({
 function withStates(states: Record<string, State>, date = DAY, graph = GRAPH): Progress {
   let p = emptyProgress(date);
   for (const [id, s] of Object.entries(states)) {
-    const target = (graph.find((g) => g.id === id)?.target ?? "demonstrated") as Progress["competencies"][string]["target_state"];
+    const target = (graph.find((g) => g.id === id)?.target ??
+      "demonstrated") as Progress["competencies"][string]["target_state"];
     p = recordEvidence(p, id, evidence(s), target, date);
   }
   return p;
@@ -86,14 +93,20 @@ test("{ due: false } leaves items with a due check out entirely, and changes not
   const all = plan(GRAPH, p, DAY);
   const without = plan(GRAPH, p, DAY, { due: false });
   assert.equal(all.next[0].id, "a");
-  assert.deepEqual(without.next, all.next.filter((r) => r.id !== "a"));
+  assert.deepEqual(
+    without.next,
+    all.next.filter((r) => r.id !== "a"),
+  );
   assert.deepEqual(without.blocked, all.blocked);
   assert.deepEqual(ids(recommend(GRAPH, p, DAY, 2, { due: false })), ["b", "e"]);
 });
 
 test("a due review is listed even at target; otherwise items at target are excluded", () => {
   const p = withStates({ c: "transferred" }, "2026-08-01");
-  assert.equal(plan(GRAPH, p, "2026-08-02").next.find((r) => r.id === "c"), undefined);
+  assert.equal(
+    plan(GRAPH, p, "2026-08-02").next.find((r) => r.id === "c"),
+    undefined,
+  );
   p.competencies.c.review_on = "2026-08-02";
   assert.equal(plan(GRAPH, p, "2026-08-02").next[0].reason, "due");
 });
@@ -114,7 +127,10 @@ test("rule order: due, continue, start, transfer, apply", () => {
 test("a bridge on the page unblocks a coverage prerequisite", () => {
   assert.equal(adviceFor(plan(GRAPH, null, DAY), "e").next?.reason, "start");
   const unbridged = GRAPH.map((g) => (g.id === "e" ? node("e", 5, [["x", false]]) : g));
-  assert.deepEqual(adviceFor(plan(unbridged, null, DAY), "e"), { next: undefined, blocked: { id: "e", prerequisites: ["x"] } });
+  assert.deepEqual(adviceFor(plan(unbridged, null, DAY), "e"), {
+    next: undefined,
+    blocked: { id: "e", prerequisites: ["x"] },
+  });
 });
 
 test("a coverage prerequisite without a bridge blocks until it is demonstrated", () => {
@@ -156,7 +172,7 @@ test("determinism: shuffled input gives the same output", () => {
   const p = withStates({ a: "demonstrated", b: "gap", e: "demonstrated" });
   const expected = plan(GRAPH, p, DAY);
   let seed = 7;
-  const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   for (let round = 0; round < 20; round += 1) {
     const shuffled = [...GRAPH]
       .map((g) => ({ ...g, needs: [...g.needs].sort(() => random() - 0.5) }))
@@ -203,7 +219,11 @@ test("the real model with the example progress.yaml gives a valid, stable plan",
     assert.ok(b.prerequisites.length > 0);
   }
   const reasons = result.next.map((r) => REASONS.indexOf(r.reason));
-  assert.deepEqual(reasons, [...reasons].sort((x, y) => x - y), "rules stay in priority order");
+  assert.deepEqual(
+    reasons,
+    [...reasons].sort((x, y) => x - y),
+    "rules stay in priority order",
+  );
   // The example has ai.evaluation in gap and llm.self-attention demonstrated (review not due on DAY).
   assert.deepEqual(result.next[0], { id: "ai.evaluation", reason: "continue", prerequisites: [] });
   assert.ok(result.next.some((r) => r.id === "llm.self-attention" && r.reason === "transfer"));

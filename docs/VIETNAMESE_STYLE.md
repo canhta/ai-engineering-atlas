@@ -20,32 +20,32 @@ Write the way a Vietnamese developer explains something to a colleague: **short,
 
 Glossary (use exactly these):
 
-| English | Vietnamese |
-|---|---|
-| competency | kỹ năng |
-| ready route | lộ trình sẵn sàng / có lộ trình |
-| mapped, no route (coverage) | chưa có lộ trình |
-| diagnostic | kiểm tra đầu vào |
-| pass condition | tiêu chí đạt |
-| sources, learning route | tài liệu (cần đọc) |
-| exit evidence | bằng chứng hoàn thành |
-| transfer | vận dụng |
-| field log | nhật ký học |
-| review (delayed retrieval) | ôn / ôn tập |
+| English                     | Vietnamese                           |
+| --------------------------- | ------------------------------------ |
+| competency                  | kỹ năng                              |
+| ready route                 | lộ trình sẵn sàng / có lộ trình      |
+| mapped, no route (coverage) | chưa có lộ trình                     |
+| diagnostic                  | kiểm tra đầu vào                     |
+| pass condition              | tiêu chí đạt                         |
+| sources, learning route     | tài liệu (cần đọc)                   |
+| exit evidence               | bằng chứng hoàn thành                |
+| transfer                    | vận dụng                             |
+| field log                   | nhật ký học                          |
+| review (delayed retrieval)  | ôn / ôn tập                          |
 | unassessed · gap · learning | chưa đánh giá · còn thiếu · đang học |
-| demonstrated · transferred | đã làm được · vận dụng được |
-| retained · applied | nhớ lâu · dùng trong dự án |
+| demonstrated · transferred  | đã làm được · vận dụng được          |
+| retained · applied          | nhớ lâu · dùng trong dự án           |
 
 Word choice:
 
-| Use | Not |
-|---|---|
-| hủy, nhập, ẩn, tìm hiểu, ID | hủy bỏ, nhập vào, giấu, học (for "learn about"), mã định danh |
-| chọn, bấm (for UI actions) | nhấp, click |
-| Xin chờ | Vui lòng đợi |
-| Không tải được / Không lưu được | Tải về không thành công / Lưu thất bại |
-| sửa, đổi, dùng, chạy, dừng, tìm | khắc phục, sửa đổi, sử dụng/tận dụng, thực thi, tạm ngưng, định vị |
-| xóa (delete) vs loại bỏ (remove) vs bỏ chọn (clear) | one word for all three |
+| Use                                                 | Not                                                                |
+| --------------------------------------------------- | ------------------------------------------------------------------ |
+| hủy, nhập, ẩn, tìm hiểu, ID                         | hủy bỏ, nhập vào, giấu, học (for "learn about"), mã định danh      |
+| chọn, bấm (for UI actions)                          | nhấp, click                                                        |
+| Xin chờ                                             | Vui lòng đợi                                                       |
+| Không tải được / Không lưu được                     | Tải về không thành công / Lưu thất bại                             |
+| sửa, đổi, dùng, chạy, dừng, tìm                     | khắc phục, sửa đổi, sử dụng/tận dụng, thực thi, tạm ngưng, định vị |
+| xóa (delete) vs loại bỏ (remove) vs bỏ chọn (clear) | one word for all three                                             |
 
 Acronyms (API, RAG, CSV, URL) stay in English and are never replaced by a Vietnamese acronym. Product and trademark names stay in English. Don't repeat the acronym's own noun unless Vietnamese needs it ("giao thức HTTP" is fine).
 

@@ -1,4 +1,4 @@
-import { ICON_WEIGHT, icons, type IconName } from "../../lib/icons";
+import { ICON_WEIGHT, type IconName, icons } from "../../lib/icons";
 
 /** Decorative icon from the registry; always placed next to a text label (DESIGN.md → Icons). */
 export function Icon({ name, size = 16 }: { name: IconName; size?: 16 | 20 | 24 }) {

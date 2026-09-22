@@ -106,15 +106,17 @@ export interface DataBlock extends BlockBase {
   value: unknown;
 }
 export type Block =
-  | TextBlock
-  | ListBlock
-  | PrerequisitesBlock
-  | DiagnosticBlock
-  | SourcesBlock
-  | PracticeBlock
-  | RunnerBlock
-  | DataBlock;
-export const BLOCK_TYPES = ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "data"] as const;
+  TextBlock | ListBlock | PrerequisitesBlock | DiagnosticBlock | SourcesBlock | PracticeBlock | RunnerBlock | DataBlock;
+export const BLOCK_TYPES = [
+  "text",
+  "list",
+  "prerequisites",
+  "diagnostic",
+  "sources",
+  "practice",
+  "runner",
+  "data",
+] as const;
 
 export interface Item {
   id: string;
@@ -237,7 +239,11 @@ export interface FieldChip {
 /** Labelled values of one item field; vocabulary values get their label. */
 export function fieldChips(c: Collection, item: Item, field: string, lang: Lang): FieldChip[] {
   const spec = c.fields[field];
-  return listValue(item.fields[field]).map((value) => ({ field, value, label: vocabularyLabel(spec?.vocabulary, value, lang) }));
+  return listValue(item.fields[field]).map((value) => ({
+    field,
+    value,
+    label: vocabularyLabel(spec?.vocabulary, value, lang),
+  }));
 }
 
 /**
@@ -254,7 +260,9 @@ export function headerChips(c: Collection, item: Item, lang: Lang): FieldChip[] 
 export function groupOf(c: Collection, item: Item, lang: Lang) {
   if (!c.group_by) return undefined;
   const value = listValue(item.fields[c.group_by])[0];
-  return value === undefined ? undefined : { value, label: vocabularyLabel(c.fields[c.group_by]?.vocabulary, value, lang) };
+  return value === undefined
+    ? undefined
+    : { value, label: vocabularyLabel(c.fields[c.group_by]?.vocabulary, value, lang) };
 }
 
 /** Groups of a collection in vocabulary order, each with its items in content order. */
@@ -263,7 +271,11 @@ export function groupsOf(c: Collection) {
   const vocabulary = field ? c.fields[field]?.vocabulary : undefined;
   if (!field || !vocabulary) return [{ value: "", vocabulary, items: itemsOf(c.id) }];
   return vocabularyValues(vocabulary)
-    .map((value) => ({ value, vocabulary, items: itemsOf(c.id).filter((i) => listValue(i.fields[field])[0] === value) }))
+    .map((value) => ({
+      value,
+      vocabulary,
+      items: itemsOf(c.id).filter((i) => listValue(i.fields[field])[0] === value),
+    }))
     .filter((g) => g.items.length > 0);
 }
 
@@ -301,7 +313,9 @@ export function trackedItemsPointingAt(ref: string): Item[] {
   return relations
     .filter((r) => r.to === ref)
     .map((r) => resolveRef(r.from))
-    .filter((found): found is { collection: Collection; item: Item } => Boolean(found && found.collection.id === trackedCollection.id && found.item.page))
+    .filter((found): found is { collection: Collection; item: Item } =>
+      Boolean(found && found.collection.id === trackedCollection.id && found.item.page),
+    )
     .map((found) => found.item)
     .filter((item) => !seen.has(item.id) && Boolean(seen.add(item.id)));
 }

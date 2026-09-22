@@ -17,17 +17,15 @@ const paragraphs = block.format === "markdown" ? [] : body.value.split(/\n\s*\n/
 const html = block.format === "markdown" ? renderMarkdown(body.value, sourcePath, lang) : "";
 ---
 
-{
-  block.format === "markdown" ? (
-    <div class="text-block markdown reading" lang={langAttr(body, lang)} set:html={html} />
-  ) : (
-    <div class="text-block" lang={langAttr(body, lang)}>
-      {paragraphs.map((p) => (
-        <p class="reading">{p}</p>
-      ))}
-    </div>
-  )
-}
+{block.format === "markdown" ? (
+  <div class="text-block markdown reading" lang={langAttr(body, lang)} set:html={html} />
+) : (
+  <div class="text-block" lang={langAttr(body, lang)}>
+    {paragraphs.map((p) => (
+      <p class="reading">{p}</p>
+    ))}
+  </div>
+)}
 
 <style>
   .markdown {

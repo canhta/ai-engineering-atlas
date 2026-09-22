@@ -1,7 +1,8 @@
 // Next step (DESIGN.md → Next step): after importing a progress.yaml, Home, Progress, and the
 // route field log show the deterministic recommendation from src/lib/recommend.ts.
-import { expect, test, type Page } from "@playwright/test";
+
 import { fileURLToPath } from "node:url";
+import { expect, type Page, test } from "@playwright/test";
 
 const FIXTURE = fileURLToPath(new URL("fixtures/next-step.progress.yaml", import.meta.url));
 
@@ -37,7 +38,9 @@ test("Home has no next list before any evidence; the start flow stays", async ({
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
 });
 
-test("an imported progress.yaml: Home leads with the due check, Progress leaves it to the review queue", async ({ page }) => {
+test("an imported progress.yaml: Home leads with the due check, Progress leaves it to the review queue", async ({
+  page,
+}) => {
   await importFixture(page);
 
   // Progress: the due check sits in the review queue beside the list, not in the list.
@@ -59,7 +62,9 @@ test("an imported progress.yaml: Home leads with the due check, Progress leaves 
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
 
   await open(page, "/en/routes/ai.model-selection/");
-  await expect(page.locator("aside.field-log .log-advice")).toHaveText("Recommended next (4 of 5). Ready to start: nothing needs learning first.");
+  await expect(page.locator("aside.field-log .log-advice")).toHaveText(
+    "Recommended next (4 of 5). Ready to start: nothing needs learning first.",
+  );
 
   await open(page, "/en/routes/retrieval.search/");
   const blocked = page.locator("aside.field-log .log-advice");

@@ -1,2 +1,4 @@
 PyYAML>=6.0
 jsonschema>=4.23
+ruff>=0.16
+pre-commit>=4.4

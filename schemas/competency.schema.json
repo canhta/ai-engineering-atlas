@@ -34,11 +34,7 @@
       "minLength": 1
     },
     "status": {
-      "enum": [
-        "incomplete",
-        "seeded",
-        "ready"
-      ]
+      "enum": ["incomplete", "seeded", "ready"]
     },
     "competency_types": {
       "type": "array",
@@ -64,12 +60,7 @@
       "minItems": 1,
       "uniqueItems": true,
       "items": {
-        "enum": [
-          "demonstrated",
-          "transferred",
-          "retained",
-          "applied"
-        ]
+        "enum": ["demonstrated", "transferred", "retained", "applied"]
       }
     },
     "why": {
@@ -100,10 +91,7 @@
     },
     "diagnostic": {
       "type": "object",
-      "required": [
-        "tasks",
-        "pass_condition"
-      ],
+      "required": ["tasks", "pass_condition"],
       "properties": {
         "tasks": {
           "type": "array",
@@ -120,10 +108,7 @@
     },
     "learning_route": {
       "type": "object",
-      "required": [
-        "mental_model",
-        "independent_practice"
-      ],
+      "required": ["mental_model", "independent_practice"],
       "properties": {
         "mental_model": {
           "type": "array",
@@ -161,11 +146,7 @@
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "enum": [
-          "foundation",
-          "ai-system",
-          "production"
-        ]
+        "enum": ["foundation", "ai-system", "production"]
       }
     },
     "resources": {
@@ -173,21 +154,13 @@
     },
     "metadata": {
       "type": "object",
-      "required": [
-        "last_reviewed",
-        "evidence_required"
-      ]
+      "required": ["last_reviewed", "evidence_required"]
     },
     "prerequisite_support": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
-        "required": [
-          "diagnostic",
-          "source",
-          "locator",
-          "purpose"
-        ],
+        "required": ["diagnostic", "source", "locator", "purpose"],
         "properties": {
           "diagnostic": {
             "type": "string",

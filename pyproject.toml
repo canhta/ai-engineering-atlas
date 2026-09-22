@@ -1,0 +1,13 @@
+# Python tooling for the repository scripts and hooks. There is no Python package to build:
+# `scripts/*.py` are run directly, and `requirements-dev.txt` pins what `make check` needs.
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+# labs/ is reviewed learner content: its line numbers show in lab output, so formatting it is
+# a curriculum change with its own review, not a tooling pass.
+extend-exclude = [".claude/worktrees", "site", "labs"]
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, isort, pyupgrade, bugbear, comprehensions, simplify.
+select = ["E", "F", "I", "UP", "B", "C4", "SIM"]

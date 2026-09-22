@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """PreToolUse hook: send edits of generated files back to their generator."""
+
 import json
 import sys
 

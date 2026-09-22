@@ -37,44 +37,46 @@ const langs = Object.entries(languages) as [Lang, string][];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description ?? text(site.tagline, lang).value} />
-    {langs.map(([l]) => <link rel="alternate" hreflang={l} href={new URL(switchLang(path, l), Astro.site)} />)}
+    {langs.map(([l]) => (
+      <link rel="alternate" hreflang={l} href={new URL(switchLang(path, l), Astro.site)} />
+    ))}
     <Font cssVariable="--font-sans" preload={[{ subset: "latin" }]} />
     <Font cssVariable="--font-reading" />
     <Font cssVariable="--font-mono" />
   </head>
   <body>
-    <a class="skip-link" href="#main">{t("nav.skip")}</a>
+    <a class="skip-link" href="#main">
+      {t("nav.skip")}
+    </a>
     <header class="nav-wrap">
       <nav class="nav" aria-label={t("nav.label")}>
-        <a class="wordmark" href={homeUrl(lang)}>{siteTitle}</a>
+        <a class="wordmark" href={homeUrl(lang)}>
+          {siteTitle}
+        </a>
         <ul class="nav-tabs">
-          {
-            tabs.map((tab) => (
-              <li>
-                <a class="nav-tab" href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
-                  {tab.label}
-                  {tab.id === "progress" && <DueCount client:idle lang={lang} />}
-                </a>
-              </li>
-            ))
-          }
+          {tabs.map((tab) => (
+            <li>
+              <a class="nav-tab" href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
+                {tab.label}
+                {tab.id === "progress" && <DueCount client:idle lang={lang} />}
+              </a>
+            </li>
+          ))}
         </ul>
         <ul class="nav-langs" aria-label={t("lang.label")}>
-          {
-            langs.map(([l, name]) => (
-              <li>
-                {l === lang ? (
-                  <span class="nav-lang" aria-current="true" lang={l}>
-                    {name}
-                  </span>
-                ) : (
-                  <a class="nav-lang" href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
-                    {name}
-                  </a>
-                )}
-              </li>
-            ))
-          }
+          {langs.map(([l, name]) => (
+            <li>
+              {l === lang ? (
+                <span class="nav-lang" aria-current="true" lang={l}>
+                  {name}
+                </span>
+              ) : (
+                <a class="nav-lang" href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
+                  {name}
+                </a>
+              )}
+            </li>
+          ))}
         </ul>
         <button class="menu-button" type="button" aria-haspopup="dialog" aria-controls="site-menu" data-menu-open>
           {t("nav.menu")}
@@ -85,7 +87,9 @@ const langs = Object.entries(languages) as [Lang, string][];
 
     <dialog class="menu" id="site-menu" aria-label={t("nav.label")}>
       <div class="menu-head">
-        <a class="wordmark" href={homeUrl(lang)}>{siteTitle}</a>
+        <a class="wordmark" href={homeUrl(lang)}>
+          {siteTitle}
+        </a>
         <button class="menu-button menu-close" type="button" data-menu-close>
           {t("nav.close")}
           <Icon name="close" />
@@ -93,34 +97,32 @@ const langs = Object.entries(languages) as [Lang, string][];
       </div>
       <ul class="menu-links">
         <li style="--i: 0">
-          <a href={homeUrl(lang)} aria-current={path === homeUrl(lang) ? "page" : undefined}>{t("nav.home")}</a>
+          <a href={homeUrl(lang)} aria-current={path === homeUrl(lang) ? "page" : undefined}>
+            {t("nav.home")}
+          </a>
         </li>
-        {
-          tabs.map((tab, i) => (
-            <li style={`--i: ${i + 1}`}>
-              <a href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
-                {tab.label}
-              </a>
-            </li>
-          ))
-        }
+        {tabs.map((tab, i) => (
+          <li style={`--i: ${i + 1}`}>
+            <a href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
+              {tab.label}
+            </a>
+          </li>
+        ))}
       </ul>
       <ul class="menu-langs" aria-label={t("lang.label")} style={`--i: ${tabs.length + 1}`}>
-        {
-          langs.map(([l, name]) => (
-            <li>
-              {l === lang ? (
-                <span aria-current="true" lang={l}>
-                  {name}
-                </span>
-              ) : (
-                <a href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
-                  {name}
-                </a>
-              )}
-            </li>
-          ))
-        }
+        {langs.map(([l, name]) => (
+          <li>
+            {l === lang ? (
+              <span aria-current="true" lang={l}>
+                {name}
+              </span>
+            ) : (
+              <a href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
+                {name}
+              </a>
+            )}
+          </li>
+        ))}
       </ul>
     </dialog>
 
@@ -132,7 +134,9 @@ const langs = Object.entries(languages) as [Lang, string][];
       <div class="footer-inner">
         <p class="footer-title">{siteTitle}</p>
         <ul>
-          <li><a href={site.repository}>{t("footer.repository")}</a></li>
+          <li>
+            <a href={site.repository}>{t("footer.repository")}</a>
+          </li>
           <li>{t("footer.license")}</li>
         </ul>
       </div>

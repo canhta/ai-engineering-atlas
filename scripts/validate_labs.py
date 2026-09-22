@@ -87,9 +87,7 @@ try:
     solution = load_module("eval_solution_reference_check", lab / "solution.py")
 
     cases = [
-        json.loads(line)
-        for line in (lab / "cases.jsonl").read_text(encoding="utf-8").splitlines()
-        if line.strip()
+        json.loads(line) for line in (lab / "cases.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()
     ]
 
     strong = solution.evaluate(
@@ -156,9 +154,7 @@ try:
         sys.path.pop(0)
         sys.modules.pop("starter", None)
 except Exception as exc:
-    errors.append(
-        f"labs/prompt-injection-boundaries: reference contract failed: {exc}"
-    )
+    errors.append(f"labs/prompt-injection-boundaries: reference contract failed: {exc}")
 
 
 # 5. Self-attention runtime check when Torch is already available.
@@ -178,9 +174,7 @@ if torch is not None:
         w_k = torch.randn(8, 4)
         w_v = torch.randn(8, 4)
 
-        output, scores, mask, probs = solution.causal_self_attention(
-            x, w_q, w_k, w_v
-        )
+        output, scores, mask, probs = solution.causal_self_attention(x, w_q, w_k, w_v)
 
         assert output.shape == (5, 4)
         assert scores.shape == (5, 5)

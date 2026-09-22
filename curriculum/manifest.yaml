@@ -10,50 +10,50 @@ levels:
   L4: specialist-depth
 domains:
   - id: software-engineering
-    title: {en: "Software Engineering", vi: "Kỹ thuật phần mềm"}
+    title: { en: "Software Engineering", vi: "Kỹ thuật phần mềm" }
     path: curriculum/01-software-engineering
     target: L2
   - id: systems
-    title: {en: "Systems", vi: "Hệ thống"}
+    title: { en: "Systems", vi: "Hệ thống" }
     path: curriculum/02-systems
     target: L2
   - id: data-engineering
-    title: {en: "Data Engineering", vi: "Data engineering"}
+    title: { en: "Data Engineering", vi: "Data engineering" }
     path: curriculum/03-data-engineering
     target: L1-L2
   - id: ml-foundations
-    title: {en: "ML Foundations", vi: "Nền tảng ML"}
+    title: { en: "ML Foundations", vi: "Nền tảng ML" }
     path: curriculum/04-ml-foundations
     target: L1-L2
   - id: deep-learning
-    title: {en: "Deep Learning", vi: "Deep learning"}
+    title: { en: "Deep Learning", vi: "Deep learning" }
     path: curriculum/05-deep-learning
     target: L2
   - id: llm-foundations
-    title: {en: "LLM Foundations", vi: "Nền tảng LLM"}
+    title: { en: "LLM Foundations", vi: "Nền tảng LLM" }
     path: curriculum/06-llm-foundations
     target: L2-L3
   - id: ai-engineering
-    title: {en: "AI Engineering", vi: "AI engineering"}
+    title: { en: "AI Engineering", vi: "AI engineering" }
     path: curriculum/07-ai-engineering
     target: L2-L3
   - id: agents
-    title: {en: "Agents", vi: "Agent"}
+    title: { en: "Agents", vi: "Agent" }
     path: curriculum/08-agents
     target: L2-L3
   - id: production-ai
-    title: {en: "Production AI", vi: "AI trên production"}
+    title: { en: "Production AI", vi: "AI trên production" }
     path: curriculum/09-production-ai
     target: L3
   - id: security-governance
-    title: {en: "Security & Governance", vi: "Bảo mật và quản trị"}
+    title: { en: "Security & Governance", vi: "Bảo mật và quản trị" }
     path: curriculum/10-security-governance
     target: L2
   - id: multimodal
-    title: {en: "Multimodal", vi: "Đa phương thức"}
+    title: { en: "Multimodal", vi: "Đa phương thức" }
     path: curriculum/11-multimodal
     target: L1-L2
   - id: specializations
-    title: {en: "Specializations", vi: "Chuyên ngành"}
+    title: { en: "Specializations", vi: "Chuyên ngành" }
     path: curriculum/12-specializations
     target: optional

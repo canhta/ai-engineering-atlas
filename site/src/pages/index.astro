@@ -21,15 +21,13 @@ import { homeUrl } from "../lib/urls";
     <main class="root-choice">
       <h1>{site.title.en}</h1>
       <ul>
-        {
-          (Object.entries(languages) as [Lang, string][]).map(([l, name]) => (
-            <li>
-              <a href={homeUrl(l)} hreflang={l} lang={l}>
-                {name}
-              </a>
-            </li>
-          ))
-        }
+        {(Object.entries(languages) as [Lang, string][]).map(([l, name]) => (
+          <li>
+            <a href={homeUrl(l)} hreflang={l} lang={l}>
+              {name}
+            </a>
+          </li>
+        ))}
       </ul>
     </main>
     <script>

@@ -14,32 +14,26 @@ const t = useTranslations(lang);
 ---
 
 <span class="resource">
-  {
-    resource.url ? (
-      <a href={resource.url} rel="noopener noreferrer" lang="en">
-        {resource.title}
-        <span class="visually-hidden">({t("link.external")})</span>
-      </a>
-    ) : (
-      <code>{resource.title}</code>
-    )
-  }
+  {resource.url ? (
+    <a href={resource.url} rel="noopener noreferrer" lang="en">
+      {resource.title}
+      <span class="visually-hidden">({t("link.external")})</span>
+    </a>
+  ) : (
+    <code>{resource.title}</code>
+  )}
   <span class="resource-meta">
-    {
-      resource.kind && (
-        <span class="chip chip-kind" lang="en">
-          {resource.kind}
-        </span>
-      )
-    }
-    {
-      resource.host && (
-        <span class="resource-host">
-          {resource.host}
-          <Icon name="external" />
-        </span>
-      )
-    }
+    {resource.kind && (
+      <span class="chip chip-kind" lang="en">
+        {resource.kind}
+      </span>
+    )}
+    {resource.host && (
+      <span class="resource-host">
+        {resource.host}
+        <Icon name="external" />
+      </span>
+    )}
   </span>
 </span>
 
