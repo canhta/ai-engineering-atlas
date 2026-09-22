@@ -1,7 +1,7 @@
 id: llm.self-attention
 title: Self-Attention
 domain: llm-foundations
-status: seeded
+status: ready
 competency_types:
   - mechanism
 target_level: L2
@@ -30,27 +30,31 @@ diagnostic:
     - Given a short sequence and tensor shapes, describe the shape of QK^T and the output.
     - Explain why an autoregressive decoder needs a causal mask.
     - Predict how the attention-score matrix changes when sequence length doubles.
-  pass_condition: Skip basic instruction only if the learner can answer the conceptual items and complete a short implementation/debugging task without step-by-step guidance.
+    - Implement or debug a tiny single-head attention example without step-by-step guidance.
+  pass_condition: Skip guided instruction only if the learner can answer the conceptual items and complete the implementation/debugging task independently enough to satisfy the exit evidence.
 learning_route:
   mental_model:
     - source: book.raschka-llm-from-scratch
-      locator: Chapter 3, sections 3.3-3.5
-      purpose: Build self-attention from simple attention through trainable and causal attention.
+      locator: Chapter 3, sections 3.3-3.5; main chapter notebook ch03/01_main-chapter-code/ch03.ipynb
+      purpose: Progress from attention weights to trainable Q/K/V and causal masking.
   guided_practice:
     - source: book.raschka-llm-from-scratch
-      locator: Chapter 3 simple self-attention and trainable self-attention examples
-      task: Trace every intermediate tensor and explain why each operation is present.
+      locator: Chapter 3, sections 3.3-3.5 examples
+      task: Trace each intermediate tensor, shape, softmax dimension, and mask operation.
   independent_practice:
-    - task: Implement a small causal self-attention module from a blank function signature and test it on a short sequence.
+    - artifact: labs/self-attention/
+      task: Complete the causal self-attention lab, tests, visualization, and failure exercise.
   visual:
     - source: visual.3blue1brown-attention
-      purpose: Develop intuition for attention computation and representation mixing.
+      locator: Attention lesson
+      purpose: Build geometric and token-mixing intuition.
     - source: visual.jay-alammar-illustrated-transformer
+      locator: Self-attention section
       purpose: Connect self-attention to the transformer block.
 experiments:
   - Predict and measure runtime and memory as sequence length increases.
   - Plot attention probabilities before and after causal masking.
-  - Inject an off-by-one masking error and diagnose it from the matrix and generated behavior.
+  - Inject an off-by-one masking error and diagnose it from the matrix and behavior.
 exit_evidence:
   - Explain Q, K, V, scaling, and causal masking from memory.
   - Produce a working causal self-attention implementation with tests.
@@ -68,7 +72,7 @@ review:
 project_spines:
   - foundation
 resources:
-  primary:
+  teaching:
     - book.raschka-llm-from-scratch
   visual:
     - visual.jay-alammar-illustrated-transformer
