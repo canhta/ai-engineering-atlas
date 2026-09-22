@@ -16,7 +16,10 @@ milestones:
   - security-failure-work
   - incident-and-feedback
 competencies:
+  - ai.model-selection
   - ai.evaluation
+  - agents.deterministic-vs-agentic
+  - security.prompt-injection
 evidence:
   - product-brief
   - baseline-results

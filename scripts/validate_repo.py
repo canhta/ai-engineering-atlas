@@ -422,6 +422,7 @@ PROJECT_REQUIRED = {
     "evidence",
 }
 project_ids = set()
+projects = []
 
 for path in sorted((ROOT / "projects").rglob("project.yaml")):
     rel = path.relative_to(ROOT)
@@ -434,6 +435,8 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
 
     for field in sorted(PROJECT_REQUIRED - data.keys()):
         errors.append(f"{rel}: missing '{field}'")
+
+    projects.append({"data": data, "path": path})
 
     pid = data.get("id")
     if pid:
@@ -451,6 +454,32 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
 
     if not path.with_name("README.md").exists():
         errors.append(f"{rel}: project requires README.md")
+
+
+# Ready competencies that target applied evidence must be integrated into
+# at least one declared project on a matching project spine.
+for cid, route in route_competencies.items():
+    data = route["data"]
+    if data.get("status") != "ready":
+        continue
+    if "applied" not in (data.get("target_states") or []):
+        continue
+
+    required_spines = set(data.get("project_spines") or [])
+    matches = []
+
+    for project in projects:
+        pdata = project["data"]
+        if cid not in (pdata.get("competencies") or []):
+            continue
+        if required_spines & set(pdata.get("spines") or []):
+            matches.append(pdata.get("id"))
+
+    if not matches:
+        errors.append(
+            f"{route['path'].relative_to(ROOT)}: target state applied requires "
+            "a project.yaml that declares this competency on a matching spine"
+        )
 
 
 # ---------------------------------------------------------------------------
