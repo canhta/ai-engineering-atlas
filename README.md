@@ -105,9 +105,9 @@ Rules for AI agents working on the repository are in [AGENTS.md](AGENTS.md).
 
 ## Contributing
 
-The project is still being assembled. Contributions should keep curriculum topics separate from the resources used to teach them, and substantial curriculum changes should include supporting evidence.
+Contributions are welcome for curriculum corrections, learning resources, assessments, labs, visual material, and repository tooling.
 
-Contribution guidelines and issue templates will be added as the curriculum structure is filled in.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Acknowledgements
 
@@ -115,4 +115,4 @@ The repository structure and learning workflow draw on patterns used by [OSSU Co
 
 ## License
 
-MIT
+[MIT](LICENSE)
