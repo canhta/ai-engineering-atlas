@@ -100,10 +100,10 @@ const practisedBy: PrereqEntry[] = trackedItemsPointingAt(ref).map((i) => ({
   url: itemUrl(lang, refOf(trackedCollection, i)),
 }));
 
-// A page with a runner is a workbench (DESIGN.md → Labs): the other blocks read in one column,
-// the runner sits beside them; there is no rail.
-const runner = blocks.find((b) => b.type === "runner");
-const reading = blocks.filter((b) => b !== runner);
+// A page with a runner or a form is a workbench (DESIGN.md → Labs): the other blocks read in one
+// column, the bench sits beside them; there is no rail.
+const bench = blocks.find((b) => b.type === "runner" || b.type === "form");
+const reading = blocks.filter((b) => b !== bench);
 
 let stepNumber = 0;
 const railEntries: RailEntry[] = blocks.map((b) => {
@@ -163,15 +163,15 @@ const railEntries: RailEntry[] = blocks.map((b) => {
       </div>
       {prereqs.length > 0 && <PrereqLine client:idle lang={lang} entries={prereqs} />}
       {practisedBy.length > 0 && <PrereqLine client:idle lang={lang} entries={practisedBy} lead={t("lab.practises")} />}
-      {runner && (
-        <a class="button-quiet bench-jump" href={`#${runner.id}`}>
+      {bench && (
+        <a class="button-quiet bench-jump" href={`#${bench.id}`}>
           <Icon name="code" />
-          {t("lab.toCode")}
+          {bench.type === "form" ? t("form.toForm") : t("lab.toCode")}
         </a>
       )}
     </header>
 
-    {runner ? (
+    {bench ? (
       <div class="bench-grid">
         <div class="sheet-content">
           {reading.map((b) => (
@@ -191,17 +191,17 @@ const railEntries: RailEntry[] = blocks.map((b) => {
             </section>
           ))}
         </div>
-        <section id={runner.id} class="bench" aria-labelledby={`${runner.id}-title`}>
-          <h2 id={`${runner.id}-title`} class="bench-title" lang={langAttr(text(runner.title, lang), lang)}>
-            {text(runner.title, lang).value}
+        <section id={bench.id} class="bench" aria-labelledby={`${bench.id}-title`}>
+          <h2 id={`${bench.id}-title`} class="bench-title" lang={langAttr(text(bench.title, lang), lang)}>
+            {text(bench.title, lang).value}
           </h2>
           <Block
-            block={runner}
+            block={bench}
             lang={lang}
             itemRef={ref}
             target={target}
             after={[]}
-            headingId={`${runner.id}-title`}
+            headingId={`${bench.id}-title`}
             sourcePath={page.source_path}
           />
         </section>

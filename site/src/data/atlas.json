@@ -6903,7 +6903,8 @@
           "path": "labs/agentic-design",
           "files": [
             "README.md",
-            "decision-rubric.md"
+            "decision-rubric.md",
+            "lab.yaml"
           ]
         },
         "page": {
@@ -6920,6 +6921,125 @@
                 "en": "Companion practice for `agents.deterministic-vs-agentic`.\n\n## Goal\n\nDecide whether a task should use:\n\n- a single model call;\n- a deterministic workflow;\n- a workflow with bounded model decisions;\n- an autonomous agent loop.\n\nThe goal is not to build the most agentic system. It is to add autonomy only when measured task performance justifies the added cost, latency, and failure surface.\n\n## Task 1 — pick a real task\n\nChoose a task with an observable outcome.\n\nGood examples:\n\n- answer a support question and optionally create a ticket;\n- investigate a repository issue;\n- research a question across several sources;\n- triage a request and route it to a specialist flow.\n\nWrite:\n\n- success criteria;\n- allowed tools/actions;\n- hard safety constraints;\n- maximum cost/steps/latency where relevant.\n\n## Task 2 — build the simplest baseline\n\nStart with the least autonomous design that could work.\n\nExamples:\n\n- one model call;\n- fixed prompt chain;\n- deterministic router;\n- explicit workflow state machine.\n\nMeasure it on a small versioned task set.\n\n## Task 3 — failure analysis\n\nClassify failures.\n\nAsk:\n\n- Did fixed routing choose the wrong branch?\n- Did the task require an unpredictable number of steps?\n- Did the system need to react to tool results?\n- Was the failure actually caused by poor context/tool design rather than lack of autonomy?\n\nDo not introduce an agent until the failure analysis motivates it.\n\n## Task 4 — add autonomy\n\nImplement an agentic version only if needed.\n\nKeep:\n\n- tool interfaces explicit;\n- stop conditions;\n- maximum iterations;\n- permission boundaries;\n- traces of model decisions and tool results.\n\nMeasure on the **same task set**.\n\n## Task 5 — compare\n\nUse [decision-rubric.md](decision-rubric.md).\n\nCompare:\n\n- task success;\n- failure types;\n- number of model calls / steps;\n- latency;\n- cost;\n- recoverability/debuggability.\n\nA performance improvement that does not justify added complexity is a valid reason to keep the workflow.\n\n## Transfer challenge\n\nTake a task whose subtasks are known in advance and one whose subtasks emerge from intermediate results.\n\nChoose an architecture for each and defend why the choices differ.\n\n## Evidence\n\nTo claim **demonstrated**, produce:\n\n- baseline architecture;\n- failure analysis;\n- agentic or more flexible alternative when justified;\n- same-set comparison;\n- written complexity decision.\n\nFor **applied** evidence, use the decision in a reference or real system and retain traces/eval results."
               },
               "format": "markdown"
+            },
+            {
+              "type": "form",
+              "id": "form",
+              "title": {
+                "en": "Answer the rubric",
+                "vi": "Trả lời theo tiêu chí"
+              },
+              "step": true,
+              "fields": [
+                {
+                  "id": "decomposed",
+                  "label": {
+                    "en": "Can the task be decomposed into known fixed steps?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "predictable-branches",
+                  "label": {
+                    "en": "Are branches/categories predictable?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "reacts-to-results",
+                  "label": {
+                    "en": "Must later steps react to unpredictable tool/environment results?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "measurable-success",
+                  "label": {
+                    "en": "Is success objectively measurable?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "required-autonomy",
+                  "label": {
+                    "en": "What autonomy is actually required?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "new-failure-surface",
+                  "label": {
+                    "en": "What new failure surface does autonomy add?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "cost-latency",
+                  "label": {
+                    "en": "What are cost/latency differences?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "traceable-failures",
+                  "label": {
+                    "en": "Can failures be traced and reproduced?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "bounded-permissions",
+                  "label": {
+                    "en": "Are tools and permissions bounded?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "stop-condition",
+                  "label": {
+                    "en": "What stop condition prevents unbounded work?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "architecture",
+                  "label": {
+                    "en": "Architecture"
+                  },
+                  "type": "choice",
+                  "help": {
+                    "en": "Choose the simplest architecture that meets the measured requirement."
+                  },
+                  "options": [
+                    {
+                      "en": "A single model call"
+                    },
+                    {
+                      "en": "A deterministic workflow"
+                    },
+                    {
+                      "en": "A workflow with bounded model decisions"
+                    },
+                    {
+                      "en": "An autonomous agent loop"
+                    }
+                  ]
+                },
+                {
+                  "id": "decision-evidence",
+                  "label": {
+                    "en": "Evidence"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "increase-autonomy",
+                  "label": {
+                    "en": "What would make you increase autonomy later?"
+                  },
+                  "type": "longtext"
+                }
+              ]
             }
           ]
         }
@@ -6988,6 +7108,7 @@
             "README.md",
             "candidates.csv",
             "decision-template.md",
+            "lab.yaml",
             "scenario.md"
           ]
         },
@@ -7005,6 +7126,110 @@
                 "en": "Companion practice for `ai.model-selection`.\n\n## Goal\n\nChoose a model from evidence and constraints rather than reputation or a single benchmark.\n\nThis lab uses synthetic candidate profiles so the decision process is reproducible. The numbers are **not claims about real providers or models**.\n\n## Scenario\n\nRead [scenario.md](scenario.md) and [candidates.csv](candidates.csv).\n\nThe product has:\n\n- hard constraints that cannot be violated;\n- quality requirements;\n- latency and cost goals;\n- an evaluation set that can be used to compare real candidates later.\n\n## Task 1 — eliminate infeasible candidates\n\nBefore ranking anything, identify hard constraints.\n\nFor each candidate, record:\n\n- pass/fail on hard constraints;\n- missing evidence;\n- assumptions.\n\nA high-quality model that violates a hard constraint is not a candidate.\n\n## Task 2 — define the decision rule\n\nWrite the decision rule **before** selecting a winner.\n\nInclude:\n\n- minimum quality threshold;\n- latency threshold;\n- cost ceiling;\n- deployment/privacy requirement;\n- tie-breakers;\n- what uncertainty requires another experiment.\n\nUse [decision-template.md](decision-template.md).\n\n## Task 3 — choose and defend\n\nSelect a candidate from the synthetic profiles.\n\nYour explanation should show:\n\n- why rejected candidates were rejected;\n- which trade-off determined the final choice;\n- what new evidence could change the choice.\n\nThere is deliberately no single reference answer.\n\n## Task 4 — sensitivity test\n\nChange one constraint:\n\n- traffic grows 10×;\n- p95 latency requirement is cut in half;\n- data must remain inside a private environment;\n- quality threshold increases;\n- budget is reduced.\n\nRe-run the decision.\n\nIf your answer never changes, inspect whether your decision process is actually constraint-driven.\n\n## Task 5 — replace synthetic profiles with real evidence\n\nFor stronger evidence, compare 2-3 models/providers on a small versioned eval set from your own project.\n\nRecord:\n\n- model/version/date;\n- evaluation-set version;\n- quality;\n- p50/p95 latency;\n- cost for the measured workload;\n- operational constraints;\n- result.\n\nDo not copy public leaderboard scores as a substitute for task-specific evidence.\n\n## Transfer challenge\n\nA second product needs batch document classification rather than interactive generation.\n\nExplain which parts of your original model-selection process remain valid and which criteria change.\n\n## Evidence\n\nTo claim **demonstrated**, keep:\n\n- hard-constraint filter;\n- decision rule written before selection;\n- comparison table;\n- decision record;\n- sensitivity test.\n\nTo claim **applied**, use the process to make a real choice in a project and preserve the evaluation evidence."
               },
               "format": "markdown"
+            },
+            {
+              "type": "form",
+              "id": "form",
+              "title": {
+                "en": "Answer the rubric",
+                "vi": "Trả lời theo tiêu chí"
+              },
+              "step": true,
+              "fields": [
+                {
+                  "id": "task",
+                  "label": {
+                    "en": "What is the actual task and user-facing success condition?"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "hard-constraints",
+                  "label": {
+                    "en": "Hard constraints"
+                  },
+                  "type": "longtext"
+                },
+                {
+                  "id": "evaluation-set",
+                  "label": {
+                    "en": "Evaluation set/version"
+                  },
+                  "type": "text"
+                },
+                {
+                  "id": "candidates",
+                  "label": {
+                    "en": "Evaluation evidence"
+                  },
+                  "type": "table",
+                  "help": {
+                    "en": "One row per candidate."
+                  },
+                  "columns": [
+                    {
+                      "id": "candidate",
+                      "label": {
+                        "en": "Candidate"
+                      }
+                    },
+                    {
+                      "id": "feasible",
+                      "label": {
+                        "en": "Feasible?"
+                      }
+                    },
+                    {
+                      "id": "quality",
+                      "label": {
+                        "en": "Quality"
+                      }
+                    },
+                    {
+                      "id": "latency",
+                      "label": {
+                        "en": "p95 latency"
+                      }
+                    },
+                    {
+                      "id": "cost",
+                      "label": {
+                        "en": "Cost"
+                      }
+                    },
+                    {
+                      "id": "notes",
+                      "label": {
+                        "en": "Operational notes"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "decision-rule",
+                  "label": {
+                    "en": "Decision rule"
+                  },
+                  "type": "longtext",
+                  "help": {
+                    "en": "Write this before choosing."
+                  }
+                },
+                {
+                  "id": "selected",
+                  "label": {
+                    "en": "Selected"
+                  },
+                  "type": "text"
+                },
+                {
+                  "id": "rejected",
+                  "label": {
+                    "en": "Rejected candidates and reasons"
+                  },
+                  "type": "longtext"
+                }
+              ]
             }
           ]
         }

@@ -1,0 +1,42 @@
+# Browser contract: the web atlas renders this lab as a structured decision form instead of a code
+# runner (rfcs/0000-interactive-web-atlas.md -> In-browser labs -> Decision labs). Field wording is
+# copied from decision-template.md; checked by scripts/validate_labs.py.
+browser:
+  runtime: form
+  fields:
+    - id: task
+      label: What is the actual task and user-facing success condition?
+      type: longtext
+    - id: hard-constraints
+      label: Hard constraints
+      type: longtext
+    - id: evaluation-set
+      label: Evaluation set/version
+      type: text
+    - id: candidates
+      label: Evaluation evidence
+      type: table
+      help: One row per candidate.
+      columns:
+        - id: candidate
+          label: Candidate
+        - id: feasible
+          label: Feasible?
+        - id: quality
+          label: Quality
+        - id: latency
+          label: p95 latency
+        - id: cost
+          label: Cost
+        - id: notes
+          label: Operational notes
+    - id: decision-rule
+      label: Decision rule
+      type: longtext
+      help: Write this before choosing.
+    - id: selected
+      label: Selected
+      type: text
+    - id: rejected
+      label: Rejected candidates and reasons
+      type: longtext

@@ -101,12 +101,38 @@ export interface RunnerBlock extends BlockBase {
   files: Record<string, string>;
   packages?: string[];
 }
+export interface FormFieldColumn {
+  id: string;
+  label: L10n;
+}
+export interface FormField {
+  id: string;
+  label: L10n;
+  type: "text" | "longtext" | "choice" | "table";
+  help?: L10n;
+  /** Choice values; set when type is choice. */
+  options?: L10n[];
+  /** Table columns; set when type is table. */
+  columns?: FormFieldColumn[];
+}
+export interface FormBlock extends BlockBase {
+  type: "form";
+  fields: FormField[];
+}
 export interface DataBlock extends BlockBase {
   type: "data";
   value: unknown;
 }
 export type Block =
-  TextBlock | ListBlock | PrerequisitesBlock | DiagnosticBlock | SourcesBlock | PracticeBlock | RunnerBlock | DataBlock;
+  | TextBlock
+  | ListBlock
+  | PrerequisitesBlock
+  | DiagnosticBlock
+  | SourcesBlock
+  | PracticeBlock
+  | RunnerBlock
+  | FormBlock
+  | DataBlock;
 export const BLOCK_TYPES = [
   "text",
   "list",
@@ -115,6 +141,7 @@ export const BLOCK_TYPES = [
   "sources",
   "practice",
   "runner",
+  "form",
   "data",
 ] as const;
 

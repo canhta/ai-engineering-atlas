@@ -2,6 +2,7 @@
 // Pure functions over the progress.yaml v2 shape (schemas/progress.schema.json); storage lives in
 // progress-store.ts. A state changes only when an evidence item is recorded.
 import { parse, stringify } from "yaml";
+import type { FormAnswers } from "./lab-form";
 
 export const STATES = ["unassessed", "gap", "learning", "demonstrated", "transferred", "retained", "applied"] as const;
 export const TARGET_STATES = ["demonstrated", "transferred", "retained", "applied"] as const;
@@ -64,6 +65,9 @@ export interface Progress {
   version: 2;
   updated_at: string;
   competencies: Record<string, CompetencyProgress>;
+  /** Decision-lab draft answers, keyed by lab ref, so they travel with export/import. Optional: the
+   *  schema's root `additionalProperties: true` accepts it without a dedicated schema change. */
+  lab_forms?: Record<string, FormAnswers>;
 }
 
 export type EvidenceInput = Omit<Evidence, "id" | "recorded_at">;

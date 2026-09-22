@@ -79,7 +79,7 @@ Last updated: 2026-09-22
 - [ ] Owner review of the lab UI and its Vietnamese strings
 - [ ] Host Pyodide packages (wheels) if a lab needs more than the standard library; `browser.packages` is rejected until then
 - [ ] `self-attention`: port to NumPy in place, or keep PyTorch local-only (owner decision; no parallel variant)
-- [ ] `agentic-design` and `model-selection` as rubric forms
+- [x] `agentic-design` and `model-selection` as rubric forms
 - [ ] Help ladder and reviewed feedback keys (en/vi); highest step recorded as `independence`
 - [x] CI step running each browser lab under Pyodide (Node) against CPython `python tests.py` (`pnpm run test:labs`, in `make site-check`, `validate.yml`, and `deploy.yml`)
 

@@ -16,7 +16,7 @@ import {
   today,
   toYaml,
 } from "../../lib/progress";
-import { useProgress } from "../../lib/progress-store";
+import { allLabFormAnswers, useProgress, writeLabFormAnswers } from "../../lib/progress-store";
 import { type GraphItem, NEXT_LIMIT } from "../../lib/recommend";
 import type { ItemDetail, NextLink, RegionData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
@@ -70,7 +70,10 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
 
   const exportFile = () => {
     if (!progress) return;
-    const blob = new Blob([toYaml(progress)], { type: "application/yaml" });
+    // Decision-lab drafts live in their own storage entries; fold them in so they travel with the export.
+    const labForms = allLabFormAnswers();
+    const withForms = Object.keys(labForms).length > 0 ? { ...progress, lab_forms: labForms } : progress;
+    const blob = new Blob([toYaml(withForms)], { type: "application/yaml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -221,7 +224,13 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
             <Button
               className="pill pill-primary"
               onPress={() => {
-                saveProgress(pending);
+                // Decision-lab drafts get their own storage entry (guarded like other lab drafts);
+                // the main progress record keeps only evidence and state.
+                const { lab_forms: labForms, ...rest } = pending;
+                saveProgress(rest);
+                for (const [labRef, answers] of Object.entries(labForms ?? {})) {
+                  writeLabFormAnswers(labRef, answers);
+                }
                 setPending(null);
                 setMessage(t("progress.import.done"));
               }}

@@ -118,7 +118,7 @@ collections:
     label: { en: Labs, vi: Lab }
     ref_prefix: lab
     items_from: "labs/*/"
-    content_from: lab.yaml # optional per lab; a `browser:` contract adds the runner block
+    content_from: lab.yaml # optional per lab; a `browser:` contract adds the runner or form block
     fields:
       path: { label: { en: Repository path, vi: Đường dẫn repo } }
       files: { label: { en: Files, vi: File } }
@@ -130,6 +130,12 @@ collections:
         type: runner
         map: { runtime: runtime, editable: editable, run: run, reference: reference, files: files, packages: packages }
         title: { en: Run the tests, vi: Chạy test }
+      - id: form
+        step: true
+        field: browser
+        type: form
+        map: { runtime: runtime, fields: fields }
+        title: { en: Answer the rubric, vi: Trả lời theo tiêu chí }
 
   projects:
     label: { en: Projects, vi: Dự án }

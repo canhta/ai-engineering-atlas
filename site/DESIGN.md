@@ -217,6 +217,11 @@ Every lab has a page that renders its README (a Markdown `text` block). A lab wi
 - Evidence (after pass only): the competency (radio when several), the state it supports (learning or demonstrated, starting at learning), a note pre-filled with the run file, runtime version, and the SHA-256 of the code. Kind `implementation`, review `automated`.
 - Below 1024: one column, brief then bench; the header gets "Go to the code". The editor keeps its height; toolbar buttons wrap.
 
+**The form variant (decision labs).** `agentic-design` and `model-selection` have no code: `lab.yaml` declares `browser: {runtime: form}`, so the page renders a `form` block in the same bench position (brief | bench, no rail). Wording stays exactly as written in `decision-rubric.md` / `decision-template.md`; the form only adds structure: `text`, `longtext`, `choice` (a select, verbatim options), `table` (named columns, add/remove row), each with an optional `help` line (`aria-describedby`, not folded into the accessible name). The rubric stays visible while answering; a decision field the learner must write before their own summary (e.g. `model-selection`'s decision rule, before the selected candidate) is enforced only by field order, never by hiding.
+
+- Every field is required. "Record evidence" appears once every field is non-empty (a table needs one fully filled row), pre-filled as kind `decision`, `review_method: self`, summarised in the note — the code labs' own field log form. "Export answers" downloads the filled template as Markdown, matching `decision-template.md`'s structure.
+- Drafts save per lab in guarded local storage, restore on return, and travel with `progress.yaml` export/import as a `lab_forms` map. Mobile: one column, header gets "Go to the form"; a table's columns stack into labelled rows.
+
 ### States every surface handles
 
 Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home and Progress tiles, ready rows, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").

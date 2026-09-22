@@ -5,6 +5,7 @@ import type { Lang } from "../../i18n";
 import { refOf } from "../../lib/refs";
 import {
   BLOCK_TYPES,
+  resolveRef,
   resolveResource,
   stateLabels,
   targetOf,
@@ -14,7 +15,9 @@ import {
   type Block,
   type Localized,
 } from "../../lib/atlas";
+import type { FormField as ResolvedFormField } from "../../lib/lab-form";
 import { TARGET_STATES, type TargetState } from "../../lib/progress";
+import DecisionForm from "../react/DecisionForm";
 import Diagnostic, { type NextLink } from "../react/Diagnostic";
 import LabRunner, { type LabCompetency } from "../react/LabRunner";
 import SourceTable from "../react/SourceTable";
@@ -50,9 +53,9 @@ const sourceRows =
       }))
     : [];
 const tasks: Localized[] = block.type === "diagnostic" ? block.tasks.map((prompt) => text(prompt, lang)) : [];
-// A runner records evidence against the tracked items that point at this item.
+// A runner or form block records evidence against the tracked items that point at this item.
 const competencies: LabCompetency[] =
-  block.type === "runner"
+  block.type === "runner" || block.type === "form"
     ? trackedItemsPointingAt(itemRef).map((item) => {
         const title = text(item.title, lang);
         const declared = targetOf(trackedCollection, item);
@@ -66,6 +69,20 @@ const competencies: LabCompetency[] =
         };
       })
     : [];
+// A form block's fields carry curriculum text (L10n); resolve them to the page language server-side,
+// same as sourceRows/tasks above, so the island receives plain localized strings only.
+const formFields: ResolvedFormField[] =
+  block.type === "form"
+    ? block.fields.map((f) => ({
+        id: f.id,
+        label: text(f.label, lang),
+        type: f.type,
+        help: f.help ? text(f.help, lang) : undefined,
+        options: f.options?.map((o) => text(o, lang)),
+        columns: f.columns?.map((c) => ({ id: c.id, label: text(c.label, lang) })),
+      }))
+    : [];
+const formTitle = block.type === "form" ? text(resolveRef(itemRef)?.item.title, lang).value : "";
 ---
 
 {block.type === "text" && <TextBlock block={block} lang={lang} sourcePath={sourcePath} />}
@@ -79,6 +96,17 @@ const competencies: LabCompetency[] =
     run={block.run}
     reference={block.reference}
     packages={block.packages}
+    competencies={competencies}
+    stateLabels={stateLabels(lang)}
+  />
+)}
+{block.type === "form" && (
+  <DecisionForm
+    client:load
+    lang={lang}
+    labRef={itemRef}
+    title={formTitle}
+    fields={formFields}
     competencies={competencies}
     stateLabels={stateLabels(lang)}
   />
