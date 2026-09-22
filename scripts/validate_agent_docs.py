@@ -12,11 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {"node_modules", ".git", ".astro", "dist", "worktrees"}
 
 # Line budgets. Claude Code recommends <200 lines per instruction file; the root
-# file predates this check, so its budget only stops further growth.
+# file predates this check, so its budget only stops further growth. DESIGN.md is
+# reference, read when touching a surface rather than every turn, and it grows with
+# the surfaces themselves (labs, decision forms, next step, collection indexes), so
+# its budget is raised deliberately rather than paid for by thinning the prose.
 LINE_BUDGETS = {
     "AGENTS.md": 200,
     "site/AGENTS.md": 150,
-    "site/DESIGN.md": 300,
+    "site/DESIGN.md": 340,
 }
 # Codex concatenates AGENTS.md files from the repo root down, capped at 32 KiB.
 CHAIN_BYTES = 32 * 1024

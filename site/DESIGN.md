@@ -36,6 +36,7 @@ Footer: site name and licence on the left, a "Star on GitHub" pill in the middle
 /{lang}/                     Home
 /{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
 /{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
+/{lang}/<collection>/         Index of a collection (labs, projects, paths), linked from the Atlas
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Field log: your states, review queue, your data
 ```

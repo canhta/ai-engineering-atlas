@@ -1,0 +1,127 @@
+---
+// Index of a collection that is not the tracked one (labs, projects, paths today). Generic: the
+// content model names the collection and its fields, so a new collection gets a page with no new
+// code (DESIGN.md → Information architecture).
+import Breadcrumb from "../../../components/Breadcrumb.astro";
+import Icon from "../../../components/Icon.astro";
+import Base from "../../../layouts/Base.astro";
+import { languages, type Lang, useTranslations } from "../../../i18n";
+import {
+  collections,
+  fieldChips,
+  itemsOf,
+  itemUrl,
+  pageSegment,
+  text,
+  trackedCollection,
+  trackedItemsPointingAt,
+} from "../../../lib/atlas";
+import { refOf } from "../../../lib/refs";
+import { mapUrl } from "../../../lib/urls";
+
+export function getStaticPaths() {
+  const langs = Object.keys(languages) as Lang[];
+  return collections
+    .filter((c) => c.id !== trackedCollection.id)
+    .flatMap((c) => langs.map((lang) => ({ params: { lang, collection: pageSegment(c) }, props: { collection: c } })));
+}
+
+const { collection } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const label = text(collection.label, lang);
+
+const rows = itemsOf(collection.id).map((item) => {
+  const ref = refOf(collection, item);
+  return {
+    ref,
+    title: text(item.title, lang),
+    url: itemUrl(lang, ref),
+    chips: (collection.list_fields ?? []).flatMap((field) => fieldChips(collection, item, field, lang)),
+    // What this item is practice for: the tracked items that point at it.
+    practises: trackedItemsPointingAt(ref).map((tracked) => ({
+      ref: refOf(trackedCollection, tracked),
+      title: text(tracked.title, lang),
+    })),
+  };
+});
+const withPage = rows.filter((row) => row.url).length;
+---
+
+<Base lang={lang} title={label.value} description={t("collection.intro", { label: label.value })}>
+  <Breadcrumb lang={lang} crumbs={[{ label: t("nav.atlas"), href: mapUrl(lang) }, { label: label.value }]} />
+  <h1 class="display" lang={label.lang === lang ? undefined : label.lang}>
+    {label.value}
+  </h1>
+  <p class="lead">
+    {withPage === rows.length
+      ? t("collection.all", { total: rows.length })
+      : t("collection.count", { shown: withPage, total: rows.length })}
+  </p>
+
+  <ul class="collection-index">
+    {rows.map((row) => (
+      <li>
+        <div class="collection-head">
+          {row.url ? (
+            <a href={row.url} lang={row.title.lang === lang ? undefined : row.title.lang}>
+              {row.title.value}
+            </a>
+          ) : (
+            <span lang={row.title.lang === lang ? undefined : row.title.lang}>{row.title.value}</span>
+          )}
+          {row.chips.map((chip) => (
+            <span class="chip">{chip.label.value}</span>
+          ))}
+        </div>
+        {row.practises.length > 0 && (
+          <p class="muted small">
+            {t("collection.practisesFor")}{" "}
+            {row.practises.map((item, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={itemUrl(lang, item.ref)}>{item.title.value}</a>
+              </>
+            ))}
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <p class="muted small">
+    <a href={mapUrl(lang)}>
+      {t("nav.atlas")}
+      <Icon name="forward" />
+    </a>
+  </p>
+</Base>
+
+<style>
+  .collection-index {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    max-width: var(--measure);
+    margin: var(--space-8) 0 var(--space-12);
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-index li {
+    padding-bottom: var(--space-5);
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .collection-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: var(--text-h3);
+  }
+
+  .collection-index p {
+    margin: var(--space-2) 0 0;
+  }
+</style>

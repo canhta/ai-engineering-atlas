@@ -3,7 +3,7 @@
 import Base from "../../../layouts/Base.astro";
 import AtlasExplorer from "../../../components/react/AtlasExplorer";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
-import { site, stateLabels, text, trackedCollection as c } from "../../../lib/atlas";
+import { collections, pageSegment, site, stateLabels, text, trackedCollection as c } from "../../../lib/atlas";
 import { facets, itemDetails, listColumns, plateRegions, relatedFacets } from "../../../lib/summaries";
 import { mapUrl } from "../../../lib/urls";
 
@@ -13,6 +13,10 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const regions = plateRegions(lang);
 const total = regions.reduce((n, r) => n + r.tiles.length, 0);
+// The other collections have index pages of their own (labs, projects, paths).
+const others = collections
+  .filter((other) => other.id !== c.id)
+  .map((other) => ({ href: `/${lang}/${pageSegment(other)}/`, label: text(other.label, lang) }));
 ---
 
 <Base lang={lang} title={t("map.title")} section="atlas">
@@ -31,4 +35,25 @@ const total = regions.reduce((n, r) => n + r.tiles.length, 0);
     listColumns={listColumns(lang)}
     stateLabels={stateLabels(lang)}
   />
+
+  <nav class="collection-links" aria-label={t("collection.also")}>
+    <span class="muted small">{t("collection.also")}</span>
+    {others.map((other) => (
+      <a href={other.href} lang={other.label.lang === lang ? undefined : other.label.lang}>
+        {other.label.value}
+      </a>
+    ))}
+  </nav>
 </Base>
+
+<style>
+  .collection-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin: var(--space-12) 0 var(--space-8);
+    padding-top: var(--space-5);
+    border-top: var(--border-width) solid var(--line);
+  }
+</style>

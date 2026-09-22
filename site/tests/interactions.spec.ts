@@ -466,3 +466,19 @@ test("the frame links to the repository and to the owner's contacts", async ({ p
   for (const link of links)
     await expect(contacts.filter({ hasText: "" }).and(page.locator(`[href="${link.url}"]`))).toHaveCount(1);
 });
+
+test("each collection has an index page, reachable from the atlas", async ({ page }) => {
+  await open(page, "/en/map/");
+  const also = page.getByRole("navigation", { name: "Also in the atlas" });
+  await expect(also.getByRole("link", { name: "Labs" })).toHaveAttribute("href", "/en/labs/");
+
+  await also.getByRole("link", { name: "Labs" }).click();
+  await expect(page).toHaveURL(/\/en\/labs\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Labs" })).toBeVisible();
+
+  // Every lab is listed, and each says which competency it is practice for.
+  const labs = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8")).items.labs;
+  await expect(page.locator(".collection-index > li")).toHaveCount(labs.length);
+  await page.getByRole("link", { name: "Self-Attention Lab" }).click();
+  await expect(page).toHaveURL(/\/en\/labs\/self-attention\/$/);
+});

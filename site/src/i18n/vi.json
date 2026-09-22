@@ -243,5 +243,10 @@
   "form.evidence.method": "Tự đánh giá theo tiêu chí ở trên.",
   "form.evidence.note": "Tự đánh giá theo tiêu chí. {summary}",
   "progress.byRegion": "Bạn đang ở đâu",
-  "progress.regionCount": "{done}/{ready} đã làm được"
+  "progress.regionCount": "{done}/{ready} đã làm được",
+  "collection.intro": "Tất cả {label}, kèm kỹ năng mà mỗi mục là phần thực hành.",
+  "collection.count": "{shown}/{total} có trang riêng",
+  "collection.practisesFor": "Thực hành cho",
+  "collection.all": "{total} mục",
+  "collection.also": "Còn có trong atlas"
 }

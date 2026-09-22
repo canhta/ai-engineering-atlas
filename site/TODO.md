@@ -98,7 +98,7 @@ Last updated: 2026-09-22
 
 roadmap.sh gives every collection an index, a maintenance signal, and a shareable profile. We have item pages but nothing that lists them: `/en/labs/` is a 404 today.
 
-- [ ] Collection index pages `/{lang}/labs/`, `/{lang}/projects/`, `/{lang}/paths/`: generic, from the content model's collections (label, items, which have pages), so a new collection needs no new page
+- [x] Collection index pages `/{lang}/labs/`, `/{lang}/projects/`, `/{lang}/paths/`: generic, from the content model's collections, linked from the Atlas
 - [ ] Path as a screen: an ordered sequence of routes with the learner's state against each, the way a role roadmap reads. `paths/applied-ai-engineer.md` is prose today, so this is a curriculum change first (structured path list) and needs an RFC
 - [ ] Library `/{lang}/sources/`, roadmap.sh's guides page done our way: every source we route through, as a searchable, filterable index (type: book, course, paper, docs, video; domain; the routes that use it), each row linking straight to the public resource and to the routes that cite it with their exact locators. roadmap.sh writes its own guides; we point at the source and say what to read and why, which is the whole premise. Needs: a resource index built from `resources/*.yaml` plus the locators already in the routes, client-side search over it (no server), and a rule that every entry carries a working public URL (`make check` already validates links)
 - [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
