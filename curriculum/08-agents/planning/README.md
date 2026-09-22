@@ -4,6 +4,18 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) | Sections "Workflow: Orchestrator-workers", "Agents", "Combining and customizing these patterns", and "Summary" | Distinguish predictable workflow decomposition from dynamic task decomposition and keep complexity tied to measurable need. |
+| [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) | Sections "Scaling to full-stack coding" → "The architecture" (Planner), "Iterating on the harness", and "Removing the sprint construct" | Study planner granularity, under-scoping, cascading assumptions, and ablation of planner/decomposition scaffolding as model capability changes. |
+| [A practical guide to building agents](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) | Sections "What is an agent?", "Configuring instructions", "Orchestration", and "Single-agent systems" | Ground planning in executable workflow control, explicit steps/branches, completion conditions, and single-agent-first architecture. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 Planning is not a request for hidden reasoning. It is an external execution artifact that helps a stateful system decide what to do next and when the original assumptions are no longer valid.
