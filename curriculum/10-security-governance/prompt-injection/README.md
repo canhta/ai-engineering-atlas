@@ -4,6 +4,27 @@
 **Target:** L2 practical competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [OWASP LLM01:2025 Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) | Sections: "Types of Prompt Injection Vulnerabilities", "Prevention and Mitigation Strategies", and "Example Attack Scenarios" | Establish direct/indirect injection risks, impact, least-privilege controls, human approval, external-content segregation, and adversarial testing. |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 5 "Defensive Prompt Engineering" — Jailbreaking and Prompt Injection, and Defenses Against Prompt Attacks | Connect prompt attacks to application-level defensive design in foundation-model systems. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `security.auth` | [OWASP LLM01:2025 Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) | Prevention and Mitigation Strategies, especially privilege control and human approval for high-risk operations. | Patch the identity-versus-model boundary needed to understand deterministic authorization. |
+| `security.tool-permissions` | [OWASP LLM01:2025 Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) | Prevention and Mitigation Strategies, especially least privilege and privilege control. | Patch the tool-permission model needed for the trust-boundary lab. |
+| `ai.tool-calling` | [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) | Building block: The augmented LLM; Appendix 2: Prompt engineering your tools. | Patch the model/tool interaction needed to reason about compromised tool requests. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 A model can be influenced by user input or by external content it reads.
