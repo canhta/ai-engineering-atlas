@@ -42,3 +42,14 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 365
+
+  - id: book.stanford-ir
+    type: book
+    title: Introduction to Information Retrieval
+    author: Christopher D. Manning, Prabhakar Raghavan, and Hinrich Schütze
+    url: https://nlp.stanford.edu/IR-book/
+    roles: [curriculum-evidence, teaching, practice, assessment, reference]
+    covers: [retrieval.search, ai.embeddings, information-retrieval]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
