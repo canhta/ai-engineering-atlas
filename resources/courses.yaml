@@ -3,7 +3,7 @@ resources:
     type: course
     title: MIT Introduction to Deep Learning
     url: https://introtodeeplearning.com/
-    roles: [primary, visual]
+    roles: [curriculum-evidence, teaching, visual, practice]
     covers: [deep-learning]
     source_verified: true
     last_checked: 2026-09-22
@@ -12,8 +12,8 @@ resources:
     type: course
     title: Stanford CS336 — Language Modeling From Scratch
     url: https://cs336.stanford.edu/
-    roles: [reference, specialization]
-    covers: [llm-systems, language-model-training]
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [llm-systems, language-model-training, llm.self-attention]
     source_verified: true
     last_checked: 2026-09-22
 
@@ -21,7 +21,27 @@ resources:
     type: course
     title: Hugging Face LLM Course
     url: https://huggingface.co/learn/llm-course/
-    roles: [reference, practice]
+    roles: [teaching, practice, reference]
     covers: [transformers, open-source-models]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: course.made-with-ml-evaluation
+    type: course
+    title: Made With ML — Evaluation
+    author: Goku Mohandas
+    url: https://madewithml.com/courses/mlops/evaluation/
+    roles: [teaching, practice, production-reference]
+    covers: [ai.evaluation, ml-evaluation]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: course.made-with-ml-product-design
+    type: course
+    title: Made With ML — Product Design
+    author: Goku Mohandas
+    url: https://madewithml.com/courses/mlops/product-design/
+    roles: [teaching, production-reference]
+    covers: [ai-product-framing, evaluation-planning]
     source_verified: true
     last_checked: 2026-09-22
