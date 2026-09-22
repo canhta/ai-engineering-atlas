@@ -10,6 +10,8 @@ For runtime context and external actions, continue with the [Context and Tools e
 
 For typed responses and answer-versus-abstain decisions, continue with the [Output and Trust evidence contract](output-and-trust/). Keep the same evaluation lineage so output reliability and abstention policy are measured against the system you already built.
 
+For durable execution and cross-session information, continue with the [State and Memory evidence contract](state-and-memory/). State must first prove crash/restart continuity; memory is added only after a real cross-session need is demonstrated.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -259,7 +261,46 @@ Do not use model self-reported confidence as the policy by default.
 
 **Decision:** record the chosen answer/abstain/fallback policy and what evidence would change it.
 
-## Milestone 11 — service and observability
+## Milestone 11 — durable execution state
+
+Use the [Agent State](../../curriculum/08-agents/state/) route.
+
+Take one already-justified multi-step or interruptible workflow and make its execution state explicit.
+
+**Evidence:**
+
+- state schema/version;
+- transition table;
+- durable run/session identifier;
+- persisted versus derived values;
+- checkpoint/event boundaries;
+- interruption after a completed side effect;
+- restart/resume trace;
+- duplicate-side-effect prevention;
+- stale/corrupt/incompatible-state test;
+- one state migration decision.
+
+**Decision:** explain why transcript-only continuity is insufficient.
+
+## Milestone 12 — cross-session memory
+
+Use the [Agent Memory](../../curriculum/08-agents/memory/) route.
+
+Add memory only for a measured cross-session need.
+
+**Experiment:**
+
+- preserve a no-memory baseline;
+- define memory scope, provenance, freshness, admission/write rules, and retrieval rules;
+- compare at least two memory policies;
+- test irrelevant, stale, conflicting, corrected, and deleted memories;
+- test cross-user/cross-scope isolation where identity exists;
+- trace exactly which memories enter current context;
+- measure task benefit together with harmful recall, latency, and context/token cost.
+
+**Decision:** keep, change, or remove memory from evidence.
+
+## Milestone 13 — service and observability
 
 Expose the system through an API or application boundary.
 
@@ -275,7 +316,7 @@ Trace at least:
 
 A trace should help answer **why** a bad result happened.
 
-## Milestone 12 — release gate
+## Milestone 14 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -288,7 +329,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 13 — security failure work
+## Milestone 15 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -301,7 +342,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 14 — incident and feedback loop
+## Milestone 16 — incident and feedback loop
 
 Inject or analyze one failure:
 
