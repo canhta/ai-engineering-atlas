@@ -7502,16 +7502,6 @@
     },
     {
       "type": "practice",
-      "from": "agents.long-running",
-      "to": "project:knowledge-assistant"
-    },
-    {
-      "type": "practice",
-      "from": "agents.orchestration",
-      "to": "project:knowledge-assistant"
-    },
-    {
-      "type": "practice",
       "from": "ai.evaluation",
       "to": "lab:evaluation-harness"
     },
