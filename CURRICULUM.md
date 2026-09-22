@@ -2,39 +2,68 @@
 
 AI Engineering Atlas is organized as a graph of competencies rather than a fixed sequence of lessons.
 
+The learning lifecycle and mastery model are defined in [LEARNING_MODEL.md](LEARNING_MODEL.md). Curriculum structure must serve that model.
+
 ## Competency levels
 
-| Level | Meaning |
+| Level | Expected capability |
 | --- | --- |
-| L0 | Awareness — recognize the concept and its purpose |
-| L1 | Working knowledge — understand use cases, trade-offs, and common failure modes |
-| L2 | Practical competence — implement or configure, debug, measure, and explain |
-| L3 | Deep engineering competence — design, optimize, compare alternatives, and mentor |
-| L4 | Specialist depth — reproduce or extend advanced techniques |
+| L0 | Recognize the concept and its purpose |
+| L1 | Explain, distinguish, and reason about common use cases and trade-offs |
+| L2 | Perform the skill and diagnose common failures |
+| L3 | Transfer the skill, design under constraints, compare alternatives, and optimize |
+| L4 | Reproduce, extend, deeply optimize, or teach specialist techniques |
 
-Most core AI Engineering topics target **L2**. Production-critical areas may target **L3**. Specialist topics are optional unless required by a role or project.
+These levels describe capability depth. Retention and real-system application are tracked separately.
 
-## Competency package
+## A competency is more than a topic
 
-Each competency should define:
+A mature competency should define:
 
-- a stable ID
-- domain
-- target level
-- prerequisites
-- learning outcomes
-- diagnostic checks
-- practice or experiments
-- exit criteria
-- curated resources
-- review metadata
+- why it belongs in the curriculum;
+- competency type;
+- target level;
+- prerequisites;
+- observable outcomes;
+- diagnostic evidence;
+- precise learning route;
+- guided or independent practice;
+- experiments or failure work when appropriate;
+- exit evidence;
+- transfer task when transfer matters;
+- project-spine connection when integration matters;
+- delayed review when retention matters;
+- reviewed sources.
 
-A learner may skip the study material when they can already satisfy the exit criteria.
+A learner may skip instruction when diagnostic evidence already satisfies the required capability. They should not receive a mastery state solely because they report familiarity.
+
+## Evidence states
+
+Learner progress may move through:
+
+unassessed → gap → learning → demonstrated → transferred → retained → applied
+
+Not every competency or learner needs the final state. Role and target depth determine how far evidence must go.
+
+## Curriculum versus resources
+
+The competency describes the capability.
+
+Books, lectures, papers, assignments, visual explanations, and repositories are resources used to reach or assess that capability.
+
+Replacing a resource should not silently redefine the competency.
 
 ## Curriculum changes
 
-Use a curriculum RFC when proposing a new required competency, changing a prerequisite, changing a target level, or changing learning outcomes.
+Use a curriculum RFC when proposing:
 
-Resource replacements do not necessarily require a curriculum change. A book or course may change while the competency remains the same.
+- a new required competency;
+- removing a required competency;
+- changing prerequisites;
+- changing target depth;
+- changing observable outcomes;
+- changing the evidence required for completion.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [rfcs/0000-template.md](rfcs/0000-template.md).
+Resource replacements normally do not require a curriculum change unless they alter what the learner is expected to know or do.
+
+See [LEARNING_MODEL.md](LEARNING_MODEL.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [rfcs/0000-template.md](rfcs/0000-template.md).
