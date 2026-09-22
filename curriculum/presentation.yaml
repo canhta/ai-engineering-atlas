@@ -1,0 +1,141 @@
+# Presentation config for the web atlas content model.
+# Read by scripts/build_site_data.py; contract in rfcs/0000-content-model.md.
+# Block order on a page is the order in this file. `ignore` lists fields
+# deliberately not rendered; any other unmapped field renders as a `data` block
+# and is reported by the build.
+version: 1
+
+site:
+  title: {en: AI Engineering Atlas, vi: AI Engineering Atlas}
+  tagline:
+    en: A gap-driven roadmap for software engineers learning modern AI engineering.
+    vi: Lộ trình theo khoảng trống năng lực cho kỹ sư phần mềm học AI engineering hiện đại.
+  repository: https://github.com/canhta/ai-engineering-atlas
+
+locales: [en, vi]
+
+vocabularies:
+  domain: {from: "curriculum/manifest.yaml#domains", key: id, label: title}
+  level:
+    from: "curriculum/manifest.yaml#levels"
+    values:  # merged onto the manifest entries
+      L0: {label: {en: awareness, vi: nhận biết}}
+      L1: {label: {en: working knowledge, vi: kiến thức làm việc}}
+      L2: {label: {en: practical competence, vi: năng lực thực hành}}
+      L3: {label: {en: deep engineering competence, vi: năng lực kỹ thuật chuyên sâu}}
+      L4: {label: {en: specialist depth, vi: chuyên sâu chuyên gia}}
+  status:
+    values:
+      ready: {label: {en: ready, vi: sẵn sàng}}
+      coverage: {label: {en: "mapped, no route", vi: "đã lập bản đồ, chưa có lộ trình"}}
+  competency_type:
+    values:
+      concept: {label: {en: concept, vi: khái niệm}}
+      mechanism: {label: {en: mechanism, vi: cơ chế}}
+      engineering-skill: {label: {en: engineering skill, vi: kỹ năng kỹ thuật}}
+      system-operation: {label: {en: system operation, vi: vận hành hệ thống}}
+      design-judgment: {label: {en: design judgment, vi: phán đoán thiết kế}}
+      production-competency: {label: {en: production competency, vi: năng lực vận hành production}}
+  state:
+    values:
+      unassessed: {label: {en: unassessed, vi: chưa đánh giá}}
+      gap: {label: {en: gap, vi: còn khoảng trống}}
+      learning: {label: {en: learning, vi: đang học}}
+      demonstrated: {label: {en: demonstrated, vi: đã chứng minh}}
+      transferred: {label: {en: transferred, vi: đã chuyển giao}}
+      retained: {label: {en: retained, vi: đã ghi nhớ}}
+      applied: {label: {en: applied, vi: đã áp dụng}}
+
+collections:
+  competencies:
+    label: {en: Competencies, vi: Năng lực}
+    items_from: "curriculum/catalog.yaml#competencies"
+    id: id
+    title: title
+    page_from: "{route}/competency.yaml"
+    fields:
+      domain: {label: {en: Domain, vi: Lĩnh vực}, vocabulary: domain}
+      status: {label: {en: Status, vi: Trạng thái}, vocabulary: status}
+      target_level: {label: {en: Target level, vi: Cấp độ mục tiêu}, vocabulary: level}
+      competency_types: {label: {en: Capability type, vi: Loại năng lực}, vocabulary: competency_type}
+      target_states: {label: {en: Target, vi: Mục tiêu}, vocabulary: state}
+    group_by: domain
+    facets: [status, target_level]
+    list_fields: [status, target_level]
+    page_when: {field: status, in: [seeded, ready]}
+    progress: {tracks: true, target_field: target_states}
+    relations:
+      - {type: prerequisite, field: prerequisites, direction: in}
+      - {type: practice, field: "learning_route.independent_practice[].artifact", direction: out, target: labs}
+    blocks:
+      - {id: why, field: why, type: text, title: {en: Why, vi: Vì sao}}
+      - id: prerequisites
+        field: prerequisites
+        type: prerequisites
+        support: prerequisite_support
+        bridge: {diagnostic: diagnostic, resource: source, locator: locator, purpose: purpose}
+        title: {en: Prerequisites, vi: Điều kiện tiên quyết}
+      - {id: outcomes, field: outcomes, type: list, title: {en: Outcomes, vi: Kết quả đầu ra}}
+      - id: diagnostic
+        step: true
+        field: diagnostic
+        type: diagnostic
+        map: {tasks: tasks, pass_condition: pass_condition}
+        title: {en: Diagnostic, vi: Chẩn đoán}
+      - id: sources
+        step: true
+        field: learning_route.mental_model
+        type: sources
+        row: {resource: source, locator: locator, purpose: purpose}
+        title: {en: Learning route, vi: Lộ trình học}
+      - id: visual
+        step: true
+        field: learning_route.visual
+        type: sources
+        row: {resource: source, locator: locator, purpose: purpose}
+        title: {en: Visual explanation, vi: Giải thích trực quan}
+      - id: practice
+        step: true
+        field: learning_route
+        type: practice
+        groups:
+          - {field: guided_practice, label: {en: Guided, vi: Có hướng dẫn}}
+          - {field: independent_practice, label: {en: Independent, vi: Tự làm}}
+        item: {text: task, path: artifact, resource: source, locator: locator}
+        title: {en: Practice, vi: Thực hành}
+      - {id: experiments, field: experiments, type: list, title: {en: Experiments, vi: Thí nghiệm}}
+      - {id: exit-evidence, step: true, field: exit_evidence, type: list, title: {en: Exit evidence, vi: Bằng chứng đầu ra}}
+      - {id: transfer, step: true, field: transfer.task, type: text, title: {en: Transfer, vi: Chuyển giao}}
+    ignore: [id, title, domain, status, curriculum_evidence, resources, metadata, project_spines, review]
+
+  labs:
+    label: {en: Labs, vi: Bài lab}
+    ref_prefix: lab
+    items_from: "labs/*/"
+    fields:
+      path: {label: {en: Repository path, vi: Đường dẫn trong repository}}
+      files: {label: {en: Files, vi: Tệp}}
+
+  projects:
+    label: {en: Projects, vi: Dự án}
+    ref_prefix: project
+    items_from: "projects/*/project.yaml"
+    title: title
+    fields:
+      path: {label: {en: Repository path, vi: Đường dẫn trong repository}}
+      spines: {label: {en: Spines, vi: Trục dự án}}
+    relations:
+      - {type: member, field: competencies, direction: out}
+    blocks:
+      - {id: purpose, field: purpose, type: text, title: {en: Purpose, vi: Mục đích}}
+      - {id: milestones, field: milestones, type: list, ordered: true, title: {en: Milestones, vi: Các mốc}}
+      - {id: evidence, field: evidence, type: list, title: {en: Evidence, vi: Bằng chứng}}
+    ignore: [id, title]
+
+  paths:
+    label: {en: Paths, vi: Lộ trình theo vai trò}
+    ref_prefix: path
+    items_from: "paths/*.md"
+    exclude: [README.md]
+    fields:
+      path: {label: {en: Repository path, vi: Đường dẫn trong repository}}

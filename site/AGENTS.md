@@ -31,9 +31,10 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 
 ## Data contract
 
-- `src/data/atlas.json` is generated from the catalog, competency contracts, resources, labs, projects, and paths. Regenerate it with `python scripts/build_site_data.py --write`; `make check` fails when it is stale.
-- Its shape is defined by [schemas/site-data.schema.json](../schemas/site-data.schema.json). A field the site needs goes into the builder and the schema in the same change.
-- Only `seeded` and `ready` routes get pages. Coverage items render as "mapped, no route".
+- `src/data/atlas.json` is the content model v2 ([RFC](../rfcs/0000-content-model.md), [schema](../schemas/site-data.schema.json)): site, vocabularies, collections, items with typed blocks, relations, resources. Regenerate it with `python scripts/build_site_data.py --write`; `make check` fails when it is stale.
+- The site renders only the content model. Curriculum field names, section titles, and vocabulary labels live in [curriculum/presentation.yaml](../curriculum/presentation.yaml), not in `src/`.
+- To show a new content field, add a block to `presentation.yaml`; do not special-case it in the site. Unknown block types render as `data`.
+- Pages exist only where an item has `page` (competencies: `page_when` on status). Items without a page render as list entries.
 
 ## Learner state
 

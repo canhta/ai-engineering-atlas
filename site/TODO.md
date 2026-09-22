@@ -46,8 +46,8 @@ Last updated: 2026-09-22
 
 ### Content-driven site (next, owner request)
 
-- [ ] Versioned content model contract: collections → items → typed blocks; the site renders only the contract
-- [ ] Content-side presentation config (field → block, section order, en/vi section titles, vocabularies); unmapped fields render through a generic block and are reported
+- [x] Versioned content model contract: collections → items → typed blocks; the site renders only the contract ([RFC](../rfcs/0000-content-model.md), `schemas/site-data.schema.json` v2)
+- [x] Content side (agent A): `curriculum/presentation.yaml` (field → block, section order, en/vi section titles, vocabularies) and the generic adapter `scripts/build_site_data.py`; unmapped fields render as `data` blocks and are reported
 - [ ] Site renderer uses a block registry; no curriculum field names in `site/src`
 
 ### Visual redesign (next, owner request)

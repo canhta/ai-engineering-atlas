@@ -75,13 +75,15 @@ The goal is that a learner can open a route and immediately see **what source to
 
 ## Web atlas data
 
-The web atlas in `site/` reads one generated file, `site/src/data/atlas.json`, compiled from the catalog, competency contracts, resources, labs, projects, and paths. Do not edit it by hand. After changing any of those sources, run:
+The web atlas in `site/` reads one generated file, `site/src/data/atlas.json`: the content model defined in the [content model RFC](rfcs/0000-content-model.md) and [schemas/site-data.schema.json](schemas/site-data.schema.json). It is compiled from the catalog, competency contracts, resources, labs, projects, and paths. Do not edit it by hand. After changing any of those sources, run:
 
 ```bash
 python scripts/build_site_data.py --write
 ```
 
-CI fails when the generated file is stale. See [web atlas RFC](rfcs/0000-interactive-web-atlas.md) for the site design.
+[curriculum/presentation.yaml](curriculum/presentation.yaml) decides how content appears: collections, fields and their vocabularies, and the ordered page blocks with English and Vietnamese titles. When you add a field to `competency.yaml`, either map it to a block there or list it under `ignore`. An unmapped field still renders as a generic `data` block, and the build prints a warning naming it. The build fails on a stale file, an unknown block type, an unresolved reference, or a value missing from its vocabulary.
+
+Domain titles come from `title` in [curriculum/manifest.yaml](curriculum/manifest.yaml). See the [web atlas RFC](rfcs/0000-interactive-web-atlas.md) for the site design.
 
 ## Proposing a resource
 
