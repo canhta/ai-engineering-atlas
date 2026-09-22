@@ -7,6 +7,16 @@ A gap-driven roadmap for software engineers learning modern AI engineering.
 
 **New here? Start with [START_HERE.md](START_HERE.md).**
 
+## A note from the author
+
+I'm a software engineer learning my way into AI Engineering.
+
+I started this repository because I wanted a learning path that was deeper than a list of tools or courses, but still practical enough to use while building real systems. As I learn, I use this repo to organize the concepts, resources, experiments, mistakes, and evidence that help me close my own gaps.
+
+So this is also a learning journey in public. The curriculum will keep evolving as I study, build, test assumptions, and find better sources.
+
+I'm sharing it in case the structure, notes, or path are useful to other engineers making a similar transition. If you find a gap, a better source, or a better way to learn something here, contributions and discussion are very welcome.
+
 ## What this repository does
 
 AI Engineering Atlas maps the capabilities needed to build, evaluate, and operate AI systems.
