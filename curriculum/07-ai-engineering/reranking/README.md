@@ -4,6 +4,17 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Sentence Transformers — Retrieve & Re-Rank](https://www.sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html) | Sections Retrieve & Re-Rank Pipeline; Retrieval: Bi-Encoder; and Re-Ranker: Cross-Encoder | Make the two-stage candidate-generation versus expensive pair-scoring architecture concrete while showing that the first stage may be lexical or dense. |
+| [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/) | Chapter 8 "Evaluation in information retrieval", especially ranked-retrieval evaluation | Ground reranking decisions in ranking evidence rather than visual inspection of a few examples. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 A first-stage retriever must search broadly and cheaply. A reranker can spend more compute on a much smaller candidate set to improve final ordering.
