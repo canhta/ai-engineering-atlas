@@ -29,8 +29,8 @@
 For each signal, record the intended failure mechanism.
 
 | Signal | Population | Method | Threshold | Why actionable |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| ------ | ---------- | ------ | --------- | -------------- |
+|        |            |        |           |                |
 
 Possible categories:
 

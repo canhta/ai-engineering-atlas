@@ -50,8 +50,8 @@
 ## Threshold backtest
 
 | Window | Expected alert? | Observed alert? | Material impact? | Notes |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| ------ | --------------- | --------------- | ---------------- | ----- |
+|        |                 |                 |                  |       |
 
 - False positives:
 - Missed material changes:

@@ -55,13 +55,13 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `agents.orchestration` — AI Workflow Orchestration | Agents | [Open route](08-agents/orchestration/) |
 | `production.model-gateway` — Model Provider and Gateway Architecture | Production AI | [Open route](09-production-ai/model-gateway/) |
 | `production.caching` — AI Caching | Production AI | [Open route](09-production-ai/caching/) |
-| `production.drift` — Drift Monitoring and Response | Production AI | [Open route](09-production-ai/drift/) |
 | `production.streaming` — Streaming | Production AI | [Open route](09-production-ai/streaming/) |
 | `production.cost` — Cost Engineering | Production AI | [Open route](09-production-ai/cost/) |
 | `production.latency` — Latency Engineering | Production AI | [Open route](09-production-ai/latency/) |
 | `production.observability` — AI Observability and Request Replay | Production AI | [Open route](09-production-ai/observability/) |
 | `production.release-engineering` — AI Release Engineering | Production AI | [Open route](09-production-ai/release-engineering/) |
 | `production.versioning` — Model Prompt and Retrieval Versioning | Production AI | [Open route](09-production-ai/versioning/) |
+| `production.drift` — Drift Monitoring and Response | Production AI | [Open route](09-production-ai/drift/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
 
 ## Promotion rule
