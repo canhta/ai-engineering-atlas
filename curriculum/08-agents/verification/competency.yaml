@@ -1,0 +1,107 @@
+id: agents.verification
+title: Verification
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Agent narration is not proof that a task succeeded. Reliable systems verify real environment state, artifacts, tests, authoritative data, or calibrated judgments and use failed verification to repair, retry, replan, abstain, or escalate.
+curriculum_evidence:
+  - article.anthropic-building-effective-agents
+  - article.anthropic-agent-evals
+  - article.anthropic-harness-design-long-running-apps
+  - paper.critic-tool-interactive
+  - paper.swe-bench
+prerequisites:
+  - agents.state
+  - ai.evaluation
+  - software.testing
+prerequisite_support:
+  software.testing:
+    diagnostic: Explain the difference between a happy-path example, a regression test, an integration or end-to-end check, and an assertion against real environment state.
+    source: course.made-with-ml-testing
+    locator: 'Testing lesson sections "Types of tests" and system/regression testing discussion'
+    purpose: Patch only the testing discipline needed to design deterministic verification and reproduce failures without requiring the full software-testing route.
+outcomes:
+  - Define verifiable success criteria before execution.
+  - Map each criterion to the strongest practical verifier.
+  - Prefer deterministic or environment evidence over agent narration when available.
+  - Insert verification at useful intermediate or terminal boundaries.
+  - Distinguish verification failure from execution, planning, state, and genuine task failure.
+  - Use failed verification to trigger repair, retry, replan, abstention, or human escalation.
+  - Seed known defects and measure whether the verifier detects them.
+  - Measure false positives and false negatives for verifier logic that can fail.
+  - Calibrate model-based graders against human judgment when they are required.
+  - Version verifier logic, rubrics, and provenance.
+  - Compare task outcomes with and without the verification loop.
+  - Remove expensive verification stages when they no longer provide measurable lift.
+diagnostic:
+  tasks:
+    - Given a claimed Knowledge Assistant outcome, identify which facts can be checked against environment state, executable tests, authoritative data, a model grader, or human review.
+    - Explain why a successful transcript is not equivalent to a successful environment outcome.
+    - Seed one defect and design a verifier that should detect it.
+    - Describe how you would measure and calibrate a model-based grader if deterministic checks are insufficient.
+  pass_condition: Skip introductory material only if the learner can define outcome-based verification, detect seeded defects, measure verifier errors, and route failed verification into a concrete recovery action.
+learning_route:
+  mental_model:
+    - source: article.anthropic-agent-evals
+      locator: 'Sections "The structure of an evaluation", "Types of graders for agents", "Design the eval harness and graders", and guidance on transcript versus final environment outcome'
+      purpose: Separate trajectory from outcome and choose deterministic, model-based, or human graders based on the property being checked.
+    - source: article.anthropic-building-effective-agents
+      locator: 'Sections "Workflow: Prompt chaining", "Workflow: Evaluator-optimizer", "Agents", and "Appendix 1: Coding agents"'
+      purpose: Connect intermediate checks, evaluator-optimizer loops, environment feedback, and objective tests to agent execution.
+    - source: article.anthropic-harness-design-long-running-apps
+      locator: 'Sections "Frontend design: making subjective quality gradable", "Scaling to full-stack coding" → "The architecture" (Evaluator), and "Removing the sprint construct"'
+      purpose: Study explicit grading criteria, Playwright/environment verification, evaluator calibration, and ablation of evaluator overhead.
+    - source: paper.critic-tool-interactive
+      locator: 'Abstract and method framing comparing unsupported self-correction with tool-interactive critique'
+      purpose: Reinforce that external feedback can provide stronger correction evidence than unconstrained self-critique.
+    - source: paper.swe-bench
+      locator: 'Abstract and benchmark formulation using real repository issues and test suites to grade patches'
+      purpose: Ground verification in outcome artifacts and executable environment checks rather than plausible-looking trajectories.
+  guided_practice:
+    - task: Take one Knowledge Assistant success criterion and replace a narrative or model-only check with a deterministic, environment, or authoritative-data verifier where possible.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/planning-and-verification/
+      task: Build a verifier inventory, seed at least one defect, record successful and failed verification traces, and compare the same task set with and without the verification loop.
+experiments:
+  - Seed a defect that should be caught by a deterministic or environment verifier and measure detection.
+  - Remove one verifier stage and identify which failures become invisible.
+  - Introduce a verifier false positive or false negative and trace the downstream recovery consequence.
+  - If a model grader is used, compare its judgments with a human-reviewed calibration sample.
+  - Compare verification overhead and task outcome before and after adding the verification loop.
+exit_evidence:
+  - Versioned success criteria exist before execution.
+  - Each criterion is mapped to a concrete verifier and evidence source.
+  - At least one deterministic or environment verifier is present.
+  - At least one seeded defect is tested.
+  - Successful and failed verification traces are preserved.
+  - Failure attribution distinguishes planning, execution, state, verifier, and genuine task failures.
+  - False-positive or false-negative evidence is reported where the verifier can be wrong.
+  - Model graders, if used, include rubric/version/provenance and human calibration evidence.
+  - Verification overhead is measured.
+  - The learner records whether each verifier stage should be kept, simplified, or removed.
+transfer:
+  task: Redesign the verification hierarchy for a task where correctness is more subjective or where environment checks are expensive, and justify where model or human grading becomes necessary.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-agent-evals
+    - article.anthropic-building-effective-agents
+    - article.anthropic-harness-design-long-running-apps
+    - paper.critic-tool-interactive
+    - paper.swe-bench
+  assessment:
+    - article.anthropic-agent-evals
+    - paper.swe-bench
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
