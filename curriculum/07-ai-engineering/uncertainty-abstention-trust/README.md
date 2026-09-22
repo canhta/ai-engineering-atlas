@@ -1,6 +1,6 @@
 # Uncertainty Abstention and Trust
 
-**Status:** seeded — approved RFC, route under validation  
+**Status:** ready  
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
