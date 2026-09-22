@@ -9,3 +9,25 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: docs.sentence-transformers-retrieve-rerank
+    type: documentation
+    title: Sentence Transformers — Retrieve & Re-Rank
+    author: Sentence Transformers maintainers
+    url: https://www.sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html
+    roles: [teaching, practice, assessment, reference]
+    covers: [retrieval.reranking, information-retrieval]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.ragas-rag-metrics
+    type: documentation
+    title: Ragas — RAG Evaluation Metrics
+    author: Ragas maintainers
+    url: https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/
+    roles: [teaching, assessment, reference]
+    covers: [retrieval.rag-evaluation, ai.evaluation]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
