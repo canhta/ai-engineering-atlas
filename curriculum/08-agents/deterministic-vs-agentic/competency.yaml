@@ -34,7 +34,7 @@ diagnostic:
 learning_route:
   mental_model:
     - source: article.anthropic-building-effective-agents
-      locator: "What are agents?", "When (and when not) to use agents", "Building blocks, workflows, and agents", and "Combining and customizing these patterns"
+      locator: 'Sections: "What are agents?", "When (and when not) to use agents", "Building blocks, workflows, and agents", and "Combining and customizing these patterns"'
       purpose: Distinguish fixed workflows from agents, learn common workflow patterns, and use measured complexity as the selection principle.
   guided_practice:
     - task: Classify three familiar product tasks by whether their steps and branches are predictable, then choose the simplest architecture for each.
