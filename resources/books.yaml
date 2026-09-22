@@ -1,0 +1,40 @@
+resources:
+  - id: book.understanding-deep-learning
+    type: book
+    title: Understanding Deep Learning
+    author: Simon J. D. Prince
+    url: https://udlbook.github.io/udlbook/
+    roles: [primary, reference]
+    covers: [deep-learning, math-foundations]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: book.raschka-llm-from-scratch
+    type: book
+    title: Build a Large Language Model (From Scratch)
+    author: Sebastian Raschka
+    url: https://github.com/rasbt/LLMs-from-scratch
+    roles: [primary, practice]
+    covers: [llm-foundations, llm.self-attention]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: book.chip-huyen-ai-engineering
+    type: book
+    title: AI Engineering
+    author: Chip Huyen
+    url: https://github.com/chiphuyen/aie-book
+    roles: [primary, reference]
+    covers: [ai.evaluation, model-selection, retrieval, agents, production-ai]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: book.designing-ml-systems
+    type: book
+    title: Designing Machine Learning Systems
+    author: Chip Huyen
+    url: https://github.com/chiphuyen/dmls-book
+    roles: [reference]
+    covers: [ml-systems, production-ai]
+    source_verified: true
+    last_checked: 2026-09-22
