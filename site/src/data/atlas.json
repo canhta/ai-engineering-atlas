@@ -921,26 +921,6 @@
     },
     {
       "from": "agents.deterministic-vs-agentic",
-      "to": "agents.state"
-    },
-    {
-      "from": "ai.context-engineering",
-      "to": "agents.state"
-    },
-    {
-      "from": "security.auth",
-      "to": "security.prompt-injection"
-    },
-    {
-      "from": "security.tool-permissions",
-      "to": "security.prompt-injection"
-    },
-    {
-      "from": "ai.tool-calling",
-      "to": "security.prompt-injection"
-    },
-    {
-      "from": "agents.deterministic-vs-agentic",
       "to": "agents.planning"
     },
     {
@@ -950,6 +930,14 @@
     {
       "from": "ai.evaluation",
       "to": "agents.planning"
+    },
+    {
+      "from": "agents.deterministic-vs-agentic",
+      "to": "agents.state"
+    },
+    {
+      "from": "ai.context-engineering",
+      "to": "agents.state"
     },
     {
       "from": "agents.state",
@@ -962,6 +950,18 @@
     {
       "from": "software.testing",
       "to": "agents.verification"
+    },
+    {
+      "from": "security.auth",
+      "to": "security.prompt-injection"
+    },
+    {
+      "from": "security.tool-permissions",
+      "to": "security.prompt-injection"
+    },
+    {
+      "from": "ai.tool-calling",
+      "to": "security.prompt-injection"
     }
   ],
   "routes": {
@@ -2664,6 +2664,119 @@
       },
       "path": "curriculum/08-agents/memory"
     },
+    "agents.planning": {
+      "id": "agents.planning",
+      "title": "Planning",
+      "domain": "agents",
+      "status": "seeded",
+      "competency_types": [
+        "engineering-skill",
+        "design-judgment"
+      ],
+      "target_level": "L3",
+      "target_states": [
+        "demonstrated",
+        "transferred",
+        "applied"
+      ],
+      "why": "Explicit planning is useful when task structure depends on intermediate results, but planner scaffolding should remain inspectable, stateful, revisable, and removable when it does not improve outcomes enough to justify its cost.",
+      "curriculum_evidence": [
+        "article.anthropic-building-effective-agents",
+        "article.anthropic-harness-design-long-running-apps",
+        "guide.openai-practical-agents"
+      ],
+      "prerequisites": [
+        "agents.deterministic-vs-agentic",
+        "agents.state",
+        "ai.evaluation"
+      ],
+      "outcomes": [
+        "Decide when explicit planning is useful versus unnecessary overhead.",
+        "Represent a plan as an inspectable external artifact rather than hidden reasoning.",
+        "Define goals, constraints, success criteria, steps or dependencies, blockers, assumptions, and invalidation triggers.",
+        "Choose plan granularity that avoids both under-specification and brittle low-level over-specification.",
+        "Persist plan status in durable execution state.",
+        "Update plan progress from tool or environment results.",
+        "Detect invalidated assumptions or blocked dependencies.",
+        "Replan from observed evidence instead of blindly continuing the original plan.",
+        "Define termination and success conditions before execution.",
+        "Compare no-plan, static-plan, and adaptive-plan variants on the same task set.",
+        "Reject planner scaffolding when it does not create enough measurable value."
+      ],
+      "diagnostic": {
+        "tasks": [
+          "Given a Knowledge Assistant task, decide whether direct execution, a static plan, or adaptive planning is appropriate and explain what task property justifies the choice.",
+          "Design a plan schema that can survive a process restart and be updated without relying on hidden reasoning.",
+          "Describe one condition that should invalidate the current plan and what evidence should trigger replanning.",
+          "Define how you would prove that a planner is helping rather than merely adding steps."
+        ],
+        "pass_condition": "Skip introductory material only if the learner can externalize plan structure, persist it in state, replan from environment evidence, and compare planning variants on the same task set."
+      },
+      "learning_route": {
+        "mental_model": [
+          {
+            "source": "article.anthropic-building-effective-agents",
+            "locator": "Sections \"Workflow: Orchestrator-workers\", \"Agents\", \"Combining and customizing these patterns\", and \"Summary\"",
+            "purpose": "Distinguish predictable workflow decomposition from dynamic task decomposition and keep complexity tied to measurable need."
+          },
+          {
+            "source": "article.anthropic-harness-design-long-running-apps",
+            "locator": "Sections \"Scaling to full-stack coding\" → \"The architecture\" (Planner), \"Iterating on the harness\", and \"Removing the sprint construct\"",
+            "purpose": "Study planner granularity, under-scoping, cascading assumptions, and ablation of planner/decomposition scaffolding as model capability changes."
+          },
+          {
+            "source": "guide.openai-practical-agents",
+            "locator": "Sections \"What is an agent?\", \"Configuring instructions\", \"Orchestration\", and \"Single-agent systems\"",
+            "purpose": "Ground planning in executable workflow control, explicit steps/branches, completion conditions, and single-agent-first architecture."
+          }
+        ],
+        "guided_practice": [
+          {
+            "task": "Take one stateful Knowledge Assistant workflow and externalize a minimal plan with explicit assumptions, dependencies, completion criteria, and replanning triggers."
+          }
+        ],
+        "independent_practice": [
+          {
+            "artifact": "projects/knowledge-assistant/planning-and-verification/",
+            "task": "Compare no-plan, static-plan, and adaptive-plan variants on the same task set, inject one invalidated assumption, and preserve the replanning trace."
+          }
+        ]
+      },
+      "experiments": [
+        "Remove explicit planning and measure whether task success or failure attribution changes.",
+        "Compare a coarse plan with an over-detailed plan to identify brittleness from premature assumptions.",
+        "Invalidate one dependency or assumption mid-run and verify the plan updates from observed evidence.",
+        "Measure plan churn, redundant steps, tool calls, latency, and cost across variants."
+      ],
+      "exit_evidence": [
+        "A versioned plan schema records goals, constraints, success criteria, dependencies or steps, status, assumptions, and replanning triggers.",
+        "The plan is persisted in durable state or an artifact referenced by state.",
+        "A no-plan baseline is preserved.",
+        "Static and adaptive planning variants are compared on the same task set.",
+        "At least one changed condition or invalidated assumption triggers an inspectable plan revision.",
+        "Task success is reported with steps or tool calls, latency, cost where measurable, and unnecessary replanning.",
+        "The learner records whether planning should be kept, simplified, or removed."
+      ],
+      "transfer": {
+        "task": "Redesign the planning strategy for a task with a different dependency structure and uncertainty profile, then justify a different plan granularity or no-plan decision if appropriate."
+      },
+      "project_spines": [
+        "ai-system",
+        "production"
+      ],
+      "resources": {
+        "teaching": [
+          "article.anthropic-building-effective-agents",
+          "article.anthropic-harness-design-long-running-apps",
+          "guide.openai-practical-agents"
+        ]
+      },
+      "metadata": {
+        "last_reviewed": "2026-09-22",
+        "evidence_required": true
+      },
+      "path": "curriculum/08-agents/planning"
+    },
     "agents.state": {
       "id": "agents.state",
       "title": "Agent State",
@@ -2796,239 +2909,6 @@
         "evidence_required": true
       },
       "path": "curriculum/08-agents/state"
-    },
-    "security.prompt-injection": {
-      "id": "security.prompt-injection",
-      "title": "Prompt Injection and Trust Boundaries",
-      "domain": "security-governance",
-      "status": "ready",
-      "competency_types": [
-        "concept",
-        "engineering-skill",
-        "design-judgment"
-      ],
-      "target_level": "L2",
-      "target_states": [
-        "demonstrated",
-        "transferred",
-        "applied"
-      ],
-      "why": "LLM inputs can influence model behavior in unintended ways, so privileged actions and data access must remain protected even when the model or external content is adversarially influenced.",
-      "curriculum_evidence": [
-        "standard.owasp-llm01-prompt-injection"
-      ],
-      "prerequisites": [
-        "security.auth",
-        "security.tool-permissions",
-        "ai.tool-calling"
-      ],
-      "prerequisite_support": {
-        "security.auth": {
-          "diagnostic": "Explain why an authenticated user identity and authorization policy must be checked by application code rather than inferred from model text.",
-          "source": "standard.owasp-llm01-prompt-injection",
-          "locator": "Prevention and Mitigation Strategies, especially privilege control and human approval for high-risk operations.",
-          "purpose": "Patch the identity-versus-model boundary needed to understand deterministic authorization."
-        },
-        "security.tool-permissions": {
-          "diagnostic": "Given a read-only tool and an admin export tool, assign least-privilege permissions and state where enforcement occurs.",
-          "source": "standard.owasp-llm01-prompt-injection",
-          "locator": "Prevention and Mitigation Strategies, especially least privilege and privilege control.",
-          "purpose": "Patch the tool-permission model needed for the trust-boundary lab."
-        },
-        "ai.tool-calling": {
-          "diagnostic": "Explain the difference between a model proposing a tool invocation and application code authorizing and executing it.",
-          "source": "article.anthropic-building-effective-agents",
-          "locator": "Building block: The augmented LLM; Appendix 2: Prompt engineering your tools.",
-          "purpose": "Patch the model/tool interaction needed to reason about compromised tool requests."
-        }
-      },
-      "outcomes": [
-        "Distinguish direct from indirect prompt injection and explain why RAG or fine-tuning does not eliminate the risk.",
-        "Identify trusted policy, untrusted external content, model-controlled output, and privileged action boundaries.",
-        "Enforce authorization and least privilege outside the model.",
-        "Use human approval or other deterministic controls for high-risk actions where appropriate.",
-        "Design adversarial tests for retrieved content, tools, and authorization boundaries.",
-        "Explain the limits of prompt-only or filtering-only mitigations."
-      ],
-      "diagnostic": {
-        "tasks": [
-          "Explain direct and indirect prompt injection using one realistic system example each.",
-          "Draw the trust boundaries for a RAG system that can call privileged tools.",
-          "Explain where authorization must be enforced if the model proposes a forbidden action.",
-          "Describe an adversarial test that proves a trust boundary still holds after a model is influenced."
-        ],
-        "pass_condition": "Skip guided material only if the learner can threat-model both direct and indirect injection and implement deterministic authorization that remains correct under simulated compromised model output."
-      },
-      "learning_route": {
-        "mental_model": [
-          {
-            "source": "standard.owasp-llm01-prompt-injection",
-            "locator": "Sections: \"Types of Prompt Injection Vulnerabilities\", \"Prevention and Mitigation Strategies\", and \"Example Attack Scenarios\"",
-            "purpose": "Establish direct/indirect injection risks, impact, least-privilege controls, human approval, external-content segregation, and adversarial testing."
-          },
-          {
-            "source": "book.chip-huyen-ai-engineering",
-            "locator": "Chapter 5 \"Defensive Prompt Engineering\" — Jailbreaking and Prompt Injection, and Defenses Against Prompt Attacks",
-            "purpose": "Connect prompt attacks to application-level defensive design in foundation-model systems."
-          }
-        ],
-        "guided_practice": [
-          {
-            "task": "Draw trust boundaries for a retrieval system with one read-only tool and one privileged tool; label every model-controlled or external-data edge as untrusted."
-          }
-        ],
-        "independent_practice": [
-          {
-            "artifact": "labs/prompt-injection-boundaries/",
-            "task": "Complete the trust-boundary lab so privileged tool execution is blocked even when model output is simulated as compromised."
-          }
-        ]
-      },
-      "experiments": [
-        "Add a simulated indirect injection to retrieved content and verify privileged action controls still hold.",
-        "Change the authenticated user's permission set and verify authorization follows identity/policy rather than model text."
-      ],
-      "exit_evidence": [
-        "Explain direct and indirect prompt injection.",
-        "Produce a trust-boundary diagram for an LLM application with external content or tools.",
-        "Implement authorization outside the model and pass adversarial boundary tests.",
-        "Show least-privilege or approval handling for a high-risk action.",
-        "Explain why prompt instructions or filtering alone are insufficient as the authorization mechanism."
-      ],
-      "transfer": {
-        "task": "Threat-model an email assistant that can read messages and send replies; identify indirect-injection paths, privileged actions, approval points, and deterministic controls."
-      },
-      "project_spines": [
-        "ai-system",
-        "production"
-      ],
-      "resources": {
-        "teaching": [
-          "standard.owasp-llm01-prompt-injection",
-          "book.chip-huyen-ai-engineering"
-        ],
-        "production-reference": [
-          "standard.owasp-llm01-prompt-injection"
-        ]
-      },
-      "metadata": {
-        "last_reviewed": "2026-09-22",
-        "evidence_required": true
-      },
-      "path": "curriculum/10-security-governance/prompt-injection"
-    },
-    "agents.planning": {
-      "id": "agents.planning",
-      "title": "Planning",
-      "domain": "agents",
-      "status": "seeded",
-      "competency_types": [
-        "engineering-skill",
-        "design-judgment"
-      ],
-      "target_level": "L3",
-      "target_states": [
-        "demonstrated",
-        "transferred",
-        "applied"
-      ],
-      "why": "Explicit planning is useful when task structure depends on intermediate results, but planner scaffolding should remain inspectable, stateful, revisable, and removable when it does not improve outcomes enough to justify its cost.",
-      "curriculum_evidence": [
-        "article.anthropic-building-effective-agents",
-        "article.anthropic-harness-design-long-running-apps",
-        "guide.openai-practical-agents"
-      ],
-      "prerequisites": [
-        "agents.deterministic-vs-agentic",
-        "agents.state",
-        "ai.evaluation"
-      ],
-      "outcomes": [
-        "Decide when explicit planning is useful versus unnecessary overhead.",
-        "Represent a plan as an inspectable external artifact rather than hidden reasoning.",
-        "Define goals, constraints, success criteria, steps or dependencies, blockers, assumptions, and invalidation triggers.",
-        "Choose plan granularity that avoids both under-specification and brittle low-level over-specification.",
-        "Persist plan status in durable execution state.",
-        "Update plan progress from tool or environment results.",
-        "Detect invalidated assumptions or blocked dependencies.",
-        "Replan from observed evidence instead of blindly continuing the original plan.",
-        "Define termination and success conditions before execution.",
-        "Compare no-plan, static-plan, and adaptive-plan variants on the same task set.",
-        "Reject planner scaffolding when it does not create enough measurable value."
-      ],
-      "diagnostic": {
-        "tasks": [
-          "Given a Knowledge Assistant task, decide whether direct execution, a static plan, or adaptive planning is appropriate and explain what task property justifies the choice.",
-          "Design a plan schema that can survive a process restart and be updated without relying on hidden reasoning.",
-          "Describe one condition that should invalidate the current plan and what evidence should trigger replanning.",
-          "Define how you would prove that a planner is helping rather than merely adding steps."
-        ],
-        "pass_condition": "Skip introductory material only if the learner can externalize plan structure, persist it in state, replan from environment evidence, and compare planning variants on the same task set."
-      },
-      "learning_route": {
-        "mental_model": [
-          {
-            "source": "article.anthropic-building-effective-agents",
-            "locator": "Sections \"Workflow: Orchestrator-workers\", \"Agents\", \"Combining and customizing these patterns\", and \"Summary\"",
-            "purpose": "Distinguish predictable workflow decomposition from dynamic task decomposition and keep complexity tied to measurable need."
-          },
-          {
-            "source": "article.anthropic-harness-design-long-running-apps",
-            "locator": "Sections \"Scaling to full-stack coding\" → \"The architecture\" (Planner), \"Iterating on the harness\", and \"Removing the sprint construct\"",
-            "purpose": "Study planner granularity, under-scoping, cascading assumptions, and ablation of planner/decomposition scaffolding as model capability changes."
-          },
-          {
-            "source": "guide.openai-practical-agents",
-            "locator": "Sections \"What is an agent?\", \"Configuring instructions\", \"Orchestration\", and \"Single-agent systems\"",
-            "purpose": "Ground planning in executable workflow control, explicit steps/branches, completion conditions, and single-agent-first architecture."
-          }
-        ],
-        "guided_practice": [
-          {
-            "task": "Take one stateful Knowledge Assistant workflow and externalize a minimal plan with explicit assumptions, dependencies, completion criteria, and replanning triggers."
-          }
-        ],
-        "independent_practice": [
-          {
-            "artifact": "projects/knowledge-assistant/planning-and-verification/",
-            "task": "Compare no-plan, static-plan, and adaptive-plan variants on the same task set, inject one invalidated assumption, and preserve the replanning trace."
-          }
-        ]
-      },
-      "experiments": [
-        "Remove explicit planning and measure whether task success or failure attribution changes.",
-        "Compare a coarse plan with an over-detailed plan to identify brittleness from premature assumptions.",
-        "Invalidate one dependency or assumption mid-run and verify the plan updates from observed evidence.",
-        "Measure plan churn, redundant steps, tool calls, latency, and cost across variants."
-      ],
-      "exit_evidence": [
-        "A versioned plan schema records goals, constraints, success criteria, dependencies or steps, status, assumptions, and replanning triggers.",
-        "The plan is persisted in durable state or an artifact referenced by state.",
-        "A no-plan baseline is preserved.",
-        "Static and adaptive planning variants are compared on the same task set.",
-        "At least one changed condition or invalidated assumption triggers an inspectable plan revision.",
-        "Task success is reported with steps or tool calls, latency, cost where measurable, and unnecessary replanning.",
-        "The learner records whether planning should be kept, simplified, or removed."
-      ],
-      "transfer": {
-        "task": "Redesign the planning strategy for a task with a different dependency structure and uncertainty profile, then justify a different plan granularity or no-plan decision if appropriate."
-      },
-      "project_spines": [
-        "ai-system",
-        "production"
-      ],
-      "resources": {
-        "teaching": [
-          "article.anthropic-building-effective-agents",
-          "article.anthropic-harness-design-long-running-apps",
-          "guide.openai-practical-agents"
-        ]
-      },
-      "metadata": {
-        "last_reviewed": "2026-09-22",
-        "evidence_required": true
-      },
-      "path": "curriculum/08-agents/planning"
     },
     "agents.verification": {
       "id": "agents.verification",
@@ -3174,6 +3054,126 @@
         "evidence_required": true
       },
       "path": "curriculum/08-agents/verification"
+    },
+    "security.prompt-injection": {
+      "id": "security.prompt-injection",
+      "title": "Prompt Injection and Trust Boundaries",
+      "domain": "security-governance",
+      "status": "ready",
+      "competency_types": [
+        "concept",
+        "engineering-skill",
+        "design-judgment"
+      ],
+      "target_level": "L2",
+      "target_states": [
+        "demonstrated",
+        "transferred",
+        "applied"
+      ],
+      "why": "LLM inputs can influence model behavior in unintended ways, so privileged actions and data access must remain protected even when the model or external content is adversarially influenced.",
+      "curriculum_evidence": [
+        "standard.owasp-llm01-prompt-injection"
+      ],
+      "prerequisites": [
+        "security.auth",
+        "security.tool-permissions",
+        "ai.tool-calling"
+      ],
+      "prerequisite_support": {
+        "security.auth": {
+          "diagnostic": "Explain why an authenticated user identity and authorization policy must be checked by application code rather than inferred from model text.",
+          "source": "standard.owasp-llm01-prompt-injection",
+          "locator": "Prevention and Mitigation Strategies, especially privilege control and human approval for high-risk operations.",
+          "purpose": "Patch the identity-versus-model boundary needed to understand deterministic authorization."
+        },
+        "security.tool-permissions": {
+          "diagnostic": "Given a read-only tool and an admin export tool, assign least-privilege permissions and state where enforcement occurs.",
+          "source": "standard.owasp-llm01-prompt-injection",
+          "locator": "Prevention and Mitigation Strategies, especially least privilege and privilege control.",
+          "purpose": "Patch the tool-permission model needed for the trust-boundary lab."
+        },
+        "ai.tool-calling": {
+          "diagnostic": "Explain the difference between a model proposing a tool invocation and application code authorizing and executing it.",
+          "source": "article.anthropic-building-effective-agents",
+          "locator": "Building block: The augmented LLM; Appendix 2: Prompt engineering your tools.",
+          "purpose": "Patch the model/tool interaction needed to reason about compromised tool requests."
+        }
+      },
+      "outcomes": [
+        "Distinguish direct from indirect prompt injection and explain why RAG or fine-tuning does not eliminate the risk.",
+        "Identify trusted policy, untrusted external content, model-controlled output, and privileged action boundaries.",
+        "Enforce authorization and least privilege outside the model.",
+        "Use human approval or other deterministic controls for high-risk actions where appropriate.",
+        "Design adversarial tests for retrieved content, tools, and authorization boundaries.",
+        "Explain the limits of prompt-only or filtering-only mitigations."
+      ],
+      "diagnostic": {
+        "tasks": [
+          "Explain direct and indirect prompt injection using one realistic system example each.",
+          "Draw the trust boundaries for a RAG system that can call privileged tools.",
+          "Explain where authorization must be enforced if the model proposes a forbidden action.",
+          "Describe an adversarial test that proves a trust boundary still holds after a model is influenced."
+        ],
+        "pass_condition": "Skip guided material only if the learner can threat-model both direct and indirect injection and implement deterministic authorization that remains correct under simulated compromised model output."
+      },
+      "learning_route": {
+        "mental_model": [
+          {
+            "source": "standard.owasp-llm01-prompt-injection",
+            "locator": "Sections: \"Types of Prompt Injection Vulnerabilities\", \"Prevention and Mitigation Strategies\", and \"Example Attack Scenarios\"",
+            "purpose": "Establish direct/indirect injection risks, impact, least-privilege controls, human approval, external-content segregation, and adversarial testing."
+          },
+          {
+            "source": "book.chip-huyen-ai-engineering",
+            "locator": "Chapter 5 \"Defensive Prompt Engineering\" — Jailbreaking and Prompt Injection, and Defenses Against Prompt Attacks",
+            "purpose": "Connect prompt attacks to application-level defensive design in foundation-model systems."
+          }
+        ],
+        "guided_practice": [
+          {
+            "task": "Draw trust boundaries for a retrieval system with one read-only tool and one privileged tool; label every model-controlled or external-data edge as untrusted."
+          }
+        ],
+        "independent_practice": [
+          {
+            "artifact": "labs/prompt-injection-boundaries/",
+            "task": "Complete the trust-boundary lab so privileged tool execution is blocked even when model output is simulated as compromised."
+          }
+        ]
+      },
+      "experiments": [
+        "Add a simulated indirect injection to retrieved content and verify privileged action controls still hold.",
+        "Change the authenticated user's permission set and verify authorization follows identity/policy rather than model text."
+      ],
+      "exit_evidence": [
+        "Explain direct and indirect prompt injection.",
+        "Produce a trust-boundary diagram for an LLM application with external content or tools.",
+        "Implement authorization outside the model and pass adversarial boundary tests.",
+        "Show least-privilege or approval handling for a high-risk action.",
+        "Explain why prompt instructions or filtering alone are insufficient as the authorization mechanism."
+      ],
+      "transfer": {
+        "task": "Threat-model an email assistant that can read messages and send replies; identify indirect-injection paths, privileged actions, approval points, and deterministic controls."
+      },
+      "project_spines": [
+        "ai-system",
+        "production"
+      ],
+      "resources": {
+        "teaching": [
+          "standard.owasp-llm01-prompt-injection",
+          "book.chip-huyen-ai-engineering"
+        ],
+        "production-reference": [
+          "standard.owasp-llm01-prompt-injection"
+        ]
+      },
+      "metadata": {
+        "last_reviewed": "2026-09-22",
+        "evidence_required": true
+      },
+      "path": "curriculum/10-security-governance/prompt-injection"
     }
   },
   "resources": {
@@ -3198,6 +3198,18 @@
         "teaching",
         "production-reference",
         "reference"
+      ]
+    },
+    "article.anthropic-harness-design-long-running-apps": {
+      "title": "Harness design for long-running application development",
+      "type": "article",
+      "author": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+      "roles": [
+        "curriculum-evidence",
+        "teaching",
+        "practice",
+        "production-reference"
       ]
     },
     "article.anthropic-long-running-harnesses": {
@@ -3499,6 +3511,17 @@
         "reference"
       ]
     },
+    "guide.openai-practical-agents": {
+      "title": "A practical guide to building agents",
+      "type": "guide",
+      "author": "OpenAI",
+      "url": "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/",
+      "roles": [
+        "curriculum-evidence",
+        "teaching",
+        "reference"
+      ]
+    },
     "paper.calibration-modern-neural-networks": {
       "title": "On Calibration of Modern Neural Networks",
       "type": "paper",
@@ -3507,6 +3530,18 @@
       "roles": [
         "curriculum-evidence",
         "teaching",
+        "reference"
+      ]
+    },
+    "paper.critic-tool-interactive": {
+      "title": "CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing",
+      "type": "paper",
+      "author": "Zhibin Gou et al.",
+      "url": "https://arxiv.org/abs/2305.11738",
+      "roles": [
+        "curriculum-evidence",
+        "teaching",
+        "assessment",
         "reference"
       ]
     },
@@ -3567,6 +3602,18 @@
         "reference"
       ]
     },
+    "paper.swe-bench": {
+      "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+      "type": "paper",
+      "author": "Carlos E. Jimenez et al.",
+      "url": "https://arxiv.org/abs/2310.06770",
+      "roles": [
+        "curriculum-evidence",
+        "assessment",
+        "benchmark",
+        "reference"
+      ]
+    },
     "repo.made-with-ml": {
       "title": "Made With ML",
       "type": "repository",
@@ -3603,53 +3650,6 @@
       "url": "https://jalammar.github.io/illustrated-transformer/",
       "roles": [
         "visual"
-      ]
-    },
-    "article.anthropic-harness-design-long-running-apps": {
-      "title": "Harness design for long-running application development",
-      "type": "article",
-      "author": "Anthropic",
-      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
-      "roles": [
-        "curriculum-evidence",
-        "teaching",
-        "practice",
-        "production-reference"
-      ]
-    },
-    "guide.openai-practical-agents": {
-      "title": "A practical guide to building agents",
-      "type": "guide",
-      "author": "OpenAI",
-      "url": "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/",
-      "roles": [
-        "curriculum-evidence",
-        "teaching",
-        "reference"
-      ]
-    },
-    "paper.critic-tool-interactive": {
-      "title": "CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing",
-      "type": "paper",
-      "author": "Zhibin Gou et al.",
-      "url": "https://arxiv.org/abs/2305.11738",
-      "roles": [
-        "curriculum-evidence",
-        "teaching",
-        "assessment",
-        "reference"
-      ]
-    },
-    "paper.swe-bench": {
-      "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
-      "type": "paper",
-      "author": "Carlos E. Jimenez et al.",
-      "url": "https://arxiv.org/abs/2310.06770",
-      "roles": [
-        "curriculum-evidence",
-        "assessment",
-        "benchmark",
-        "reference"
       ]
     }
   },
