@@ -1,0 +1,35 @@
+resources:
+  - id: repo.ossu-cs
+    type: repository
+    title: OSSU Computer Science
+    url: https://github.com/ossu/computer-science
+    roles: [benchmark]
+    notes: Curriculum governance and navigation reference.
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: repo.microsoft-genai-beginners
+    type: repository
+    title: Generative AI for Beginners
+    url: https://github.com/microsoft/generative-ai-for-beginners
+    roles: [benchmark]
+    notes: Lesson packaging and contributor ergonomics reference.
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: repo.made-with-ml
+    type: repository
+    title: Made With ML
+    url: https://github.com/GokuMohandas/Made-With-ML
+    roles: [benchmark, practice]
+    notes: Notebook-to-production and testing discipline reference.
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: repo.mlabonne-llm-course
+    type: repository
+    title: LLM Course
+    url: https://github.com/mlabonne/llm-course
+    roles: [benchmark, resource-discovery]
+    source_verified: true
+    last_checked: 2026-09-22
