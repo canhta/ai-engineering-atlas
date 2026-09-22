@@ -1,70 +1,82 @@
-# Project spines
+# Project Spines
 
-Project spines provide persistent contexts in which separate competencies can be combined.
+Project spines provide persistent systems in which separate competencies can be combined.
 
-They are not fixed capstone projects and they are not required to progress in lockstep. A learner can enter a spine at the point appropriate to their current knowledge.
+The point is not to finish a capstone after the curriculum. The point is to revisit the same system as new capabilities are learned, so later topics expose interactions and trade-offs that isolated exercises cannot.
 
-See [../LEARNING_MODEL.md](../LEARNING_MODEL.md#project-spines) for the rationale.
+## Reference projects
 
-## Foundation spine
+### [Tiny Transformer](tiny-transformer/)
 
-Purpose: expose model internals and connect mathematical mechanisms to code.
+Used for the **Foundation spine**.
 
-~~~text
+Build a small language model far enough from scratch that important mechanisms remain inspectable:
+
+```text
 numerical operations
-→ autograd
-→ small neural network
-→ tokenizer
+→ autograd / training step
+→ tokenization
+→ embeddings
 → attention
-→ transformer
+→ transformer block
+→ training
 → decoding
 → inference measurements
-~~~
+```
 
-Artifacts should stay small enough that the learner can inspect the mechanism.
+Use this project when the competency is about model mechanisms or inference behavior.
 
-## AI system spine
+### [Knowledge Assistant](knowledge-assistant/)
 
-Purpose: build an AI application whose capability grows as new engineering concepts are introduced.
+Used for the **AI System** and **Production** spines.
 
-~~~text
-keyword search
+Build one evidence-driven knowledge system and evolve it:
+
+```text
+problem + baseline
+→ keyword search
 → embeddings
-→ vector search
 → hybrid retrieval
 → reranking
 → RAG
 → evaluation
-→ tool use
-→ agent workflow
-→ multimodal input
-~~~
-
-The same system should be revisited so that new topics introduce real trade-offs rather than isolated toy examples.
-
-## Production spine
-
-Purpose: turn an AI prototype into a system that can be operated and changed safely.
-
-~~~text
-API
-→ model/provider abstraction
-→ logging
-→ tracing
-→ evaluation gates
-→ caching and routing
+→ tool use / agent only when justified
+→ API + tracing
 → security boundaries
-→ deployment
-→ incident simulation
-→ production feedback
-~~~
+→ deployment / release gate
+→ incident + feedback loop
+```
 
-A production-spine task should include operational evidence such as traces, metrics, failure recovery, rollout decisions, or post-incident learning.
+This is the main integration context for applied AI engineering.
 
-## Integration rule
+## Project rule
 
-A project task should only exist when it adds integration pressure that a smaller competency task cannot provide.
+A project task should exist only when integration pressure adds learning value that a smaller exercise cannot.
 
-Do not require a large project to prove a small concept such as cosine similarity.
+Do not require a deployment project to prove a small mathematical concept.
 
-Do require integration when the capability is about system design, production behavior, or interactions between multiple components.
+Do require project evidence for competencies about:
+
+- system design;
+- component interactions;
+- release decisions;
+- operational reliability;
+- security boundaries;
+- production feedback.
+
+## Project evidence
+
+Projects should produce inspectable artifacts:
+
+- product brief;
+- baseline;
+- evaluation data;
+- experiment results;
+- code and tests;
+- architecture decisions;
+- traces and metrics;
+- release decision;
+- failure/incident analysis;
+- follow-up regression test.
+
+Use [../assessments/evidence-rubric.md](../assessments/evidence-rubric.md) when changing learner state.
