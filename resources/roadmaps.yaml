@@ -3,7 +3,7 @@ resources:
     type: roadmap
     title: roadmap.sh AI Engineer
     url: https://roadmap.sh/ai-engineer
-    roles: [coverage-benchmark, ux-benchmark]
+    roles: [curriculum-evidence, benchmark, ux-benchmark]
     source_verified: true
     last_checked: 2026-09-22
 
@@ -11,6 +11,6 @@ resources:
     type: roadmap
     title: roadmap.sh MLOps
     url: https://roadmap.sh/mlops
-    roles: [coverage-benchmark]
+    roles: [curriculum-evidence, benchmark]
     source_verified: true
     last_checked: 2026-09-22
