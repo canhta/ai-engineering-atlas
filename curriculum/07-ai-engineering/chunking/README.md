@@ -4,6 +4,17 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 6 "RAG and Agents" → "Retrieval Optimization" (pp. 268-272) | Place data preparation and retrieval optimization inside the RAG pipeline rather than treating chunking as an isolated splitter API. |
+| [Max–Min semantic chunking of documents for RAG application](https://link.springer.com/article/10.1007/s10791-025-09638-7) | Section 4.2 "RAG evaluation" | Study a controlled comparison where multiple chunking methods are evaluated while retrieval and generation components remain consistent; use the experimental pattern, not the proposed algorithm as a default. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 Chunking changes the unit your retriever can find. A poor boundary can split required evidence, mix unrelated material, duplicate context, or create passages too broad to rank precisely.
