@@ -1,0 +1,22 @@
+id: project.tiny-transformer
+title: Tiny Transformer
+spines: [foundation]
+purpose: "Make language-model mechanisms inspectable from training through inference."
+milestones:
+  - experiment-contract
+  - training-mechanics
+  - tokenizer-and-embeddings
+  - self-attention
+  - transformer-block
+  - language-model-training
+  - decoding
+  - inference-behavior
+competencies:
+  - llm.self-attention
+evidence:
+  - code
+  - tests
+  - visualization
+  - experiment-results
+  - failure-analysis
+  - explanation
