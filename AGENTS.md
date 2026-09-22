@@ -2,164 +2,173 @@
 
 Guidance for AI agents and coding assistants working in this repository.
 
+## Read first
+
+Before changing curriculum, assessments, learning routes, labs, projects, or public-facing learning content, read:
+
+1. [LEARNING_MODEL.md](LEARNING_MODEL.md)
+2. [CURRICULUM.md](CURRICULUM.md)
+3. [CONTRIBUTING.md](CONTRIBUTING.md)
+
+The learning model takes precedence over folder conventions.
+
+Do not create content merely because a directory or schema field exists.
+
 ## Core principle
 
-Do not invent the structure, wording, metadata, or presentation style of this repository from scratch when established open-source learning repositories already provide strong patterns.
+The repository is organized around **demonstrated capability and the learner lifecycle**, not around collecting topics or generating lessons.
 
-Before changing public-facing content, study relevant reference repositories and reuse proven conventions where appropriate.
+A curriculum change must answer:
 
-## Reference repositories
+- What capability should the learner gain?
+- Why does it belong in the roadmap?
+- What prior knowledge is required?
+- How can existing competence be diagnosed?
+- What source teaches the missing mental model?
+- What practice produces the skill?
+- What evidence proves the outcome?
+- Does transfer, delayed retrieval, or project integration matter?
 
-Use these as primary design references:
+If these questions cannot be answered from reviewed sources, mark the competency incomplete rather than filling the gap with model-generated material.
 
-- OSSU Computer Science — curriculum governance, navigation, prerequisite-oriented curriculum structure
-- Microsoft learning repositories — lesson packaging, getting started sections, lesson indexes, contributor ergonomics
-- Made With ML — practical progression from notebook to code, testing, deployment, and production
-- roadmap.sh — roadmap navigation, progress-oriented learning UX, topic discoverability
-- mlabonne/llm-course — concise resource tables and section-level discoverability
+## Reference systems
 
-Other high-quality repositories may be used when they demonstrate a clearer pattern for the specific problem.
+Use these as design references, but extract their learning mechanisms rather than copying their surface layout.
 
-## Public-facing writing rules
+- OSSU Computer Science — independent curriculum standards, prerequisites, alternate assessments, curriculum governance, final-project consolidation
+- Microsoft learning repositories — scenario, learning goals, explanation, assignment, solution, knowledge check, challenge, next step
+- Made With ML — problem framing, one evolving system, evaluation, testing, production, feedback and iteration
+- roadmap.sh — learner navigation, progress UX, skill-gap and AI-assistance patterns
+- mlabonne/llm-course — resource discovery and concise technical maps
 
-For README files, curriculum pages, contribution docs, landing pages, and repository metadata:
-
-1. Prefer wording patterns observed in respected open-source repositories over newly invented marketing language.
-2. Lead with what the repository contains, who it is for, and how to use it.
-3. Keep introductions short.
-4. Prefer concrete nouns and verbs over slogans.
-5. Avoid unnecessary manifesto language.
-6. Avoid repeated phrases such as:
-   - "source of truth"
-   - "evidence-backed"
-   - "executable curriculum"
-   - "not X, but Y"
-   unless they are necessary to explain a real design constraint.
-7. Do not fill README files with generic AI-generated claims or promotional copy.
-8. Avoid excessive bold text, emojis, decorative callouts, or long blockquotes.
-9. Prefer tables, indexes, concise lists, and links when they improve navigation.
-10. Put detailed policies in dedicated files rather than overloading the root README.
-
-## README structure
-
-Before editing the root README, compare the layout against the reference repositories.
-
-A typical order should be:
-
-1. Project title
-2. One short description
-3. Optional badges only when they represent real repository state
-4. What this repository contains
-5. Who it is for / prerequisites
-6. How to use the roadmap
-7. Curriculum or roadmap index
-8. Learning method / progress model
-9. Repository structure only if useful to contributors
-10. Contributing
-11. License
-
-Do not include every internal design decision in the README.
-
-Governance belongs in files such as:
-
-- `CURRICULUM.md`
-- `CONTRIBUTING.md`
-- `AI_POLICY.md`
-- `rfcs/`
-
-## Metadata rules
-
-Repository metadata should be concise and descriptive.
-
-For repository descriptions, topics, section titles, badges, issue templates, and navigation:
-
-- benchmark comparable repositories first;
-- use common terminology users are likely to search for;
-- do not invent unusual labels when an established term exists;
-- do not add badges without a working workflow, package, license, release, or deployment behind them;
-- do not add claims such as "best", "complete", "ultimate", or "production-ready" without objective support.
-
-## Layout rules
-
-Prefer layouts that are easy to scan on GitHub.
-
-Good patterns:
-
-- short sections;
-- curriculum tables;
-- domain indexes;
-- relative links;
-- one clear navigation hierarchy;
-- self-contained competency folders;
-- separate resource registries;
-- diagrams only when they communicate structure better than text.
-
-Avoid:
-
-- giant walls of text;
-- duplicate navigation systems;
-- deep folder trees without indexes;
-- README sections that merely restate file names;
-- decorative diagrams with no learning or navigation value.
+Other high-quality sources may be used when they are more authoritative for a competency.
 
 ## Curriculum content
 
 AI must not infer required curriculum content solely from general model knowledge.
 
-When adding or changing competencies:
+When adding or changing a competency:
 
-1. Gather source material first.
-2. Record the source.
-3. Extract the relevant topic or learning objective.
-4. Map it to the existing competency taxonomy.
-5. Check for duplicates or overlap.
-6. Propose the change.
-7. Update curriculum only after the evidence is clear.
+1. Gather curriculum evidence.
+2. Define the observable capability.
+3. Identify prerequisites.
+4. Decide the competency type and appropriate evidence.
+5. Design a diagnostic that can reveal prior knowledge.
+6. Select a precise learning route through real sources.
+7. Select or design practice.
+8. Define exit evidence.
+9. Add transfer, project integration, or delayed review when the competency requires them.
+10. Check for overlap with existing competencies.
+11. Use an RFC for substantial changes.
 
-For substantial competency changes, prefer an RFC.
+Do not equate "covered by a book/course" with "learned."
 
-## Resource curation
+## Source rules
 
-Do not add a resource simply because it is popular.
+Prefer precise source locations over broad recommendations.
 
-For each resource, determine:
+Bad:
 
-- what competency it covers;
-- whether it is primary, visual, practice, or reference material;
-- whether it duplicates an existing resource;
-- whether it is current enough for the topic;
-- whether the link is official or authoritative where possible.
+- "Read Stanford CS336."
+- "Read AI Engineering."
+- "Watch 3Blue1Brown."
+
+Better:
+
+- exact chapter;
+- exact lecture;
+- exact section;
+- exact assignment;
+- exact visual segment;
+- exact production case or standard.
+
+The repository should route learners through sources rather than become an AI-written substitute for those sources.
+
+## Assessment rules
+
+Assessment must match the capability type.
+
+- Concept → explain, distinguish, calculate, recall
+- Mechanism → trace, visualize, implement, predict
+- Engineering skill → build, test, debug, modify
+- System operation → configure, observe, recover, automate
+- Design judgment → compare alternatives and defend a decision under constraints
+- Production competency → ship, measure, detect failure, mitigate, rollback or improve
+
+Do not use a generic quiz as the exit test for an engineering or production competency.
+
+Passing an immediate exit test means demonstrated, not automatically retained or applied.
+
+## Adaptive guidance
+
+Do not force all learners through the same instruction.
+
+When prior knowledge is low, prefer worked examples, visual explanation, guided tasks, and immediate feedback.
+
+When knowledge is partial, prefer targeted reading, completion tasks, debugging, and comparison.
+
+When knowledge is strong, prefer diagnostics, independent implementation, transfer tasks, trade-off analysis, and failure investigation.
 
 ## AI assistance
 
 AI may:
 
 - extract structure from sources;
-- classify resources;
-- summarize verified material;
-- generate quiz questions from approved sources;
-- review labs and code;
-- propose visualizations;
-- propose curriculum changes.
+- classify and map resources;
+- explain approved source material;
+- ask diagnostic or Socratic questions;
+- generate constrained practice variations;
+- inject bugs and failure cases;
+- review code and reasoning against explicit criteria;
+- recommend the next competency from prerequisites and learner evidence;
+- support delayed retrieval and review;
+- propose curriculum changes through an RFC.
 
 AI must not:
 
 - silently invent competencies;
 - fabricate source coverage;
 - create authoritative learning objectives without evidence;
-- rewrite the repository into generic marketing copy;
-- replace observed repository conventions with stylistic preferences merely because they sound polished.
+- mark learning complete because material was consumed;
+- treat self-reported confidence as mastery;
+- use an opaque LLM judgment as the sole evidence for important subjective assessments;
+- generate full lesson content and then cite itself as the source.
 
-## Before committing public-facing changes
+## Public-facing writing
+
+Before changing README files, landing pages, metadata, or contribution docs, study comparable open-source repositories and reuse established conventions where appropriate.
+
+Prefer:
+
+- concrete descriptions;
+- short introductions;
+- clear navigation;
+- tables and indexes;
+- real links;
+- verifiable claims.
+
+Avoid:
+
+- manifesto language;
+- marketing superlatives;
+- generic AI-generated prose;
+- repeated "not X, but Y" constructions;
+- decorative diagrams with no learning or navigation value;
+- empty directories created only to make the repository look complete.
+
+Detailed policy belongs in dedicated files rather than the root README.
+
+## Before committing
 
 Check:
 
-- Did I inspect comparable repositories first?
-- Is this structure borrowed from a proven pattern where possible?
-- Is the wording concrete and restrained?
-- Did I remove AI-style filler?
-- Are metadata claims verifiable?
-- Is detailed policy placed outside the root README?
-- Can a new visitor understand what to do within the first screen or two?
+- Does this change follow LEARNING_MODEL.md?
+- Is the competency evidence-based?
+- Is the learning route precise enough to start immediately?
+- Does practice match the capability?
+- Does assessment measure the stated outcome?
+- Did I distinguish demonstrated, transferred, retained, and applied evidence?
+- Did I avoid generating content merely to fill a template?
+- Is public wording concrete and restrained?
 
-If the answer to any of these is no, revise before committing.
+If not, revise before committing.
