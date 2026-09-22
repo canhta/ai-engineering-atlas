@@ -1,6 +1,6 @@
 # Structured Outputs
 
-**Status:** seeded — approved RFC, route under validation  
+**Status:** ready  
 **Target:** L2 practical competence  
 **Evidence target:** demonstrated → transferred → applied
 
