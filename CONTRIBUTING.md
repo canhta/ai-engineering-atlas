@@ -6,48 +6,65 @@ Before contributing to curriculum or learning content, read:
 
 1. [LEARNING_MODEL.md](LEARNING_MODEL.md)
 2. [CURRICULUM.md](CURRICULUM.md)
-3. [AGENTS.md](AGENTS.md) if using an AI assistant
+3. [curriculum/catalog.yaml](curriculum/catalog.yaml)
+4. [AGENTS.md](AGENTS.md) if using an AI assistant
 
-## What a curriculum contribution must preserve
+## The contribution model
 
-Keep these separate:
+Keep these layers separate:
 
-- **Competency** — what the learner should be able to do.
-- **Learning route** — the precise source material used to build the missing mental model.
-- **Practice** — work that develops the skill.
-- **Assessment evidence** — work that proves the outcome.
-- **Learner state** — evidence such as demonstrated, transferred, retained, or applied.
+- **Catalog competency** — stable capability ID and domain placement.
+- **Ready route** — diagnostic, precise sources, practice, and evidence for a catalog competency.
+- **Resource** — external material used for a learning function.
+- **Assessment evidence** — work that proves an outcome.
+- **Learner state** — demonstrated, transferred, retained, applied, etc.
 
 A popular resource is not automatically a competency. Completing a resource is not automatically evidence of mastery.
 
-## Proposing a competency
+## Adding curriculum coverage
 
-A strong proposal should include:
+If a capability belongs in the roadmap but does not yet have a complete route:
 
-- the capability that is missing;
-- why it belongs in the roadmap;
-- supporting curriculum or industry evidence;
-- prerequisites;
-- competency type;
-- target depth;
-- diagnostic idea;
-- precise learning sources;
-- practice appropriate to the skill;
+1. check that it is not already represented in `curriculum/catalog.yaml`;
+2. gather curriculum/industry evidence;
+3. propose a stable ID, title, domain, and placement;
+4. add it as **coverage**;
+5. do not create placeholder lesson files merely to make it appear complete.
+
+Substantive catalog additions should use an RFC.
+
+## Promoting coverage to a ready route
+
+A catalog item may become **ready** when it has:
+
+- observable outcomes;
+- prerequisites using catalog IDs;
+- a diagnostic;
+- exact source locators;
+- practice matching the capability;
 - exit evidence;
-- transfer, project integration, or delayed review when relevant.
+- transfer when required;
+- delayed review when required;
+- project integration when required;
+- learner-facing README;
+- passing repository validation.
 
-If these pieces are not yet known, an RFC may remain incomplete rather than filling them with generated content.
+The golden examples are:
+
+- [Self-Attention](curriculum/06-llm-foundations/self-attention/)
+- [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
 
 ## Proposing a resource
 
 Include:
 
-- title and URL;
+- canonical URL;
 - author or organization;
-- exact chapter, section, lecture, or assignment when possible;
+- exact chapter, section, lecture, assignment, or documentation page when possible;
 - competency it supports;
 - role: curriculum evidence, teaching, visual, practice, assessment, production reference, or benchmark;
-- why it improves the current learning route.
+- why it improves the current route;
+- availability/freshness notes.
 
 Prefer official course pages, textbooks, documentation, papers, author repositories, maintained engineering references, and primary sources where practical.
 
@@ -60,30 +77,32 @@ Examples:
 - concept → explain, distinguish, calculate;
 - mechanism → trace, visualize, implement;
 - engineering skill → build, test, debug;
+- system operation → configure, observe, recover;
 - design judgment → compare alternatives under constraints;
 - production skill → ship, observe, diagnose, mitigate.
 
 Avoid generic quizzes as the only evidence for engineering competencies.
 
-## Substantive curriculum changes
+## Project contributions
 
-Open an RFC before a large pull request when changing:
+Reference projects should create integration pressure, not act as giant tutorials.
 
-- required competencies;
-- prerequisites;
-- target level;
-- observable outcomes;
-- required evidence.
+A milestone should identify:
 
-Resource replacements normally do not require an RFC unless they change the expected capability.
+- problem/constraint;
+- baseline or previous state;
+- change being introduced;
+- measurement;
+- failure work;
+- resulting evidence or decision.
+
+Prefer extending an existing reference system when it creates a useful learning progression.
 
 ## Pull requests
 
 Keep pull requests focused.
 
-A resource mapping, curriculum change, assessment design, and repository refactor should be separate when they can be reviewed independently.
-
-For learner-facing changes, describe how the change affects the lifecycle:
+For learner-facing changes, describe how the change affects:
 
 - diagnosis;
 - learning;
@@ -93,8 +112,16 @@ For learner-facing changes, describe how the change affects the lifecycle:
 - retention;
 - project integration.
 
+Run:
+
+```bash
+make check
+```
+
+before opening a PR.
+
 ## Writing and layout
 
 Follow [AGENTS.md](AGENTS.md).
 
-Public-facing documentation should be concise, navigable, source-based, and free of generic promotional copy.
+Public-facing documentation should be concise, navigable, source-based, and explicit about maturity. Coverage should never be presented as a completed learning route.
