@@ -572,13 +572,15 @@
       "id": "agents.planning",
       "title": "Planning",
       "domain": "agents",
-      "status": "coverage"
+      "status": "ready",
+      "route": "curriculum/08-agents/planning"
     },
     {
       "id": "agents.verification",
       "title": "Verification",
       "domain": "agents",
-      "status": "coverage"
+      "status": "ready",
+      "route": "curriculum/08-agents/verification"
     },
     {
       "id": "agents.multi-agent",
@@ -2668,7 +2670,7 @@
       "id": "agents.planning",
       "title": "Planning",
       "domain": "agents",
-      "status": "seeded",
+      "status": "ready",
       "competency_types": [
         "engineering-skill",
         "design-judgment"
@@ -2914,7 +2916,7 @@
       "id": "agents.verification",
       "title": "Verification",
       "domain": "agents",
-      "status": "seeded",
+      "status": "ready",
       "competency_types": [
         "engineering-skill",
         "system-operation",
