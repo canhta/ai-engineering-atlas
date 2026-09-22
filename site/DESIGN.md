@@ -2,7 +2,7 @@
 
 Design rules for every page and component under `site/`. They apply to agents and humans alike.
 
-Why each rule exists: [UI/UX research](../rfcs/0005-ui-ux-research.md). Product scope: [RFC 0005](../rfcs/0005-interactive-web-atlas.md).
+Why each rule exists: [UI/UX research](../rfcs/0000-ui-ux-research.md). Product scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md).
 
 Token values live in code, in `site/src/styles/tokens.css`. This file names roles and intent; it never restates a value. When a rule here and the tokens disagree, the tokens are wrong or this file is stale: fix one of them in the same change.
 

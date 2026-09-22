@@ -1,6 +1,6 @@
-# RFC 0005 companion: UI/UX research
+# Web atlas RFC companion: UI/UX research
 
-- Status: Research notes for [RFC 0005](0005-interactive-web-atlas.md)
+- Status: Research notes for [web atlas RFC](0000-interactive-web-atlas.md)
 - Checked: 2026-09-22
 - Scope: skill map, route pages, diagnostics, in-browser labs, AI tutor, progress, bilingual type, foundations
 
@@ -45,7 +45,7 @@ Findings:
 - Line length: 45–90 characters including spaces ([Practical Typography](https://practicaltypography.com/line-length.html)); WCAG 1.4.8 (AAA) asks for a mechanism for width ≤ 80 characters, no justified text, and line spacing ≥ 1.5 ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/visual-presentation.html)).
 - MDN reference pages follow a fixed section order ending in Specifications, Browser compatibility, See also ([MDN CSS property template](https://github.com/mdn/content/blob/main/files/en-us/mdn/writing_guidelines/page_structures/page_types/css_property_page_template/index.md)). A predictable section order is what makes 15 route pages scannable.
 - Full Stack Open puts exercises at the end of each section and has learners submit via GitHub; a language selector sits in the top navigation ([Full Stack Open part 1a](https://fullstackopen.com/en/part1/introduction_to_react)).
-- Hugging Face course keeps per-language content directories including `vi` (cited in RFC 0005: [huggingface/course](https://github.com/huggingface/course)).
+- Hugging Face course keeps per-language content directories including `vi` (cited in the web atlas RFC: [huggingface/course](https://github.com/huggingface/course)).
 
 **Adopt:** fixed section order generated from `competency.yaml`: Why → Prerequisites → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer. Learning route as a table: `Source | Exact locator | Why read it | Opened ☐`. External links show the domain (e.g. `arxiv.org`) and an external-link glyph with visually hidden "opens external site". Reading column `max-width: 68ch`; tables may run wider.
 **Avoid:** summarising the source on the page (AGENTS.md forbids AI-written substitutes); "estimated reading time" or "% read"; card grids for sources (they hide the locator, which is the useful part).
@@ -128,7 +128,7 @@ Findings:
 | Decorative icons, emoji bullets, sparkles for AI | Novel icons get ignored ([NN/g](https://www.nngroup.com/articles/prompt-controls-genai/)); AGENTS.md bans decorative elements |
 | Inter everywhere, one weight | Generic; pair a sans UI face with a serif reading face instead |
 | Padlocks, streaks, XP, confetti | Reward consumption; contradict LEARNING_MODEL.md states |
-| Progress rings on link clicks | Reading never changes state (RFC 0005 principle 3) |
+| Progress rings on link clicks | Reading never changes state (web atlas RFC, principle 3) |
 | Floating chat bubble, "Ask me anything" | NN/g: state capabilities ([guidelines](https://www.nngroup.com/articles/ai-chatbots-design-guidelines/)); RFC chooses scoped actions |
 | Large soft shadows, 16px+ radii everywhere | Low density; hides borders that carry structure (WCAG 1.4.11 needs 3:1 for component boundaries) |
 | Scroll-triggered fade-ins, parallax | Vestibular trigger ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)); slows reference use |
@@ -237,7 +237,7 @@ State transitions 100–150 ms ease-out on color/opacity only; node focus auto-p
 
 ## Unverified
 
-Resolved on re-check (2026-09-22): Duolingo's report control is confirmed in the [Duolingo Max post](https://blog.duolingo.com/duolingo-max/) ("holding down the inaccurate message"), and RFC 0005 now cites it. Khanmigo "hidden reasoning" is absent from both Khan Academy posts and was removed from RFC 0005.
+Resolved on re-check (2026-09-22): Duolingo's report control is confirmed in the [Duolingo Max post](https://blog.duolingo.com/duolingo-max/) ("holding down the inaccurate message"), and the web atlas RFC now cites it. Khanmigo "hidden reasoning" is absent from both Khan Academy posts and was removed from the web atlas RFC.
 
 - roadmap.sh progress shortcuts come from a search-result snippet of roadmap.sh pages, not a fetched page or source file.
 - Boot.dev, Brilliant, Codecademy career paths, Execute Program, Josh W. Comeau courses, JupyterLite, Stripe docs, Linear docs, Tailwind docs, Observable, Are.na, Anthropic docs, Rauno/Paco sites: not reviewed in this pass; no claims made about them.

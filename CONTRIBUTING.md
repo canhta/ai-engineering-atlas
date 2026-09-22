@@ -31,7 +31,7 @@ If a capability belongs in the roadmap but does not yet have a complete route:
 4. add it as **coverage**;
 5. do not create placeholder lesson files merely to make it appear complete.
 
-Substantive catalog additions should use an RFC.
+Substantive catalog additions should use an RFC. Curriculum RFCs are numbered from `0001`; system RFCs (site, tooling, infrastructure) use the `0000-` prefix, next to the template.
 
 ## Promoting coverage to a ready route
 
@@ -81,7 +81,7 @@ The web atlas in `site/` reads one generated file, `site/src/data/atlas.json`, c
 python scripts/build_site_data.py --write
 ```
 
-CI fails when the generated file is stale. See [RFC 0005](rfcs/0005-interactive-web-atlas.md) for the site design.
+CI fails when the generated file is stale. See [web atlas RFC](rfcs/0000-interactive-web-atlas.md) for the site design.
 
 ## Proposing a resource
 

@@ -2,7 +2,7 @@
 
 Guidance for work under `site/` (the web atlas at aie.canhta.com) and its Cloudflare Worker. The repository-wide rules in the root [AGENTS.md](../AGENTS.md) still apply.
 
-Design and scope: [RFC 0005](../rfcs/0005-interactive-web-atlas.md). Phase 0 (data) is done; the Astro app is being built in Phase 1.
+Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Phase 0 (data) is done; the Astro app is being built in Phase 1.
 
 ## Before you change anything
 
@@ -36,7 +36,7 @@ Design and scope: [RFC 0005](../rfcs/0005-interactive-web-atlas.md). Phase 0 (da
 - AI calls go through the Worker at `/api/*`. The provider key is a Worker secret and never reaches the browser.
 - AI requires SSO sign-in. The browser sends an action, a route ID, and learner input; the Worker builds the prompt from the route contract.
 - The Worker stores users and usage counters only. Learner answers and code pass through to the provider and are not stored, except messages the learner reports as wrong.
-- AI roles and their limits are listed in RFC 0005 ("AI support"). A new role needs an RFC change first.
+- AI roles and their limits are listed in the web atlas RFC ("AI support"). A new role needs an RFC change first.
 
 ## Done means
 

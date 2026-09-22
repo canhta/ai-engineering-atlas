@@ -63,7 +63,7 @@ Mechanisms taken from comparable projects. Claims about AI tutoring and in-brows
 
 Repository facts that shape the design:
 
-- `curriculum/catalog.yaml` has 116 items; 15 are `ready`, the rest `coverage`.
+- `curriculum/catalog.yaml` has 116 items; 17 are `ready`, the rest `coverage` (2026-09-22).
 - Prerequisite edges exist only in the route `competency.yaml` files. Coverage items carry no edges, so a full dependency graph is not available. The map must lay out by domain and draw edges only where they are declared.
 - `schemas/progress.schema.json` (version 2) already defines learner state and evidence records.
 - `labs/` contain `starter`, `tests`, and `solution` files runnable locally. Browser feasibility per lab:
