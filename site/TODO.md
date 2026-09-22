@@ -41,7 +41,7 @@ Last updated: 2026-09-22
 - [x] Deploy the Worker `ai-engineering-atlas` with `wrangler deploy`
 - [x] Custom domain `ai-eng.canhta.com`; production passes `capture.mjs` (headers, axe, overflow)
 - [x] Manual deploy workflow (`workflow_dispatch`) with checks and browser tests before deploy
-- [ ] Owner: add repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit, Workers Routes: Edit, Zone read on canhta.com) and `CLOUDFLARE_ACCOUNT_ID`; create the `production` environment
+- [x] Repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; `production` environment limited to `main`; first CI deploy 2026-09-22 (run 35704294981), production passes `capture.mjs`
 - [ ] Link the site from the root `README.md`
 
 ### Content-driven site (next, owner request)
