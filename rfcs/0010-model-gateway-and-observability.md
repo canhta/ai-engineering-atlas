@@ -1,8 +1,10 @@
 # RFC: Model Gateway and AI Observability Slice
 
-- Status: Draft
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
+- Reviewed: 2026-09-22
+- Review decision: Approved by repository owner
 
 ## Problem
 
@@ -539,19 +541,19 @@ Add a Knowledge Assistant `production-boundary/` evidence package and replace th
 
 ## Review checklist
 
-- [ ] Gateway and observability are distinct assessable capabilities.
-- [ ] `production.architecture` is intentionally deferred rather than force-promoted.
-- [ ] `production.mlops-llmops` is intentionally deferred rather than force-promoted.
-- [ ] Gateway target depth L3 is appropriate.
-- [ ] Observability target depth L3 is appropriate.
-- [ ] Gateway keeps a direct-provider baseline.
-- [ ] Gateway includes explicit fallback/model-compatibility policy.
-- [ ] Gateway includes bounded timeout/retry/throttling failure work.
-- [ ] Gateway can be rejected when centralized control does not justify the component.
-- [ ] Observability separates trace evidence from evaluation.
-- [ ] Sensitive prompt/user/output capture is opt-in rather than default.
-- [ ] Replay means diagnostic reconstruction, not deterministic response reproduction.
-- [ ] Replay provenance does not silently replace the future Versioning competency.
-- [ ] OpenTelemetry GenAI convention stability is represented honestly.
-- [ ] Knowledge Assistant integration extends the existing project lineage.
-- [ ] Reviewer explicitly approves or requests changes before implementation.
+- [x] Gateway and observability are distinct assessable capabilities.
+- [x] `production.architecture` is intentionally deferred rather than force-promoted.
+- [x] `production.mlops-llmops` is intentionally deferred rather than force-promoted.
+- [x] Gateway target depth L3 is appropriate.
+- [x] Observability target depth L3 is appropriate.
+- [x] Gateway keeps a direct-provider baseline.
+- [x] Gateway includes explicit fallback/model-compatibility policy.
+- [x] Gateway includes bounded timeout/retry/throttling failure work.
+- [x] Gateway can be rejected when centralized control does not justify the component.
+- [x] Observability separates trace evidence from evaluation.
+- [x] Sensitive prompt/user/output capture is opt-in rather than default.
+- [x] Replay means diagnostic reconstruction, not deterministic response reproduction.
+- [x] Replay provenance does not silently replace the future Versioning competency.
+- [x] OpenTelemetry GenAI convention stability is represented honestly.
+- [x] Knowledge Assistant integration extends the existing project lineage.
+- [x] Reviewer explicitly approves or requests changes before implementation.

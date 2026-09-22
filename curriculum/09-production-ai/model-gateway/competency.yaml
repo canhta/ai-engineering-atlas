@@ -1,0 +1,104 @@
+id: production.model-gateway
+title: "Model Provider and Gateway Architecture"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "A model gateway can centralize provider routing, reliability policy, quotas, credentials, and telemetry, but it also adds latency and operational complexity. Engineers need to decide when that boundary is justified, keep the application contract stable, make fallback compatibility explicit, and expose failures instead of hiding provider behavior behind a proxy."
+curriculum_evidence:
+  - docs.azure-ai-gateway-multi-backend
+  - docs.cloudflare-ai-gateway-dynamic-routing
+  - docs.cloudflare-ai-gateway-request-handling
+prerequisites:
+  - ai.model-selection
+  - ai.evaluation
+  - systems.api-service-design
+prerequisite_support:
+  systems.api-service-design:
+    diagnostic: "Given a model request crossing an API boundary, define the stable request/response contract, timeout behavior, retryable versus non-retryable failures, throttling behavior, credential owner, and what must remain safe if the same request is retried."
+    source: article.aws-idempotent-apis
+    locator: "Sections \"Reducing client complexity with idempotent API design\" and \"Retries and semantic equivalence\""
+    purpose: "Patch the API contract, failure, retry, and idempotency reasoning needed before centralized gateway policy, without forcing the full API/service-design curriculum."
+outcomes:
+  - "Decide whether a model gateway is justified relative to a direct provider integration."
+  - "Define a stable client-facing request/response contract while isolating provider-specific behavior behind the gateway."
+  - "Keep routing policy separate from application business logic."
+  - "Route requests by explicit product, tenant, capability, or operational constraints."
+  - "Distinguish load balancing, failover, fallback, and deliberate model selection."
+  - "Define provider/model compatibility requirements and reject fallback between behaviorally incompatible model versions."
+  - "Define bounded timeout, retry, and backoff behavior by failure class."
+  - "Use provider throttling signals such as Retry-After when they are available."
+  - "Define rate and quota controls and explain how limit failures surface to callers."
+  - "Define gateway credential ownership and prevent clients from bypassing the policy boundary."
+  - "Classify provider errors, gateway-policy errors, and application errors separately."
+  - "Preserve request correlation across retries, routes, and fallbacks."
+  - "Inject provider timeout and throttling failures and verify the declared policy."
+  - "Measure gateway latency overhead and operational complexity against the direct-provider baseline."
+  - "Keep, simplify, or remove the gateway based on measured value rather than architecture fashion."
+diagnostic:
+  tasks:
+    - "Given a direct model-provider integration, identify which reliability, routing, quota, credential, or telemetry problem would justify adding a gateway and which would not."
+    - "Design a fallback policy for two provider/model options and state the compatibility conditions that must hold before traffic may switch."
+    - "Classify timeout, 429 throttling, authentication failure, incompatible model, and application validation failure into retry, fallback, or fail-fast behavior."
+    - "Sketch the credential and request-correlation boundary so an application client cannot silently bypass gateway policy."
+  pass_condition: "Skip introductory material only if the learner can justify or reject a gateway, design a stable provider-independent boundary, define bounded failure policy, preserve model compatibility, and produce inspectable operational evidence."
+learning_route:
+  mental_model:
+    - source: docs.azure-ai-gateway-multi-backend
+      locator: "Sections \"Introduce a gateway for multiple model deployments\", \"Reasons to avoid a gateway for multiple model deployments\", and the multi-instance topology guidance covering retry, circuit breaking, throttling, load balancing, security, and model-version consistency"
+      purpose: "Establish when a gateway earns its complexity, which responsibilities belong at the boundary, and why reliability policy must preserve model compatibility."
+    - source: docs.cloudflare-ai-gateway-dynamic-routing
+      locator: "Sections \"Introduction\" and \"Core Concepts\""
+      purpose: "Inspect concrete conditional, percentage, model, rate-limit, budget, fallback, and route-version controls without treating one product as the definition of a gateway."
+    - source: docs.cloudflare-ai-gateway-request-handling
+      locator: "Sections \"Request timeouts\" and \"Request retries\""
+      purpose: "Ground timeout, retry, and backoff behavior in bounded request-handling policy rather than unlimited transparent retries."
+  guided_practice:
+    - task: "Draw the direct-provider and gateway variants of the same Knowledge Assistant request path, then assign ownership for routing, credentials, timeout, retry, throttling, fallback, correlation, and application validation."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/production-boundary/
+      task: "Add a gateway boundary to the existing Knowledge Assistant, preserve the direct-provider baseline, inject timeout and throttling failures, exercise compatible and deliberately rejected fallback, and decide whether the gateway earns its overhead."
+experiments:
+  - "Inject a provider timeout and verify the request follows the declared bounded timeout/retry/fallback policy."
+  - "Inject a 429 response and verify throttling or Retry-After behavior is handled without an unbounded retry loop."
+  - "Route to a declared compatible fallback, then attempt a behaviorally incompatible model fallback and verify it is rejected."
+  - "Attempt to bypass the gateway with provider credentials or a direct endpoint and verify the intended policy boundary remains enforceable."
+  - "Compare direct-provider and gateway variants on task behavior, latency, failure recovery, policy consistency, and operational complexity."
+exit_evidence:
+  - "A direct-provider baseline and a gateway responsibility diagram are preserved."
+  - "A stable request/response contract and provider/model inventory are inspectable."
+  - "Routing, timeout, retry/backoff, fallback, rate/quota, and credential policies are explicit."
+  - "Fallback compatibility rules include at least one incompatible model/version that is deliberately rejected."
+  - "Provider, gateway-policy, and application failures are classified separately."
+  - "Request correlation survives retry and fallback paths."
+  - "Provider timeout and 429/throttling cases are reproduced from the failure matrix."
+  - "At least one compatible fallback or failover path is exercised."
+  - "Gateway-bypass and credential ownership risks are addressed outside model output."
+  - "Gateway latency overhead and operational complexity are measured against the direct path."
+  - "The final decision records whether to keep, simplify, or remove the gateway."
+transfer:
+  task: "Redesign the gateway boundary for a different AI workload with a different provider mix, model-compatibility contract, tenant policy, latency budget, and failure tolerance."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.azure-ai-gateway-multi-backend
+    - docs.cloudflare-ai-gateway-dynamic-routing
+    - docs.cloudflare-ai-gateway-request-handling
+  practice:
+    - docs.cloudflare-ai-gateway-dynamic-routing
+    - docs.cloudflare-ai-gateway-request-handling
+  production-reference:
+    - docs.azure-ai-gateway-multi-backend
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

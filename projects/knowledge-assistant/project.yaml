@@ -23,7 +23,8 @@ milestones:
   - orchestrated-flow
   - multi-agent-decision
   - mcp-interoperability
-  - service-and-observability
+  - model-gateway-boundary
+  - observability-and-replay
   - release-gate
   - security-failure-work
   - incident-and-feedback
@@ -49,6 +50,8 @@ competencies:
   - agents.orchestration
   - agents.multi-agent
   - agents.mcp
+  - production.model-gateway
+  - production.observability
   - security.prompt-injection
 evidence:
   - product-brief
@@ -75,6 +78,13 @@ evidence:
   - mcp-boundary
   - mcp-test-matrix
   - mcp-conformance-record
+  - gateway-decision-record
+  - gateway-contract
+  - gateway-failure-matrix
+  - telemetry-contract
+  - telemetry-privacy-test
+  - diagnostic-replay-record
+  - production-overhead-record
   - decision-records
   - traces
   - security-tests

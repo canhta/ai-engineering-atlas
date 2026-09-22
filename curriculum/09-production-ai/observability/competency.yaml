@@ -1,0 +1,99 @@
+id: production.observability
+title: "AI Observability and Request Replay"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "AI failures can originate in provider calls, retrieval, tools, routing, configuration, or the application itself. Production observability must preserve enough correlated, privacy-safe evidence to explain a request and reconstruct a comparable execution without turning raw prompt/response logging into the default or confusing traces with quality evaluation."
+curriculum_evidence:
+  - docs.otel-genai-spans
+  - docs.otel-genai-metrics
+prerequisites:
+  - ai.evaluation
+  - systems.api-service-design
+prerequisite_support:
+  systems.api-service-design:
+    diagnostic: "For one AI API request, define the request/response boundary, request ID, success and error classes, timeout behavior, retry behavior, authentication owner, and what a duplicate retry means."
+    source: article.aws-idempotent-apis
+    locator: "Sections \"Reducing client complexity with idempotent API design\" and \"Retries and semantic equivalence\""
+    purpose: "Patch the service request, retry, and idempotency model needed to interpret traces and diagnostic replay without requiring the full API/service-design curriculum."
+outcomes:
+  - "Define a trace boundary for the user request and important nested AI operations."
+  - "Propagate correlation across model, retrieval, tool, application, and gateway operations when a gateway exists."
+  - "Distinguish end-to-end workflow latency from individual provider-call latency."
+  - "Record provider, requested model, response model, errors, and route or fallback outcome where applicable."
+  - "Collect request latency and token or usage metrics when they are reliably available."
+  - "Capture time-to-first-chunk only for streaming operations."
+  - "Choose useful failure dimensions without creating uncontrolled high-cardinality telemetry."
+  - "Define which prompts, user messages, tool arguments or results, and model outputs are excluded, redacted, sampled, or stored separately."
+  - "Keep sensitive model and user content out of telemetry by default unless policy explicitly allows capture."
+  - "Connect production traces to evaluation or incident records without treating a trace as a quality score."
+  - "Reconstruct one comparable execution from recorded request context and provenance identifiers."
+  - "Identify replay divergence caused by changed model, data, tool state, or configuration."
+  - "Use traces to distinguish provider, retrieval, tool, gateway, and application failures."
+  - "Measure telemetry storage and performance overhead."
+  - "Remove telemetry that is expensive, sensitive, or not actionable."
+diagnostic:
+  tasks:
+    - "Design a span inventory for a request that performs retrieval, one model call, and one tool call, and state which identifiers must correlate the operations."
+    - "Explain why logging every prompt and output is not a safe observability default and define a content-capture policy instead."
+    - "Separate workflow latency, provider latency, token usage, streaming time-to-first-chunk, and quality evaluation into the correct evidence types."
+    - "Define the provenance needed to reconstruct a comparable failed request without claiming a stochastic model response can be reproduced byte-for-byte."
+  pass_condition: "Skip introductory material only if the learner can design privacy-safe correlated telemetry, distinguish tracing from evaluation, diagnose cross-component failures, and define replay as provenance-based diagnostic reconstruction."
+learning_route:
+  mental_model:
+    - source: docs.otel-genai-spans
+      locator: "Sections \"Spans\", \"Inference\", \"Retrievals\", \"Execute tool span\", \"Capturing instructions, inputs, and outputs\", and \"Recording content on attributes\""
+      purpose: "Build the request/span model for inference, retrieval, and tools while preserving the explicit privacy boundary around model and user content."
+    - source: docs.otel-genai-metrics
+      locator: "Sections \"Generative AI client metrics\", \"gen_ai.client.token.usage\", \"gen_ai.client.operation.duration\", \"gen_ai.client.operation.time_to_first_chunk\", and \"gen_ai.invoke_workflow.duration\""
+      purpose: "Separate operation duration, workflow duration, token usage, and streaming time-to-first-chunk into metrics that match the operation being observed."
+  guided_practice:
+    - task: "Take one existing Knowledge Assistant request trace on paper and mark the user-request root, retrieval, model, tool, and optional gateway operations; then decide which attributes are useful, which are too sensitive, and which would create high-cardinality noise."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/production-boundary/
+      task: "Instrument the existing Knowledge Assistant production path, inject provider and retrieval or tool failures, prove content exclusion or redaction, create one diagnostic replay record, and diagnose the incident from collected evidence rather than agent narration."
+experiments:
+  - "Capture a successful request and verify model, retrieval, tool, and optional gateway operations correlate under one request or trace identity."
+  - "Inject a provider failure and a retrieval or tool failure, then verify the trace makes their failure domains distinguishable."
+  - "Attempt to capture sensitive prompt, user, tool, or output content and verify the declared exclusion or redaction policy."
+  - "Replay a failed request from recorded provenance, then change one model, index, tool, or configuration identifier and explain why the reconstruction diverges."
+  - "Measure telemetry latency/storage overhead and remove or reduce one field that is costly, sensitive, or not actionable."
+exit_evidence:
+  - "A request/trace ID and inspectable span inventory cover the important production path."
+  - "Model/provider attributes and retrieval, tool, application, and optional gateway correlation are preserved."
+  - "Workflow latency and provider-call latency are distinguishable."
+  - "Token or usage metrics are captured only when reliably available, and time-to-first-chunk appears only for streaming."
+  - "A failure taxonomy distinguishes provider, retrieval, tool, gateway, and application errors where those components exist."
+  - "A privacy/content-capture policy keeps sensitive content out of telemetry by default."
+  - "A redaction or content-exclusion test proves the declared policy."
+  - "Successful, provider-failure, and retrieval or tool-failure traces are inspectable."
+  - "A diagnostic replay record includes the relevant provider/model, inference, prompt/template, retrieval/index, tool, route/policy, input-reference, and configuration provenance."
+  - "Replay is described as comparable diagnostic reconstruction rather than deterministic model-response reproduction."
+  - "Telemetry overhead is measured and at least one high-cost, high-risk, or low-value field is reduced or dropped."
+  - "An incident is diagnosed from traces and metrics rather than from a dashboard screenshot or agent explanation alone."
+transfer:
+  task: "Move the observability contract to a different AI workflow with different providers, tools, retrieval state, privacy constraints, and streaming behavior, then redesign the trace and replay evidence without copying vendor dashboards."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.otel-genai-spans
+    - docs.otel-genai-metrics
+  practice:
+    - docs.otel-genai-spans
+    - docs.otel-genai-metrics
+  production-reference:
+    - docs.otel-genai-spans
+    - docs.otel-genai-metrics
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

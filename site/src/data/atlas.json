@@ -7027,7 +7027,308 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/model-gateway",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "A model gateway can centralize provider routing, reliability policy, quotas, credentials, and telemetry, but it also adds latency and operational complexity. Engineers need to decide when that boundary is justified, keep the application contract stable, make fallback compatibility explicit, and expose failures instead of hiding provider behavior behind a proxy."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.model-selection"
+                },
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "systems.api-service-design",
+                  "bridge": {
+                    "diagnostic": {
+                      "en": "Given a model request crossing an API boundary, define the stable request/response contract, timeout behavior, retryable versus non-retryable failures, throttling behavior, credential owner, and what must remain safe if the same request is retried."
+                    },
+                    "resource": "article.aws-idempotent-apis",
+                    "locator": {
+                      "en": "Sections \"Reducing client complexity with idempotent API design\" and \"Retries and semantic equivalence\""
+                    },
+                    "purpose": {
+                      "en": "Patch the API contract, failure, retry, and idempotency reasoning needed before centralized gateway policy, without forcing the full API/service-design curriculum."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Decide whether a model gateway is justified relative to a direct provider integration."
+                },
+                {
+                  "en": "Define a stable client-facing request/response contract while isolating provider-specific behavior behind the gateway."
+                },
+                {
+                  "en": "Keep routing policy separate from application business logic."
+                },
+                {
+                  "en": "Route requests by explicit product, tenant, capability, or operational constraints."
+                },
+                {
+                  "en": "Distinguish load balancing, failover, fallback, and deliberate model selection."
+                },
+                {
+                  "en": "Define provider/model compatibility requirements and reject fallback between behaviorally incompatible model versions."
+                },
+                {
+                  "en": "Define bounded timeout, retry, and backoff behavior by failure class."
+                },
+                {
+                  "en": "Use provider throttling signals such as Retry-After when they are available."
+                },
+                {
+                  "en": "Define rate and quota controls and explain how limit failures surface to callers."
+                },
+                {
+                  "en": "Define gateway credential ownership and prevent clients from bypassing the policy boundary."
+                },
+                {
+                  "en": "Classify provider errors, gateway-policy errors, and application errors separately."
+                },
+                {
+                  "en": "Preserve request correlation across retries, routes, and fallbacks."
+                },
+                {
+                  "en": "Inject provider timeout and throttling failures and verify the declared policy."
+                },
+                {
+                  "en": "Measure gateway latency overhead and operational complexity against the direct-provider baseline."
+                },
+                {
+                  "en": "Keep, simplify, or remove the gateway based on measured value rather than architecture fashion."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a direct model-provider integration, identify which reliability, routing, quota, credential, or telemetry problem would justify adding a gateway and which would not."
+                },
+                {
+                  "en": "Design a fallback policy for two provider/model options and state the compatibility conditions that must hold before traffic may switch."
+                },
+                {
+                  "en": "Classify timeout, 429 throttling, authentication failure, incompatible model, and application validation failure into retry, fallback, or fail-fast behavior."
+                },
+                {
+                  "en": "Sketch the credential and request-correlation boundary so an application client cannot silently bypass gateway policy."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can justify or reject a gateway, design a stable provider-independent boundary, define bounded failure policy, preserve model compatibility, and produce inspectable operational evidence."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.azure-ai-gateway-multi-backend",
+                  "locator": {
+                    "en": "Sections \"Introduce a gateway for multiple model deployments\", \"Reasons to avoid a gateway for multiple model deployments\", and the multi-instance topology guidance covering retry, circuit breaking, throttling, load balancing, security, and model-version consistency"
+                  },
+                  "purpose": {
+                    "en": "Establish when a gateway earns its complexity, which responsibilities belong at the boundary, and why reliability policy must preserve model compatibility."
+                  }
+                },
+                {
+                  "resource": "docs.cloudflare-ai-gateway-dynamic-routing",
+                  "locator": {
+                    "en": "Sections \"Introduction\" and \"Core Concepts\""
+                  },
+                  "purpose": {
+                    "en": "Inspect concrete conditional, percentage, model, rate-limit, budget, fallback, and route-version controls without treating one product as the definition of a gateway."
+                  }
+                },
+                {
+                  "resource": "docs.cloudflare-ai-gateway-request-handling",
+                  "locator": {
+                    "en": "Sections \"Request timeouts\" and \"Request retries\""
+                  },
+                  "purpose": {
+                    "en": "Ground timeout, retry, and backoff behavior in bounded request-handling policy rather than unlimited transparent retries."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Draw the direct-provider and gateway variants of the same Knowledge Assistant request path, then assign ownership for routing, credentials, timeout, retry, throttling, fallback, correlation, and application validation."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Add a gateway boundary to the existing Knowledge Assistant, preserve the direct-provider baseline, inject timeout and throttling failures, exercise compatible and deliberately rejected fallback, and decide whether the gateway earns its overhead."
+                      },
+                      "path": "projects/knowledge-assistant/production-boundary/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Inject a provider timeout and verify the request follows the declared bounded timeout/retry/fallback policy."
+                },
+                {
+                  "en": "Inject a 429 response and verify throttling or Retry-After behavior is handled without an unbounded retry loop."
+                },
+                {
+                  "en": "Route to a declared compatible fallback, then attempt a behaviorally incompatible model fallback and verify it is rejected."
+                },
+                {
+                  "en": "Attempt to bypass the gateway with provider credentials or a direct endpoint and verify the intended policy boundary remains enforceable."
+                },
+                {
+                  "en": "Compare direct-provider and gateway variants on task behavior, latency, failure recovery, policy consistency, and operational complexity."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A direct-provider baseline and a gateway responsibility diagram are preserved."
+                },
+                {
+                  "en": "A stable request/response contract and provider/model inventory are inspectable."
+                },
+                {
+                  "en": "Routing, timeout, retry/backoff, fallback, rate/quota, and credential policies are explicit."
+                },
+                {
+                  "en": "Fallback compatibility rules include at least one incompatible model/version that is deliberately rejected."
+                },
+                {
+                  "en": "Provider, gateway-policy, and application failures are classified separately."
+                },
+                {
+                  "en": "Request correlation survives retry and fallback paths."
+                },
+                {
+                  "en": "Provider timeout and 429/throttling cases are reproduced from the failure matrix."
+                },
+                {
+                  "en": "At least one compatible fallback or failover path is exercised."
+                },
+                {
+                  "en": "Gateway-bypass and credential ownership risks are addressed outside model output."
+                },
+                {
+                  "en": "Gateway latency overhead and operational complexity are measured against the direct path."
+                },
+                {
+                  "en": "The final decision records whether to keep, simplify, or remove the gateway."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the gateway boundary for a different AI workload with a different provider mix, model-compatibility contract, tenant policy, latency budget, and failure tolerance."
+              }
+            }
+          ]
         }
       },
       {
@@ -7077,7 +7378,298 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/observability",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "AI failures can originate in provider calls, retrieval, tools, routing, configuration, or the application itself. Production observability must preserve enough correlated, privacy-safe evidence to explain a request and reconstruct a comparable execution without turning raw prompt/response logging into the default or confusing traces with quality evaluation."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "systems.api-service-design",
+                  "bridge": {
+                    "diagnostic": {
+                      "en": "For one AI API request, define the request/response boundary, request ID, success and error classes, timeout behavior, retry behavior, authentication owner, and what a duplicate retry means."
+                    },
+                    "resource": "article.aws-idempotent-apis",
+                    "locator": {
+                      "en": "Sections \"Reducing client complexity with idempotent API design\" and \"Retries and semantic equivalence\""
+                    },
+                    "purpose": {
+                      "en": "Patch the service request, retry, and idempotency model needed to interpret traces and diagnostic replay without requiring the full API/service-design curriculum."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define a trace boundary for the user request and important nested AI operations."
+                },
+                {
+                  "en": "Propagate correlation across model, retrieval, tool, application, and gateway operations when a gateway exists."
+                },
+                {
+                  "en": "Distinguish end-to-end workflow latency from individual provider-call latency."
+                },
+                {
+                  "en": "Record provider, requested model, response model, errors, and route or fallback outcome where applicable."
+                },
+                {
+                  "en": "Collect request latency and token or usage metrics when they are reliably available."
+                },
+                {
+                  "en": "Capture time-to-first-chunk only for streaming operations."
+                },
+                {
+                  "en": "Choose useful failure dimensions without creating uncontrolled high-cardinality telemetry."
+                },
+                {
+                  "en": "Define which prompts, user messages, tool arguments or results, and model outputs are excluded, redacted, sampled, or stored separately."
+                },
+                {
+                  "en": "Keep sensitive model and user content out of telemetry by default unless policy explicitly allows capture."
+                },
+                {
+                  "en": "Connect production traces to evaluation or incident records without treating a trace as a quality score."
+                },
+                {
+                  "en": "Reconstruct one comparable execution from recorded request context and provenance identifiers."
+                },
+                {
+                  "en": "Identify replay divergence caused by changed model, data, tool state, or configuration."
+                },
+                {
+                  "en": "Use traces to distinguish provider, retrieval, tool, gateway, and application failures."
+                },
+                {
+                  "en": "Measure telemetry storage and performance overhead."
+                },
+                {
+                  "en": "Remove telemetry that is expensive, sensitive, or not actionable."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Design a span inventory for a request that performs retrieval, one model call, and one tool call, and state which identifiers must correlate the operations."
+                },
+                {
+                  "en": "Explain why logging every prompt and output is not a safe observability default and define a content-capture policy instead."
+                },
+                {
+                  "en": "Separate workflow latency, provider latency, token usage, streaming time-to-first-chunk, and quality evaluation into the correct evidence types."
+                },
+                {
+                  "en": "Define the provenance needed to reconstruct a comparable failed request without claiming a stochastic model response can be reproduced byte-for-byte."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can design privacy-safe correlated telemetry, distinguish tracing from evaluation, diagnose cross-component failures, and define replay as provenance-based diagnostic reconstruction."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.otel-genai-spans",
+                  "locator": {
+                    "en": "Sections \"Spans\", \"Inference\", \"Retrievals\", \"Execute tool span\", \"Capturing instructions, inputs, and outputs\", and \"Recording content on attributes\""
+                  },
+                  "purpose": {
+                    "en": "Build the request/span model for inference, retrieval, and tools while preserving the explicit privacy boundary around model and user content."
+                  }
+                },
+                {
+                  "resource": "docs.otel-genai-metrics",
+                  "locator": {
+                    "en": "Sections \"Generative AI client metrics\", \"gen_ai.client.token.usage\", \"gen_ai.client.operation.duration\", \"gen_ai.client.operation.time_to_first_chunk\", and \"gen_ai.invoke_workflow.duration\""
+                  },
+                  "purpose": {
+                    "en": "Separate operation duration, workflow duration, token usage, and streaming time-to-first-chunk into metrics that match the operation being observed."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one existing Knowledge Assistant request trace on paper and mark the user-request root, retrieval, model, tool, and optional gateway operations; then decide which attributes are useful, which are too sensitive, and which would create high-cardinality noise."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Instrument the existing Knowledge Assistant production path, inject provider and retrieval or tool failures, prove content exclusion or redaction, create one diagnostic replay record, and diagnose the incident from collected evidence rather than agent narration."
+                      },
+                      "path": "projects/knowledge-assistant/production-boundary/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Capture a successful request and verify model, retrieval, tool, and optional gateway operations correlate under one request or trace identity."
+                },
+                {
+                  "en": "Inject a provider failure and a retrieval or tool failure, then verify the trace makes their failure domains distinguishable."
+                },
+                {
+                  "en": "Attempt to capture sensitive prompt, user, tool, or output content and verify the declared exclusion or redaction policy."
+                },
+                {
+                  "en": "Replay a failed request from recorded provenance, then change one model, index, tool, or configuration identifier and explain why the reconstruction diverges."
+                },
+                {
+                  "en": "Measure telemetry latency/storage overhead and remove or reduce one field that is costly, sensitive, or not actionable."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A request/trace ID and inspectable span inventory cover the important production path."
+                },
+                {
+                  "en": "Model/provider attributes and retrieval, tool, application, and optional gateway correlation are preserved."
+                },
+                {
+                  "en": "Workflow latency and provider-call latency are distinguishable."
+                },
+                {
+                  "en": "Token or usage metrics are captured only when reliably available, and time-to-first-chunk appears only for streaming."
+                },
+                {
+                  "en": "A failure taxonomy distinguishes provider, retrieval, tool, gateway, and application errors where those components exist."
+                },
+                {
+                  "en": "A privacy/content-capture policy keeps sensitive content out of telemetry by default."
+                },
+                {
+                  "en": "A redaction or content-exclusion test proves the declared policy."
+                },
+                {
+                  "en": "Successful, provider-failure, and retrieval or tool-failure traces are inspectable."
+                },
+                {
+                  "en": "A diagnostic replay record includes the relevant provider/model, inference, prompt/template, retrieval/index, tool, route/policy, input-reference, and configuration provenance."
+                },
+                {
+                  "en": "Replay is described as comparable diagnostic reconstruction rather than deterministic model-response reproduction."
+                },
+                {
+                  "en": "Telemetry overhead is measured and at least one high-cost, high-risk, or low-value field is reduced or dropped."
+                },
+                {
+                  "en": "An incident is diagnosed from traces and metrics rather than from a dashboard screenshot or agent explanation alone."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Move the observability contract to a different AI workflow with different providers, tools, retrieval state, privacy constraints, and streaming behavior, then redesign the trace and replay evidence without copying vendor dashboards."
+              }
+            }
+          ]
         }
       },
       {
@@ -8136,7 +8728,10 @@
                   "en": "mcp-interoperability"
                 },
                 {
-                  "en": "service-and-observability"
+                  "en": "model-gateway-boundary"
+                },
+                {
+                  "en": "observability-and-replay"
                 },
                 {
                   "en": "release-gate"
@@ -8229,6 +8824,27 @@
                 },
                 {
                   "en": "mcp-conformance-record"
+                },
+                {
+                  "en": "gateway-decision-record"
+                },
+                {
+                  "en": "gateway-contract"
+                },
+                {
+                  "en": "gateway-failure-matrix"
+                },
+                {
+                  "en": "telemetry-contract"
+                },
+                {
+                  "en": "telemetry-privacy-test"
+                },
+                {
+                  "en": "diagnostic-replay-record"
+                },
+                {
+                  "en": "production-overhead-record"
                 },
                 {
                   "en": "decision-records"
@@ -8448,6 +9064,16 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.model-gateway"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "production.observability"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "retrieval.chunking"
     },
     {
@@ -8628,6 +9254,16 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.model-gateway"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
+      "to": "production.observability"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "retrieval.chunking"
     },
     {
@@ -8639,6 +9275,11 @@
       "type": "prerequisite",
       "from": "ai.evaluation",
       "to": "retrieval.reranking"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.model-selection",
+      "to": "production.model-gateway"
     },
     {
       "type": "prerequisite",
@@ -8754,6 +9395,16 @@
       "type": "prerequisite",
       "from": "systems.api-service-design",
       "to": "ai.tool-calling"
+    },
+    {
+      "type": "prerequisite",
+      "from": "systems.api-service-design",
+      "to": "production.model-gateway"
+    },
+    {
+      "type": "prerequisite",
+      "from": "systems.api-service-design",
+      "to": "production.observability"
     }
   ],
   "resources": {
@@ -8871,6 +9522,24 @@
       "author": "Anthropic",
       "url": "https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview"
     },
+    "docs.azure-ai-gateway-multi-backend": {
+      "title": "Azure Architecture Center — Gateway in front of model deployments",
+      "type": "documentation",
+      "author": "Microsoft",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/azure-openai-gateway-multi-backend"
+    },
+    "docs.cloudflare-ai-gateway-dynamic-routing": {
+      "title": "Cloudflare AI Gateway — Dynamic Routing",
+      "type": "documentation",
+      "author": "Cloudflare",
+      "url": "https://developers.cloudflare.com/ai-gateway/features/dynamic-routing/"
+    },
+    "docs.cloudflare-ai-gateway-request-handling": {
+      "title": "Cloudflare AI Gateway — Request handling",
+      "type": "documentation",
+      "author": "Cloudflare",
+      "url": "https://developers.cloudflare.com/ai-gateway/configuration/request-handling/"
+    },
     "docs.google-adk-memory": {
       "title": "Google ADK — Memory: Long-term knowledge",
       "type": "documentation",
@@ -8978,6 +9647,18 @@
       "type": "documentation",
       "author": "OpenAI",
       "url": "https://help.openai.com/en/articles/8555517-function-calling-in-the-openai-api"
+    },
+    "docs.otel-genai-metrics": {
+      "title": "OpenTelemetry GenAI semantic conventions — metrics",
+      "type": "documentation",
+      "author": "OpenTelemetry",
+      "url": "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-metrics.md"
+    },
+    "docs.otel-genai-spans": {
+      "title": "OpenTelemetry GenAI semantic conventions — spans",
+      "type": "documentation",
+      "author": "OpenTelemetry",
+      "url": "https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md"
     },
     "docs.ragas-rag-metrics": {
       "title": "Ragas — RAG Evaluation Metrics",

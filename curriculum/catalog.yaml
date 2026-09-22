@@ -243,7 +243,8 @@ competencies:
       id: production.model-gateway,
       title: Model Provider and Gateway Architecture,
       domain: production-ai,
-      status: coverage,
+      status: ready,
+      route: curriculum/09-production-ai/model-gateway,
     }
   - { id: production.caching, title: AI Caching, domain: production-ai, status: coverage }
   - { id: production.streaming, title: Streaming, domain: production-ai, status: coverage }
@@ -253,7 +254,8 @@ competencies:
       id: production.observability,
       title: AI Observability and Request Replay,
       domain: production-ai,
-      status: coverage,
+      status: ready,
+      route: curriculum/09-production-ai/observability,
     }
   - { id: production.release-engineering, title: AI Release Engineering, domain: production-ai, status: coverage }
   - { id: production.versioning, title: Model Prompt and Retrieval Versioning, domain: production-ai, status: coverage }

@@ -18,6 +18,8 @@ For work that spans waits, restarts, routing, or parallel branches, continue wit
 
 For tasks where independent specialist contexts might create measurable value, continue with the [Multi-Agent evidence contract](multi-agent/). Preserve the single-agent orchestration baseline and keep the multi-agent topology only if specialization earns its coordination cost.
 
+For provider control and production diagnosis, continue with the [Production Boundary evidence contract](production-boundary/). Preserve the direct-provider path as a baseline so gateway and telemetry complexity have something real to beat.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -429,23 +431,51 @@ Add MCP only when the Knowledge Assistant has a real interoperability need acros
 
 **Decision:** keep MCP, simplify the exposed surface, or return to the direct integration.
 
-## Milestone 19 — service and observability
+## Milestone 19 — model gateway boundary
 
-Expose the system through an API or application boundary.
+Use the [Model Provider and Gateway Architecture](../../curriculum/09-production-ai/model-gateway/) route and the [Production Boundary evidence contract](production-boundary/).
 
-Trace at least:
+Preserve the direct-provider path. Add a gateway only when centralized routing, reliability policy, quota, credential, or telemetry control solves a measured problem.
 
-- request ID;
-- model calls;
-- retrieval calls;
-- tool calls;
-- latency;
-- errors;
-- token/cost data when available.
+**Evidence:**
 
-A trace should help answer **why** a bad result happened.
+- gateway decision and responsibility boundary;
+- stable request/response contract;
+- provider/model inventory and compatibility policy;
+- routing, timeout, retry/backoff, fallback, rate/quota, and credential policy;
+- request correlation across retry and fallback;
+- provider timeout and 429/throttling failures;
+- one compatible fallback or failover case;
+- one incompatible model/version fallback that is deliberately rejected;
+- gateway-bypass/credential-boundary test;
+- latency and operational-overhead comparison with the direct path.
 
-## Milestone 20 — release gate
+**Decision:** keep the gateway, simplify it, or return to direct provider integration.
+
+## Milestone 20 — observability and diagnostic replay
+
+Use the [AI Observability and Request Replay](../../curriculum/09-production-ai/observability/) route and continue in the same [Production Boundary evidence contract](production-boundary/).
+
+Instrument the request path so a production failure can be explained without treating logs as a transcript dump.
+
+**Evidence:**
+
+- request/trace ID and span inventory;
+- model/provider, retrieval, tool, application, and optional gateway correlation;
+- workflow and provider-call latency;
+- token/usage metrics when reliable;
+- streaming time-to-first-chunk only when the path actually streams;
+- explicit privacy/content-capture policy;
+- redaction or content-exclusion test;
+- successful, provider-failure, and retrieval/tool-failure traces;
+- provenance for model, prompt/template, retrieval/index, tool, route/policy, input reference, and relevant configuration;
+- one diagnostic replay record;
+- telemetry overhead and one field deliberately reduced or dropped;
+- incident diagnosis from collected evidence.
+
+**Decision:** keep only telemetry that is actionable, privacy-safe, and worth its overhead.
+
+## Milestone 21 — release gate
 
 Create a pre-release check that uses the evaluation harness.
 
@@ -458,7 +488,7 @@ A release decision should include:
 
 The output is a recorded **go / no-go decision with evidence**, not merely a CI green check.
 
-## Milestone 21 — security failure work
+## Milestone 22 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -471,7 +501,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 22 — incident and feedback loop
+## Milestone 23 — incident and feedback loop
 
 Inject or analyze one failure:
 

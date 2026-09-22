@@ -339,3 +339,105 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 60
+
+  - id: docs.azure-ai-gateway-multi-backend
+    type: documentation
+    title: Azure Architecture Center — Gateway in front of model deployments
+    author: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/azure-openai-gateway-multi-backend
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.model-gateway
+      - routing
+      - failover
+      - retries
+      - quota
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.cloudflare-ai-gateway-dynamic-routing
+    type: documentation
+    title: Cloudflare AI Gateway — Dynamic Routing
+    author: Cloudflare
+    url: https://developers.cloudflare.com/ai-gateway/features/dynamic-routing/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.model-gateway
+      - routing
+      - fallback
+      - rate-limits
+      - budgets
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.cloudflare-ai-gateway-request-handling
+    type: documentation
+    title: Cloudflare AI Gateway — Request handling
+    author: Cloudflare
+    url: https://developers.cloudflare.com/ai-gateway/configuration/request-handling/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.model-gateway
+      - timeouts
+      - retries
+      - backoff
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.otel-genai-spans
+    type: documentation
+    title: OpenTelemetry GenAI semantic conventions — spans
+    author: OpenTelemetry
+    url: https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.observability
+      - tracing
+      - privacy
+      - genai
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.otel-genai-metrics
+    type: documentation
+    title: OpenTelemetry GenAI semantic conventions — metrics
+    author: OpenTelemetry
+    url: https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-metrics.md
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.observability
+      - metrics
+      - latency
+      - token-usage
+      - streaming
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
