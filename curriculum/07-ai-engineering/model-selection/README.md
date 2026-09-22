@@ -4,6 +4,24 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 4 "Evaluate AI Systems" — Evaluation Criteria, Model Selection, Model Selection Workflow, Model Build Versus Buy, and Navigate Public Benchmarks | Connect task-specific evaluation criteria to an explicit model-selection workflow and operational trade-offs. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `ai.product-framing` | [Made With ML — Product Design](https://madewithml.com/courses/mlops/product-design/) | Product Design lesson sections covering users, pain points, value proposition, objectives, constraints, and feasibility. | Patch the product constraints that make model selection a decision rather than a benchmark lookup. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 There is no universally "best model" for an AI product.
