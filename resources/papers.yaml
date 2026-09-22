@@ -65,7 +65,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 365
 
-- id: paper.critic-tool-interactive
+  - id: paper.critic-tool-interactive
     type: paper
     title: "CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing"
     author: Zhibin Gou et al.
