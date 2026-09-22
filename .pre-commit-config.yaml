@@ -28,9 +28,11 @@ repos:
         files: ^site/.*\.(ts|tsx|mjs|js)$
         exclude: ^site/(dist|\.astro|\.wrangler|src/data)/
 
+      # Runs in an environment pre-commit builds, so a push is checked even outside a virtualenv.
       - id: make-check
         name: make check
         entry: make check
-        language: system
+        language: python
+        additional_dependencies: ["PyYAML>=6.0", "jsonschema>=4.23"]
         pass_filenames: false
         stages: [pre-push]
