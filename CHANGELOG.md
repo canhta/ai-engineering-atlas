@@ -18,6 +18,11 @@ Curriculum changes are tracked separately from routine documentation and reposit
 - Source review policy and review intervals for actively used sources.
 - Lifecycle-based competency and lab authoring templates.
 - Internal Markdown link validation in CI.
+- Prerequisite bridges for ready routes whose dependencies are still coverage-only.
+- Evidence-provenance and state-history tracking for learner progress.
+- Executable JSON Schema validation for catalog, resources, competencies, projects, and progress.
+- Reference-solution validation for hands-on labs.
+- PR template and curriculum versioning policy.
 
 ### Changed
 
@@ -26,7 +31,7 @@ Curriculum changes are tracked separately from routine documentation and reposit
 - Added learner evidence states: demonstrated, transferred, retained, and applied.
 - Added competency types with matching assessment evidence.
 - Added precise learning-route and source-role rules.
-- Promoted Self-Attention and AI Evaluation to ready routes with verified source locators and labs.
+- Promoted Self-Attention, Model Selection, AI Evaluation, Deterministic vs Agentic Design, and Prompt Injection / Trust Boundaries to ready routes with verified source locators and practice.
 - Turned project spines into evolving systems with baselines, metrics, failures, release decisions, and feedback.
 - Added canonical prerequisite validation to eliminate orphan/ghost competency IDs.
 - Aligned AI-agent and contribution rules with the catalog-first lifecycle.

@@ -67,15 +67,16 @@ When adding or changing a competency:
 2. Check the canonical catalog.
 3. Define the observable capability.
 4. Identify prerequisites using catalog IDs.
-5. Decide the competency type and appropriate evidence.
-6. Design a diagnostic that can reveal prior knowledge.
-7. Select a precise learning route through real sources.
-8. Select or design practice.
-9. Define exit evidence.
-10. Add transfer, project integration, or delayed review when required.
-11. Check for overlap with existing competencies.
-12. Use an RFC for substantive changes.
-13. Run `make check`.
+5. If a ready route depends on a coverage-only prerequisite, add a targeted prerequisite bridge with a diagnostic and verified source locator.
+6. Decide the competency type and appropriate evidence.
+7. Design a diagnostic that can reveal prior knowledge.
+8. Select a precise learning route through real sources.
+9. Select or design practice.
+10. Define exit evidence.
+11. Add transfer, project integration, or delayed review when required.
+12. Check for overlap with existing competencies.
+13. Use an RFC for substantive changes.
+14. Run `make check`.
 
 Do not equate "covered by a book/course" with "learned."
 
@@ -200,6 +201,7 @@ Check:
 
 - Does this change follow LEARNING_MODEL.md?
 - Is every competency/reference registered in the catalog?
+- Does every coverage-only prerequisite of a ready route have a prerequisite bridge?
 - Is the competency evidence-based?
 - Is the learning route precise enough to start immediately?
 - Were source locators actually verified?

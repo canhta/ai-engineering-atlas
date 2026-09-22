@@ -39,6 +39,7 @@ A catalog item may become **ready** when it has:
 
 - observable outcomes;
 - prerequisites using catalog IDs;
+- prerequisite bridges for any prerequisite that is still coverage-only;
 - a diagnostic;
 - exact source locators;
 - practice matching the capability;
@@ -119,6 +120,8 @@ make check
 ```
 
 before opening a PR.
+
+For curriculum release semantics, see [VERSIONING.md](VERSIONING.md).
 
 ## Writing and layout
 

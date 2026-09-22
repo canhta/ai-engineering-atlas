@@ -90,6 +90,7 @@ Read:
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [AGENTS.md](AGENTS.md)
 - [CURRICULUM.md](CURRICULUM.md)
+- [VERSIONING.md](VERSIONING.md)
 - [resources/REVIEW_POLICY.md](resources/REVIEW_POLICY.md)
 
 Run `make check` before a pull request. Substantial curriculum changes should include evidence and use the RFC process.
