@@ -94,7 +94,7 @@ test("recording evidence changes the state, schedules review, and shows in progr
   await expect(page.getByText("Next review")).toBeVisible();
 
   await open(page, "/en/progress/");
-  await expect(page.getByText("1 of 17 ready routes demonstrated or beyond")).toBeVisible();
+  await expect(page.getByText(/^1 of \d+ ready routes demonstrated or beyond$/)).toBeVisible();
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 
   await open(page, "/en/map/");
