@@ -157,7 +157,7 @@
   flex: none;
   width: 0.75rem;
   height: 0.75rem;
-  border: 1.5px solid var(--route);
+  border: 1.5px solid var(--ink);
   border-radius: var(--radius-small);
   overflow: hidden;
   vertical-align: -0.05em;
@@ -894,12 +894,21 @@
 
 /* ---------------------------------------------------------------- Sources */
 
+/* The table uses the full content column (between rail and field log), not the reading measure. */
+.sources {
+  width: 100%;
+}
+
 .sources-table th:nth-child(1) {
-  width: 30%;
+  width: 26%;
+}
+
+.sources-table th:nth-child(3) {
+  width: 28%;
 }
 
 .sources-table th:nth-child(4) {
-  width: 5.5rem;
+  width: 4.75rem;
 }
 
 .sources-table td {

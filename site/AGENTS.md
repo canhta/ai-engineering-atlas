@@ -35,6 +35,7 @@ Deploys run only through the manual **Deploy site** workflow (`.github/workflows
 - The site renders only the content model. Curriculum field names, section titles, and vocabulary labels live in [curriculum/presentation.yaml](../curriculum/presentation.yaml), not in `src/`. `pnpm run check:coupling` fails when a curriculum field name (from `presentation.yaml` and `schemas/competency.schema.json`) appears in `src/` outside `src/data/`.
 - `src/lib/atlas.ts` is the only reader of the model. Islands never import it (it would ship the whole model to the browser); pages pass them plain props. `text(l10n, lang)` returns `{value, lang}`: render `lang` on the element when it differs from the page language.
 - Blocks render through `src/components/blocks/Block.astro`, one component per block type. Route and project pages share `src/components/sheet/ItemSheet.astro`.
+- Atlas filters come from the model: the tracked collection's `facets` (the `page_when` field is the "Ready routes only" toggle), the learner state, and one facet per other collection whose items have relations pointing at tracked items (projects today).
 - To show a new content field, add a block to `presentation.yaml`; do not special-case it in the site. Unknown block types render as `data`.
 - Pages exist only where an item has `page` (competencies: `page_when` on status). Items without a page render as list entries.
 

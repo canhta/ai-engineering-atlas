@@ -121,7 +121,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 ```text
  Atlas / AI engineering / Tool calling                                      breadcrumb
  Tool Calling                                                               display
- Tool-enabled AI systems cross a boundary from model suggestions …          first text block as subtitle, 20–22px
+ Tool-enabled AI systems cross a boundary from model suggestions …          first text block as a lead, 20px (18px mobile), ink-muted, ≤ 60ch
  (L3 deep engineering) (engineering skill) (system operation)    View contract ↗   Copy link
  Not feeling ready? Needs ■ AI evaluation and ⬚ API design (a bridge is on this page)
 ┌ rail 220 ──────────┬ content, reading column ≤ 68ch ─────────┬ field log 320, sticky ──┐
@@ -173,7 +173,7 @@ Before hydration (controls disabled, no learner state drawn); empty; filtered to
 | `sheet` | raised surfaces: plate core, drawer, field log core |
 | `ink`, `ink-muted` | text; muted for secondary text |
 | `line` | hairlines and contour strokes: translucent ink, not flat grey |
-| `route` | magenta: ready tiles, selection ring, primary action |
+| `route` | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
 | `water` | teal: links |
 | `state-gap`, `state-demonstrated`, `state-beyond` | amber, green, a magenta shade; always with shape and label |
 

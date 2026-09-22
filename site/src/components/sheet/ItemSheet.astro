@@ -50,7 +50,7 @@ const group = groupOf(c, item, lang);
 const crumbs: Crumb[] = [
   { label: t("nav.atlas"), href: mapUrl(lang) },
   group
-    ? { label: group.label.value, href: `${mapUrl(lang)}#group-${group.value}`, lang: langAttr(group.label, lang) }
+    ? { label: group.label.value, href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}`, lang: langAttr(group.label, lang) }
     : { label: text(c.label, lang).value, lang: langAttr(text(c.label, lang), lang) },
   { label: title.value, lang: langAttr(title, lang) },
 ];
@@ -99,7 +99,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
       <h1 class="display" lang={langAttr(title, lang)}>{title.value}</h1>
       {
         subtitle && (
-          <p class="subtitle" lang={langAttr(subtitle, lang)}>
+          <p class="lead" lang={langAttr(subtitle, lang)}>
             {subtitle.value}
           </p>
         )
@@ -188,7 +188,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     margin-bottom: var(--space-5);
   }
 
-  .sheet-head .subtitle {
+  .sheet-head .lead {
     margin-bottom: var(--space-6);
   }
 
@@ -235,7 +235,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     display: grid;
     grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--log-width);
     grid-template-areas: "rail content log";
-    gap: var(--space-10);
+    gap: var(--space-8);
     align-items: start;
   }
 
