@@ -1,246 +1,248 @@
 # Web atlas RFC companion: UI/UX research
 
 - Status: Research notes for [web atlas RFC](0000-interactive-web-atlas.md)
-- Checked: 2026-09-22
+- Checked: 2026-09-22 (text sources); visual teardown 2026-09-22
 - Scope: skill map, route pages, diagnostics, in-browser labs, AI tutor, progress, bilingual type, foundations
 
-Claims carry a source link. Anything that could not be confirmed from a primary source is listed under [Unverified](#unverified).
+Claims carry a source link or name the screenshot they come from. Anything not confirmed from a primary source or a screenshot is listed under [Unverified](#unverified).
 
 ## Summary
 
-1. **Map = list first, graph second.** Default view is a domain-grouped list (tree/table) of all 116 items; the React Flow graph is a toggle and draws only the 30 declared edges. The list is the accessible equivalent, not an afterthought.
-2. **Coverage nodes are quiet.** Ready routes are full-contrast, clickable rows; 101 coverage items are muted text labelled "mapped, no route", never locked-padlock tiles.
-3. **Route page = a source table.** Columns: source, exact locator, why, opened (not progress). Reading column max 68ch, no hosted lesson prose.
-4. **Lab = editor left, tests right, grouped by lab task.** Exercism-style `pass/fail/error` per task, first failure expanded, help ladder below the failure.
-5. **AI = scoped buttons attached to an artifact** (a failing test, a locator, a diagnostic answer), shown after an attempt, with a visible budget counter and a "report as wrong" control on every message. No floating chat bubble.
-6. **Progress = evidence, not completion.** Per-competency state plus an evidence timeline; no streaks, XP, or percent-read. Review queue shows due counts like Anki.
-7. **Type:** IBM Plex Sans (UI), Source Serif 4 (reading), IBM Plex Mono or JetBrains Mono (code). All have the `vietnamese` subset on Google Fonts; self-host them.
-8. **Color:** neutral 12-step scale plus one accent; evidence states use shape + label + color, never color alone.
-9. **Components:** React Aria Components for islands (combobox, tabs, tree, dialogs); plain Astro for everything static. Skip Starlight.
-10. **Motion:** none by default beyond 100–150 ms state transitions; map pan/zoom respects `prefers-reduced-motion`; no scroll-triggered animation.
+1. **Home = survey plate, bent to proven conventions.** A whole-map diagram is the recognised form for a role roadmap (roadmap.sh). Keep it as the desktop hero, but draw only declared prerequisite lines and add a Khan-style legend. On phones, a scaled diagram is unreadable (roadmap.sh), so show a per-domain grid of squares instead (Khan).
+2. **Map = plate + list on one page.** The plate gives overview; the domain-grouped list stays the accessible equivalent. Clicking a node opens a right-hand drawer (roadmap.sh), which becomes a full-screen sheet on mobile. The drawer holds a route summary and a link to the route page. It has no Done/Skip toggles.
+3. **Coverage items stay quiet.** They are outlined, unfilled, and labelled "mapped, no route". Never use padlocks.
+4. **Route page = route sheet with a waypoint rail.** Follow the docs convention (Stripe, Hugging Face): breadcrumb, a large title with a one-line subtitle, a left rail of numbered waypoints (Diagnostic → Sources → Practice → Exit evidence), and a prerequisite bridge line near the top (Khan "Not feeling ready?", master.dev "Prerequisite:").
+5. **Sources = a table with the exact locator.** No competitor shows locators; roadmap.sh shows only type badges and titles. The locator column is what makes us different, so keep the table.
+6. **Progress = evidence, not completion.** Use one square per competency with shape and fill by state, plus a legend (Khan). Add the evidence timeline and review due counts. Avoid streaks, XP, "N of M steps complete", and percent rings.
+7. **Labs:** editor | results, grouped by task, help ladder below the failure (Exercism, futurecoder).
+8. **AI:** text-labelled actions attached to objects (roadmap.sh "Quick Explain / Quiz me" row inside the node panel is the closest precedent). No floating "Ask anything" bar (roadmap.sh, Hugging Face both have one; it competes with content on mobile).
+9. **Type and colour:** IBM Plex Sans UI, Source Serif 4 reading, Plex Mono code (all ship `vietnamese`); a neutral 12-step scale plus one accent. State is shown by glyph + label + colour.
+10. **Tone:** restrained, like Stripe docs and Khan. Leave out the marketing chrome that Boot.dev, master.dev and Brilliant use (star ratings, enrolment counts, sale banners, per-item illustrations).
+
+## Competitor teardown (visual, 2026-09-22)
+
+Method: Playwright (Chromium) screenshots at 1440×900 and 390×844, viewport and full page (clipped at 3200 px), in `/tmp/competitor-shots/`. Public pages only, no login. Sizes are estimated by eye from screenshots, not measured from CSS. Blocked: **Exercism** (`/tracks/python`, `/tracks/python/concepts`) returned a Cloudflare "verify you are human" page at both widths, so no visual claims are made about it. The freeCodeCamp certification page at 1440 px showed only a loading spinner after 5.5 s; the 390 px capture loaded. `frontendmasters.com/learn/` redirects to `master.dev/learn/`.
+
+### roadmap.sh — [/ai-engineer](https://roadmap.sh/ai-engineer), [home](https://roadmap.sh/)
+
+- **Navigation of a large set:** one long vertical diagram. A blue spine carries yellow topic nodes. Pale-yellow subtopic nodes are grouped in bordered boxes left and right, joined to the spine by dotted connectors. Short section labels sit on the spine ("Working With LLMs", "AI Models"). Nodes are text only: label, fill, border.
+- **Page chrome:** a white card on a pale ground with a back link, a 48 px heavy title with a grey subtitle, and tabs (Roadmap / Projects / AI Tutor) plus "Personalize". Below that sit a yellow "Join 33,032+ others tracking…" strip and a collapsible "What is an…?" disclosure. Ad and partner cards sit inside the diagram area.
+- **Detail panel:** clicking a node opens a right drawer about 40% wide and dims the map. The drawer has tabs (Resources / AI Tutor), a segmented status control (Learning / Done / Skip), a 40 px title, a description paragraph, and a "Learn with AI" card with three buttons (Quick Explain, Teach Me, Quiz me). It groups resources as "Premium" and "Free", each with a coloured type badge (Article, Video) and a linked title. None shows a chapter or section locator. On 390 px the drawer becomes a full-screen sheet with icon-only controls.
+- **Mobile:** the whole diagram is scaled to fit 390 px, which makes node labels about 5–7 px. They cannot be read without pinch-zoom. A floating "AI Tutor · Ask anything" pill covers the diagram.
+- **Home:** dark navy, gradient headline, full-width search ("What do you want to learn today?"), and a three-column grid of equal bordered tiles with a bookmark glyph. The first tile is a purple "Learn with AI" gradient.
+- **Reads as:** recognisable and dense, but visually loud (saturated yellow, ads). The status toggle records consumption.
+
+### Khan Academy — [Algebra 1](https://www.khanacademy.org/math/algebra), [Unit 1](https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:foundation-algebra)
+
+- **Mastery grid (strongest pattern seen):** under the course title ("182 skills") sits a legend of state swatches: Mastered (filled purple with a crown), Proficient (filled lavender), Familiar (half-filled orange), Attempted (orange outline), Not started (grey outline), plus a glyph for Quiz (bolt) and one for Unit test (star). Each unit is one row of about 20 px squares, one per skill, laid out in two columns. Units without exercises say "This unit's exercises do not count toward course mastery."
+- **Layout:** a left rail of units ("UNIT 1" small-caps eyebrow above the title; the active one has a tinted background). The content column holds white bordered cards per lesson.
+- **Unit page:** a card per lesson, split **Learn** (list with a type glyph per item) | **Practice** (a card per exercise: title, "Get 5 of 7 questions to level up!", a Practice button, and a state label "Not started" in a right cell). One practice card is flagged "Up next for you" with a blue top border and a filled Start button.
+- **Prerequisite bridge:** top-right text line "Not feeling ready for this? Check out *Get ready for Algebra 1*."
+- **Mobile:** the unit name moves above its squares, which wrap onto several lines. The grid stays readable at 390 px. The Learn/Practice columns become two narrow columns and wrap heavily.
+- **Noise:** teacher banner, sign-up band and donation overlay on first load.
+
+### Brilliant — [courses](https://brilliant.org/courses/), [Linear Relationships](https://brilliant.org/courses/linear-functions/)
+
+- Catalogue: paths, each a tinted band of equal illustrated tiles joined by faint connectors. Course page: a summary card ("45 Lessons · 761 Exercises") beside a vertical path of 3D discs, the current one coloured, later ones faded; one centred column on mobile.
+- Reads as: polished but illustration-led. Equal tile weight cannot show maturity or state.
+
+### Boot.dev — [courses](https://www.boot.dev/courses), [RAG course](https://www.boot.dev/courses/learn-retrieval-augmented-generation), [backend path](https://www.boot.dev/paths/backend?tech=python-golang)
+
+- Dark textured "fantasy" theme; catalogue is a three-column card grid with star ratings, enrolled counts, hours and NEW/UPDATED pills.
+- Course page: after a marketing hero, a **numbered chapter list** (large numeral, title, one-line description, hairline dividers) is the clearest element. Path page: a numbered stack of course cards listing chapters, "Enter Course" bottom-right.
+- Reads as: gamified marketing ("75 Addicting lessons", leaderboard in the nav).
+
+### freeCodeCamp — [/learn](https://www.freecodecamp.org/learn), [JavaScript certification](https://www.freecodecamp.org/learn/javascript-v9/) (390 px only)
+
+- /learn: one centred column of bordered rows under section headings.
+- Certification page: an accordion tree ("Variables and Strings · 0 of 101 steps complete"). Child rows carry a hollow status circle and a small coloured **type tag** (Theory, Workshop, Lab, Review, Quiz) that makes activity kind scannable.
+
+### master.dev (formerly Frontend Masters) — [/learn](https://master.dev/learn/), [AI Engineering path](https://master.dev/learn/ai-engineering/)
+
+- Path page: a hero with a large "0%" progress ring. It is followed by "Core Coursework · Take these in order" and a **"Prerequisite:" line linking two other paths**. The body is a zig-zag vertical rail: an "Up First" / "Up Next" text box explains each step, and a course card (thumbnail, title, instructor) sits opposite, joined by orthogonal connector lines. "Elective Coursework · Optional, take in any order" follows as a grid.
+- Mobile: the zig-zag collapses into one column with a single vertical connector.
+- Noise: a sale countdown banner, a regional-pricing strip, and photo heroes.
+
+### Stripe docs — [Build a payments page](https://docs.stripe.com/payments/checkout)
+
+- Centred search and "Ask AI"; product tabs with an active underline.
+- Collapsible left nav (uppercase group labels, chevrons, the active item in the accent colour). Breadcrumb; H1 about 32 px bold; a **one-line subtitle about 24 px regular**; then a row of small page actions (Ask about this page · Copy for LLM · View as Markdown) separated by hairlines.
+- One accent (blue-violet) for links and active state only; no card chrome around text. Mobile: the sidebar collapses into a "≡ Overview" bar naming the current section.
+- Reads as: the high-end reference; hierarchy comes from type size and weight alone.
+
+### Hugging Face LLM course — [chapter 1.1](https://huggingface.co/learn/llm-course/chapter1/1)
+
+- Three columns: a left chapter nav (numbered uppercase chapter headings, the current page as a black filled pill), a centred reading column, and a right "on this page" TOC in grey. A language selector (EN) sits in the left rail header.
+- An "Ask a question" pill sits on the section heading, and a floating "Ask HuggingChat" input sits bottom-right.
+- Mobile: the nav collapses to "LLM Course documentation / Introduction ▾"; the floating input overlaps content.
+
+### Current atlas — [/en/](https://ai-eng.canhta.com/en/), [/en/map/](https://ai-eng.canhta.com/en/map/), [/en/routes/ai.tool-calling/](https://ai-eng.canhta.com/en/routes/ai.tool-calling/)
+
+- Home: a left-aligned text column that takes about 55% of 1440 px, leaving the right side empty. The count line "19 ready routes · 97 mapped without a route · 5 labs" is correct but reads as body text. The ready list repeats an identical blue dot + "ready" on all 19 rows, so the column carries no information.
+- Map: domains collapse with "0 ready of 8" beside the name (useful). Inside, a table has Status / Level / Prerequisites / Your state; coverage rows are muted. On 390 px the search, two selects and a checkbox fill the first screen before any competency appears.
+- Route: the metadata line (ID · target level · capability type · ready) reads like debug output. "Your state" is a bordered box with Record evidence (good). Four large textareas make the diagnostic the tallest section. The sources table (Source+domain | Read/inspect | Why | Opened) is already the strongest element and has no competitor equivalent.
+- Reads as generic: one size step between H1 and body, no overview graphic, every section equal weight.
+
+### Adopt / Avoid / Bend by surface
+
+| Surface | Adopt (source) | Avoid (why) | Bend the survey plate |
+|---|---|---|---|
+| Home | Whole-map diagram as the recognisable roadmap form (roadmap.sh); a state legend directly above the plate (Khan); search in the header, not as the hero (Stripe) | Gradient headline, a "Learn with AI" tile, equal tile grids (roadmap.sh home, Brilliant); enrolment counts, stars, sale banners (Boot.dev, master.dev) | Plate on ≥ 1024 px. Under that, show a per-domain wrapped grid of squares (Khan mobile) instead of a scaled plate (roadmap.sh mobile fails) |
+| Map | Right drawer about 40% wide over a dimmed plate; full-screen sheet on mobile (roadmap.sh); section labels on the spine; "N ready of M" per domain (current atlas) | Learning/Done/Skip toggles (records consumption); resource type badges without locators; "Premium resources" | Keep the list below or behind a toggle as the long description. The drawer shows why, prerequisites with state, diagnostic size, source count, and "Open route". Only ready nodes open a drawer. |
+| Route page | Breadcrumb + H1 + one-line subtitle + small action row (Stripe); left waypoint rail with the current item filled (HF, Stripe); "Not feeling ready? → bridge" line (Khan); "Prerequisite:" line + Up first/Up next rail (master.dev); numbered steps with one-line purpose (Boot.dev) | Hosted lesson prose (HF chapter style); a hero progress ring (master.dev "0%"); floating AI input (HF, roadmap.sh) | Route sheet = the waypoint rail (Diagnostic, Sources, Practice, Exit evidence, Transfer) on the left, content right. On mobile the rail collapses into a "Waypoint 2 of 5 ▾" bar (Stripe mobile) |
+| Sources table | Kind tag per row, e.g. Chapter / Section / Paper / Doc (fCC type tags); domain under the title (current atlas) | Premium/Free split and badge-only resources (roadmap.sh) | Keep the locator column. It is our differentiator, and no competitor shows one |
+| Diagnostic | Practice card with the goal stated ("Get 5 of 7…") and a state cell on the right (Khan) | Four open textareas shown at once (current atlas) | Show one task at a time, or collapse tasks into disclosures, with "Task 2 of 4" |
+| Learner panel / evidence | State cell beside each actionable item; the next suggested item marked "Up next" (Khan) | Mixed percentages; "N of M steps complete" (fCC) | Panel = state glyph + label, target, next review, and Record evidence. Pin it in the rail on desktop |
+| Progress | Legend + one square per competency, with fill = state and glyph = assessment kind (Khan); an explicit "does not count" note for mapped items (Khan) | Streaks, XP, leaderboard (Boot.dev nav); progress rings (master.dev) | Reuse the plate squares as the progress overview, so Home, Map and Progress share one visual vocabulary |
+| Navigation | Product tabs + active underline (Stripe); breadcrumb on every deep page; language switch in the header or rail (HF) | A hamburger-only nav on desktop (roadmap.sh home) | Three tabs are enough: Atlas, Map, Progress |
+| Mobile | Titled collapse bar for in-page nav (Stripe, HF); single-column rail with one connector (master.dev); wrapped squares (Khan) | Scaled diagrams; filters filling the first screen (current atlas); floating AI pills | Filters go behind a "Filters (2)" button; the plate becomes a grid |
 
 ## 1. Skill map and graph navigation
 
-Findings:
+- roadmap.sh marks progress per node (screenshot: Learning / Done / Skip in the node drawer). This records consumption as completion, which the RFC rejects.
+- Duolingo replaced its tree with a linear path. Learners asked whether they were learning the "best" way, and tree users maxed out one skill instead of interleaving skills ([Duolingo blog](https://blog.duolingo.com/new-duolingo-home-screen-design/)).
+- Exercism structures concept exercises "as a tree with an introductory exercise at the top", each declaring `concepts` and `prerequisites` ([syllabus docs](https://github.com/exercism/docs/blob/main/building/tracks/syllabus/README.md)).
+- Khan course mastery counts only Proficient or Mastered skills ([Khan help](https://support.khanacademy.org/hc/en-us/articles/115002552631-What-are-Course-and-Unit-Mastery)).
+- W3C: complex images need a short and a long description, and a data table is an accepted alternative ([WAI complex images](https://www.w3.org/WAI/tutorials/images/complex/)).
+- React Flow ships Tab focus, Enter/Space select, arrow movement, `autoPanOnNodeFocus`, and a localizable `ariaLabelConfig` ([accessibility](https://reactflow.dev/learn/advanced-use/accessibility)). For performance, memoize nodes and cut shadows, gradients and animation ([performance](https://reactflow.dev/learn/advanced-use/performance)).
+- APG treeview recommends type-ahead for more than 7 roots; the atlas has 12 domains ([APG](https://github.com/w3c/aria-practices/blob/main/content/patterns/treeview/treeview-pattern.html)). WCAG 2.5.7 requires a non-drag alternative ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/22/dragging-movements.html)).
 
-- roadmap.sh renders each roadmap as one clickable diagram; progress is marked per node with right-click = Done, Shift+click = In progress, Alt+click = Skipped ([roadmap.sh](https://roadmap.sh/backend?r=backend-beginner), via search snippet). This records consumption as completion, which the RFC already rejects.
-- Duolingo replaced its skill tree with a linear path because learners asked whether they were learning the "correct" or "best" way, and tree users tended to max out one skill before moving on instead of interleaving ([Duolingo blog](https://blog.duolingo.com/new-duolingo-home-screen-design/)).
-- Exercism structures a track's concept exercises "as a tree with an introductory exercise at the top", each exercise declaring `concepts` and `prerequisites` ([syllabus docs](https://github.com/exercism/docs/blob/main/building/tracks/syllabus/README.md), [concept exercises](https://github.com/exercism/docs/blob/main/building/tracks/concept-exercises.md)).
-- Khan Academy's course mastery percentage counts only skills at Proficient or Mastered; Not started / Attempted / Familiar do not count ([Khan help: course and unit mastery](https://support.khanacademy.org/hc/en-us/articles/115002552631-What-are-Course-and-Unit-Mastery)).
-- W3C: complex images (charts, diagrams, maps) need a short description plus a long description with equivalent information; data tables are an accepted alternative ([WAI complex images](https://www.w3.org/WAI/tutorials/images/complex/)).
-- React Flow ships Tab focus for nodes/edges, Enter/Space select, arrow-key movement, auto-pan to the focused node (`autoPanOnNodeFocus`), `ariaRole`, `domAttributes`, a localizable `ariaLabelConfig`, and aria-live announcements ([React Flow accessibility](https://reactflow.dev/learn/advanced-use/accessibility)).
-- React Flow performance: memoize custom node components, do not read the whole `nodes` array inside components, collapse hierarchies, and cut shadows/gradients/animations on large graphs ([React Flow performance](https://reactflow.dev/learn/advanced-use/performance)).
-- WAI-ARIA tree view pattern: hierarchical list with expand/collapse, arrow keys, type-ahead recommended for trees with more than 7 root nodes — the atlas has 12 domains ([APG treeview](https://github.com/w3c/aria-practices/blob/main/content/patterns/treeview/treeview-pattern.html)).
-- WCAG 2.2 2.5.7: anything done by dragging must also work with a single pointer without dragging ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/22/dragging-movements.html)). Pan-only maps fail this unless buttons or the list give equivalent access.
-
-Repository fact: 101 of 116 items are `coverage`, 30 edges exist, all touching ready routes (`site/src/data/atlas.json`). A force- or ELK-laid graph of 116 nodes with 30 edges is mostly disconnected dots.
-
-**Adopt:** list view as default (12 domain groups, rows with status, level, prerequisites), graph as a secondary "prerequisites" view scoped to ready routes and their declared neighbours; same filters drive both; zoom buttons alongside pan; `ariaLabelConfig` strings in both languages; memoized node components with flat styling.
-**Avoid:** a single all-nodes canvas as the landing view; padlock "locked" nodes (coverage is unmapped, not locked); per-node "Done" toggles; decorative edges between domains that the data does not declare.
+Repository fact: most of the 116 items are `coverage`, and all declared edges touch ready routes (`site/src/data/atlas.json`). A force layout would therefore show mostly isolated dots. The plate must use a fixed domain layout, with only the declared edges drawn.
 
 ## 2. Route pages that link out
 
-Findings:
+- Line length 45–90 characters ([Practical Typography](https://practicaltypography.com/line-length.html)); WCAG 1.4.8 (AAA): width ≤ 80 characters, line spacing ≥ 1.5 ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/visual-presentation.html)).
+- MDN pages follow a fixed section order ([MDN template](https://github.com/mdn/content/blob/main/files/en-us/mdn/writing_guidelines/page_structures/page_types/css_property_page_template/index.md)). A predictable order makes many route pages scannable.
 
-- Line length: 45–90 characters including spaces ([Practical Typography](https://practicaltypography.com/line-length.html)); WCAG 1.4.8 (AAA) asks for a mechanism for width ≤ 80 characters, no justified text, and line spacing ≥ 1.5 ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/visual-presentation.html)).
-- MDN reference pages follow a fixed section order ending in Specifications, Browser compatibility, See also ([MDN CSS property template](https://github.com/mdn/content/blob/main/files/en-us/mdn/writing_guidelines/page_structures/page_types/css_property_page_template/index.md)). A predictable section order is what makes 15 route pages scannable.
-- Full Stack Open puts exercises at the end of each section and has learners submit via GitHub; a language selector sits in the top navigation ([Full Stack Open part 1a](https://fullstackopen.com/en/part1/introduction_to_react)).
-- Hugging Face course keeps per-language content directories including `vi` (cited in the web atlas RFC: [huggingface/course](https://github.com/huggingface/course)).
-
-**Adopt:** fixed section order generated from `competency.yaml`: Why → Prerequisites → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer. Learning route as a table: `Source | Exact locator | Why read it | Opened ☐`. External links show the domain (e.g. `arxiv.org`) and an external-link glyph with visually hidden "opens external site". Reading column `max-width: 68ch`; tables may run wider.
-**Avoid:** summarising the source on the page (AGENTS.md forbids AI-written substitutes); "estimated reading time" or "% read"; card grids for sources (they hide the locator, which is the useful part).
+**Avoid:** summarising sources on the page (AGENTS.md); reading time and "% read"; card grids for sources (they hide the locator).
 
 ## 3. In-browser code environments
 
-Findings:
+- futurecoder: run to advance, predict-the-output before running, graduated hints, piecewise solution reveal ([README](https://github.com/alexmojaki/futurecoder/blob/master/README.md)).
+- Exercism test runner: per-test `status`, a human `message`, `output` capped at 500 chars, `test_code` shown for concept exercises, and no bare call stacks ([interface](https://github.com/exercism/docs/blob/main/building/tooling/test-runners/interface.md)). Analyzer comment levels: `essential`, `actionable`, `informative`, `celebratory` ([analyzer](https://github.com/exercism/docs/blob/main/building/tooling/analyzers/interface.md)).
+- Sandpack's two-column layout collapses under 700 px ([components](https://sandpack.codesandbox.io/docs/advanced-usage/components)). Pyodide needs `SharedArrayBuffer` (COOP/COEP) to interrupt code ([docs](https://pyodide.org/en/stable/usage/keyboard-interrupts.html)).
 
-- futurecoder: learner must run code to advance; predict-the-output multiple choice before running; small hints that gradually guide; solution revealed bit by bit; or a Parsons problem with the shuffled solution ([README](https://github.com/alexmojaki/futurecoder/blob/master/README.md)).
-- Exercism test runner results: per-test `status`, human-readable `message` shown when a test fails, `output` capped at 500 chars, `test_code` shown for concept exercises because students otherwise cannot see the tests; top-level error messages must never show "call stacks without context" ([test runner interface](https://github.com/exercism/docs/blob/main/building/tooling/test-runners/interface.md)).
-- Exercism analyzer comments: `essential` soft-blocks, `actionable` encouraged before completion, `informative` and `celebratory` need no action ([analyzer interface](https://github.com/exercism/docs/blob/main/building/tooling/analyzers/interface.md)).
-- Sandpack: `SandpackTests` shows a test hierarchy with per-test outcome; `SandpackLayout` is two columns and collapses to one column under 700 px ([Sandpack components](https://sandpack.codesandbox.io/docs/advanced-usage/components)).
-- Pyodide needs `SharedArrayBuffer` (and therefore COOP/COEP headers) to interrupt running code ([Pyodide keyboard interrupts](https://pyodide.org/en/stable/usage/keyboard-interrupts.html)).
-
-**Adopt:** two panes (editor | results), single column under ~700 px; results grouped by lab task (`task_id`), failing task expanded with the assertion's `message` and the test code; a Stop button whenever code runs; runtime status line ("Loading Python 3.x…", size) during Pyodide boot; help ladder rendered as a numbered list where each rung is an explicit button and the rung used is written into the evidence.
-**Avoid:** raw tracebacks as the only output; hiding tests the learner is graded on; auto-running on keystroke (runs are evidence events); a "Show solution" button at the same level as "Run tests".
+**Avoid:** raw tracebacks as the only output; hidden graded tests; auto-run on keystroke; a "Show solution" button at the same level as "Run tests".
 
 ## 4. AI tutor UI
 
-Findings:
+- CS50: "Explain Highlighted Code", guardrails to guide rather than solve, staff endorsement of answers, and a visible budget of 10 hearts with one regained every 3 minutes. The paper also notes AI answers carry "complete and authoritative confidence even when wrong" ([Liu et al., SIGCSE 2024](https://cs.harvard.edu/malan/publications/V1fp0567-liu.pdf)).
+- Duolingo "Explain My Answer" appears in answer feedback ([blog](https://blog.duolingo.com/explain-my-answer-now-free/)). Codecademy offers "Explain code" on a selection, hints before answers ([blog](https://www.codecademy.com/resources/blog/behind-the-build-ai-learning-assistant)). Copilot scopes `/explain`, `/fix` and `/tests` to a selection ([cheat sheet](https://docs.github.com/en/copilot/reference/cheat-sheet)).
+- Khan tracks "giving the answer away" as a guardrail metric ([blog](https://blog.khanacademy.org/how-khan-academy-is-building-a-better-ai-tutor-our-most-recent-learnings/)).
+- NN/g: state what the bot can do, offer suggested prompts as buttons, and don't autoscroll ([guidelines](https://www.nngroup.com/articles/ai-chatbots-design-guidelines/)); novel icons get ignored ([prompt controls](https://www.nngroup.com/articles/prompt-controls-genai/)).
+- Screenshots: roadmap.sh places three labelled AI buttons inside the node drawer (a good fit with scoped actions) but also a floating "Ask anything" pill. Hugging Face attaches "Ask a question" to a section heading and also floats a chat input.
 
-- CS50: "Explain Highlighted Code" explains selected lines and complements the correctness checker `check50`; the Duck follows "pedagogical guardrails" to guide rather than give solutions; answers on Ed can be endorsed, amended or deleted by staff; throttling via visible hearts — 10 hearts, one regained every three minutes — both to control GPT-4 cost and to encourage precise questions and reflective breaks; the paper also notes AI answers carry "complete and authoritative confidence even when wrong" ([Liu et al., SIGCSE 2024](https://cs.harvard.edu/malan/publications/V1fp0567-liu.pdf)).
-- Duolingo "Explain My Answer" is a learner-tapped button in the answer feedback, available after both correct and incorrect answers ([Duolingo blog](https://blog.duolingo.com/explain-my-answer-now-free/)).
-- Codecademy: highlight code → "Explain code" button; assistant knows the current checkpoint; hints first, answers only if the learner persists ([Codecademy blog](https://www.codecademy.com/resources/blog/behind-the-build-ai-learning-assistant)).
-- GitHub Copilot scopes actions to the selection with `/explain`, `/fix`, `/tests` ([Copilot cheat sheet](https://docs.github.com/en/copilot/reference/cheat-sheet)).
-- Khan Academy tracks "giving the answer away before a student submitted a response" as a guardrail metric and verifies math with a separate system ([Khan blog](https://blog.khanacademy.org/how-khan-academy-is-building-a-better-ai-tutor-our-most-recent-learnings/)).
-- NN/g: state what the bot can do instead of "ask me anything"; offer suggested prompts as buttons; avoid autoscroll so long answers read from the top ([NN/g chatbot guidelines](https://www.nngroup.com/articles/ai-chatbots-design-guidelines/)); novel icons for unfamiliar features get ignored ([NN/g prompt controls](https://www.nngroup.com/articles/prompt-controls-genai/)).
-
-**Adopt:** text-labelled action buttons attached to the object they concern ("Explain this failure" under a failing task, "Why this locator?" in a route row, "Question my answer" under a submitted diagnostic answer); actions disabled with a reason until an attempt exists; a docked side panel (not a modal) showing the thread, the source object quoted at top, budget as "7 of 10 questions · +1 every 3 min" in text, and per-message "Report as wrong"; a fixed one-line note "AI feedback does not change your progress."; no autoscroll.
-**Avoid:** sparkle icons or a floating chat bubble; a mascot; open "Ask anything" as the entry point; hearts or other game metaphors for the budget; streaming text that pushes the reader's position.
+**Adopt:** labelled actions on the object ("Explain this failure", "Why this locator?", "Question my answer"), disabled with a reason until an attempt exists; a docked panel with the quoted object, a text budget ("7 of 10 questions · +1 every 3 min"), "Report as wrong" on every message, and the fixed line "AI feedback does not change your progress."
+**Avoid:** sparkle icons, a floating bubble or pill, "Ask anything", game-style budgets, and autoscroll.
 
 ## 5. Progress and evidence
 
-Findings:
+- Khan levels: Attempted, Familiar, Proficient, Mastered; Mastered is reached only through a unit test or course challenge ([Khan help](https://support.khanacademy.org/hc/en-us/articles/5548760867853--How-do-Khan-Academy-s-Mastery-levels-work)). Khan measures "skills to proficient" ([blog](https://blog.khanacademy.org/why-khan-academy-will-be-using-skills-to-proficient-to-measure-learning-outcomes/)). The screenshot shows how this is encoded: outline → half fill → full fill → full fill with a mark.
+- Anki shows New / Learning / To Review counts and the next interval on each answer button ([manual](https://docs.ankiweb.net/studying.html)); `ts-fsrs` implements FSRS v6 ([repo](https://github.com/open-spaced-repetition/ts-fsrs)).
 
-- Khan mastery levels: Attempted, Familiar (50 pts), Proficient (80), Mastered (100); Mastered only via unit test or course challenge from Proficient ([Khan help: mastery levels](https://support.khanacademy.org/hc/en-us/articles/5548760867853--How-do-Khan-Academy-s-Mastery-levels-work)).
-- Khan chose "skills to proficient" over time on platform as its outcome measure, citing correlation with external MAP scores ([Khan blog](https://blog.khanacademy.org/why-khan-academy-will-be-using-skills-to-proficient-to-measure-learning-outcomes/)).
-- Anki shows New / Learning / To Review counts before a session; each answer button shows the next review interval ([Anki manual: studying](https://docs.ankiweb.net/studying.html)).
-- `ts-fsrs` is a TypeScript FSRS scheduler (FSRS v6) ([repo](https://github.com/open-spaced-repetition/ts-fsrs)).
-- The atlas already defines states unassessed → applied, with "passing an exit test does not yet mean ... retained or transferable" (`LEARNING_MODEL.md`).
-
-**Adopt:** state badge with a distinct glyph per state (e.g. `○` unassessed, `◐` gap/learning, `●` demonstrated, `●→` transferred, `●↻` retained, `■` applied) plus text; evidence timeline per competency listing type, date, `review_method`, `independence`; review queue header "Due today: 3 · Upcoming 7 days: 5", and on answer, show the next due date like Anki; path-level summary counts only demonstrated-or-better, Khan-style.
-**Avoid:** streaks, XP, confetti, "courses completed", progress rings driven by opened links; any single percentage that mixes states.
+**Adopt:** Khan-style fill progression mapped onto our states: unassessed = outline, gap = outline with a mark, learning = half fill, demonstrated = full fill, and transferred / retained / applied = full fill plus a distinct glyph. Always add a text label. Per competency, an evidence timeline (type, date, `review_method`, `independence`); a review header "Due today: 3 · Next 7 days: 5"; path summaries count demonstrated-or-better only.
 
 ## 6. Bilingual EN/VI
 
-Findings:
+- Vietnamese stacks marks that "must not disrupt the kerning and leading" ([Vietnamese Typography](https://vietnamesetypography.com/diacritical-details/)).
+- Google Fonts lists the `vietnamese` subset for IBM Plex Sans/Mono/Serif, Source Serif 4, Be Vietnam Pro, Literata, Newsreader, JetBrains Mono, Geist, Inter, and Noto. It is not listed for Fira Code, Instrument Sans/Serif, Atkinson Hyperlegible, Sora, or Martian Mono ([metadata](https://fonts.google.com/metadata/fonts)).
+- W3C i18n: language links on every page, each language named in its own language, no flags, user override remembered ([qa-site-conneg](https://github.com/w3c/i18n-drafts/blob/gh-pages/questions/qa-site-conneg.en.html)). WCAG 3.1.2 language of parts ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/language-of-parts.html)). Astro `prefixDefaultLocale` and `fallbackType: "rewrite"` ([docs](https://docs.astro.build/en/guides/internationalization/)). React Aria ships no `vi-VN` strings ([intl dir](https://github.com/adobe/react-spectrum/tree/main/packages/@adobe/react-spectrum/intl/actionbar)).
+- Screenshots: Hugging Face puts its language selector in the course rail; Stripe puts locale at the bottom of the left nav. Neither uses flags for the language itself; Stripe uses a flag for country.
 
-- Vietnamese stacks marks (e.g. circumflex + acute, hook above over circumflex/breve/horn); good designs modify combined marks so they "must not disrupt the kerning and leading" ([Vietnamese Typography](https://vietnamesetypography.com/diacritical-details/)).
-- Google Fonts metadata (checked 2026-09-22, [fonts.google.com/metadata/fonts](https://fonts.google.com/metadata/fonts)) lists the `vietnamese` subset for: IBM Plex Sans / Mono / Serif, Source Serif 4, Source Sans 3, Be Vietnam Pro (designed by Lâm Bảo, Tony Le, ViệtAnh Nguyễn), Literata, Newsreader, JetBrains Mono, Geist, Geist Mono, Inter, Public Sans, Noto Sans/Serif. **Not** listed for: Fira Code, Instrument Sans, Instrument Serif, Atkinson Hyperlegible (and Next), Sora, Martian Mono, Red Hat Text/Mono, Schibsted Grotesk.
-- W3C i18n: put language links on every page, write each language name in its own language, don't use flags for translations, let users override negotiation and remember the choice ([qa-site-conneg](https://github.com/w3c/i18n-drafts/blob/gh-pages/questions/qa-site-conneg.en.html)); language-specific URLs are "probably the way to go" ([qa-when-lang-neg](https://github.com/w3c/i18n-drafts/blob/gh-pages/questions/qa-when-lang-neg.en.html)).
-- WCAG 3.1.2: the language of each passage must be programmatically determinable ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/language-of-parts.html)) — relevant when VI pages fall back to English route text.
-- Astro i18n: `prefixDefaultLocale: true` gives `/en/…` and `/vi/…`; `getRelativeLocaleUrl()`; `fallback` with `fallbackType: "rewrite"` serves fallback content without redirect ([Astro docs](https://docs.astro.build/en/guides/internationalization/)).
-- React Aria's built-in string translations cover 34 locales and do not include `vi-VN` ([react-spectrum intl directory](https://github.com/adobe/react-spectrum/tree/main/packages/@adobe/react-spectrum/intl/actionbar)); its site claims 30+ languages ([React Aria](https://react-aria.adobe.com/)).
-
-**Adopt:** `/en/…` and `/vi/…` with `prefixDefaultLocale: true`; switcher text "English · Tiếng Việt" in the header, keeping the same page; remember choice in `localStorage`; English fallback blocks wrapped in `lang="en"` with the "chưa dịch / not yet translated" marker; body line-height 1.6 and headings ≥ 1.25 so stacked marks don't collide (test string: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`); supply `vi` strings for any React Aria component that has built-in text.
-**Avoid:** flags; auto-redirect on `Accept-Language` without an override; fonts without the Vietnamese subset (fallback glyphs render in a different face mid-word); `text-transform: uppercase` on Vietnamese labels (see Unverified).
+**Adopt:** `/en/` and `/vi/` URLs; "English · Tiếng Việt" in the header; untranslated blocks get `lang="en"` and the "chưa dịch / not yet translated" marker; line-height 1.6 for reading text.
 
 ## 7. Foundations
 
-Findings:
+- React Aria Components: APG-based, includes Tree ([site](https://react-aria.adobe.com/)); Radix Primitives has no tree ([Radix](https://www.radix-ui.com/primitives/docs/overview/introduction)); Starlight's docs chrome needs overrides for deeper changes ([overrides](https://github.com/withastro/starlight/blob/main/docs/src/content/docs/guides/overriding-components.mdx)).
+- Radix Colors 12-step roles ([scale](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale)); Vercel Geist treats the grid as core to its aesthetic ([Geist](https://vercel.com/geist/introduction)).
 
-- Radix Primitives: unstyled, WAI-ARIA patterns, per-component install ([Radix](https://www.radix-ui.com/primitives/docs/overview/introduction)).
-- React Aria Components: 50+ components, APG-based, adaptive mouse/touch/keyboard, unstyled with data-attribute states ([React Aria](https://react-aria.adobe.com/)).
-- Ark UI: headless, Zag.js state machines, React/Solid/Vue/Svelte ([README](https://github.com/chakra-ui/ark/blob/main/README.md)).
-- Starlight is Astro's documentation framework with navigation, search, i18n, dark mode; deeper changes need component overrides ([Starlight](https://starlight.astro.build/), [overriding components](https://github.com/withastro/starlight/blob/main/docs/src/content/docs/guides/overriding-components.mdx)).
-- Radix Colors defines a 12-step scale by role: 1–2 backgrounds, 3–5 component bg (normal/hover/pressed), 6–8 borders and focus rings, 9–10 solid, 11–12 text ([Radix Colors](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale)).
-- Vercel Geist: two typefaces (Sans, Mono), grid as "core part of the Vercel aesthetic", material presets for radii/fills/strokes/shadows ([Geist](https://vercel.com/geist/introduction)).
-
-**Adopt:** React Aria Components for the few interactive widgets (Tree/GridList for the map list, Tabs, ComboBox search, Dialog, Disclosure) because it covers Tree and keyboard/touch; Radix is a fine alternative but has no tree. Plain Astro + CSS custom properties for everything else. Tokens structured by role, Radix-style.
-**Avoid:** Starlight (its sidebar/content chrome would dominate and route pages are not docs pages); shadcn defaults used unmodified; a component library whose look ships with it.
+**Adopt:** React Aria for islands, plain Astro elsewhere, role-based tokens. **Avoid:** Starlight, unmodified shadcn.
 
 ## 8. "AI slop" tells to avoid
 
-| Tell | Why it fails here |
-|---|---|
-| Purple/blue gradient, mesh hero, glassmorphism | No information; blur and gradients also cost render time on the map ([React Flow perf](https://reactflow.dev/learn/advanced-use/performance)) |
-| Marketing hero ("Master AI engineering") | AGENTS.md forbids marketing language; home should show counts: 15 ready / 101 mapped |
-| Uniform card grids with icon + title + blurb | Hides status and locators; equal visual weight misrepresents maturity |
-| Decorative icons, emoji bullets, sparkles for AI | Novel icons get ignored ([NN/g](https://www.nngroup.com/articles/prompt-controls-genai/)); AGENTS.md bans decorative elements |
-| Inter everywhere, one weight | Generic; pair a sans UI face with a serif reading face instead |
-| Padlocks, streaks, XP, confetti | Reward consumption; contradict LEARNING_MODEL.md states |
-| Progress rings on link clicks | Reading never changes state (web atlas RFC, principle 3) |
-| Floating chat bubble, "Ask me anything" | NN/g: state capabilities ([guidelines](https://www.nngroup.com/articles/ai-chatbots-design-guidelines/)); RFC chooses scoped actions |
-| Large soft shadows, 16px+ radii everywhere | Low density; hides borders that carry structure (WCAG 1.4.11 needs 3:1 for component boundaries) |
-| Scroll-triggered fade-ins, parallax | Vestibular trigger ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)); slows reference use |
+| Tell | Seen in | Why it fails here |
+|---|---|---|
+| Gradient headline or tile, glass, mesh | roadmap.sh home | No information; costs render time on the plate |
+| Marketing hero, countdown, stars, enrolment counts | Boot.dev, master.dev | AGENTS.md bans marketing; show ready/mapped counts |
+| Uniform icon/illustration card grids | Brilliant, master.dev, Boot.dev | Equal weight misrepresents maturity; hides status and locators |
+| Sparkle icons, floating "Ask anything" | roadmap.sh, Hugging Face | Novel icons get ignored ([NN/g](https://www.nngroup.com/articles/prompt-controls-genai/)); covers content on mobile |
+| Done/Skip toggles, "% complete" rings, "N of M steps" | roadmap.sh, master.dev, fCC | Reward consumption; contradict LEARNING_MODEL.md |
+| Padlocks, streaks, XP, leaderboards | Boot.dev nav | Same |
+| One text-size step, every section equal weight | current atlas | Reads as generic; Stripe uses H1 + subtitle + section size steps |
+| Scroll-triggered motion | — | Vestibular trigger ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)) |
 
 ## Recommended design direction
 
-### Layouts
+Competency names in the wireframes are illustrative. `site/DESIGN.md` still says "list default, graph as toggle" for the Map. Update it to the plate + list rule below in a separate change.
 
-Competency names and values in the wireframes are illustrative, not catalog entries.
-
-Map (default list view):
+Home (≥ 1024 px):
 
 ```text
-┌ Atlas ─ Map  Paths  Review(3)  Progress        English · Tiếng Việt ┐
-│ Filter: [Path: Applied AI Engineer ▾] [State ▾] [Ready only ☐]  [List|Graph] │
-│ 15 ready routes · 101 mapped without a route                                 │
-│ ▾ AI Engineering (26)                                     state   level      │
-│   ● Evaluation harness            ready   L2   needs: Prompting basics   ◐   │
-│     Retrieval quality             ready   L2   needs: Embeddings         ○   │
-│     Fine-tuning basics            mapped, no route                           │
-│ ▸ LLM Foundations (11)                                                       │
-└──────────────────────────────────────────────────────────────────────────────┘
+Atlas  Map  Progress                          [Search ⌘K]   English · Tiếng Việt
+AI Engineering Atlas
+Diagnose first, learn the smallest gap, produce evidence.      (subtitle size)
+19 ready · 97 mapped, no route · 5 labs      Legend: ○ unassessed ◐ learning ● demonstrated …
+┌ plate ─────────────────────────────────────────────────────────────────────┐
+│ LLM FOUNDATIONS   AI ENGINEERING           AGENTS            SECURITY    … │
+│ ▫ ▫ ▪─────────────▪──▪──▪        ▪──────────▪──▪             ▪             │
+│ ▫ ▫ ▫             ▫  ▪  ▫        ▫  ▫       ▫                ▫             │
+│ (▪ ready, filled by learner state; ▫ mapped, outline only; lines = declared │
+│  prerequisites only)                                                       │
+└────────────────────────────────────────────────────────────────────────────┘
+Start with a diagnostic → [next suggested route]
 ```
 
-Route page:
+Under 1024 px, the plate becomes wrapped rows of squares: a domain name, then its squares.
+
+Map node drawer (right, about 40%; full-screen sheet on mobile):
 
 ```text
-Evaluation harness                         L2 · ready · ◐ learning
-Why ········ (≤68ch)
-Prerequisites: Prompting basics ●  Python testing ○ → bridge
-Diagnostic  [Start: 3 tasks]
-Learning route
- Source            Locator                  Why                      Opened
- AI Engineering ↗  Ch. 4 §"Evaluation…"     defines metric types     ☐
-Practice → Lab: evaluation-harness [Open lab]
-Exit evidence · Transfer
+Tool Calling                               ai.tool-calling · L3      [×]
+◐ learning · target: applied
+Why (2 lines) · Needs: AI Evaluation ● · API Design ○ → bridge
+Diagnostic: 4 tasks · Sources: 5 exact locators · Lab: yes
+[Open route]            (no Done / Skip controls)
 ```
 
-Lab:
+Route sheet:
 
 ```text
-┌ editor (starter.py) ───────────────┬ Tests · Task 1 ✓ Task 2 ✗ Task 3 – ┐
-│                                    │ ✗ Task 2: score_cases                │
-│                                    │   expected 0.5, got 0.0              │
-│                                    │   test code ▸                        │
-│                                    │ Help: 1 Hint · 2 Point to assertion  │
-│                                    │   · 3 Explain this failure (AI) ·    │
-│ [Run tests ⌘↵] [Stop]              │   4 Reference solution               │
-└────────────────────────────────────┴──────────────────────────────────────┘
+Map / AI Engineering / Tool Calling
+Tool Calling                                        ◐ learning  [Record evidence]
+Design and validate tool contracts…           (one-line subtitle)
+Not ready? API and Service Design is a gap → bridge (1 section, aws.amazon.com)
+┌ rail ───────────┬ content (≤ 68ch prose; tables wider) ─────────────────────┐
+│ 1 Diagnostic ●  │ Task 2 of 4  [answer]  [Submit]                           │
+│ 2 Sources       │ Kind | Source (domain) | Exact locator | Why | Opened     │
+│ 3 Practice      │                                                           │
+│ 4 Exit evidence │                                                           │
+│ 5 Transfer      │                                                           │
+│ Your state      │                                                           │
+└─────────────────┴───────────────────────────────────────────────────────────┘
 ```
 
-Tutor panel (docked right, 360–420 px; bottom sheet on mobile):
+Mobile: the rail becomes a sticky "2 Sources ▾ (of 5)" bar.
 
-```text
-Explain this failure — Task 2          7 of 10 · +1 every 3 min
-> quoted: AssertionError expected 0.5, got 0.0
-Tutor: What does your loop do with cases where …?
-                                            [Report as wrong]
-[Reply…]                       AI feedback does not change your progress.
-```
+Progress: the same squares as the plate, grouped by domain, with the legend on top. Below that sit the review queue and per-competency evidence timelines. Mapped items carry a note that they do not count.
 
-Progress:
+Lab and tutor panels follow sections 3–4 unchanged: editor | results by task with a help ladder; a docked tutor panel of 360–420 px (bottom sheet on mobile).
 
-```text
-Evaluation harness   ●  demonstrated  (2026-09-20)
- 2026-09-20  implementation  automated  independent   lab run #4 ✓
- 2026-09-18  diagnostic      self       –             gap on task 2
- Next review: 2026-09-27
-```
+**Typography:** IBM Plex Sans UI 15–16 px with tabular numerals; Source Serif 4 at 17–18 px and line-height 1.6 for route prose; Plex Mono for IDs and code. Add a distinct subtitle step (about 1.35× body, regular weight) under every H1, as Stripe does; the current pages lack this middle step. Uppercase small eyebrows (as Khan and Stripe use) are for English only; Vietnamese labels keep sentence case.
 
-### Typography
+**Colour:** warm neutral 12-step scale plus one accent, used for links, focus, ready outlines and the primary action. State fills come from state tokens. Coverage is outline only, never tinted.
 
-- UI: IBM Plex Sans (variable `wght`, `wdth`), 15–16 px, tabular numerals for counts.
-- Reading text on route pages: Source Serif 4 (variable `opsz`), 17–18 px, line-height 1.6, `max-width: 68ch`.
-- Code: IBM Plex Mono (same family, simplest) or JetBrains Mono (variable).
-- Fallback option if Plex is rejected: Be Vietnam Pro for UI (static weights only).
-- Self-host via `@fontsource` or subset files; load `latin` + `vietnamese` subsets only.
+**Shape and density:** 1 px borders, 4–6 px radius, shadows only on the drawer and popovers; 8 px grid; list rows about 36 px; plate squares ≥ 24 px (WCAG 2.5.8).
 
-### Color tokens
+**Motion:** 100–150 ms colour/opacity transitions only; the drawer slides in 150 ms and appears instantly under `prefers-reduced-motion`.
 
-Role-based 12-step scales (Radix structure), defined for light and dark:
-
-- `--gray-1…12`: slightly warm neutral; text on 12, secondary on 11, borders 6–8.
-- `--accent-1…12`: one hue (e.g. deep teal or ink blue) for links, focus ring (step 8), primary action (step 9).
-- State tokens: `--state-gap` (amber), `--state-demonstrated` (green), `--state-transferred`/`retained`/`applied` as shades of one hue family distinguished by glyph; `--fail` (red), `--pass` (green) in the lab.
-- Coverage items use `--gray-11` text, no fill; ready items `--gray-12` with an accent marker.
-
-### Density and shape
-
-Border-first: 1 px borders at `--gray-6`, radius 4–6 px, no drop shadows except popovers. Row height ~36 px in lists; 8 px spacing grid.
-
-### Motion
-
-State transitions 100–150 ms ease-out on color/opacity only; node focus auto-pan and zoom instant when `prefers-reduced-motion: reduce`; no looping animation, no scroll-driven effects.
-
-### Accessibility baseline (WCAG 2.2 AA items that bite here)
-
-- 1.4.1 Use of color: state = glyph + text + color ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/use-of-color.html)).
-- 1.4.11 Non-text contrast 3:1 for node borders, edges that carry meaning, focus rings ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/21/non-text-contrast.html)).
-- 2.5.7 Dragging: zoom/pan buttons and the list view ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/22/dragging-movements.html)).
-- 2.5.8 Target size ≥ 24×24 CSS px, incl. graph nodes and "Opened" checkboxes ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/22/target-size-minimum.html)).
-- 2.4.11 Focus not obscured: docked tutor panel and sticky headers must not cover the focused element ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/22/focus-not-obscured-minimum.html)).
-- 4.1.3 Status messages: test results, "Python loading", budget changes announced via `role="status"` ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/21/status-messages.html)).
-- 3.1.2 Language of parts: `lang="en"` on untranslated blocks in `/vi/` pages ([source](https://github.com/w3c/wcag/blob/main/guidelines/sc/20/language-of-parts.html)).
-- Graph: short description + list view as the long description ([WAI](https://www.w3.org/WAI/tutorials/images/complex/)).
+**Accessibility (WCAG 2.2 AA):** 1.4.1 glyph + label + colour; 1.4.11 3:1 for meaningful borders, edges and focus; 2.5.7 plate reachable without dragging (the list and keyboard); 2.5.8 targets ≥ 24 px; 2.4.11 drawer, tutor panel and sticky bars never cover focus; 4.1.3 `role="status"` for results and loading; 3.1.2 `lang` on untranslated blocks; the plate has a short description and the list as its long description.
 
 ## Unverified
 
-Resolved on re-check (2026-09-22): Duolingo's report control is confirmed in the [Duolingo Max post](https://blog.duolingo.com/duolingo-max/) ("holding down the inaccurate message"), and the web atlas RFC now cites it. Khanmigo "hidden reasoning" is absent from both Khan Academy posts and was removed from the web atlas RFC.
-
-- roadmap.sh progress shortcuts come from a search-result snippet of roadmap.sh pages, not a fetched page or source file.
-- Boot.dev, Brilliant, Codecademy career paths, Execute Program, Josh W. Comeau courses, JupyterLite, Stripe docs, Linear docs, Tailwind docs, Observable, Are.na, Anthropic docs, Rauno/Paco sites: not reviewed in this pass; no claims made about them.
-- Specific Vietnamese line-height value (1.6) and the uppercase caution: reasoning from stacked-mark geometry, not from a primary source; verify by rendering the test string in each chosen font.
-- W3C WAI pages (w3.org) returned 403 to automated fetching; WAI complex-images claims come from search results of that page, while WCAG text was read from the `w3c/wcag` GitHub source.
-- Khan Academy help pages were read via search-result excerpts (direct fetch returned 403).
+- Exercism track and concept pages were blocked by Cloudflare at both widths, so its visual design is not reviewed. Exercism claims above come from its docs repository only.
+- freeCodeCamp's certification page at 1440 px did not finish loading, so only the 390 px layout is described.
+- Pixel sizes (title heights, drawer width, mobile label size) are estimated from screenshots, not from CSS.
+- Brilliant, Boot.dev and master.dev logged-in learner views (actual progress UI) were not seen; claims cover public pages only.
+- Codecademy, Execute Program, JupyterLite, Linear and Tailwind docs: not reviewed.
+- Vietnamese line-height 1.6 and the uppercase caution are reasoning from stacked-mark geometry; verify by rendering the test string `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`.
+- W3C WAI pages and Khan help pages were read via search excerpts (direct fetch returned 403).

@@ -1,158 +1,237 @@
 # Web Atlas Design
 
-Design rules for every page and component under `site/`. They apply to agents and humans alike.
+The design and layout source of truth for everything under `site/`, for agents and humans. Evidence: [UI/UX research and competitor teardown](../rfcs/0000-ui-ux-research.md). Scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Data: [content model RFC](../rfcs/0000-content-model.md).
 
-Why each rule exists: [UI/UX research](../rfcs/0000-ui-ux-research.md). Product scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md).
+Token values live in `site/src/styles/tokens.css`; this file names roles and intent. If they disagree, fix one in the same change.
 
-Token values live in code, in `site/src/styles/tokens.css`. This file names roles and intent; it never restates a value. When a rule here and the tokens disagree, the tokens are wrong or this file is stale: fix one of them in the same change.
+## Direction: survey plate
+
+The atlas is a map, so the map is the design. One element carries the identity: **the plate**, a region map with one tile per competency, grouped by domain, drawn in the language of a survey chart (mineral ground, ink, magenta route marks). Everything around the plate stays quiet.
+
+Proven patterns, reused rather than invented:
+
+| Pattern | From | Used for |
+|---|---|---|
+| One tile per skill, filled by state, legend above the grid | Khan Academy course grid | Plate tiles, legend, Progress |
+| Node opens a side drawer over the dimmed map | roadmap.sh | Map drawer (without Learning/Done/Skip toggles) |
+| Tabs with underline, breadcrumb, large title, larger one-line subtitle, page-actions row | Stripe docs | Global nav, route header |
+| Left course rail with the current section marked | Stripe docs, Hugging Face course | Route waypoint rail |
+| "Not feeling ready? …" prerequisite line | Khan Academy, master.dev | Route prerequisite line |
+| Labelled AI actions inside the item panel | roadmap.sh node panel | Phase 2 tutor actions |
 
 ## Principles
 
-1. **Evidence, not completion.** The interface shows what a learner has demonstrated, with its evidence. Opening, reading, or clicking never changes a learner state.
-2. **Truthful maturity.** Ready routes look finished; coverage items look quiet and read "mapped, no route". The home page states the counts.
+1. **Evidence, not completion.** The UI shows what a learner demonstrated. Opening, reading, or scrolling never changes a state.
+2. **Truthful maturity.** Ready routes are solid; mapped items are quiet and say "mapped, no route".
 3. **Route to sources.** Pages point at exact external locators and say why. The site hosts no lesson prose.
-4. **Border-first, dense, calm.** Structure comes from 1px borders, spacing, and type. Colour carries meaning.
-5. **Attempt first.** Help and AI appear after the learner acts, attached to the thing they act on.
+4. **Content-driven.** Pages render the content model's collections, fields, and blocks. No curriculum field name appears in `site/src`.
+5. **Attempt first.** Help and AI appear after the learner acts, attached to what they act on.
 
-## Layout by surface
+## Information architecture
 
-### Map
+```text
+/                            → /en/ (or the remembered language)
+/{lang}/                     Home
+/{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
+/{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
+/{lang}/<collection>/<id>/   Other collection items that have blocks (projects today)
+/{lang}/progress/            Field log: your states, review queue, your data
+```
 
-- Default view: list grouped by the 12 domains, one `<details>` per domain (open when it has ready routes), a table row per competency: title, status, level, prerequisites, learner state. Under 700px each row stacks.
-- Filters and learner state are a React Aria island layered on the same list; the static list stays usable without JavaScript.
-- Graph view: a toggle. It draws ready routes and their declared prerequisites only, from `edges` in `atlas.json`.
-- One filter bar drives both views: path/project, learner state, ready only.
-- Coverage rows: muted text, no fill, not clickable, label "mapped, no route".
-- The list is the accessible long description of the graph; keep them equivalent.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Deep pages show a breadcrumb.
 
-### Route page
+## Global frame
 
-Fixed section order, generated from `competency.yaml`:
+```text
+desktop ≥ 1024                                                  mobile < 768
+   ╭─ Atlas wordmark   Atlas   Progress ³    English  Tiếng Việt ─╮     ╭ wordmark        Menu ╮
+   ╰───────────────────────────────────────────────────────────────╯     ╰──────────────────────╯
+ floating pill 16px from the top, centred, max 1120; the only          full width minus 16px; Menu
+ glass blur on the site; active tab underlined                          opens a full-screen overlay
+ content: 12-column grid, max 1280, 24px gutters, left aligned          one column, 16px gutters
+```
 
-Learner panel → Why → Prerequisites (with bridges) → Outcomes → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer.
+## Surfaces
 
-- The learner panel shows the learner's state, target, next review, and the only control that changes state: **Record evidence** (kind, the state it supports, independence, reviewer, link, note). The evidence timeline sits below it.
+### Home
 
-- Learning route is a table: `Source | Exact locator | Why read it | Opened`. "Opened" is a personal checklist and is not progress.
-- External links show the domain and an external-link glyph with visually hidden text "opens external site".
-- Reading column `max-width: 68ch`; tables may run wider.
+```text
+ AI Engineering Atlas                                      display, wide width, 56–72px
+ A gap-driven roadmap for software engineers               subtitle, 22–26px
+ learning modern AI engineering.
+ Diagnose first, read the exact source, prove it with evidence.        one muted line
+ ( Find your starting point  (↗) )    How the atlas works              pill CTA → /map/?ready=1
+ legend   ⬚ mapped   □ ready   ◧ gap or learning   ■ demonstrated or beyond
+╭───────────────────────────────────── plate ──────────────────────────────────────╮
+│ Software engineering    Systems             Data engineering    ML foundations   │
+│ ⬚⬚⬚⬚⬚⬚⬚⬚                ⬚⬚⬚⬚⬚⬚⬚⬚⬚           ⬚⬚⬚⬚⬚⬚              ⬚⬚⬚⬚⬚⬚⬚⬚⬚        │
+│ Deep learning           LLM foundations     AI engineering      Agents           │
+│ ⬚⬚⬚⬚⬚                   ⬚⬚⬚□⬚⬚⬚⬚⬚⬚⬚         ◧□□■□□□□□□□□⬚⬚…     □□□□□⬚⬚⬚⬚⬚       │
+│ Production AI           Security & gov.     Multimodal          Specializations  │
+│ ⬚⬚⬚⬚⬚⬚⬚⬚⬚⬚⬚             □⬚⬚⬚⬚⬚⬚⬚⬚⬚          ⬚⬚⬚                 ⬚⬚⬚⬚⬚⬚⬚⬚         │
+╰──────────────────────────────────────────────────────────────────────────────────╯
+ How the atlas works    1 Diagnose   2 Read the exact source   3 Practice   4 Record evidence
+ (a real sequence, so numbered; one sentence each)
+ Ready routes by domain: compact rows (title, level, number of sources, your state)
+```
 
-### Diagnostic
+Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with wrapping tiles (no lines), then the steps as a vertical list.
 
-- The learner writes an answer per task, submits, then sees the `pass_condition` and records a self-assessed result.
-- AI actions ("Question my answer") unlock after submission.
+### The plate: one component, three modes
 
-### Lab
+- Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in the wide display width, sentence case, with "N ready of M".
+- Tiles: one per item, in content order. Encoding uses shape and fill, never colour alone:
+  - mapped (no page): dotted outline, no fill;
+  - ready, unassessed: ink outline;
+  - gap or learning: half fill;
+  - demonstrated: full fill;
+  - transferred, retained, applied: full fill with the state's icon.
+- Desktop: hovering or focusing a tile draws its declared prerequisite lines (from `relations`) and shows a title tooltip. Selecting opens the drawer (Map) or goes to the Map with the drawer open (Home).
+- Modes: `overview` (Home), `explore` (Map; filters dim non-matching tiles), `progress` (Progress; fill by learner state).
+- Accessibility: each tile is a button named "<title>, <status>, your state: <state>"; arrow keys move within a region, Tab moves between regions; the list view is the full equivalent.
 
-- Two panes: editor | results. One column under ~700px.
-- Results grouped by lab task: `pass` / `fail` / `error`. First failing task expanded with the assertion message and its test code.
-- **Run tests** is the primary action; **Stop** is visible whenever Python runs; a status line reports Pyodide loading.
-- Help ladder as numbered, explicit steps below the failure: 1 Hint → 2 Point to assertion → 3 Explain this failure (AI) → 4 Reference solution. The highest step used is written into the evidence.
-- Tests run on an explicit action only, because each run is an evidence event.
+### Atlas
 
-### AI tutor
+```text
+ Atlas                                                        [ Plate | List ]
+ 116 competencies in 12 domains. Select one to see why it matters and where to start.
+ [ Search… ]  Status ▾  Level ▾  Your state ▾  Project ▾     Showing 19 of 116   Clear
+ legend
+ ╭──────────── plate (explore) ──────────────╮ ╭─ drawer, 40%, over the dimmed plate ─╮
+ │                                            │ │ AI engineering / Tool calling      ✕ │
+ │   the selected tile has a magenta ring     │ │ Tool Calling                         │
+ │                                            │ │ (ready) (L3 deep engineering) (...)  │
+ │                                            │ │ Your state  ◧ gap     Target applied │
+ │                                            │ │ Why, three lines, "More" expands     │
+ │                                            │ │ Needs  ■ AI evaluation               │
+ │                                            │ │        ⬚ API design (bridge inside)  │
+ │                                            │ │ 5 sources   Diagnostic, 4 tasks      │
+ │                                            │ │ Lab: evaluation harness              │
+ │                                            │ │ ( Open route (↗) )  Start diagnostic │
+ ╰────────────────────────────────────────────╯ ╰──────────────────────────────────────╯
+```
 
-- Entry points are text-labelled actions attached to an object: a failing task, a locator row, a submitted diagnostic answer.
-- Actions show a disabled reason until an attempt exists, and "Sign in to use AI help" when signed out.
-- The thread opens in a docked side panel (360–420px; bottom sheet on mobile). It quotes the source object at the top.
-- The budget reads as text: "7 of 10 questions · +1 every 3 min".
-- Every AI message has **Report as wrong**.
-- A fixed line: "AI feedback does not change your progress."
-- The reader's scroll position stays put while text streams.
+- List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
+- Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
+- Mobile: filters behind "Filters (n)" opening a sheet; the drawer is a full-screen sheet; the URL keeps `?item=`.
+- Empty filter result: "No competency matches these filters." and Clear filters.
+
+### Route sheet
+
+```text
+ Atlas / AI engineering / Tool calling                                      breadcrumb
+ Tool Calling                                                               display
+ Tool-enabled AI systems cross a boundary from model suggestions …          first text block as subtitle, 20–22px
+ (L3 deep engineering) (engineering skill) (system operation)    View contract ↗   Copy link
+ Not feeling ready? Needs ■ AI evaluation and ⬚ API design (a bridge is on this page)
+┌ rail 220 ──────────┬ content, reading column ≤ 68ch ─────────┬ field log 320, sticky ──┐
+│ Outcomes           │ blocks in content order                 │ ╭─ double bezel ───────╮ │
+│ 1 Diagnostic    ◧  │                                         │ │ Your state   ◧ gap   │ │
+│ 2 Learning route   │ diagnostic: one task per card,          │ │ Target       applied │ │
+│   2 of 5 opened    │ "Task 2 of 4", answer, Next; after the  │ │ Next review  —       │ │
+│ 3 Practice         │ last task: pass condition, self-assess, │ │ Next: work through   │ │
+│ 4 Exit evidence    │ Record result                           │ │ the learning route.  │ │
+│ 5 Transfer         │                                         │ │ ( Record evidence (+))│ │
+│ current section    │ sources: table (source with kind tag,   │ │ Evidence (2) ▾       │ │
+│ marked (scrollspy) │ exact locator, why, opened)             │ ╰──────────────────────╯ │
+└────────────────────┴─────────────────────────────────────────┴──────────────────────────┘
+```
+
+- Rail: every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded).
+- Sources: the exact-locator column is the differentiator and stays prominent. The kind tag comes from the resource `type`.
+- Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
+- Tablet: the rail becomes a "2 of 5, Learning route ▾" bar above the content; the field log sits at the top of the content.
+- Mobile: breadcrumb, title, subtitle, chips; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet. Tables become stacked rows with inline labels.
 
 ### Progress
 
-- The Progress page shows counts by state, the review queue, competencies with evidence, and import/export of `progress.yaml`. Import shows a replace confirmation and lists validation errors.
+```text
+ Progress
+ Your states come only from evidence you recorded. Stored in this browser until you export it.
+ 3 of 19 ready routes demonstrated or beyond              legend with a count per state
+ ╭──── plate (progress) ────╮     Review   Due today 1   Next 7 days 2
+ │                           │     Tool calling   due 29 Sep   ( Start review (↗) )
+ ╰───────────────────────────╯
+ Evidence by competency: rows (title, state, target, evidence count, last recorded, next review)
+ Your data   ( Export progress.yaml )   ( Import progress.yaml )   confirmation and errors inline
+```
 
-- Each state has an icon, a text label, and a colour, so no state depends on colour alone. Icons are the registry names of the same state (`unassessed`, `gap`, `learning`, `demonstrated`, `transferred`, `retained`, `applied`).
-- Per competency: evidence timeline (date, kind, `review_method`, `independence`, link).
-- Review queue header: "Due today: 3 · Next 7 days: 5". After answering, show the next due date.
-- Path summaries count demonstrated-or-better only. Each state gets its own count; mixed percentages are not used.
+- Mapped items stay in the plate with the note "Mapped items do not count toward progress."
+- Empty: every ready tile unassessed, and "Start with a diagnostic on any ready route" with the CTA.
 
-## Typography
+### States every surface handles
 
-| Role | Family | Notes |
-|---|---|---|
-| UI | IBM Plex Sans | 15–16px, tabular numerals for counts |
-| Reading (route text) | Source Serif 4 | 17–18px, line-height 1.6, 68ch |
-| Code | IBM Plex Mono | editor, test output, IDs such as `ai.tool-calling` |
+Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works for the session and says so once); import errors listed inline; Phase 2 signed out ("Sign in to use AI help").
 
-- Every family must ship the `vietnamese` subset. Self-host `latin` + `vietnamese` subsets only.
-- Body line-height ≥ 1.5 (1.6 for reading), headings ≥ 1.25, so stacked Vietnamese marks never collide.
-- Labels use sentence case. Vietnamese text keeps its original case.
-- Render test string for any font or size change: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`.
+## Visual system
 
-## Colour
+### Colour roles
 
-Role-based 12-step scales (Radix structure) for light and dark themes:
-
-| Steps | Role |
+| Role | Use |
 |---|---|
-| 1–2 | app and subtle backgrounds |
-| 3–5 | component background: normal, hover, pressed |
-| 6–8 | decorative borders and separators |
-| 9–10 | solid fills, primary action; step 9 also for the focus ring and borders that carry meaning (step 8 fails 3:1) |
-| 11–12 | secondary and primary text |
+| `ground` | page background: pale mineral grey-green (light), night chart (dark) |
+| `sheet` | raised surfaces: plate core, drawer, field log core |
+| `ink`, `ink-muted` | text; muted for secondary text |
+| `line` | hairlines and contour strokes: translucent ink, not flat grey |
+| `route` | magenta: ready tiles, selection ring, primary action |
+| `water` | teal: links |
+| `state-gap`, `state-demonstrated`, `state-beyond` | amber, green, a magenta shade; always with shape and label |
 
-- `gray`: warm neutral. `accent`: one hue for links, focus, the primary action, and the ready marker.
-- State tokens: `state-gap` (amber), `state-demonstrated` (green); transferred, retained, applied share one hue family and are told apart by glyph. Lab: `pass`, `fail`.
-- Components read semantic tokens (`--text`, `--border`, `--focus`, `--state-*`), never scale steps or literal colours.
-- `pnpm run check:contrast` verifies every text and meaningful-border pair in both themes; add a pair there when you add a semantic token.
+`pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
 
-## Shape, density, elevation
+### Type
 
-- 1px borders at gray 6 (`--border`); borders that carry meaning use `--border-strong`. Radius 4–6px.
-- Shadows only on floating layers: popovers, menus, the mobile bottom sheet.
-- 8px spacing grid; list rows ~36px.
+| Role | Family | Setting |
+|---|---|---|
+| Display | Hubot Sans, wide (wdth 118–125), 700 | 40–72px, leading 1.05 |
+| UI | Hubot Sans, normal width, 400–600 | 15–16px, tabular numbers for counts |
+| Reading | Newsreader (optical sizes) | 18px, line-height 1.65, ≤ 68ch |
+| Code and IDs | JetBrains Mono | code, and IDs in the drawer and route chips only |
 
-## Motion
+Every family ships the `vietnamese` subset. Render test: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`. Labels are sentence case, never tracked capitals.
 
-- Colour and opacity transitions of 100–150ms, ease-out, on state change only.
-- Under `prefers-reduced-motion: reduce`, map pan and zoom and focus auto-pan are instant.
-- Content appears in place; scrolling triggers nothing.
+### Shape and depth
 
-## Icons
+- Double bezel (outer tray and inner core with concentric radii) only for the plate, the drawer, and the field log. Everything else sits flat on the ground.
+- Radii: tray 28, core 22; cards and inputs 12; chips and buttons are pills.
+- Hairlines use `line`. Shadows are soft and ambient and only on floating layers: nav, drawer, sheets, tooltips.
+- Primary action: a pill whose trailing icon sits in its own circle; pressing scales it to 0.98 and nudges the icon circle.
 
-- One library: IBM Carbon (`@carbon/icons-react`), drawn for IBM Plex. It is imported only in `src/lib/icons.ts`, which maps semantic names (`external`, `ready`, `gap`, `run`, …) to icons. Astro pages use `<Icon name=…>`; React islands import the registry.
-- One name, one icon everywhere. A new meaning gets a new registry name.
-- Every icon sits beside a text label and is `aria-hidden`; an icon never carries meaning alone. Sizes: 16 inline, 20 in toolbars.
-- `pnpm run check:icons` rejects inline `<svg>`, SVG files and data URIs, direct icon-package imports, and emoji or symbols used as icons.
+### Motion
 
-## Components
+- Easing `cubic-bezier(0.32, 0.72, 0, 1)`; 180ms for controls, 450ms for the drawer and sheets.
+- One orchestrated moment: on first view of the Home plate, tiles settle region by region (700ms total at most). Sections do not fade in on scroll.
+- Other motion answers an action: the drawer slides, disclosures open, the selection ring grows.
+- `prefers-reduced-motion`: every transition is instant and the plate appears at once.
+- Animate only `transform` and `opacity`. Blur only on the floating nav and overlays.
 
-- Static pages: plain Astro and CSS.
-- Interactive islands: React Aria Components (Tree/GridList, Tabs, ComboBox, Dialog, Disclosure). Supply Vietnamese strings for any built-in text, since React Aria ships no `vi-VN` locale.
-- Map graph: React Flow with memoized flat nodes, `ariaLabelConfig` in both languages, zoom buttons next to pan.
-- Adding another UI library needs a note in this file saying which gap it fills.
+### Icons
 
-## Bilingual
-
-- URLs `/en/…` and `/vi/…`. The switcher reads "English · Tiếng Việt", keeps the current page, and remembers the choice. Language is never chosen by flag or forced redirect.
-- UI strings: every key exists in both `en` and `vi`.
-- Route text without a reviewed translation renders in English, wrapped in `lang="en"`, with the marker "chưa dịch / not yet translated".
+- One library with thin strokes: Phosphor (`light` weight), imported only in `src/lib/icons.ts` under semantic names. Astro uses `<Icon name=…>`; islands import the registry.
+- Every icon sits beside a text label and is `aria-hidden`.
+- The plate and its prerequisite lines are data visualisation drawn from `relations` in `src/components/plate/`, the only folder allowed to emit SVG, and only from data.
+- `pnpm run check:icons` enforces this.
 
 ## Accessibility baseline (WCAG 2.2 AA)
 
-- 1.4.1: state = glyph + text + colour.
-- 1.4.11: borders that carry meaning, graph edges, and focus rings reach 3:1.
-- 2.5.7: everything done by dragging also works by buttons or the list.
-- 2.5.8: targets ≥ 24×24px, including graph nodes and "Opened" checkboxes.
-- 2.4.11: the tutor panel and sticky headers leave the focused element visible.
-- 4.1.3: test results, Python loading, and budget changes are announced with `role="status"`.
+- 1.4.1: state is shape, label, and colour.
+- 1.4.11: meaningful lines and focus rings reach 3:1.
+- 2.5.7: nothing requires dragging.
+- 2.5.8: targets are at least 24px, tiles included.
+- 2.4.11: the drawer, sheets, and sticky bars never cover the focused element.
+- 4.1.3: counts, results, and saves are announced with `role="status"`.
 - 3.1.2: untranslated passages carry their own `lang`.
+- Focus is trapped in the drawer and sheets and returns to the tile on close.
 
 ## Review tells
 
-When reviewing a page, each tell on the left is replaced by the pattern on the right.
-
 | Tell | Replace with |
 |---|---|
-| Gradient, mesh, or glass background | Flat gray 1–2 background, border structure |
-| Marketing hero headline | Counts (ready / mapped) and a "Start with a diagnostic" link |
-| Grid of icon + title + blurb cards | Rows or a table that expose status and locators |
-| Sparkle icon, floating chat bubble, mascot, emoji | Text-labelled action attached to its object; registry icon beside text |
-| Streak, XP, confetti, % read, padlock | Evidence state, timeline, due counts |
-| Large soft shadows, 12px+ radii | 1px border, 4–6px radius |
-| Scroll-triggered animation | Content in place |
-| Single sans family everywhere | Plex Sans UI + Source Serif 4 reading + Plex Mono code |
-| Colour-only status | Glyph + label + colour |
+| Identical card grid with one radius and shadow everywhere | Plate tiles, rows, and the three double-bezel surfaces only |
+| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips, sentence case, monospace only for code and IDs |
+| Marketing headline, percent rings, streaks, XP, "N of M complete" | Ready and mapped counts, evidence states, due reviews |
+| Learning/Done/Skip toggles on items | Record evidence in the field log |
+| Floating "Ask anything" input, sparkles | Labelled AI actions inside the drawer or a block (Phase 2) |
+| `→` appended to links | A trailing icon inside the primary pill only |
+| Scroll-triggered fade-ins on every section | The single plate reveal |
+| Colour-only status | Shape, label, and colour |
