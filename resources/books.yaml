@@ -4,7 +4,7 @@ resources:
     title: Understanding Deep Learning
     author: Simon J. D. Prince
     url: https://udlbook.github.io/udlbook/
-    roles: [primary, reference]
+    roles: [curriculum-evidence, teaching, reference]
     covers: [deep-learning, math-foundations]
     source_verified: true
     last_checked: 2026-09-22
@@ -14,7 +14,7 @@ resources:
     title: Build a Large Language Model (From Scratch)
     author: Sebastian Raschka
     url: https://github.com/rasbt/LLMs-from-scratch
-    roles: [primary, practice]
+    roles: [curriculum-evidence, teaching, practice]
     covers: [llm-foundations, llm.self-attention]
     source_verified: true
     last_checked: 2026-09-22
@@ -24,7 +24,7 @@ resources:
     title: AI Engineering
     author: Chip Huyen
     url: https://github.com/chiphuyen/aie-book
-    roles: [primary, reference]
+    roles: [curriculum-evidence, teaching, reference]
     covers: [ai.evaluation, model-selection, retrieval, agents, production-ai]
     source_verified: true
     last_checked: 2026-09-22
@@ -34,7 +34,7 @@ resources:
     title: Designing Machine Learning Systems
     author: Chip Huyen
     url: https://github.com/chiphuyen/dmls-book
-    roles: [reference]
+    roles: [curriculum-evidence, teaching, production-reference]
     covers: [ml-systems, production-ai]
     source_verified: true
     last_checked: 2026-09-22
