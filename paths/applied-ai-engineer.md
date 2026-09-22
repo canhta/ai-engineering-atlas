@@ -138,7 +138,8 @@ Learn:
 - [state](../curriculum/08-agents/state/) and [memory](../curriculum/08-agents/memory/);
 - tool schemas and permission boundaries;
 - [planning](../curriculum/08-agents/planning/) and [verification](../curriculum/08-agents/verification/);
-- retries and long-running tasks;
+- retries and [long-running tasks](../curriculum/08-agents/long-running/);
+- [workflow orchestration](../curriculum/08-agents/orchestration/);
 - MCP;
 - trajectory/tool-use evaluation.
 
@@ -146,7 +147,7 @@ Default rule:
 
 > Start deterministic. Introduce agentic choice only when flexibility creates measurable value.
 
-Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, and verify real environment outcomes instead of trusting agent narration.
+Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, verify real environment outcomes instead of trusting agent narration, then make long-duration runs bounded and resumable before adding orchestration complexity.
 
 ## Phase H — production and security
 
