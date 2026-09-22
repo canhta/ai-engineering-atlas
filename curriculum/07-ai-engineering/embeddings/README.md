@@ -4,6 +4,26 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 3 "Introduction to Embedding" (from p. 134) and Chapter 6 "Retrieval Algorithms" (from p. 257) | Connect embedding representations to semantic retrieval in AI applications. |
+| [Sentence Transformers — Semantic Search](https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html) | Semantic Search page: Symmetric vs. Asymmetric Semantic Search; implementation with encode_query, encode_document, cosine similarity, and semantic_search | Make query/document task asymmetry and concrete embedding-search mechanics operational. |
+| [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/) | Chapter 6 §6.3 "The vector space model for scoring" | Reuse the vector-scoring mental model so semantic retrieval is understood as a representation change, not magic. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `math.dot-product` | [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/) | Chapter 6 §6.3 "The vector space model for scoring", especially §6.3.1 "Dot products" and cosine similarity discussion | Patch only the vector-similarity mathematics needed to reason about embedding retrieval scores. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 Embeddings are useful when a representation captures the distinctions your retrieval task needs. “Use vector search” is not an engineering argument: you should be able to explain representation, scoring, task asymmetry, failure modes, and measured advantage over the lexical baseline.
