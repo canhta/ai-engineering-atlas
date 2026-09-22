@@ -34,6 +34,14 @@ Checks whether important knowledge can be reconstructed later without rereading 
 
 Shows that the capability affected an integrated or real system.
 
+### Portfolio review
+
+A periodic integration checkpoint after a meaningful cluster of work.
+
+It combines learner-state evidence, project artifacts, failure analysis, design choices, and reflection about what still fails to transfer.
+
+See [portfolio-review.md](portfolio-review.md).
+
 ## Rubric
 
 Use [evidence-rubric.md](evidence-rubric.md) to review evidence consistently.
