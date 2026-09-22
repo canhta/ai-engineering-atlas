@@ -1,6 +1,7 @@
-# Generated: rewriting these would make `make check` fail on the next regeneration.
-curriculum/STATUS.md
-curriculum/**/README.md
+# Curriculum content: hand-written YAML that the schemas govern, and generated Markdown.
+# Reformatting it would churn against curriculum work and, for the generated files,
+# make `make check` fail on the next regeneration.
+curriculum/
 site/src/data/
 
 # Not ours.
@@ -8,6 +9,8 @@ node_modules/
 site/node_modules/
 site/dist/
 site/.astro/
+site/test-results/
+site/playwright-report/
 .claude/worktrees/
 pnpm-lock.yaml
 site/pnpm-lock.yaml

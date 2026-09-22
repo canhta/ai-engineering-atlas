@@ -19,7 +19,7 @@ repos:
         language: system
         pass_filenames: true
         types_or: [markdown, yaml, css, ts, tsx, javascript, json]
-        exclude: ^(curriculum/(STATUS\.md|.*/README\.md)|site/(dist|\.astro|\.wrangler|src/data)/|.*\.lock$)
+        exclude: ^(curriculum/|site/(dist|\.astro|\.wrangler|src/data|test-results|playwright-report)/|.*\.lock$)
 
       - id: eslint
         name: eslint
