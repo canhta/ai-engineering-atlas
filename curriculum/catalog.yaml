@@ -238,7 +238,13 @@ competencies:
   - { id: agents.orchestration, title: AI Workflow Orchestration, domain: agents, status: ready, route: curriculum/08-agents/orchestration }
 
   # Production AI
-  - { id: production.architecture, title: AI Production Architecture, domain: production-ai, status: coverage }
+  - {
+      id: production.architecture,
+      title: AI Production Architecture,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/architecture,
+    }
   - {
       id: production.model-gateway,
       title: Model Provider and Gateway Architecture,
@@ -295,7 +301,13 @@ competencies:
       status: ready,
       route: curriculum/09-production-ai/versioning,
     }
-  - { id: production.mlops-llmops, title: MLOps and LLMOps, domain: production-ai, status: coverage }
+  - {
+      id: production.mlops-llmops,
+      title: MLOps and LLMOps,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/mlops-llmops,
+    }
   - {
       id: production.drift,
       title: Drift Monitoring and Response,

@@ -1,0 +1,121 @@
+id: production.mlops-llmops
+title: "MLOps and LLMOps"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "MLOps and LLMOps are not a shopping list of registries, pipelines, and dashboards. The capability is to operate the full change lifecycle reproducibly: identify what changed, validate it, promote the right artifacts, observe production behavior, investigate drift or incidents, feed evidence back into evaluation, and automate only the transitions whose risk and frequency justify automation. Generative AI extends classic MLOps because prompts, retrieval data, model/provider choices, tool schemas, chains, policies, and evaluation sets can all change behavior even when no model is trained."
+curriculum_evidence:
+  - docs.google-genai-deploy-operate
+  - docs.google-mlops-continuous-delivery
+  - docs.aws-genai-lifecycle-automation
+  - course.made-with-ml-orchestration
+prerequisites:
+  - production.architecture
+  - ai.evaluation
+  - production.observability
+  - production.versioning
+  - production.release-engineering
+  - production.drift
+outcomes:
+  - "Explain which DevOps practices remain unchanged and which AI-specific artifacts, tests, lineage, and feedback loops extend them."
+  - "Distinguish predictive MLOps continuous training from GenAI/LLMOps workflows that may operate external foundation models without any training pipeline."
+  - "Map the full lifecycle from product/change hypothesis through experimentation, evaluation, versioning, release, monitoring, investigation, feedback, and next iteration."
+  - "Define the artifact set managed by the lifecycle: code, prompt, model/provider configuration, retrieval data/index, tool schemas, policies, evaluation sets, and infrastructure where applicable."
+  - "Preserve lineage between experiment evidence, release manifests, production traces, incidents, and regression cases."
+  - "Define environment or stage promotion without allowing configuration and AI artifacts to drift independently."
+  - "Design CI checks for code, data/schema, contracts, evaluation, safety, performance, and integration only where the change can affect those surfaces."
+  - "Design CD/release gates that deploy a tested release identity rather than rebuilding mutable latest artifacts."
+  - "Decide whether continuous training, tuning, retrieval refresh, prompt updates, or no automatic update process applies to the product."
+  - "Define trigger types such as code change, artifact change, new data, evaluation regression, drift, incident, schedule, or explicit operator action."
+  - "Keep drift, monitoring, or feedback events from automatically retraining/releasing without the declared validation boundary."
+  - "Use metadata and artifact records to reproduce or explain past production states."
+  - "Define where human approval remains mandatory and where automation safely reduces toil."
+  - "Use infrastructure/configuration as code where reproducibility and environment consistency justify it."
+  - "Define ownership across product, application engineering, AI/evaluation, data/retrieval, platform/operations, and security responsibilities."
+  - "Measure lifecycle lead time, failed-change/recovery behavior, manual toil, and evidence completeness rather than inventing a single MLOps maturity score."
+  - "Choose build-versus-buy tooling from missing lifecycle capabilities rather than starting with vendor selection."
+  - "Identify lifecycle steps that are infrequent enough to remain manual."
+  - "Run one end-to-end change from hypothesis through production feedback and prove the loop closes into durable evidence."
+  - "Remove duplicate platforms or automation that do not reduce risk, lead time, or operational toil."
+diagnostic:
+  tasks:
+    - "Draw the current Knowledge Assistant operating loop from a prompt/retrieval/model change through evaluation, release, production monitoring, incident/drift evidence, and the next change."
+    - "Explain which parts of classic continuous training do not apply when the application consumes an external foundation model without fine-tuning."
+    - "Choose three lifecycle transitions to automate and two to keep manual, then defend each choice by frequency, reversibility, evidence quality, and blast radius."
+    - "Given a production regression, identify which artifact/metadata links are required to reproduce the deployed state and turn the failure into a future release gate."
+  pass_condition: "Skip introductory synthesis only if the learner can design a reproducible AI operating loop, distinguish predictive MLOps from GenAI lifecycle needs, place automation and human gates deliberately, preserve lineage, and close production evidence back into evaluation and change."
+learning_route:
+  mental_model:
+    - source: docs.google-genai-deploy-operate
+      locator: "Sections \"What are DevOps and MLOps?\", \"Lifecycle of a generative AI application\", \"Develop and experiment\", \"Deploy\", \"Log and monitor\", and \"Govern\""
+      purpose: "See how GenAI extends the operating lifecycle beyond a trained model to prompts, chains, retrieval/grounding data, evaluation, component lineage, monitoring, and governance."
+    - source: docs.google-mlops-continuous-delivery
+      locator: "Sections \"DevOps versus MLOps\", \"MLOps level 0: Manual process\", \"MLOps level 1: ML pipeline automation\", and \"MLOps level 2: CI/CD pipeline automation\""
+      purpose: "Use predictive MLOps as a contrast model for CI/CD/CT, metadata, validation, pipeline triggers, and gradual automation—then decide which parts actually apply to the GenAI workload."
+    - source: docs.aws-genai-lifecycle-automation
+      locator: "Section \"Automate lifecycle management\" and best practices \"Automate generative AI application lifecycle with infrastructure as code (IaC)\" and \"Implement GenAIOps to optimize the application lifecycle\""
+      purpose: "Connect reproducible environments, version control, CI/CD, governance, and automation into one lifecycle while keeping automation proportional to operational need."
+    - source: course.made-with-ml-orchestration
+      locator: "Section \"Continual learning\", especially the monitoring actions \"continue\", \"improve\", \"inspect\", and \"rollback\""
+      purpose: "Preserve explicit human/operational decisions in the feedback loop instead of turning every monitor event into automatic retraining or deployment."
+  guided_practice:
+    - task: "Map every existing Knowledge Assistant evidence package onto one operating lifecycle. Mark the artifact created, trigger, validator, owner, automated/manual transition, rollback or recovery path, and production feedback that closes each loop."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/production-synthesis/
+      task: "Run one end-to-end Knowledge Assistant change through the designed operating lifecycle, preserving lineage from hypothesis and evaluation through release, production observation, drift/incident evidence, and a durable regression/evaluation update; then remove one automation or platform boundary that does not earn its operational cost."
+experiments:
+  - "Run a prompt-only change through the lifecycle and verify it does not require irrelevant model-training pipeline steps."
+  - "Run a retrieval-data/index change and verify the lifecycle performs the data/evaluation/version/release checks that differ from a prompt-only change."
+  - "Simulate a drift alert and verify the lifecycle can choose continue, inspect, improve, or rollback rather than automatically updating production."
+  - "Break one environment/configuration promotion and verify immutable release/artifact identity exposes the mismatch."
+  - "Reproduce a prior production release from lifecycle metadata and trace links."
+  - "Move one manual transition to automation and measure whether lead time/toil improves without weakening evidence or approval requirements."
+  - "Move one unsafe or low-frequency automated transition back to an explicit human gate."
+  - "Compare a consolidated lifecycle/toolchain with a more fragmented one and remove at least one duplicate system of record."
+  - "Complete one feedback loop by converting a production failure into a regression case that blocks or informs a later release."
+exit_evidence:
+  - "A lifecycle map spans hypothesis, experiment, evaluation, artifact/version identity, release, production monitoring, investigation, feedback, and next iteration."
+  - "The route explicitly states whether model training/fine-tuning/continuous training exists for this workload and why."
+  - "Code, prompt, model/provider, retrieval, tool, policy, evaluation, and infrastructure artifacts have an identified system of record where applicable."
+  - "Artifact and metadata lineage can reconstruct at least one production release."
+  - "CI checks are mapped to the change surfaces they protect instead of running arbitrary ceremonies."
+  - "CD/release uses a validated release identity and explicit gates."
+  - "Triggers for code, data/artifact, schedule, drift, incident, or operator action are declared where applicable."
+  - "Automation boundaries document which transitions are automatic, manual, or require approval and why."
+  - "Environment promotion and infrastructure/configuration reproducibility are inspectable."
+  - "Operational ownership and handoff boundaries are explicit."
+  - "One drift/incident signal reaches a continue, inspect, improve, or rollback decision without bypassing evaluation/release controls."
+  - "One production failure becomes durable evaluation/regression evidence."
+  - "One prior release or experiment can be reproduced or explained from metadata/lineage."
+  - "At least one automation or platform component is deliberately rejected, consolidated, or removed."
+  - "Lifecycle metrics cover lead time, recovery/failed change, toil, and/or evidence completeness instead of a cosmetic maturity score."
+  - "The final operating review identifies the next bottleneck in the lifecycle rather than claiming the toolchain is finished."
+transfer:
+  task: "Design the operating lifecycle for a different AI system—such as a fine-tuned predictive/GenAI hybrid or a vendor-hosted agent—with different training needs, data ownership, release cadence, compliance, and team structure."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.google-genai-deploy-operate
+    - docs.google-mlops-continuous-delivery
+    - docs.aws-genai-lifecycle-automation
+    - course.made-with-ml-orchestration
+  practice:
+    - docs.google-genai-deploy-operate
+    - course.made-with-ml-orchestration
+  production-reference:
+    - docs.aws-genai-lifecycle-automation
+    - docs.google-mlops-continuous-delivery
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

@@ -1,0 +1,117 @@
+id: production.architecture
+title: "AI Production Architecture"
+domain: production-ai
+status: ready
+competency_types:
+  - design-judgment
+  - system-operation
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Production architecture is the ability to compose the smallest system that satisfies product, reliability, security, latency, cost, change, and operational constraints. After learning gateways, observability, performance, caching, streaming, versioning, release engineering, and drift separately, the engineer must decide where boundaries belong, which state and dependencies are long-lived, how failures propagate, which degraded modes remain useful, and which mechanisms should be omitted rather than accumulated."
+curriculum_evidence:
+  - docs.azure-ai-architecture-pattern
+  - docs.aws-genai-architecting-production
+  - docs.aws-genai-design-principles
+prerequisites:
+  - ai.product-framing
+  - agents.orchestration
+  - production.model-gateway
+  - production.observability
+  - production.latency
+  - production.cost
+  - production.caching
+  - production.streaming
+  - production.versioning
+  - production.release-engineering
+  - production.drift
+outcomes:
+  - "Translate product objectives, quality constraints, latency targets, cost limits, traffic shape, data sensitivity, and recovery requirements into architecture drivers."
+  - "Draw the end-to-end request, data, feedback, and operational control flows rather than only a component inventory."
+  - "Define service boundaries from independent change, scaling, failure, security, and ownership needs instead of assuming microservices are automatically better."
+  - "Identify which components are stateful, ephemeral, long-lived, externally managed, or replaceable."
+  - "Define public, internal, provider, retrieval, tool, and human-control trust boundaries."
+  - "Choose synchronous versus asynchronous edges from interaction and failure requirements."
+  - "Map each external dependency to timeout, retry, fallback, queueing, degradation, or fail-fast behavior."
+  - "Prevent one optional AI capability from taking down a useful degraded product path when the product permits degradation."
+  - "Choose whether a model gateway, cache, streaming path, durable workflow, or other mechanism belongs in the topology based on measured need."
+  - "Separate data-plane request execution from control-plane activities such as evaluation, release, configuration, monitoring, and incident response."
+  - "Design scaling and capacity boundaries from measured bottlenecks and provider limits rather than uniform scaling."
+  - "Account for the different change cadences of application, orchestration, model, prompt, retrieval data, tools, policy, and infrastructure."
+  - "Preserve artifact lineage and release identity across independently evolving components."
+  - "Make observability and operational ownership explicit at component and boundary level."
+  - "Reason about regional/provider dependency and availability only to the level justified by the required service objective."
+  - "Compare at least two viable topologies and defend the simpler or more resilient choice from evidence."
+  - "Walk through failure propagation for provider, retrieval, tool, cache, data, network, and configuration failures."
+  - "Design an evolution path that permits replacing a provider or component without rewriting unrelated product logic."
+  - "Remove or merge components whose independent boundary does not earn its operational cost."
+diagnostic:
+  tasks:
+    - "Given the current Knowledge Assistant, draw its request, data, and control planes and identify every externally managed dependency and persistent state boundary."
+    - "Choose one component boundary and defend whether it should remain in-process, become a separate service, or disappear."
+    - "Walk a provider outage and a retrieval outage through the topology and state which user-visible degraded mode remains possible."
+    - "Compare two production topologies for the same product constraints and identify the extra failure modes introduced by the more complex one."
+  pass_condition: "Skip introductory synthesis only if the learner can turn product/operational constraints into explicit boundaries, state/dependency maps, failure propagation, degraded modes, ownership, and a defensible choice between alternative architectures."
+learning_route:
+  mental_model:
+    - source: docs.azure-ai-architecture-pattern
+      locator: "Sections \"High-level AI workload architecture\", \"Workload composition\", and the design considerations for \"Lifetime and state\", \"Reach and dependencies\", \"Scalability and availability\", and \"Security and responsible AI\""
+      purpose: "Build a workload-level architecture model around component roles, state/lifetime, dependencies, scaling, and trust boundaries rather than a vendor service list."
+    - source: docs.aws-genai-architecting-production
+      locator: "Sections \"Decomposing generative AI monoliths into modular and reusable microservices\", \"Managing asset promotion and environment transitions\", \"Centralizing control and observability with AI gateways\", and \"Designing generative AI applications for performance and cost\""
+      purpose: "Study how production boundaries, coordinated artifact changes, shared control points, resilience, performance, and cost interact—and where decomposition can help or create more operational surface."
+    - source: docs.aws-genai-design-principles
+      locator: "Section \"Design principles\", especially controlled autonomy, comprehensive observability, resource efficiency, distributed resilience, standardized resource management, and secure interaction boundaries"
+      purpose: "Use cross-cutting architecture principles as a review checklist while still requiring product-specific trade-offs rather than blindly applying every pattern."
+  guided_practice:
+    - task: "Take the current Knowledge Assistant and annotate its component diagram with state, owner, change cadence, trust boundary, scaling unit, upstream/downstream dependencies, failure behavior, and the reason each independent component boundary exists."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/production-synthesis/
+      task: "Produce two viable production topologies for the evolved Knowledge Assistant, run the same failure and operational scenarios through both, choose one, and simplify or remove at least one mechanism or boundary that does not earn its cost."
+experiments:
+  - "Remove the model gateway, cache, or another nonessential component from one candidate topology and compare operational simplicity against lost capability."
+  - "Inject provider, retrieval, tool, and cache failures and trace which components fail, degrade, queue, retry, or remain available."
+  - "Increase traffic on one workload segment and verify independent scaling happens only where the measured bottleneck requires it."
+  - "Change model, prompt, retrieval, and application artifacts at different cadences and verify release/lineage boundaries remain coherent."
+  - "Attempt a provider replacement and measure how much unrelated application logic must change."
+  - "Move one synchronous edge to asynchronous execution or vice versa and compare user experience, recovery, and operational complexity."
+  - "Model a regional or provider dependency failure and decide whether redundancy is justified by the service objective."
+  - "Reject at least one attractive architectural pattern because it creates more failure modes, latency, cost, or ownership burden than the product requires."
+exit_evidence:
+  - "Architecture drivers map product, quality, latency, cost, traffic, security, and recovery constraints to design decisions."
+  - "A context/topology diagram identifies users, external providers, data systems, tools, and operational/control-plane systems."
+  - "Request, data, feedback, and control flows are inspectable."
+  - "Component boundaries include state/lifetime, owner, change cadence, scaling unit, and why the boundary exists."
+  - "Trust boundaries and externally managed dependencies are explicit."
+  - "A dependency/failure matrix covers timeout, retry, fallback, degradation, queueing, or fail-fast behavior."
+  - "At least one degraded user experience is deliberately designed and tested where the product allows it."
+  - "Operational ownership, telemetry, release identity, and incident responsibility are assigned."
+  - "Two viable topology alternatives are compared against the same constraints."
+  - "At least one component or mechanism is deliberately omitted, merged, or removed."
+  - "Provider/component replacement is tested or reasoned through using stable contracts."
+  - "Capacity/scaling decisions reference measured bottlenecks or provider constraints."
+  - "A failure-propagation walkthrough proves optional failures do not become accidental total outages."
+  - "The selected topology includes an evolution path and explicit conditions that would justify future complexity."
+  - "Architecture decisions link back to the concrete production competency evidence rather than generic best-practice claims."
+transfer:
+  task: "Redesign the production topology for a different AI product with different state, traffic, compliance, availability, provider, and team-ownership constraints without copying the Knowledge Assistant component graph."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.azure-ai-architecture-pattern
+    - docs.aws-genai-architecting-production
+    - docs.aws-genai-design-principles
+  practice:
+    - docs.azure-ai-architecture-pattern
+    - docs.aws-genai-architecting-production
+  production-reference:
+    - docs.azure-ai-architecture-pattern
+    - docs.aws-genai-design-principles
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

@@ -952,3 +952,149 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: docs.azure-ai-architecture-pattern
+    type: documentation
+    title: Azure Well-Architected — AI workload architecture pattern
+    author: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/well-architected/ai/architecture-pattern
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.architecture
+      - workload-composition
+      - state
+      - dependencies
+      - scaling
+      - security
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.aws-genai-architecting-production
+    type: documentation
+    title: AWS — Architecting generative AI applications for production
+    author: Amazon Web Services
+    url: https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-lifecycle-operational-excellence/preprod-architecting.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.architecture
+      - component-boundaries
+      - asset-promotion
+      - gateway
+      - performance
+      - cost
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.aws-genai-design-principles
+    type: documentation
+    title: AWS Generative AI Lens — Design principles
+    author: Amazon Web Services
+    url: https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/design-principles.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.architecture
+      - resilience
+      - observability
+      - resource-efficiency
+      - boundaries
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.google-genai-deploy-operate
+    type: documentation
+    title: Google Cloud — Deploy and operate generative AI applications
+    author: Google Cloud
+    url: https://docs.cloud.google.com/architecture/deploy-operate-generative-ai-applications
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.mlops-llmops
+      - genai-lifecycle
+      - deployment
+      - monitoring
+      - governance
+      - lineage
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: docs.google-mlops-continuous-delivery
+    type: documentation
+    title: Google Cloud — MLOps continuous delivery and automation pipelines
+    author: Google Cloud
+    url: https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.mlops-llmops
+      - ci
+      - cd
+      - continuous-training
+      - metadata
+      - automation
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.aws-genai-lifecycle-automation
+    type: documentation
+    title: AWS Generative AI Lens — Automate lifecycle management
+    author: Amazon Web Services
+    url: https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genops4.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.mlops-llmops
+      - lifecycle-automation
+      - infrastructure-as-code
+      - ci-cd
+      - governance
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 90
+
+  - id: course.made-with-ml-orchestration
+    type: course
+    title: Made With ML — Orchestration for Machine Learning
+    author: Goku Mohandas
+    url: https://madewithml.com/courses/mlops/orchestration/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - reference
+    covers:
+      - production.mlops-llmops
+      - continual-learning
+      - monitoring-response
+      - human-gates
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180

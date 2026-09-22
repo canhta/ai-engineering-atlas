@@ -32,6 +32,8 @@ milestones:
   - versioned-release-candidate
   - progressive-release-and-rollback
   - drift-monitoring
+  - architecture-synthesis
+  - operating-lifecycle-synthesis
   - security-failure-work
   - incident-and-feedback
 competencies:
@@ -65,6 +67,8 @@ competencies:
   - production.versioning
   - production.release-engineering
   - production.drift
+  - production.architecture
+  - production.mlops-llmops
   - security.prompt-injection
 evidence:
   - product-brief
@@ -124,6 +128,13 @@ evidence:
   - segmented-drift-record
   - drift-investigation-record
   - drift-response-playbook
+  - architecture-driver-record
+  - production-topology
+  - architecture-failure-matrix
+  - architecture-decision-set
+  - operating-lifecycle-map
+  - automation-boundary-record
+  - production-readiness-review
   - decision-records
   - traces
   - security-tests

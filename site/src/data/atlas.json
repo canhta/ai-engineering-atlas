@@ -7017,7 +7017,352 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "design-judgment",
+            "system-operation",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/architecture",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Production architecture is the ability to compose the smallest system that satisfies product, reliability, security, latency, cost, change, and operational constraints. After learning gateways, observability, performance, caching, streaming, versioning, release engineering, and drift separately, the engineer must decide where boundaries belong, which state and dependencies are long-lived, how failures propagate, which degraded modes remain useful, and which mechanisms should be omitted rather than accumulated."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.product-framing"
+                },
+                {
+                  "ref": "agents.orchestration"
+                },
+                {
+                  "ref": "production.model-gateway"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "production.latency"
+                },
+                {
+                  "ref": "production.cost"
+                },
+                {
+                  "ref": "production.caching"
+                },
+                {
+                  "ref": "production.streaming"
+                },
+                {
+                  "ref": "production.versioning"
+                },
+                {
+                  "ref": "production.release-engineering"
+                },
+                {
+                  "ref": "production.drift"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Translate product objectives, quality constraints, latency targets, cost limits, traffic shape, data sensitivity, and recovery requirements into architecture drivers."
+                },
+                {
+                  "en": "Draw the end-to-end request, data, feedback, and operational control flows rather than only a component inventory."
+                },
+                {
+                  "en": "Define service boundaries from independent change, scaling, failure, security, and ownership needs instead of assuming microservices are automatically better."
+                },
+                {
+                  "en": "Identify which components are stateful, ephemeral, long-lived, externally managed, or replaceable."
+                },
+                {
+                  "en": "Define public, internal, provider, retrieval, tool, and human-control trust boundaries."
+                },
+                {
+                  "en": "Choose synchronous versus asynchronous edges from interaction and failure requirements."
+                },
+                {
+                  "en": "Map each external dependency to timeout, retry, fallback, queueing, degradation, or fail-fast behavior."
+                },
+                {
+                  "en": "Prevent one optional AI capability from taking down a useful degraded product path when the product permits degradation."
+                },
+                {
+                  "en": "Choose whether a model gateway, cache, streaming path, durable workflow, or other mechanism belongs in the topology based on measured need."
+                },
+                {
+                  "en": "Separate data-plane request execution from control-plane activities such as evaluation, release, configuration, monitoring, and incident response."
+                },
+                {
+                  "en": "Design scaling and capacity boundaries from measured bottlenecks and provider limits rather than uniform scaling."
+                },
+                {
+                  "en": "Account for the different change cadences of application, orchestration, model, prompt, retrieval data, tools, policy, and infrastructure."
+                },
+                {
+                  "en": "Preserve artifact lineage and release identity across independently evolving components."
+                },
+                {
+                  "en": "Make observability and operational ownership explicit at component and boundary level."
+                },
+                {
+                  "en": "Reason about regional/provider dependency and availability only to the level justified by the required service objective."
+                },
+                {
+                  "en": "Compare at least two viable topologies and defend the simpler or more resilient choice from evidence."
+                },
+                {
+                  "en": "Walk through failure propagation for provider, retrieval, tool, cache, data, network, and configuration failures."
+                },
+                {
+                  "en": "Design an evolution path that permits replacing a provider or component without rewriting unrelated product logic."
+                },
+                {
+                  "en": "Remove or merge components whose independent boundary does not earn its operational cost."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given the current Knowledge Assistant, draw its request, data, and control planes and identify every externally managed dependency and persistent state boundary."
+                },
+                {
+                  "en": "Choose one component boundary and defend whether it should remain in-process, become a separate service, or disappear."
+                },
+                {
+                  "en": "Walk a provider outage and a retrieval outage through the topology and state which user-visible degraded mode remains possible."
+                },
+                {
+                  "en": "Compare two production topologies for the same product constraints and identify the extra failure modes introduced by the more complex one."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory synthesis only if the learner can turn product/operational constraints into explicit boundaries, state/dependency maps, failure propagation, degraded modes, ownership, and a defensible choice between alternative architectures."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.azure-ai-architecture-pattern",
+                  "locator": {
+                    "en": "Sections \"High-level AI workload architecture\", \"Workload composition\", and the design considerations for \"Lifetime and state\", \"Reach and dependencies\", \"Scalability and availability\", and \"Security and responsible AI\""
+                  },
+                  "purpose": {
+                    "en": "Build a workload-level architecture model around component roles, state/lifetime, dependencies, scaling, and trust boundaries rather than a vendor service list."
+                  }
+                },
+                {
+                  "resource": "docs.aws-genai-architecting-production",
+                  "locator": {
+                    "en": "Sections \"Decomposing generative AI monoliths into modular and reusable microservices\", \"Managing asset promotion and environment transitions\", \"Centralizing control and observability with AI gateways\", and \"Designing generative AI applications for performance and cost\""
+                  },
+                  "purpose": {
+                    "en": "Study how production boundaries, coordinated artifact changes, shared control points, resilience, performance, and cost interact—and where decomposition can help or create more operational surface."
+                  }
+                },
+                {
+                  "resource": "docs.aws-genai-design-principles",
+                  "locator": {
+                    "en": "Section \"Design principles\", especially controlled autonomy, comprehensive observability, resource efficiency, distributed resilience, standardized resource management, and secure interaction boundaries"
+                  },
+                  "purpose": {
+                    "en": "Use cross-cutting architecture principles as a review checklist while still requiring product-specific trade-offs rather than blindly applying every pattern."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take the current Knowledge Assistant and annotate its component diagram with state, owner, change cadence, trust boundary, scaling unit, upstream/downstream dependencies, failure behavior, and the reason each independent component boundary exists."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Produce two viable production topologies for the evolved Knowledge Assistant, run the same failure and operational scenarios through both, choose one, and simplify or remove at least one mechanism or boundary that does not earn its cost."
+                      },
+                      "path": "projects/knowledge-assistant/production-synthesis/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Remove the model gateway, cache, or another nonessential component from one candidate topology and compare operational simplicity against lost capability."
+                },
+                {
+                  "en": "Inject provider, retrieval, tool, and cache failures and trace which components fail, degrade, queue, retry, or remain available."
+                },
+                {
+                  "en": "Increase traffic on one workload segment and verify independent scaling happens only where the measured bottleneck requires it."
+                },
+                {
+                  "en": "Change model, prompt, retrieval, and application artifacts at different cadences and verify release/lineage boundaries remain coherent."
+                },
+                {
+                  "en": "Attempt a provider replacement and measure how much unrelated application logic must change."
+                },
+                {
+                  "en": "Move one synchronous edge to asynchronous execution or vice versa and compare user experience, recovery, and operational complexity."
+                },
+                {
+                  "en": "Model a regional or provider dependency failure and decide whether redundancy is justified by the service objective."
+                },
+                {
+                  "en": "Reject at least one attractive architectural pattern because it creates more failure modes, latency, cost, or ownership burden than the product requires."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "Architecture drivers map product, quality, latency, cost, traffic, security, and recovery constraints to design decisions."
+                },
+                {
+                  "en": "A context/topology diagram identifies users, external providers, data systems, tools, and operational/control-plane systems."
+                },
+                {
+                  "en": "Request, data, feedback, and control flows are inspectable."
+                },
+                {
+                  "en": "Component boundaries include state/lifetime, owner, change cadence, scaling unit, and why the boundary exists."
+                },
+                {
+                  "en": "Trust boundaries and externally managed dependencies are explicit."
+                },
+                {
+                  "en": "A dependency/failure matrix covers timeout, retry, fallback, degradation, queueing, or fail-fast behavior."
+                },
+                {
+                  "en": "At least one degraded user experience is deliberately designed and tested where the product allows it."
+                },
+                {
+                  "en": "Operational ownership, telemetry, release identity, and incident responsibility are assigned."
+                },
+                {
+                  "en": "Two viable topology alternatives are compared against the same constraints."
+                },
+                {
+                  "en": "At least one component or mechanism is deliberately omitted, merged, or removed."
+                },
+                {
+                  "en": "Provider/component replacement is tested or reasoned through using stable contracts."
+                },
+                {
+                  "en": "Capacity/scaling decisions reference measured bottlenecks or provider constraints."
+                },
+                {
+                  "en": "A failure-propagation walkthrough proves optional failures do not become accidental total outages."
+                },
+                {
+                  "en": "The selected topology includes an evolution path and explicit conditions that would justify future complexity."
+                },
+                {
+                  "en": "Architecture decisions link back to the concrete production competency evidence rather than generic best-practice claims."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the production topology for a different AI product with different state, traffic, compliance, availability, provider, and team-ownership constraints without copying the Knowledge Assistant component graph."
+              }
+            }
+          ]
         }
       },
       {
@@ -9673,7 +10018,356 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/mlops-llmops",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "MLOps and LLMOps are not a shopping list of registries, pipelines, and dashboards. The capability is to operate the full change lifecycle reproducibly: identify what changed, validate it, promote the right artifacts, observe production behavior, investigate drift or incidents, feed evidence back into evaluation, and automate only the transitions whose risk and frequency justify automation. Generative AI extends classic MLOps because prompts, retrieval data, model/provider choices, tool schemas, chains, policies, and evaluation sets can all change behavior even when no model is trained."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.architecture"
+                },
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "production.versioning"
+                },
+                {
+                  "ref": "production.release-engineering"
+                },
+                {
+                  "ref": "production.drift"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Explain which DevOps practices remain unchanged and which AI-specific artifacts, tests, lineage, and feedback loops extend them."
+                },
+                {
+                  "en": "Distinguish predictive MLOps continuous training from GenAI/LLMOps workflows that may operate external foundation models without any training pipeline."
+                },
+                {
+                  "en": "Map the full lifecycle from product/change hypothesis through experimentation, evaluation, versioning, release, monitoring, investigation, feedback, and next iteration."
+                },
+                {
+                  "en": "Define the artifact set managed by the lifecycle: code, prompt, model/provider configuration, retrieval data/index, tool schemas, policies, evaluation sets, and infrastructure where applicable."
+                },
+                {
+                  "en": "Preserve lineage between experiment evidence, release manifests, production traces, incidents, and regression cases."
+                },
+                {
+                  "en": "Define environment or stage promotion without allowing configuration and AI artifacts to drift independently."
+                },
+                {
+                  "en": "Design CI checks for code, data/schema, contracts, evaluation, safety, performance, and integration only where the change can affect those surfaces."
+                },
+                {
+                  "en": "Design CD/release gates that deploy a tested release identity rather than rebuilding mutable latest artifacts."
+                },
+                {
+                  "en": "Decide whether continuous training, tuning, retrieval refresh, prompt updates, or no automatic update process applies to the product."
+                },
+                {
+                  "en": "Define trigger types such as code change, artifact change, new data, evaluation regression, drift, incident, schedule, or explicit operator action."
+                },
+                {
+                  "en": "Keep drift, monitoring, or feedback events from automatically retraining/releasing without the declared validation boundary."
+                },
+                {
+                  "en": "Use metadata and artifact records to reproduce or explain past production states."
+                },
+                {
+                  "en": "Define where human approval remains mandatory and where automation safely reduces toil."
+                },
+                {
+                  "en": "Use infrastructure/configuration as code where reproducibility and environment consistency justify it."
+                },
+                {
+                  "en": "Define ownership across product, application engineering, AI/evaluation, data/retrieval, platform/operations, and security responsibilities."
+                },
+                {
+                  "en": "Measure lifecycle lead time, failed-change/recovery behavior, manual toil, and evidence completeness rather than inventing a single MLOps maturity score."
+                },
+                {
+                  "en": "Choose build-versus-buy tooling from missing lifecycle capabilities rather than starting with vendor selection."
+                },
+                {
+                  "en": "Identify lifecycle steps that are infrequent enough to remain manual."
+                },
+                {
+                  "en": "Run one end-to-end change from hypothesis through production feedback and prove the loop closes into durable evidence."
+                },
+                {
+                  "en": "Remove duplicate platforms or automation that do not reduce risk, lead time, or operational toil."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Draw the current Knowledge Assistant operating loop from a prompt/retrieval/model change through evaluation, release, production monitoring, incident/drift evidence, and the next change."
+                },
+                {
+                  "en": "Explain which parts of classic continuous training do not apply when the application consumes an external foundation model without fine-tuning."
+                },
+                {
+                  "en": "Choose three lifecycle transitions to automate and two to keep manual, then defend each choice by frequency, reversibility, evidence quality, and blast radius."
+                },
+                {
+                  "en": "Given a production regression, identify which artifact/metadata links are required to reproduce the deployed state and turn the failure into a future release gate."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory synthesis only if the learner can design a reproducible AI operating loop, distinguish predictive MLOps from GenAI lifecycle needs, place automation and human gates deliberately, preserve lineage, and close production evidence back into evaluation and change."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.google-genai-deploy-operate",
+                  "locator": {
+                    "en": "Sections \"What are DevOps and MLOps?\", \"Lifecycle of a generative AI application\", \"Develop and experiment\", \"Deploy\", \"Log and monitor\", and \"Govern\""
+                  },
+                  "purpose": {
+                    "en": "See how GenAI extends the operating lifecycle beyond a trained model to prompts, chains, retrieval/grounding data, evaluation, component lineage, monitoring, and governance."
+                  }
+                },
+                {
+                  "resource": "docs.google-mlops-continuous-delivery",
+                  "locator": {
+                    "en": "Sections \"DevOps versus MLOps\", \"MLOps level 0: Manual process\", \"MLOps level 1: ML pipeline automation\", and \"MLOps level 2: CI/CD pipeline automation\""
+                  },
+                  "purpose": {
+                    "en": "Use predictive MLOps as a contrast model for CI/CD/CT, metadata, validation, pipeline triggers, and gradual automation—then decide which parts actually apply to the GenAI workload."
+                  }
+                },
+                {
+                  "resource": "docs.aws-genai-lifecycle-automation",
+                  "locator": {
+                    "en": "Section \"Automate lifecycle management\" and best practices \"Automate generative AI application lifecycle with infrastructure as code (IaC)\" and \"Implement GenAIOps to optimize the application lifecycle\""
+                  },
+                  "purpose": {
+                    "en": "Connect reproducible environments, version control, CI/CD, governance, and automation into one lifecycle while keeping automation proportional to operational need."
+                  }
+                },
+                {
+                  "resource": "course.made-with-ml-orchestration",
+                  "locator": {
+                    "en": "Section \"Continual learning\", especially the monitoring actions \"continue\", \"improve\", \"inspect\", and \"rollback\""
+                  },
+                  "purpose": {
+                    "en": "Preserve explicit human/operational decisions in the feedback loop instead of turning every monitor event into automatic retraining or deployment."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Map every existing Knowledge Assistant evidence package onto one operating lifecycle. Mark the artifact created, trigger, validator, owner, automated/manual transition, rollback or recovery path, and production feedback that closes each loop."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Run one end-to-end Knowledge Assistant change through the designed operating lifecycle, preserving lineage from hypothesis and evaluation through release, production observation, drift/incident evidence, and a durable regression/evaluation update; then remove one automation or platform boundary that does not earn its operational cost."
+                      },
+                      "path": "projects/knowledge-assistant/production-synthesis/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Run a prompt-only change through the lifecycle and verify it does not require irrelevant model-training pipeline steps."
+                },
+                {
+                  "en": "Run a retrieval-data/index change and verify the lifecycle performs the data/evaluation/version/release checks that differ from a prompt-only change."
+                },
+                {
+                  "en": "Simulate a drift alert and verify the lifecycle can choose continue, inspect, improve, or rollback rather than automatically updating production."
+                },
+                {
+                  "en": "Break one environment/configuration promotion and verify immutable release/artifact identity exposes the mismatch."
+                },
+                {
+                  "en": "Reproduce a prior production release from lifecycle metadata and trace links."
+                },
+                {
+                  "en": "Move one manual transition to automation and measure whether lead time/toil improves without weakening evidence or approval requirements."
+                },
+                {
+                  "en": "Move one unsafe or low-frequency automated transition back to an explicit human gate."
+                },
+                {
+                  "en": "Compare a consolidated lifecycle/toolchain with a more fragmented one and remove at least one duplicate system of record."
+                },
+                {
+                  "en": "Complete one feedback loop by converting a production failure into a regression case that blocks or informs a later release."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A lifecycle map spans hypothesis, experiment, evaluation, artifact/version identity, release, production monitoring, investigation, feedback, and next iteration."
+                },
+                {
+                  "en": "The route explicitly states whether model training/fine-tuning/continuous training exists for this workload and why."
+                },
+                {
+                  "en": "Code, prompt, model/provider, retrieval, tool, policy, evaluation, and infrastructure artifacts have an identified system of record where applicable."
+                },
+                {
+                  "en": "Artifact and metadata lineage can reconstruct at least one production release."
+                },
+                {
+                  "en": "CI checks are mapped to the change surfaces they protect instead of running arbitrary ceremonies."
+                },
+                {
+                  "en": "CD/release uses a validated release identity and explicit gates."
+                },
+                {
+                  "en": "Triggers for code, data/artifact, schedule, drift, incident, or operator action are declared where applicable."
+                },
+                {
+                  "en": "Automation boundaries document which transitions are automatic, manual, or require approval and why."
+                },
+                {
+                  "en": "Environment promotion and infrastructure/configuration reproducibility are inspectable."
+                },
+                {
+                  "en": "Operational ownership and handoff boundaries are explicit."
+                },
+                {
+                  "en": "One drift/incident signal reaches a continue, inspect, improve, or rollback decision without bypassing evaluation/release controls."
+                },
+                {
+                  "en": "One production failure becomes durable evaluation/regression evidence."
+                },
+                {
+                  "en": "One prior release or experiment can be reproduced or explained from metadata/lineage."
+                },
+                {
+                  "en": "At least one automation or platform component is deliberately rejected, consolidated, or removed."
+                },
+                {
+                  "en": "Lifecycle metrics cover lead time, recovery/failed change, toil, and/or evidence completeness instead of a cosmetic maturity score."
+                },
+                {
+                  "en": "The final operating review identifies the next bottleneck in the lifecycle rather than claiming the toolchain is finished."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Design the operating lifecycle for a different AI system—such as a fine-tuned predictive/GenAI hybrid or a vendor-hosted agent—with different training needs, data ownership, release cadence, compliance, and team structure."
+              }
+            }
+          ]
         }
       },
       {
@@ -11063,6 +11757,12 @@
                   "en": "drift-monitoring"
                 },
                 {
+                  "en": "architecture-synthesis"
+                },
+                {
+                  "en": "operating-lifecycle-synthesis"
+                },
+                {
                   "en": "security-failure-work"
                 },
                 {
@@ -11249,6 +11949,27 @@
                 },
                 {
                   "en": "drift-response-playbook"
+                },
+                {
+                  "en": "architecture-driver-record"
+                },
+                {
+                  "en": "production-topology"
+                },
+                {
+                  "en": "architecture-failure-matrix"
+                },
+                {
+                  "en": "architecture-decision-set"
+                },
+                {
+                  "en": "operating-lifecycle-map"
+                },
+                {
+                  "en": "automation-boundary-record"
+                },
+                {
+                  "en": "production-readiness-review"
                 },
                 {
                   "en": "decision-records"
@@ -11468,6 +12189,11 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.architecture"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "production.caching"
     },
     {
@@ -11484,6 +12210,11 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "production.latency"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "production.mlops-llmops"
     },
     {
       "type": "member",
@@ -11589,6 +12320,11 @@
       "type": "prerequisite",
       "from": "agents.orchestration",
       "to": "agents.multi-agent"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.orchestration",
+      "to": "production.architecture"
     },
     {
       "type": "prerequisite",
@@ -11713,6 +12449,11 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "production.model-gateway"
     },
     {
@@ -11754,6 +12495,11 @@
       "type": "prerequisite",
       "from": "ai.product-framing",
       "to": "ai.model-selection"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.product-framing",
+      "to": "production.architecture"
     },
     {
       "type": "prerequisite",
@@ -11817,8 +12563,38 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.architecture",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.caching",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.cost",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
       "from": "production.cost",
       "to": "production.caching"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.drift",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.drift",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.latency",
+      "to": "production.architecture"
     },
     {
       "type": "prerequisite",
@@ -11829,6 +12605,16 @@
       "type": "prerequisite",
       "from": "production.latency",
       "to": "production.streaming"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.model-gateway",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.architecture"
     },
     {
       "type": "prerequisite",
@@ -11853,6 +12639,11 @@
     {
       "type": "prerequisite",
       "from": "production.observability",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
       "to": "production.release-engineering"
     },
     {
@@ -11868,12 +12659,37 @@
     {
       "type": "prerequisite",
       "from": "production.release-engineering",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.release-engineering",
       "to": "production.drift"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.release-engineering",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.streaming",
+      "to": "production.architecture"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.versioning",
+      "to": "production.architecture"
     },
     {
       "type": "prerequisite",
       "from": "production.versioning",
       "to": "production.drift"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.versioning",
+      "to": "production.mlops-llmops"
     },
     {
       "type": "prerequisite",
@@ -12076,6 +12892,12 @@
       "author": "Goku Mohandas",
       "url": "https://madewithml.com/courses/mlops/evaluation/"
     },
+    "course.made-with-ml-orchestration": {
+      "title": "Made With ML — Orchestration for Machine Learning",
+      "type": "course",
+      "author": "Goku Mohandas",
+      "url": "https://madewithml.com/courses/mlops/orchestration/"
+    },
     "course.made-with-ml-product-design": {
       "title": "Made With ML — Product Design",
       "type": "course",
@@ -12111,6 +12933,30 @@
       "type": "documentation",
       "author": "Argo Project",
       "url": "https://argo-rollouts.readthedocs.io/en/stable/features/rollback/"
+    },
+    "docs.aws-genai-architecting-production": {
+      "title": "AWS — Architecting generative AI applications for production",
+      "type": "documentation",
+      "author": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-lifecycle-operational-excellence/preprod-architecting.html"
+    },
+    "docs.aws-genai-design-principles": {
+      "title": "AWS Generative AI Lens — Design principles",
+      "type": "documentation",
+      "author": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/design-principles.html"
+    },
+    "docs.aws-genai-lifecycle-automation": {
+      "title": "AWS Generative AI Lens — Automate lifecycle management",
+      "type": "documentation",
+      "author": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genops4.html"
+    },
+    "docs.azure-ai-architecture-pattern": {
+      "title": "Azure Well-Architected — AI workload architecture pattern",
+      "type": "documentation",
+      "author": "Microsoft",
+      "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/architecture-pattern"
     },
     "docs.azure-ai-gateway-multi-backend": {
       "title": "Azure Architecture Center — Gateway in front of model deployments",
@@ -12165,6 +13011,18 @@
       "type": "documentation",
       "author": "Google",
       "url": "https://adk.dev/sessions/state/"
+    },
+    "docs.google-genai-deploy-operate": {
+      "title": "Google Cloud — Deploy and operate generative AI applications",
+      "type": "documentation",
+      "author": "Google Cloud",
+      "url": "https://docs.cloud.google.com/architecture/deploy-operate-generative-ai-applications"
+    },
+    "docs.google-mlops-continuous-delivery": {
+      "title": "Google Cloud — MLOps continuous delivery and automation pipelines",
+      "type": "documentation",
+      "author": "Google Cloud",
+      "url": "https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning"
     },
     "docs.google-model-monitoring-overview": {
       "title": "Google Cloud — Model Monitoring overview",

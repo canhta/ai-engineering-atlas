@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **32** ready learning routes
-- **83** coverage-only competencies
+- **34** ready learning routes
+- **81** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -22,7 +22,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | LLM Foundations | 11 | 1 |
 | AI Engineering | 26 | 12 |
 | Agents | 9 | 9 |
-| Production AI | 11 | 9 |
+| Production AI | 11 | 11 |
 | Security & Governance | 10 | 1 |
 | Multimodal | 3 | 0 |
 | Specializations | 8 | 0 |
@@ -53,6 +53,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `agents.long-running` — Long-Running Agents | Agents | [Open route](08-agents/long-running/) |
 | `agents.mcp` — Model Context Protocol | Agents | [Open route](08-agents/mcp/) |
 | `agents.orchestration` — AI Workflow Orchestration | Agents | [Open route](08-agents/orchestration/) |
+| `production.architecture` — AI Production Architecture | Production AI | [Open route](09-production-ai/architecture/) |
 | `production.model-gateway` — Model Provider and Gateway Architecture | Production AI | [Open route](09-production-ai/model-gateway/) |
 | `production.caching` — AI Caching | Production AI | [Open route](09-production-ai/caching/) |
 | `production.streaming` — Streaming | Production AI | [Open route](09-production-ai/streaming/) |
@@ -61,6 +62,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `production.observability` — AI Observability and Request Replay | Production AI | [Open route](09-production-ai/observability/) |
 | `production.release-engineering` — AI Release Engineering | Production AI | [Open route](09-production-ai/release-engineering/) |
 | `production.versioning` — Model Prompt and Retrieval Versioning | Production AI | [Open route](09-production-ai/versioning/) |
+| `production.mlops-llmops` — MLOps and LLMOps | Production AI | [Open route](09-production-ai/mlops-llmops/) |
 | `production.drift` — Drift Monitoring and Response | Production AI | [Open route](09-production-ai/drift/) |
 | `security.prompt-injection` — Prompt Injection and Trust Boundaries | Security & Governance | [Open route](10-security-governance/prompt-injection/) |
 

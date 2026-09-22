@@ -28,6 +28,8 @@ For caching and streamed delivery, continue with the [Delivery Mechanisms eviden
 
 For post-release change detection, continue with the [Drift Monitoring evidence contract](drift-monitoring/). Drift alerts must be correlated with evaluation and release evidence before they become mitigation decisions.
 
+For the final Production AI synthesis, continue with the [Production Synthesis evidence contract](production-synthesis/). Architecture and MLOps/LLMOps must simplify and operate the system already built; they must not become a reason to add infrastructure without a measured need.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -650,7 +652,54 @@ Monitor the released Knowledge Assistant for meaningful change without treating 
 
 **Decision:** alert and act only when the drift signal is actionable under the quality/product contract; otherwise investigate, recalibrate, or remove it.
 
-## Milestone 28 — security failure work
+## Milestone 28 — architecture synthesis
+
+Use the [AI Production Architecture](../../curriculum/09-production-ai/architecture/) route and the [Production Synthesis evidence contract](production-synthesis/).
+
+Review the whole Knowledge Assistant as one production system.
+
+**Evidence:**
+
+- architecture drivers;
+- context/topology diagram;
+- request/data/feedback/control flows;
+- component state/lifetime/owner/change-cadence map;
+- trust and external-dependency boundaries;
+- dependency/failure/degradation matrix;
+- scaling/capacity rationale;
+- two viable topology alternatives;
+- one mechanism or component deliberately removed/omitted;
+- provider/component replacement walkthrough;
+- evolution triggers for future complexity.
+
+**Decision:** choose the smallest topology that satisfies the declared product and operational constraints.
+
+## Milestone 29 — operating lifecycle synthesis
+
+Use the [MLOps and LLMOps](../../curriculum/09-production-ai/mlops-llmops/) route and continue in the same [Production Synthesis evidence contract](production-synthesis/).
+
+Map the full operating loop around the selected architecture.
+
+**Evidence:**
+
+- lifecycle map from hypothesis through production feedback;
+- artifact systems of record;
+- experiment/release/trace/incident lineage;
+- CI checks mapped to change surfaces;
+- CD/release gates;
+- explicit decision on whether training/tuning/CT applies;
+- event and operator triggers;
+- automated/manual/approval boundaries;
+- environment/IaC reproducibility;
+- ownership map;
+- one end-to-end change through the loop;
+- one production failure converted into durable regression evidence;
+- one automation/platform component removed or consolidated;
+- production-readiness review.
+
+**Decision:** automate only the transitions that reduce risk, lead time, or toil without weakening evidence or required human judgment.
+
+## Milestone 30 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -663,7 +712,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 29 — incident and feedback loop
+## Milestone 31 — incident and feedback loop
 
 Inject or analyze one failure:
 
