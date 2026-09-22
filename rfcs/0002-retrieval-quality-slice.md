@@ -238,17 +238,21 @@ Rejected because retrieval quality should be measurable before generation is all
 - catalog/generated status:
   - **no change until RFC review and completed routes**
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22. `retrieval.chunking`, `retrieval.reranking`, and `retrieval.rag-evaluation` were promoted to `ready` only after route authoring, Knowledge Assistant integration, source-locator verification, seeded-state validation, and a successful final curriculum validation run.
+
 ## Review checklist
 
-- [ ] Evidence is traceable.
-- [ ] The three competencies are sufficiently distinct.
-- [ ] None duplicates an existing catalog competency.
-- [ ] Proposed target levels and target states are justified.
-- [ ] Chunking prerequisites are justified.
-- [ ] Reranking does not incorrectly require dense retrieval.
-- [ ] RAG evaluation remains a specialization of evaluation rather than duplicating `ai.evaluation`.
-- [ ] Exit criteria are inspectable and testable.
-- [ ] Model-based evaluators are not treated as ground truth.
-- [ ] Resource examples do not redefine the competency around a framework.
-- [ ] Project evidence creates meaningful integration pressure.
-- [ ] Reviewer explicitly approves or requests changes before promotion.
+- [x] Evidence is traceable.
+- [x] The three competencies are sufficiently distinct.
+- [x] None duplicates an existing catalog competency.
+- [x] Proposed target levels and target states are justified.
+- [x] Chunking prerequisites are justified.
+- [x] Reranking does not incorrectly require dense retrieval.
+- [x] RAG evaluation remains a specialization of evaluation rather than duplicating `ai.evaluation`.
+- [x] Exit criteria are inspectable and testable.
+- [x] Model-based evaluators are not treated as ground truth.
+- [x] Resource examples do not redefine the competency around a framework.
+- [x] Project evidence creates meaningful integration pressure.
+- [x] Reviewer explicitly approves or requests changes before promotion.
