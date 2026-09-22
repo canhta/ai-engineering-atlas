@@ -13,6 +13,8 @@ milestones:
   - data-lifecycle
   - context-policy
   - tool-or-agent-workflow
+  - structured-response
+  - abstention-policy
   - service-and-observability
   - release-gate
   - security-failure-work
@@ -28,6 +30,8 @@ competencies:
   - ai.evaluation
   - ai.context-engineering
   - ai.tool-calling
+  - ai.structured-outputs
+  - ai.uncertainty-abstention-trust
   - agents.deterministic-vs-agentic
   - security.prompt-injection
 evidence:
@@ -41,6 +45,8 @@ evidence:
   - context-experiment
   - tool-contract
   - tool-use-evaluation
+  - response-schema-record
+  - abstention-experiment
   - decision-records
   - traces
   - security-tests
