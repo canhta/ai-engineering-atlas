@@ -57,9 +57,11 @@ Prefer:
 - tool retry semantics;
 - prompt-injection boundaries.
 
-Use the [competency catalog](curriculum/catalog.yaml) to find the stable ID, then run the competency diagnostic before opening source material.
+Browse the human-readable [Roadmap](ROADMAP.md) first. Check [Curriculum Status](curriculum/STATUS.md) to see which topics currently have complete learning routes.
 
-Coverage nodes are part of the roadmap but may not yet have a complete learning route. Check [curriculum/STATUS.md](curriculum/STATUS.md) for what is ready.
+The machine-readable [competency catalog](curriculum/catalog.yaml) provides stable IDs for progress/tooling, but learners should not need to browse raw YAML to choose what to study.
+
+Coverage nodes are part of the audited roadmap but may not yet have a complete learning route. If a ready route depends on one of those coverage-only prerequisites, the route provides a **prerequisite bridge**: a quick diagnostic plus a precise source section for patching only the blocking gap.
 
 ## 5. Follow the learning route
 

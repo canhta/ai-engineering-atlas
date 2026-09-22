@@ -25,6 +25,14 @@ Before reading the source, answer:
 
 If your answer already includes a task-specific eval, operational measurements, explicit constraints, and uncertainty, move directly to the lab.
 
+## Prerequisite check
+
+Two capabilities matter before model selection:
+
+- **Product framing** — if you cannot state user, pain, measurable value, hard constraints, and a simpler alternative, patch this with [Made With ML — Product Design](https://madewithml.com/courses/mlops/product-design/).
+- **Evaluation** — this is already a ready route in the Atlas. If you cannot define representative evaluation data and comparison criteria, use [AI Evaluation and Experimentation](../evaluation/) first.
+
+The goal is enough context to make a real selection decision, not completion of a product-management course.
 ## 2. Mental model
 
 Primary route:

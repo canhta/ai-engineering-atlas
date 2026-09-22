@@ -20,6 +20,15 @@ Before studying, try to:
 
 If you can already do this and satisfy the exit evidence, skip guided study.
 
+## Prerequisite check
+
+You do **not** need to complete full prerequisite courses first. Patch only the gap that blocks the attention route.
+
+- **Dot product** — if you cannot compute/interpret a vector dot product, use Raschka Chapter 3 §3.3 simple self-attention examples and trace how dot products become attention scores.
+- **Embeddings** — if token IDs versus learned vectors are unclear, use Raschka Chapter 2 §2.7, **Creating token embeddings**.
+- **Softmax** — if normalized score-to-weight behavior is unclear, use the softmax step in Raschka Chapter 3 §3.3 and explain why rows become positive normalized weights.
+
+Return to the diagnostic after the patch. Do not expand a small prerequisite gap into a separate long course unless the gap persists.
 ## 2. Mental model
 
 Primary route:

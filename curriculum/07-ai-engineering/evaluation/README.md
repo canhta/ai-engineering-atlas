@@ -27,6 +27,14 @@ Your design should answer:
 
 If you can already do this concretely, move directly to the lab and transfer task.
 
+## Prerequisite check
+
+Patch only missing prerequisites:
+
+- **Experimental design** — use [Made With ML — Evaluation](https://madewithml.com/courses/mlops/evaluation/) to review overall metrics, per-class evaluation, slices, behavioral testing, and online evaluation. You should be able to define criteria before seeing the result.
+- **Software testing** — use [Made With ML — Testing](https://madewithml.com/courses/mlops/testing/) sections **Types of tests** and **How should we test?**. You should be able to distinguish unit, integration/system, and regression evidence.
+
+If both checks are already comfortable, skip these patches.
 ## 2. Mental model
 
 Primary route:

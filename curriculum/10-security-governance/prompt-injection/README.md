@@ -19,6 +19,15 @@ Before studying, answer:
 3. Where should authorization be enforced if the model can call a privileged tool?
 4. How would you test the system under a simulated compromised model output?
 
+## Prerequisite check
+
+Patch only what is missing:
+
+- **Authentication/authorization boundary** — in the OWASP mitigation section, focus on privilege control and least privilege. You should understand that authenticated identity and authorization policy come from application/security state, not model text.
+- **Tool permissions** — be able to assign a read-only versus privileged tool to explicit permissions and name the enforcement point.
+- **Tool calling** — use Anthropic's **augmented LLM** and **Prompt engineering your tools** sections in [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) if model-proposed tool calls versus application execution are unclear.
+
+The lab deliberately reinforces these prerequisites, so a full security course is not required before starting.
 ## 2. Mental model
 
 Primary security source:

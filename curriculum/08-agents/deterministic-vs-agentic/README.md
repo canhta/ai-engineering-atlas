@@ -27,6 +27,15 @@ Explain:
 - what evidence would justify more autonomy;
 - what stop and permission boundaries are required.
 
+## Prerequisite check
+
+Patch only the blocking capability:
+
+- **Evaluation** — if you cannot compare two architectures on the same task set, use [AI Evaluation and Experimentation](../../07-ai-engineering/evaluation/).
+- **Tool calling** — use Anthropic's **Building block: The augmented LLM** and **Appendix 2: Prompt engineering your tools** in [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents). Be clear about what the model proposes versus what application code executes.
+- **Testing** — use [Made With ML — Testing](https://madewithml.com/courses/mlops/testing/) to review regression/system testing before comparing workflow failures.
+
+Do not let a prerequisite patch turn into framework study.
 ## 2. Mental model
 
 Primary source:
