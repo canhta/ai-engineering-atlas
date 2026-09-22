@@ -20,7 +20,7 @@ Run from `site/` unless noted.
 | `make site-check`                        | From the repository root: what CI runs for the site                                                                                                                                                                                        |
 | `ATLAS_PORT=8791 …`                      | Parallel worktrees set `ATLAS_PORT` (default 8787) to a free port; `preview`, the browser tests, and `capture.mjs` read it. Browser tests reuse any server on that port, so check it is free first (`lsof -iTCP:$ATLAS_PORT -sTCP:LISTEN`) |
 
-Deploys run only through the manual **Deploy site** workflow (`.github/workflows/deploy.yml`, Actions → Run workflow). It runs every check and the browser tests before `wrangler deploy`. Do not deploy from a local machine or an agent session.
+Deploys run only through the manual **Deploy site** workflow (`.github/workflows/deploy.yml`, Actions → Run workflow). It refuses to deploy a commit whose **Validate curriculum** run is not green, then builds, deploys, and smoke-tests the live site. Validation itself belongs to CI, so the workflow does not re-run the suite. Do not deploy from a local machine or an agent session.
 
 `astro check` needs TypeScript 6; TypeScript 7 lacks the API it uses. Keep `typescript` on `^6` until Astro supports 7.
 
