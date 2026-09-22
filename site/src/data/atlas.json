@@ -5715,7 +5715,301 @@
         },
         "fields": {
           "domain": "agents",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/08-agents/long-running",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Long-running agent work must survive waits, crashes, worker replacement, retries, and human pauses without losing accepted progress or replaying unsafe side effects. The runtime needs explicit lifecycle, budget, cancellation, ownership, and completion semantics."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "agents.state"
+                },
+                {
+                  "ref": "agents.verification"
+                },
+                {
+                  "ref": "agents.deterministic-vs-agentic"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define a durable run identity and explicit lifecycle states for work that spans model turns, waits, and process boundaries."
+                },
+                {
+                  "en": "Distinguish the lifetime of a model turn, worker process, session, and durable job or workflow."
+                },
+                {
+                  "en": "Persist accepted progress outside ephemeral model or worker processes."
+                },
+                {
+                  "en": "Define pause and resume behavior for external waits or human approval."
+                },
+                {
+                  "en": "Define retryable, non-retryable, and ambiguous-commit failure handling."
+                },
+                {
+                  "en": "Identify replay-safe versus unsafe recovery boundaries and protect external side effects."
+                },
+                {
+                  "en": "Set explicit execution budgets for time, turns, model calls, tool calls, or cost."
+                },
+                {
+                  "en": "Define timeout, cancellation, and escalation behavior."
+                },
+                {
+                  "en": "Prevent concurrent workers from resuming or owning the same run unsafely."
+                },
+                {
+                  "en": "Preserve partial-progress artifacts that let a fresh worker or context continue without reconstructing everything."
+                },
+                {
+                  "en": "Verify task completion from external criteria rather than treating loop termination as success."
+                },
+                {
+                  "en": "Compare a simple synchronous baseline with a durable long-running runtime and justify the added complexity."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Design a lifecycle for a workflow that pauses for approval and resumes in a different process."
+                },
+                {
+                  "en": "Explain what happens if a side effect succeeds but persistence of the following state transition fails."
+                },
+                {
+                  "en": "Define a runtime budget and what terminal behavior occurs when it is exhausted."
+                },
+                {
+                  "en": "Explain how you would prevent two workers from resuming the same run concurrently."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can design a durable lifecycle, recover safely across process loss, bound execution, and distinguish replay-safe from unsafe terminal boundaries."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "article.anthropic-long-running-harnesses",
+                  "locator": {
+                    "en": "Sections \"The long-running agent problem\", \"Incremental progress\", \"Getting up to speed\", and \"Future work\""
+                  },
+                  "purpose": {
+                    "en": "Study why context compaction alone is insufficient and how durable progress artifacts let fresh sessions continue long-horizon work."
+                  }
+                },
+                {
+                  "resource": "article.anthropic-managed-agents",
+                  "locator": {
+                    "en": "Sections \"Decouple the brain from the hands\", \"Recovering from harness failure\", \"Many brains, many hands\", and \"Conclusion\""
+                  },
+                  "purpose": {
+                    "en": "Separate durable session state from replaceable harness and execution processes and examine recovery after runtime failure."
+                  }
+                },
+                {
+                  "resource": "docs.temporal-overview",
+                  "locator": {
+                    "en": "Documentation overview of durable execution and resuming workflows after crashes, network failures, or infrastructure outages"
+                  },
+                  "purpose": {
+                    "en": "Ground long-duration runtime semantics in a production durable-execution model without requiring Temporal."
+                  }
+                },
+                {
+                  "resource": "docs.openai-agents-running",
+                  "locator": {
+                    "en": "Sections covering the agent loop and turn limits, state/conversation management, human-in-the-loop pause/resume, durable execution integrations, and exceptions"
+                  },
+                  "purpose": {
+                    "en": "Inspect concrete runtime controls for bounded runs, interruptions, persisted state, and durable waits."
+                  }
+                },
+                {
+                  "resource": "docs.openai-agents-results",
+                  "locator": {
+                    "en": "Section \"Interruptions and run state\", including serialization/resume, failed resumed-session write recovery, and unrecoverable terminal-state boundaries"
+                  },
+                  "purpose": {
+                    "en": "Study resumable snapshots together with explicit cases where replay after terminal effects is unsafe."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one existing Knowledge Assistant workflow and define a durable lifecycle with a real pause point, execution budget, and explicit replay-safe boundary."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Run one Knowledge Assistant workflow across a wait and worker restart, then prove safe resume, bounded execution, cancellation or timeout, and final verification."
+                      },
+                      "path": "projects/knowledge-assistant/runtime-and-orchestration/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Pause a run for approval or external data, stop the worker, and resume it from serialized durable state."
+                },
+                {
+                  "en": "Fail persistence immediately after a side effect and verify the recovery contract does not duplicate the effect."
+                },
+                {
+                  "en": "Attempt a concurrent or duplicate resume and verify ownership protection."
+                },
+                {
+                  "en": "Exhaust one runtime budget and observe timeout, cancellation, or escalation behavior."
+                },
+                {
+                  "en": "Mark one terminal state unrecoverable and prove later replay is rejected or routed to operator recovery."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A versioned lifecycle contract defines durable run states and terminal states."
+                },
+                {
+                  "en": "The run has explicit execution budgets and timeout, cancellation, or escalation behavior."
+                },
+                {
+                  "en": "A wait or pause is resumed after worker or process replacement."
+                },
+                {
+                  "en": "Retryable and non-retryable failures are distinguished."
+                },
+                {
+                  "en": "External side effects have replay/idempotency evidence where relevant."
+                },
+                {
+                  "en": "Concurrent or duplicate resume is prevented or safely rejected."
+                },
+                {
+                  "en": "Partial progress is persisted outside the ephemeral worker/context."
+                },
+                {
+                  "en": "One unsafe replay or terminal recovery boundary is documented and tested."
+                },
+                {
+                  "en": "Final completion is verified independently of run termination."
+                },
+                {
+                  "en": "A synchronous baseline is compared with the durable runtime on task success, recovery behavior, latency, cost, and operational complexity."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the runtime lifecycle for a different long-duration workflow with different wait conditions, side effects, budgets, and cancellation requirements."
+              }
+            }
+          ]
         }
       },
       {
@@ -5735,7 +6029,286 @@
         },
         "fields": {
           "domain": "agents",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/08-agents/orchestration",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Orchestration determines which work runs next, conditionally, or in parallel and how failures propagate. Engineers should keep known branch logic deterministic, bound concurrency, verify aggregation, and only use model-directed flow when task uncertainty justifies it."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "agents.deterministic-vs-agentic"
+                },
+                {
+                  "ref": "agents.state"
+                },
+                {
+                  "ref": "agents.planning"
+                },
+                {
+                  "ref": "agents.verification"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Model a workflow as explicit stages, branches, dependencies, and terminal conditions."
+                },
+                {
+                  "en": "Distinguish planning from runtime orchestration decisions."
+                },
+                {
+                  "en": "Choose code-controlled, model-controlled, or hybrid flow from task uncertainty and branch testability."
+                },
+                {
+                  "en": "Keep known and testable routing conditions deterministic by default."
+                },
+                {
+                  "en": "Parallelize only work that is sufficiently independent."
+                },
+                {
+                  "en": "Define fan-out, fan-in, and aggregation behavior."
+                },
+                {
+                  "en": "Set concurrency and resource limits."
+                },
+                {
+                  "en": "Define per-stage timeout, retry, cancellation, degradation, and failure-containment behavior."
+                },
+                {
+                  "en": "Preserve correlation and state across branches."
+                },
+                {
+                  "en": "Verify the aggregate result after routed, parallel, or delegated work."
+                },
+                {
+                  "en": "Compare a simpler single-flow baseline with an orchestrated variant on the same task set."
+                },
+                {
+                  "en": "Reject multi-agent decomposition when tools, deterministic branches, or one agent provide the same benefit with less complexity."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a workflow, identify which decisions belong in deterministic code and which genuinely require model-directed routing."
+                },
+                {
+                  "en": "Identify two subtasks and prove whether they are independent enough to run concurrently."
+                },
+                {
+                  "en": "Define fan-in behavior when one of three parallel branches fails or times out."
+                },
+                {
+                  "en": "Explain what measured evidence would justify adding a multi-agent topology later."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can own routing decisions explicitly, bound parallel execution, contain branch failures, and defend orchestration against a simpler baseline."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "article.anthropic-building-effective-agents",
+                  "locator": {
+                    "en": "Sections \"Workflow: Routing\", \"Workflow: Parallelization\", \"Workflow: Orchestrator-workers\", \"Workflow: Evaluator-optimizer\", \"Agents\", and \"Combining and customizing these patterns\""
+                  },
+                  "purpose": {
+                    "en": "Learn the core flow patterns and select the simplest orchestration pattern from task structure."
+                  }
+                },
+                {
+                  "resource": "docs.openai-agent-orchestration",
+                  "locator": {
+                    "en": "Page introduction defining orchestration plus sections \"Orchestrating via LLM\" and \"Orchestrating via code\", including manager-style agents-as-tools, handoffs, chaining, evaluator loops, and parallel execution"
+                  },
+                  "purpose": {
+                    "en": "Compare model-controlled and code-controlled orchestration and treat manager/handoff patterns as optional implementations rather than the capability definition."
+                  }
+                },
+                {
+                  "resource": "guide.openai-practical-agents",
+                  "locator": {
+                    "en": "Sections \"Orchestration\" and \"Single-agent systems\""
+                  },
+                  "purpose": {
+                    "en": "Reinforce single-agent-first architecture and incremental complexity when orchestration or delegation is justified."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one existing Knowledge Assistant flow and mark every routing or sequencing decision as code-controlled, model-controlled, or hybrid with a reason."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Compare a simpler flow with one justified routed, parallel, or dynamic orchestration variant, inject a branch failure, and verify the combined outcome."
+                      },
+                      "path": "projects/knowledge-assistant/runtime-and-orchestration/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Replace one model-directed routing decision with deterministic code and compare quality, latency, cost, and failure types."
+                },
+                {
+                  "en": "Parallelize two independent subtasks and measure whether wall-clock benefit survives fan-in and verification overhead."
+                },
+                {
+                  "en": "Inject a branch timeout or failure and test cancellation, degradation, retry, or sibling-continuation policy."
+                },
+                {
+                  "en": "Remove one orchestration stage and measure whether task quality actually degrades."
+                },
+                {
+                  "en": "Compare one-agent orchestration against a hypothetical or implemented multi-agent split and reject the split unless specialization provides measurable value."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "An orchestration graph or state diagram defines stages, branches, dependencies, and terminal conditions."
+                },
+                {
+                  "en": "Each important flow decision records whether code or the model owns it and why."
+                },
+                {
+                  "en": "A simpler single-flow baseline is preserved."
+                },
+                {
+                  "en": "Concurrency and resource limits are explicit where parallel work exists."
+                },
+                {
+                  "en": "Fan-out/fan-in or aggregation behavior is defined and verified."
+                },
+                {
+                  "en": "At least one branch failure or timeout is injected and its containment behavior is recorded."
+                },
+                {
+                  "en": "Aggregate outcome verification is preserved."
+                },
+                {
+                  "en": "Task success is reported with latency, cost, and model/tool-call counts."
+                },
+                {
+                  "en": "One orchestration ablation removes or simplifies a stage."
+                },
+                {
+                  "en": "The final architecture decision explicitly chooses single flow, orchestration, or deferred multi-agent design."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign orchestration for a workflow whose branch uncertainty, concurrency opportunities, or failure-containment requirements differ materially."
+              }
+            }
+          ]
         }
       },
       {
@@ -6929,6 +7502,16 @@
     },
     {
       "type": "practice",
+      "from": "agents.long-running",
+      "to": "project:knowledge-assistant"
+    },
+    {
+      "type": "practice",
+      "from": "agents.orchestration",
+      "to": "project:knowledge-assistant"
+    },
+    {
+      "type": "practice",
       "from": "ai.evaluation",
       "to": "lab:evaluation-harness"
     },
@@ -6950,6 +7533,16 @@
     {
       "type": "prerequisite",
       "from": "agents.deterministic-vs-agentic",
+      "to": "agents.long-running"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.deterministic-vs-agentic",
+      "to": "agents.orchestration"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.deterministic-vs-agentic",
       "to": "agents.planning"
     },
     {
@@ -6959,8 +7552,23 @@
     },
     {
       "type": "prerequisite",
+      "from": "agents.planning",
+      "to": "agents.orchestration"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.state",
+      "to": "agents.long-running"
+    },
+    {
+      "type": "prerequisite",
       "from": "agents.state",
       "to": "agents.memory"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.state",
+      "to": "agents.orchestration"
     },
     {
       "type": "prerequisite",
@@ -6971,6 +7579,16 @@
       "type": "prerequisite",
       "from": "agents.state",
       "to": "agents.verification"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.verification",
+      "to": "agents.long-running"
+    },
+    {
+      "type": "prerequisite",
+      "from": "agents.verification",
+      "to": "agents.orchestration"
     },
     {
       "type": "prerequisite",
@@ -7184,6 +7802,12 @@
       "author": "Anthropic",
       "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents"
     },
+    "article.anthropic-managed-agents": {
+      "title": "Scaling Managed Agents — Decoupling the brain from the hands",
+      "type": "article",
+      "author": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/managed-agents"
+    },
     "article.anthropic-writing-tools": {
       "title": "Writing effective tools for agents — with agents",
       "type": "article",
@@ -7297,6 +7921,24 @@
       "type": "documentation",
       "author": "LangChain",
       "url": "https://docs.langchain.com/oss/javascript/langgraph/thinking-in-langgraph"
+    },
+    "docs.openai-agent-orchestration": {
+      "title": "OpenAI Agents SDK — Agent orchestration",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://openai.github.io/openai-agents-python/multi_agent/"
+    },
+    "docs.openai-agents-results": {
+      "title": "OpenAI Agents SDK — Results and resumable run state",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://openai.github.io/openai-agents-python/results/"
+    },
+    "docs.openai-agents-running": {
+      "title": "OpenAI Agents SDK — Running agents",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://openai.github.io/openai-agents-python/running_agents/"
     },
     "docs.openai-function-calling": {
       "title": "OpenAI — Function Calling",
