@@ -1,6 +1,6 @@
 ---
 name: Resource proposal
-about: Propose a book, course, repository, visual, paper, or other learning resource
+about: Propose a source for a specific learning function
 title: "Resource: "
 ---
 
@@ -8,21 +8,35 @@ title: "Resource: "
 
 - Title:
 - Type:
-- URL:
+- Canonical URL:
 - Author / organization:
 
-## Competencies covered
+## Exact locator
 
-Which existing competencies does this support?
+Chapter, section, lecture, assignment, documentation page, or other precise location:
 
-## Role
+## Competency
 
-- [ ] Primary
+Which existing competency does this support?
+
+## Source role
+
+- [ ] Curriculum evidence
+- [ ] Teaching
 - [ ] Visual
 - [ ] Practice
-- [ ] Reference
+- [ ] Assessment
+- [ ] Production reference
 - [ ] Benchmark
 
-## Review notes
+## Learning outcome supported
 
-Why should this be added instead of, or alongside, the current resources?
+What should this source help the learner understand or do?
+
+## Why this source
+
+What does it add compared with the current route?
+
+## Availability / freshness
+
+Is it freely accessible? Does freshness materially matter for this topic? When was it checked?
