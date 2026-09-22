@@ -12,8 +12,8 @@ Run from `site/` unless noted.
 |---|---|
 | `pnpm install` | Install; build scripts are allowed only for the packages in `pnpm-workspace.yaml` |
 | `pnpm run dev` | Dev server. Astro's CSP and `_headers` do not apply in dev |
-| `pnpm run check` | Typecheck, unit tests, style lint, i18n parity, token contrast, headers, icons, content coupling, build |
-| `pnpm run test:e2e` | Browser tests of the interactions against the built site (starts `pnpm run preview`) |
+| `pnpm run check` | Typecheck, unit tests (`node --test` for logic, Vitest for the block renderer), style lint, i18n parity, token contrast, headers, icons, content coupling, build |
+| `pnpm run test:e2e` | Browser tests against the built site (starts `pnpm run preview`): desktop at 1440px; tests tagged `@mobile` at 390px |
 | `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
 | `node scripts/capture.mjs` | With preview running: screenshots (en/vi × light/dark × 375/1280), axe, header and overflow checks |
 | `make site-check` | From the repository root: what CI runs for the site |

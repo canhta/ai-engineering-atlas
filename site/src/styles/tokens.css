@@ -85,6 +85,7 @@
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
   --duration-control: 180ms;
   --duration-sheet: 450ms;
+  --duration-reveal: 300ms; /* per region; 12 regions stagger 36ms: under 700ms in total */
   --press-scale: 0.98;
 }
 

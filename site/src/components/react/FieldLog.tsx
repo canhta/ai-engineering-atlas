@@ -59,15 +59,15 @@ export default function FieldLog(props: Props) {
       </div>
 
       <ModalOverlay
-        className="log-sheet-overlay"
+        className="bottom-sheet-overlay"
         isDismissable
         isOpen={sheet !== "closed"}
         onOpenChange={(open) => !open && setSheet("closed")}
       >
-        <Modal className="log-sheet">
-          <Dialog className="log-sheet-dialog" aria-labelledby="sheet-title">
-            <div className="log-sheet-head">
-              <span className="log-sheet-grip" aria-hidden="true" />
+        <Modal className="bottom-sheet">
+          <Dialog className="bottom-sheet-dialog" aria-labelledby="sheet-title">
+            <div className="bottom-sheet-head">
+              <span className="bottom-sheet-grip" aria-hidden="true" />
               <Button className="button-quiet" onPress={() => setSheet("closed")}>
                 {t("log.close")}
                 <Icon name="close" />
