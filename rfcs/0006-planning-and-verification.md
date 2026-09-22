@@ -510,19 +510,36 @@ Rejected. The learner should first prove that planning and verification add valu
 - catalog/generated status:
   - **no promotion before review and seeded validation**
 
+## Implementation outcome
+
+Approved and implemented on 2026-09-22.
+
+- `agents.planning` promoted to `ready` at L3.
+- `agents.verification` promoted to `ready` at L3.
+- Planning is represented as an inspectable external artifact persisted in durable state; hidden chain-of-thought is not required or collected as evidence.
+- Planning evidence preserves a no-plan baseline and compares static versus adaptive planning, including an invalidated-assumption/replanning case and planning ablation.
+- Verification prioritizes deterministic/environment evidence, executable tests/invariants, and authoritative external data before calibrated model graders or human review.
+- Verification evidence includes a seeded defect, successful and failed verification traces, verifier error analysis where applicable, and calibration when model graders are used.
+- The Knowledge Assistant now includes a `planning-and-verification/` evidence package in the same project lineage.
+- Four new planning/verification resources were registered and learner-facing source links regenerated.
+- `site/src/data/atlas.json` was regenerated for both seeded and promotion states under the current web-atlas contract.
+- Seeded-state validation passed before promotion.
+- Promotion-state validation passed with prerequisite-cycle and generated-data checks enabled.
+- Repository status is now 116 catalog competencies, 19 ready routes, and 97 coverage-only competencies; Agents has 5 ready routes.
+
 ## Review checklist
 
-- [ ] Evidence is traceable and locators are specific enough for route authoring.
-- [ ] Planning is distinct from hidden reasoning, orchestration, state, and verification.
-- [ ] Verification is distinct from generic evaluation, testing, and self-critique.
-- [ ] Planning target depth L3 is appropriate.
-- [ ] Verification target depth L3 is appropriate.
-- [ ] Planning evidence includes a no-plan baseline and adaptive replanning case.
-- [ ] Plan granularity avoids unnecessary low-level over-specification.
-- [ ] Verification checks real outcomes/environment where possible.
-- [ ] Verification includes a seeded-defect case.
-- [ ] Model graders require calibration when used.
-- [ ] Failure attribution distinguishes plan, execution, state, verifier, and task failures.
-- [ ] Multi-agent orchestration remains out of scope.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before promotion.
+- [x] Evidence is traceable and locators are specific enough for route authoring.
+- [x] Planning is distinct from hidden reasoning, orchestration, state, and verification.
+- [x] Verification is distinct from generic evaluation, testing, and self-critique.
+- [x] Planning target depth L3 is appropriate.
+- [x] Verification target depth L3 is appropriate.
+- [x] Planning evidence includes a no-plan baseline and adaptive replanning case.
+- [x] Plan granularity avoids unnecessary low-level over-specification.
+- [x] Verification checks real outcomes/environment where possible.
+- [x] Verification includes a seeded-defect case.
+- [x] Model graders require calibration when used.
+- [x] Failure attribution distinguishes plan, execution, state, verifier, and task failures.
+- [x] Multi-agent orchestration remains out of scope.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before promotion.
