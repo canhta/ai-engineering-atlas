@@ -1,0 +1,61 @@
+id: ai.model-selection
+title: Model Selection
+domain: ai-engineering
+status: seeded
+competency_types:
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Select a model from task-specific evidence and product constraints rather than popularity, one benchmark, or maximum capability.
+curriculum_evidence:
+  - book.chip-huyen-ai-engineering
+prerequisites:
+  - ai.product-framing
+  - ai.evaluation
+outcomes:
+  - Translate product requirements into hard constraints and evaluation criteria.
+  - Eliminate infeasible models before optimizing soft preferences.
+  - Compare task quality, latency, cost, deployment, and operational constraints on representative evidence.
+  - Explain build-versus-buy and hosted-versus-self-hosted trade-offs where relevant.
+  - Record uncertainty and identify evidence that would change the decision.
+  - Re-evaluate the choice when constraints or workload change.
+diagnostic:
+  tasks:
+    - Given several model candidates, explain what evidence is needed before choosing one.
+    - Separate hard constraints from optimization goals.
+    - Explain why a public benchmark winner may be the wrong production choice.
+    - Describe how latency, cost, privacy, and task-specific quality enter one decision.
+  pass_condition: Skip guided material only if the learner can produce a constraint-first selection process and defend a choice using task-specific evaluation evidence rather than generic model reputation.
+learning_route:
+  mental_model:
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 4 "Evaluate AI Systems" — Evaluation Criteria, Model Selection, Model Selection Workflow, Model Build Versus Buy, and Navigate Public Benchmarks
+      purpose: Connect task-specific evaluation criteria to an explicit model-selection workflow and operational trade-offs.
+  guided_practice:
+    - task: Turn one existing AI feature into a table of hard constraints, quality criteria, latency/cost goals, and missing evidence before looking at candidates.
+  independent_practice:
+    - artifact: labs/model-selection/
+      task: Complete the constraint-first model-selection decision and sensitivity test.
+experiments:
+  - Replace synthetic profiles with measured results from two or more real candidates on a versioned local eval set.
+  - Change one important product constraint and observe whether the decision changes.
+exit_evidence:
+  - Produce a hard-constraint filter before ranking candidates.
+  - Define the decision rule before selecting a model.
+  - Compare candidates using task-specific quality plus operational evidence.
+  - Record rejected candidates and why they were rejected.
+  - State what missing evidence or changed constraint would alter the decision.
+transfer:
+  task: Re-run the selection process for a different workload, such as batch classification or an offline/private deployment, and explain which criteria change.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - book.chip-huyen-ai-engineering
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
