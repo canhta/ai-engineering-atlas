@@ -177,7 +177,7 @@ resources:
 
   - id: docs.google-adk-session-state-memory
     type: documentation
-    title: Google ADK — Conversational Context: Session, State, and Memory
+    title: "Google ADK — Conversational Context: Session, State, and Memory"
     author: Google
     url: https://adk.dev/sessions/
     roles: [curriculum-evidence, teaching, reference]
@@ -188,7 +188,7 @@ resources:
 
   - id: docs.google-adk-state
     type: documentation
-    title: Google ADK — State: The Session's Scratchpad
+    title: "Google ADK — State: The Session's Scratchpad"
     author: Google
     url: https://adk.dev/sessions/state/
     roles: [curriculum-evidence, teaching, practice, reference]
@@ -199,7 +199,7 @@ resources:
 
   - id: docs.google-adk-memory
     type: documentation
-    title: Google ADK — Memory: Long-term knowledge
+    title: "Google ADK — Memory: Long-term knowledge"
     author: Google
     url: https://adk.dev/sessions/memory/
     roles: [curriculum-evidence, teaching, practice, reference]
