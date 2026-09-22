@@ -4,6 +4,17 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Made With ML — Product Design](https://madewithml.com/courses/mlops/product-design/) | Product Design lesson sections "Background", "Value proposition", "Objectives", "Solution", and "Feasibility" | Build the product-first sequence from user pain through objectives, alternatives, constraints, out-of-scope behavior, and feasibility. |
+| [AI Engineering](https://github.com/chiphuyen/aie-book) | Chapter 1 "Planning AI Applications", especially "Use Case Evaluation", "Setting Expectations", "Milestone Planning", and "Maintenance" (pp. 28-34) | Connect product framing to foundation-model suitability, expectations, milestones, and lifecycle cost. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 A model, RAG stack, or agent is not a product requirement. The capability here is to convert a real user problem into a falsifiable engineering contract before architecture choices make the solution expensive to change.
