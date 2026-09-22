@@ -5768,7 +5768,6 @@
                 "en": "Outcomes",
                 "vi": "Bạn sẽ làm được"
               },
-              "ordered": false,
               "items": [
                 {
                   "en": "Identify a measured limitation in a single-agent orchestrated baseline before adding agents."
@@ -5812,7 +5811,8 @@
                 {
                   "en": "Remove or collapse the topology when specialization does not justify its overhead."
                 }
-              ]
+              ],
+              "ordered": false
             },
             {
               "type": "diagnostic",
@@ -5924,7 +5924,6 @@
                 "en": "Experiments",
                 "vi": "Thử nghiệm"
               },
-              "ordered": false,
               "items": [
                 {
                   "en": "Split a breadth-first research task across independent specialists and compare coverage, quality, latency, token use, and duplicate work with the single-agent baseline."
@@ -5944,7 +5943,8 @@
                 {
                   "en": "Attempt recursive delegation beyond the configured budget and verify it is stopped."
                 }
-              ]
+              ],
+              "ordered": false
             },
             {
               "type": "list",
@@ -5954,7 +5954,6 @@
                 "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
-              "ordered": false,
               "items": [
                 {
                   "en": "A single-agent orchestration baseline is preserved on the same task set."
@@ -5995,7 +5994,8 @@
                 {
                   "en": "The final decision records whether to keep, simplify, or remove the multi-agent architecture."
                 }
-              ]
+              ],
+              "ordered": false
             },
             {
               "type": "text",
