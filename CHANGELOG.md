@@ -31,7 +31,7 @@ Curriculum changes are tracked separately from routine documentation and reposit
 - Added learner evidence states: demonstrated, transferred, retained, and applied.
 - Added competency types with matching assessment evidence.
 - Added precise learning-route and source-role rules.
-- Promoted Self-Attention, Product Framing, Search and Retrieval, Embeddings, Model Selection, AI Evaluation, Deterministic vs Agentic Design, and Prompt Injection / Trust Boundaries to ready routes with verified source locators and practice.
+- Promoted Self-Attention, Product Framing, Search and Retrieval, Embeddings, Chunking, Reranking, RAG Evaluation, Model Selection, AI Evaluation, Deterministic vs Agentic Design, and Prompt Injection / Trust Boundaries to ready routes with verified source locators and practice.
 - Turned project spines into evolving systems with baselines, metrics, failures, release decisions, and feedback.
 - Added canonical prerequisite validation to eliminate orphan/ghost competency IDs.
 - Aligned AI-agent and contribution rules with the catalog-first lifecycle.
