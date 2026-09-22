@@ -156,10 +156,10 @@ test("progress exports as progress.yaml and re-imports", async ({ page }, testIn
 
 test("Vietnamese pages render the same interactions and mark untranslated text", async ({ page }) => {
   await open(page, "/vi/map/");
-  await expect(page.getByRole("status")).toContainText("Hiển thị 116 trên 116");
+  await expect(page.getByRole("status")).toContainText("116/116 kỹ năng");
   await open(page, "/vi/routes/ai.tool-calling/");
-  await expect(page.getByText("Nhiệm vụ 1 trên 4")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Nhiệm vụ tiếp" })).toBeDisabled();
+  await expect(page.getByText("Câu 1/4")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Câu tiếp" })).toBeDisabled();
   await expect(page.locator("h1")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("note")).toHaveText("chưa dịch / not yet translated");
 });
