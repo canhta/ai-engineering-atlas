@@ -16,4 +16,7 @@ links:
 labs:
 	python scripts/validate_labs.py
 
-check: schemas validate status learning-sources links labs
+site-data:
+	python scripts/build_site_data.py --check
+
+check: schemas validate status learning-sources links labs site-data

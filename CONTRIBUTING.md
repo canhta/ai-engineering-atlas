@@ -73,6 +73,16 @@ Then run `make check`. CI fails when the learner-facing block is missing or stal
 
 The goal is that a learner can open a route and immediately see **what source to open, exactly what to read, and why it is there** without reading YAML.
 
+## Web atlas data
+
+The web atlas in `site/` reads one generated file, `site/src/data/atlas.json`, compiled from the catalog, competency contracts, resources, labs, projects, and paths. Do not edit it by hand. After changing any of those sources, run:
+
+```bash
+python scripts/build_site_data.py --write
+```
+
+CI fails when the generated file is stale. See [RFC 0005](rfcs/0005-interactive-web-atlas.md) for the site design.
+
 ## Proposing a resource
 
 Include:

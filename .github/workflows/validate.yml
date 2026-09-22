@@ -34,3 +34,6 @@ jobs:
 
       - name: Validate lab reference contracts
         run: python scripts/validate_labs.py
+
+      - name: Validate generated site data
+        run: python scripts/build_site_data.py --check
