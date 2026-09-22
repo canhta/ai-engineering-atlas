@@ -26,6 +26,9 @@ jobs:
       - name: Validate generated curriculum status
         run: python scripts/render_status.py --check
 
+      - name: Validate learner-facing source blocks
+        run: python scripts/render_learning_sources.py --check
+
       - name: Validate internal links
         run: python scripts/validate_links.py
 
