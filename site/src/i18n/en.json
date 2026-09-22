@@ -174,7 +174,6 @@
   "drawer.tasks": "Diagnostic, {count} tasks",
   "drawer.open": "Open route",
   "drawer.startDiagnostic": "Start diagnostic",
-  "progress.mappedNote": "Mapped items do not count toward progress.",
   "progress.dueToday": "Due today",
   "progress.nextWeek": "Next 7 days",
   "progress.dueOn": "due {date}",
@@ -242,5 +241,7 @@
   "form.table.row": "row {row}",
   "form.evidence.hint": "Your answers above are the evidence.",
   "form.evidence.method": "Self-reviewed against the rubric above.",
-  "form.evidence.note": "Self-review against the rubric. {summary}"
+  "form.evidence.note": "Self-review against the rubric. {summary}",
+  "progress.byRegion": "Where you stand",
+  "progress.regionCount": "{done}/{ready} done"
 }

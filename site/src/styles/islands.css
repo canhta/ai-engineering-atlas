@@ -2248,3 +2248,96 @@
     color: var(--ink-muted);
   }
 }
+
+/* Progress → Where you stand (DESIGN.md → Progress). A summary, not the Atlas map: one row
+   per domain, its states in proportion, the rest left empty. */
+.progress-plate > h2 {
+  margin-top: var(--space-10);
+}
+
+.region-bars ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.region-bars a {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-small);
+  color: inherit;
+  text-decoration: none;
+}
+
+.region-bars a:hover {
+  background: var(--tray);
+}
+
+.region-name {
+  font-weight: 550;
+}
+
+.region-bar {
+  display: flex;
+  gap: 2px;
+  height: 0.75rem;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.region-share,
+.region-rest {
+  display: block;
+  min-width: 2px;
+}
+
+.region-rest {
+  background: var(--line);
+}
+
+.region-share[data-state="gap"] {
+  background: var(--state-gap);
+}
+
+.region-share[data-state="learning"] {
+  background: var(--state-learning);
+}
+
+.region-share[data-state="demonstrated"] {
+  background: var(--state-demonstrated);
+}
+
+.region-share[data-state="transferred"] {
+  background: var(--state-transferred);
+}
+
+.region-share[data-state="retained"] {
+  background: var(--state-retained);
+}
+
+.region-share[data-state="applied"] {
+  background: var(--state-applied);
+}
+
+.region-count {
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+}
+
+@media (width < 640px) {
+  .region-bars a {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--space-2);
+  }
+
+  .region-bar {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+}

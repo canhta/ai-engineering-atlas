@@ -256,7 +256,7 @@ test("opening a source is a personal mark and leaves the state unchanged", async
   await expect(fieldLog(page).locator(".state-badge").first()).toHaveText("unassessed");
 });
 
-test("recorded evidence shows on the route, the progress plate, and the atlas filters", async ({ page }) => {
+test("recorded evidence shows on the route, the progress page, and the atlas filters", async ({ page }) => {
   await open(page, ROUTE);
   await recordEvidence(page, "Tool contract with validation and idempotent retries.");
   await expect(fieldLog(page).getByText("Saved. Your state is now demonstrated.")).toBeVisible();
@@ -265,11 +265,13 @@ test("recorded evidence shows on the route, the progress plate, and the atlas fi
 
   await open(page, "/en/progress/");
   await expect(page.getByText(`1 of ${READY} ready routes demonstrated or beyond`)).toBeVisible();
-  await expect(tile(page, "ai.tool-calling")).toHaveClass(/tile-full/);
-  await expect(tile(page, "ai.tool-calling")).toHaveAttribute(
-    "aria-label",
-    "Tool Calling, ready, your state: demonstrated",
-  );
+
+  // Progress summarises by domain; the tile grid belongs to the Atlas (DESIGN.md → Progress).
+  await expect(page.locator(".region-bars .tile")).toHaveCount(0);
+  const domain = page.locator(".region-bars li", { hasText: "AI engineering" });
+  await expect(domain.locator(".region-share[data-state='demonstrated']")).toBeVisible();
+  await expect(domain).toContainText("done");
+  await expect(domain.getByRole("link")).toHaveAttribute("href", /\/en\/map\/\?group=/);
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 
   await open(page, "/en/map/");
@@ -376,10 +378,11 @@ test("without JavaScript the plate tiles are links into the atlas", async ({ bro
     "href",
     "/en/map/?item=ai.tool-calling",
   );
+  // Progress has no tiles; its domain bars are links into the Atlas and work without JavaScript.
   await page.goto("/en/progress/");
-  await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute(
+  await expect(page.locator(".region-bars li").first().getByRole("link")).toHaveAttribute(
     "href",
-    "/en/map/?item=ai.tool-calling",
+    /\/en\/map\/\?group=/,
   );
   await page.goto(ROUTE);
   await expect(page.getByRole("heading", { level: 1, name: "Tool Calling" })).toBeVisible();

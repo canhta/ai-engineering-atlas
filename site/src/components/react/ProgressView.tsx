@@ -1,6 +1,7 @@
-// Progress (DESIGN.md → Progress): states only from recorded evidence. Summary, the plate in
-// progress mode with a counted legend, the review queue, evidence rows, and progress.yaml
-// export/import (schemas/progress.schema.json). Only demonstrated-or-beyond counts as done.
+// Progress (DESIGN.md → Progress): states only from recorded evidence. Summary, a bar per domain,
+// the review queue, next steps, evidence rows, and progress.yaml export/import
+// (schemas/progress.schema.json). Only demonstrated-or-beyond counts as done. The tile grid
+// belongs to the Atlas: repeating it here would make the two pages read as one.
 import { useState } from "react";
 import { Button, FileTrigger } from "react-aria-components";
 import { type Lang, useTranslations } from "../../i18n";
@@ -19,8 +20,8 @@ import {
 import { allLabFormAnswers, useProgress, writeLabFormAnswers } from "../../lib/progress-store";
 import { type GraphItem, NEXT_LIMIT } from "../../lib/recommend";
 import type { ItemDetail, NextLink, RegionData } from "../../lib/summaries";
-import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
+import RegionBars from "./RegionBars";
 import { Icon } from "./Icon";
 import NextSteps from "./NextSteps";
 import { StateBadge } from "./StateBadge";
@@ -100,8 +101,63 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
 
       <div className="progress-grid">
         <div className="progress-plate">
-          <Plate lang={lang} mode="progress" regions={regions} stateLabels={stateLabels} atlasUrl={atlasUrl} />
-          <p className="muted small">{t("progress.mappedNote")}</p>
+          <RegionBars
+            lang={lang}
+            atlasUrl={atlasUrl}
+            regions={regions}
+            stateOf={stateOfRef}
+            stateLabels={stateLabels}
+            loaded={progress !== null}
+          />
+          <h2>{t("progress.withEvidence")}</h2>
+          {progress && entries.length === 0 ? (
+            <div className="empty">
+              <p>{t("progress.empty")}</p>
+              <a className="pill pill-primary" href={`${atlasUrl}?ready=1`}>
+                {t("home.start")}
+                <span className="pill-icon">
+                  <Icon name="forward" />
+                </span>
+              </a>
+            </div>
+          ) : (
+            // A scrollable region needs a tab stop so keyboard users can reach the scrollbar (WCAG 2.1.1).
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            <div className="table-stack" role="region" tabIndex={0} aria-label={t("progress.withEvidence")}>
+              <table className="evidence-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{t("progress.col.item")}</th>
+                    <th scope="col">{t("log.state")}</th>
+                    <th scope="col">{t("log.target")}</th>
+                    <th scope="col">{t("progress.col.evidence")}</th>
+                    <th scope="col">{t("progress.col.last")}</th>
+                    <th scope="col">{t("log.nextReview")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map(([ref, entry]) => (
+                    <tr key={ref}>
+                      <td>{link(ref)}</td>
+                      <td data-label={t("log.state")}>
+                        <StateBadge state={entry.current_state} label={stateLabels[entry.current_state]} />
+                      </td>
+                      <td data-label={t("log.target")}>{stateLabels[entry.target_state]}</td>
+                      <td className="tabular" data-label={t("progress.col.evidence")}>
+                        {entry.evidence.length}
+                      </td>
+                      <td className="tabular" data-label={t("progress.col.last")}>
+                        {dateCell(entry.evidence.at(-1)?.recorded_at, "")}
+                      </td>
+                      <td className="tabular" data-label={t("log.nextReview")}>
+                        {dateCell(entry.review_on, "—")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className="progress-side">
@@ -148,56 +204,6 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           </section>
         </div>
       </div>
-
-      <h2>{t("progress.withEvidence")}</h2>
-      {progress && entries.length === 0 ? (
-        <div className="empty">
-          <p>{t("progress.empty")}</p>
-          <a className="pill pill-primary" href={`${atlasUrl}?ready=1`}>
-            {t("home.start")}
-            <span className="pill-icon">
-              <Icon name="forward" />
-            </span>
-          </a>
-        </div>
-      ) : (
-        // A scrollable region needs a tab stop so keyboard users can reach the scrollbar (WCAG 2.1.1).
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        <div className="table-stack" role="region" tabIndex={0} aria-label={t("progress.withEvidence")}>
-          <table className="evidence-table">
-            <thead>
-              <tr>
-                <th scope="col">{t("progress.col.item")}</th>
-                <th scope="col">{t("log.state")}</th>
-                <th scope="col">{t("log.target")}</th>
-                <th scope="col">{t("progress.col.evidence")}</th>
-                <th scope="col">{t("progress.col.last")}</th>
-                <th scope="col">{t("log.nextReview")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.map(([ref, entry]) => (
-                <tr key={ref}>
-                  <td>{link(ref)}</td>
-                  <td data-label={t("log.state")}>
-                    <StateBadge state={entry.current_state} label={stateLabels[entry.current_state]} />
-                  </td>
-                  <td data-label={t("log.target")}>{stateLabels[entry.target_state]}</td>
-                  <td className="tabular" data-label={t("progress.col.evidence")}>
-                    {entry.evidence.length}
-                  </td>
-                  <td className="tabular" data-label={t("progress.col.last")}>
-                    {dateCell(entry.evidence.at(-1)?.recorded_at, "")}
-                  </td>
-                  <td className="tabular" data-label={t("log.nextReview")}>
-                    {dateCell(entry.review_on, "—")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
 
       <h2>{t("progress.data")}</h2>
       <div className="actions">

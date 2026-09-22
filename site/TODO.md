@@ -94,6 +94,10 @@ Last updated: 2026-09-22
 - [ ] Privacy page (en/vi)
 - [ ] First two experiment playgrounds, each naming its `experiments` entry
 
+### Community and motivation (owner request)
+
+- [ ] Public ranking: leaderboards by day, week, month, and all time, from recorded evidence. Three things to settle first: (a) progress is local-first and private today, so publishing is opt-in per learner and needs an account (Phase 2 SSO); (b) self-reported evidence is gameable, so a public ranking is only meaningful on verified evidence (Phase 3) or on counts that cannot be inflated (lab runs passing in CI, review streaks); (c) rank what the learning model values — evidence recorded, routes demonstrated, review streaks kept — not time spent or pages opened. Needs an RFC before implementation.
+
 ### Phase 3
 
 - [ ] Separate RFC for verified evidence (lab CI on forks, peer review, progress sync)

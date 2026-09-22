@@ -174,7 +174,6 @@
   "drawer.tasks": "Kiểm tra đầu vào, {count} câu",
   "drawer.open": "Mở lộ trình",
   "drawer.startDiagnostic": "Làm kiểm tra đầu vào",
-  "progress.mappedNote": "Kỹ năng chưa có lộ trình không tính vào tiến độ.",
   "progress.dueToday": "Hôm nay",
   "progress.nextWeek": "7 ngày tới",
   "progress.dueOn": "hạn {date}",
@@ -242,5 +241,7 @@
   "form.table.row": "dòng {row}",
   "form.evidence.hint": "Câu trả lời ở trên chính là bằng chứng.",
   "form.evidence.method": "Tự đánh giá theo tiêu chí ở trên.",
-  "form.evidence.note": "Tự đánh giá theo tiêu chí. {summary}"
+  "form.evidence.note": "Tự đánh giá theo tiêu chí. {summary}",
+  "progress.byRegion": "Bạn đang ở đâu",
+  "progress.regionCount": "{done}/{ready} đã làm được"
 }
