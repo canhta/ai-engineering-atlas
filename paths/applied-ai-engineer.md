@@ -72,12 +72,14 @@ Build capability in:
 - [problem framing and baselines](../curriculum/07-ai-engineering/product-framing/);
 - model selection;
 - prompting;
-- context engineering;
+- [context engineering](../curriculum/07-ai-engineering/context-engineering/);
 - structured outputs;
-- tool calling;
+- [tool calling](../curriculum/07-ai-engineering/tool-calling/);
 - uncertainty and abstention.
 
 The learner should be able to justify why a chosen pattern is simpler or better than an alternative.
+
+For context and tools, preserve the same evaluation lineage from the Knowledge Assistant: first prove what information belongs in context, then add external actions behind deterministic application controls before considering agentic autonomy.
 
 ## Phase E — retrieval and RAG
 
