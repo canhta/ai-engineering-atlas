@@ -103,6 +103,20 @@ For a ready route, verify the locator against the source before committing it.
 
 The repository should route learners through sources rather than become an AI-written substitute for those sources.
 
+## Learner-facing source rendering
+
+A precise locator in `competency.yaml` is not enough if the learner README does not expose it.
+
+For every `seeded` or `ready` route:
+
+1. keep source IDs, exact locators, and purposes in the competency contract;
+2. keep canonical source URLs in `resources/*.yaml`;
+3. run `python scripts/render_learning_sources.py --write` after changing either layer;
+4. do not hand-edit content between the generated `learning-sources` markers;
+5. ensure `make check` passes so source-link drift cannot reach `main`.
+
+The learner-facing result must answer: **what do I open, what exactly do I read, and why?**
+
 ## Practice packaging
 
 Practice should match the capability.
