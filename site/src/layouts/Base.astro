@@ -157,10 +157,7 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
           <p class="footer-title">{siteTitle}</p>
           <p class="footer-license">{t("footer.license")}</p>
         </div>
-        <a class="pill footer-star" href={`${site.repository}/stargazers`} rel="noopener">
-          <span class="pill-icon">
-            <Icon name="star" />
-          </span>
+        <a class="pill footer-star" href={site.repository} rel="noopener">
           {t("footer.star")}
         </a>
         <ul class="footer-links" aria-label={t("footer.contact")}>

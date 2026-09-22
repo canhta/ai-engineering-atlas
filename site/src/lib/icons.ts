@@ -26,7 +26,6 @@ import {
   MagnifyingGlassIcon,
   PlayIcon,
   PlusIcon,
-  StarIcon,
   StopIcon,
   TimerIcon,
   UploadSimpleIcon,
@@ -96,7 +95,6 @@ export const icons = {
   zalo: ZaloLogoIcon,
   x: XLogoIcon,
   linkedin: LinkedinLogoIcon,
-  star: StarIcon,
   // Labs
   code: CodeIcon,
   reveal: EyeIcon,
