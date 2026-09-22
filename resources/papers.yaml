@@ -64,3 +64,25 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 365
+
+- id: paper.critic-tool-interactive
+    type: paper
+    title: "CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing"
+    author: Zhibin Gou et al.
+    url: https://arxiv.org/abs/2305.11738
+    roles: [curriculum-evidence, teaching, assessment, reference]
+    covers: [agents.verification, external-feedback, self-correction]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
+
+  - id: paper.swe-bench
+    type: paper
+    title: "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?"
+    author: Carlos E. Jimenez et al.
+    url: https://arxiv.org/abs/2310.06770
+    roles: [curriculum-evidence, assessment, benchmark, reference]
+    covers: [agents.verification, coding-agents, environment-evaluation]
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 365
