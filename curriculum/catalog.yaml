@@ -64,14 +64,14 @@ competencies:
   - {id: llm.inference, title: LLM Inference Behavior, domain: llm-foundations, status: coverage}
 
   # Applied AI Engineering
-  - {id: ai.product-framing, title: AI Product and Problem Framing, domain: ai-engineering, status: coverage}
+  - {id: ai.product-framing, title: AI Product and Problem Framing, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/product-framing}
   - {id: ai.model-selection, title: Model Selection, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/model-selection}
   - {id: ai.prompt-engineering, title: Prompt Engineering, domain: ai-engineering, status: coverage}
   - {id: ai.context-engineering, title: Context Engineering, domain: ai-engineering, status: coverage}
   - {id: ai.structured-outputs, title: Structured Outputs, domain: ai-engineering, status: coverage}
   - {id: ai.tool-calling, title: Tool Calling, domain: ai-engineering, status: coverage}
-  - {id: ai.embeddings, title: Embeddings for AI Applications, domain: ai-engineering, status: coverage}
-  - {id: retrieval.search, title: Search and Retrieval, domain: ai-engineering, status: coverage}
+  - {id: ai.embeddings, title: Embeddings for AI Applications, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/embeddings}
+  - {id: retrieval.search, title: Search and Retrieval, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/search-retrieval}
   - {id: retrieval.vector-search, title: Vector Search Internals, domain: ai-engineering, status: coverage}
   - {id: retrieval.chunking, title: Chunking, domain: ai-engineering, status: coverage}
   - {id: retrieval.filtering, title: Retrieval Filtering, domain: ai-engineering, status: coverage}
