@@ -1,0 +1,82 @@
+id: agents.planning
+title: Planning
+domain: agents
+status: seeded
+competency_types:
+  - engineering-skill
+  - design-judgment
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: Explicit planning is useful when task structure depends on intermediate results, but planner scaffolding should remain inspectable, stateful, revisable, and removable when it does not improve outcomes enough to justify its cost.
+curriculum_evidence:
+  - article.anthropic-building-effective-agents
+  - article.anthropic-harness-design-long-running-apps
+  - guide.openai-practical-agents
+prerequisites:
+  - agents.deterministic-vs-agentic
+  - agents.state
+  - ai.evaluation
+outcomes:
+  - Decide when explicit planning is useful versus unnecessary overhead.
+  - Represent a plan as an inspectable external artifact rather than hidden reasoning.
+  - Define goals, constraints, success criteria, steps or dependencies, blockers, assumptions, and invalidation triggers.
+  - Choose plan granularity that avoids both under-specification and brittle low-level over-specification.
+  - Persist plan status in durable execution state.
+  - Update plan progress from tool or environment results.
+  - Detect invalidated assumptions or blocked dependencies.
+  - Replan from observed evidence instead of blindly continuing the original plan.
+  - Define termination and success conditions before execution.
+  - Compare no-plan, static-plan, and adaptive-plan variants on the same task set.
+  - Reject planner scaffolding when it does not create enough measurable value.
+diagnostic:
+  tasks:
+    - Given a Knowledge Assistant task, decide whether direct execution, a static plan, or adaptive planning is appropriate and explain what task property justifies the choice.
+    - Design a plan schema that can survive a process restart and be updated without relying on hidden reasoning.
+    - Describe one condition that should invalidate the current plan and what evidence should trigger replanning.
+    - Define how you would prove that a planner is helping rather than merely adding steps.
+  pass_condition: Skip introductory material only if the learner can externalize plan structure, persist it in state, replan from environment evidence, and compare planning variants on the same task set.
+learning_route:
+  mental_model:
+    - source: article.anthropic-building-effective-agents
+      locator: 'Sections "Workflow: Orchestrator-workers", "Agents", "Combining and customizing these patterns", and "Summary"'
+      purpose: Distinguish predictable workflow decomposition from dynamic task decomposition and keep complexity tied to measurable need.
+    - source: article.anthropic-harness-design-long-running-apps
+      locator: 'Sections "Scaling to full-stack coding" → "The architecture" (Planner), "Iterating on the harness", and "Removing the sprint construct"'
+      purpose: Study planner granularity, under-scoping, cascading assumptions, and ablation of planner/decomposition scaffolding as model capability changes.
+    - source: guide.openai-practical-agents
+      locator: 'Sections "What is an agent?", "Configuring instructions", "Orchestration", and "Single-agent systems"'
+      purpose: Ground planning in executable workflow control, explicit steps/branches, completion conditions, and single-agent-first architecture.
+  guided_practice:
+    - task: Take one stateful Knowledge Assistant workflow and externalize a minimal plan with explicit assumptions, dependencies, completion criteria, and replanning triggers.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/planning-and-verification/
+      task: Compare no-plan, static-plan, and adaptive-plan variants on the same task set, inject one invalidated assumption, and preserve the replanning trace.
+experiments:
+  - Remove explicit planning and measure whether task success or failure attribution changes.
+  - Compare a coarse plan with an over-detailed plan to identify brittleness from premature assumptions.
+  - Invalidate one dependency or assumption mid-run and verify the plan updates from observed evidence.
+  - Measure plan churn, redundant steps, tool calls, latency, and cost across variants.
+exit_evidence:
+  - A versioned plan schema records goals, constraints, success criteria, dependencies or steps, status, assumptions, and replanning triggers.
+  - The plan is persisted in durable state or an artifact referenced by state.
+  - A no-plan baseline is preserved.
+  - Static and adaptive planning variants are compared on the same task set.
+  - At least one changed condition or invalidated assumption triggers an inspectable plan revision.
+  - Task success is reported with steps or tool calls, latency, cost where measurable, and unnecessary replanning.
+  - The learner records whether planning should be kept, simplified, or removed.
+transfer:
+  task: Redesign the planning strategy for a task with a different dependency structure and uncertainty profile, then justify a different plan granularity or no-plan decision if appropriate.
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-building-effective-agents
+    - article.anthropic-harness-design-long-running-apps
+    - guide.openai-practical-agents
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
