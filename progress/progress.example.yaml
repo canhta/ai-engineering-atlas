@@ -1,0 +1,25 @@
+version: 1
+updated_at: 2026-09-22
+
+competencies:
+  llm.self-attention:
+    state: demonstrated
+    target_state: retained
+    evidence:
+      - kind: implementation
+        uri: "path-or-url-to-artifact"
+        note: "Implemented causal single-head attention and masking tests."
+      - kind: explanation
+        uri: "path-or-url-to-note"
+        note: "Explained tensor shapes and sequence-length cost without notes."
+    independence: "minimal hints"
+    next_action: "Run delayed retrieval check."
+    review_on: 2026-09-29
+
+  ai.evaluation:
+    state: gap
+    target_state: applied
+    evidence:
+      - kind: diagnostic
+        note: "Can compare model outputs but did not separate component and end-to-end evaluation."
+    next_action: "Follow evaluation learning route and build a versioned harness."
