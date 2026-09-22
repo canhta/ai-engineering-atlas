@@ -1,7 +1,7 @@
 id: ai.tool-calling
 title: Tool Calling
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation
