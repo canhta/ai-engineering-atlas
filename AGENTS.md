@@ -13,6 +13,8 @@ Before changing curriculum, assessments, learning routes, labs, projects, resour
 
 The learning model takes precedence over folder conventions.
 
+For work under `site/` (web atlas, Cloudflare Worker), read [site/AGENTS.md](site/AGENTS.md) first.
+
 Do not create content merely because a directory or schema field exists.
 
 ## Core principle

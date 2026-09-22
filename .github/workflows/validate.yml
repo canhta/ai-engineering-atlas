@@ -37,3 +37,6 @@ jobs:
 
       - name: Validate generated site data
         run: python scripts/build_site_data.py --check
+
+      - name: Validate agent docs
+        run: python scripts/validate_agent_docs.py

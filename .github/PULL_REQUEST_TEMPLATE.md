@@ -74,6 +74,7 @@ If the route targets `applied`, which reference project and milestone provide in
 - [ ] internal links resolve
 - [ ] reference lab contracts pass
 - [ ] no prerequisite ID is introduced outside the canonical catalog
+- [ ] changed a command, token, or convention → updated `AGENTS.md`, `site/AGENTS.md`, or `site/DESIGN.md` in this PR
 
 ## Complexity check
 

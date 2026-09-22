@@ -19,4 +19,7 @@ labs:
 site-data:
 	python scripts/build_site_data.py --check
 
-check: schemas validate status learning-sources links labs site-data
+agent-docs:
+	python scripts/validate_agent_docs.py
+
+check: schemas validate status learning-sources links labs site-data agent-docs

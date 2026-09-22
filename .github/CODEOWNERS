@@ -1,0 +1,7 @@
+# Agent-facing guidance and design rules: agents may propose changes; the owner approves.
+/AGENTS.md          @canhta
+/CLAUDE.md          @canhta
+/site/AGENTS.md     @canhta
+/site/CLAUDE.md     @canhta
+/site/DESIGN.md     @canhta
+/.claude/           @canhta
