@@ -1,0 +1,64 @@
+id: ai.embeddings
+title: Embeddings for AI Applications
+domain: ai-engineering
+status: ready
+competency_types: [mechanism, engineering-skill, design-judgment]
+target_level: L3
+target_states: [demonstrated, transferred, applied]
+why: Embeddings make semantic retrieval possible, but useful systems depend on query/document task fit, similarity behavior, model choice, normalization, domain mismatch, and measured comparison against simpler retrieval.
+curriculum_evidence: [book.chip-huyen-ai-engineering, docs.sentence-transformers-semantic-search, book.stanford-ir]
+prerequisites: [retrieval.search, math.dot-product]
+prerequisite_support:
+  math.dot-product:
+    diagnostic: Given two short vectors, compute or explain dot product and cosine similarity and describe what normalization changes.
+    source: book.stanford-ir
+    locator: Chapter 6 §6.3 "The vector space model for scoring", especially §6.3.1 "Dot products" and cosine similarity discussion
+    purpose: Patch only the vector-similarity mathematics needed to reason about embedding retrieval scores.
+outcomes:
+  - Explain what an embedding-based retriever represents and how similarity produces a ranking.
+  - Distinguish symmetric similarity tasks from asymmetric query-to-document retrieval.
+  - Choose query/document encoding and similarity behavior appropriate to the retrieval task.
+  - Compare semantic retrieval with the same lexical baseline, corpus, relevance judgments, and query set.
+  - Diagnose semantic retrieval failures such as domain mismatch, weak representations, normalization/scoring mistakes, and loss of exact lexical signals.
+diagnostic:
+  tasks:
+    - Explain the difference between embedding two similar sentences and embedding a short query against a longer document corpus.
+    - Predict how cosine similarity changes when vector magnitude changes but direction does not.
+    - Design a fair lexical-versus-embedding retrieval comparison using one fixed query set.
+    - Given a semantic-search miss on an exact identifier, explain why embeddings may not be the right fix.
+  pass_condition: Skip guided material only if the learner can reason about representation, similarity, asymmetric retrieval, and can evaluate semantic retrieval against a controlled lexical baseline.
+learning_route:
+  mental_model:
+    - source: book.chip-huyen-ai-engineering
+      locator: Chapter 3 "Introduction to Embedding" (from p. 134) and Chapter 6 "Retrieval Algorithms" (from p. 257)
+      purpose: Connect embedding representations to semantic retrieval in AI applications.
+    - source: docs.sentence-transformers-semantic-search
+      locator: "Semantic Search" page sections "Symmetric vs. Asymmetric Semantic Search" and implementation using encode_query, encode_document, cosine similarity, and semantic_search
+      purpose: Make query/document task asymmetry and concrete embedding-search mechanics operational.
+    - source: book.stanford-ir
+      locator: Chapter 6 §6.3 "The vector space model for scoring"
+      purpose: Reuse the vector-scoring mental model so semantic retrieval is understood as a representation change, not magic.
+  guided_practice:
+    - task: Encode a small query/document corpus, inspect nearest neighbors, then explain at least one good match and one surprising match from the representation and task.
+  independent_practice:
+    - artifact: projects/knowledge-assistant/
+      task: Add embedding retrieval to the Knowledge Assistant without deleting the lexical baseline; compare both on the identical corpus, query set, relevance judgments, top-k metric, and latency measurement.
+experiments:
+  - Compare an embedding model or encoding setup on vocabulary-mismatch queries versus identifier/exact-match queries.
+  - Change similarity or normalization behavior and verify whether ranking changes as predicted.
+  - Test a small domain-specific slice and document where semantic representations fail to transfer.
+exit_evidence:
+  - The learner can explain the query/document embedding and similarity path from text to ranked results.
+  - A semantic retriever is evaluated on the same evidence contract as the lexical baseline.
+  - Results identify query slices where semantic retrieval wins, loses, or adds no value.
+  - At least one failure is diagnosed as representation/domain/scoring mismatch rather than patched blindly.
+  - The architecture decision records whether semantic retrieval should replace, complement, or be rejected relative to lexical search.
+transfer:
+  task: Evaluate embedding retrieval on a new corpus whose queries differ in length or domain from the first project, and justify whether the same model, encoding strategy, and similarity function still fit.
+project_spines: [ai-system]
+resources:
+  teaching: [book.chip-huyen-ai-engineering, docs.sentence-transformers-semantic-search, book.stanford-ir]
+  practice: [docs.sentence-transformers-semantic-search]
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true
