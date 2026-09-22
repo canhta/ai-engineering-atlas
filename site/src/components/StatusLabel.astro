@@ -1,0 +1,37 @@
+---
+// Catalog maturity: ready routes carry the accent marker; coverage stays quiet.
+import { useTranslations, type Lang } from "../i18n";
+
+interface Props {
+  status: "ready" | "coverage";
+  lang: Lang;
+}
+
+const { status, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<span class:list={["status", status]}>
+  {status === "ready" && <span class="marker" aria-hidden="true" />}
+  {t(status === "ready" ? "status.ready" : "status.coverage")}
+</span>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    white-space: nowrap;
+  }
+
+  .coverage {
+    color: var(--text-muted);
+  }
+
+  .marker {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--ready-marker);
+    border-radius: var(--radius);
+  }
+</style>

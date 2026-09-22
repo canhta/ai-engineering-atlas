@@ -18,7 +18,8 @@ Token values live in code, in `site/src/styles/tokens.css`. This file names role
 
 ### Map
 
-- Default view: list grouped by the 12 domains (React Aria `Tree` or `GridList`). Each row: title, status, level, prerequisites, learner state.
+- Default view: list grouped by the 12 domains, one `<details>` per domain (open when it has ready routes), a table row per competency: title, status, level, prerequisites, learner state. Under 700px each row stacks.
+- Filters and learner state are a React Aria island layered on the same list; the static list stays usable without JavaScript.
 - Graph view: a toggle. It draws ready routes and their declared prerequisites only, from `edges` in `atlas.json`.
 - One filter bar drives both views: path/project, learner state, ready only.
 - Coverage rows: muted text, no fill, not clickable, label "mapped, no route".
@@ -86,17 +87,18 @@ Role-based 12-step scales (Radix structure) for light and dark themes:
 |---|---|
 | 1–2 | app and subtle backgrounds |
 | 3–5 | component background: normal, hover, pressed |
-| 6–8 | borders; 8 is the focus ring |
-| 9–10 | solid fills, primary action |
+| 6–8 | decorative borders and separators |
+| 9–10 | solid fills, primary action; step 9 also for the focus ring and borders that carry meaning (step 8 fails 3:1) |
 | 11–12 | secondary and primary text |
 
 - `gray`: warm neutral. `accent`: one hue for links, focus, the primary action, and the ready marker.
 - State tokens: `state-gap` (amber), `state-demonstrated` (green); transferred, retained, applied share one hue family and are told apart by glyph. Lab: `pass`, `fail`.
 - Components read semantic tokens (`--text`, `--border`, `--focus`, `--state-*`), never scale steps or literal colours.
+- `pnpm run check:contrast` verifies every text and meaningful-border pair in both themes; add a pair there when you add a semantic token.
 
 ## Shape, density, elevation
 
-- 1px borders at gray 6; radius 4–6px.
+- 1px borders at gray 6 (`--border`); borders that carry meaning use `--border-strong`. Radius 4–6px.
 - Shadows only on floating layers: popovers, menus, the mobile bottom sheet.
 - 8px spacing grid; list rows ~36px.
 

@@ -1,0 +1,152 @@
+---
+import { Font } from "astro:assets";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import { languages, useTranslations, type Lang } from "../i18n";
+import { homeUrl, mapUrl, switchLang } from "../lib/urls";
+import { REPO_URL } from "../lib/atlas";
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+}
+
+const { lang, title, description } = Astro.props;
+const t = useTranslations(lang);
+const pageTitle = title ? `${title} · ${t("site.name")}` : t("site.name");
+const path = Astro.url.pathname;
+const navItems = [
+  { href: homeUrl(lang), label: t("nav.home") },
+  { href: mapUrl(lang), label: t("nav.map") },
+];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description ?? t("site.tagline")} />
+    {
+      (Object.keys(languages) as Lang[]).map((l) => (
+        <link rel="alternate" hreflang={l} href={new URL(switchLang(path, l), Astro.site)} />
+      ))
+    }
+    <Font cssVariable="--font-sans" preload={[{ subset: "latin", weight: 400 }]} />
+    <Font cssVariable="--font-serif" />
+    <Font cssVariable="--font-mono" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container bar">
+        <nav aria-label={t("nav.label")}>
+          <ul>
+            {
+              navItems.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <p class="lang-switch" aria-label={t("lang.label")}>
+          {
+            (Object.entries(languages) as [Lang, string][]).map(([l, name], i) => (
+              <>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                {l === lang ? (
+                  <span aria-current="true">{name}</span>
+                ) : (
+                  <a href={switchLang(path, l)} hreflang={l} lang={l}>
+                    {name}
+                  </a>
+                )}
+              </>
+            ))
+          }
+        </p>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container bar">
+        <a href={REPO_URL}>{t("footer.source")}</a>
+        <span class="muted">{t("footer.license")}</span>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  main.container {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 3rem;
+  }
+
+  .site-header {
+    border-bottom: var(--border-width) solid var(--border);
+    background: var(--bg-subtle);
+  }
+
+  .site-header ul {
+    display: flex;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header a {
+    color: var(--text);
+    text-decoration: none;
+    display: inline-block;
+    padding: var(--space-1) 0;
+    min-height: var(--target-min);
+  }
+
+  .site-header a:hover,
+  .site-header a[aria-current="page"] {
+    text-decoration: underline;
+  }
+
+  nav a[aria-current="page"] {
+    font-weight: 600;
+  }
+
+  .lang-switch {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .lang-switch [aria-current] {
+    color: var(--text);
+  }
+
+  .site-footer {
+    border-top: var(--border-width) solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--text-small);
+  }
+</style>

@@ -22,4 +22,8 @@ site-data:
 agent-docs:
 	python scripts/validate_agent_docs.py
 
+# Web atlas (Node 26 + pnpm). Separate from `check` so curriculum work needs only Python.
+site-check:
+	cd site && pnpm install --frozen-lockfile && pnpm run check
+
 check: schemas validate status learning-sources links labs site-data agent-docs

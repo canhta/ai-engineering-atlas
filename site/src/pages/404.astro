@@ -1,0 +1,14 @@
+---
+import Base from "../layouts/Base.astro";
+import { useTranslations } from "../i18n";
+import { mapUrl } from "../lib/urls";
+
+const t = useTranslations("en");
+const vi = useTranslations("vi");
+---
+
+<Base lang="en" title={t("notFound.title")}>
+  <h1>{t("notFound.title")}</h1>
+  <p><a href={mapUrl("en")}>{t("notFound.back")}</a></p>
+  <p lang="vi"><a href={mapUrl("vi")}>{vi("notFound.back")}</a></p>
+</Base>

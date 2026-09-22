@@ -1,0 +1,41 @@
+---
+// External source link: shows the host and says it leaves the site (DESIGN.md → Route page).
+import { useTranslations, type Lang } from "../i18n";
+import { resolveSource } from "../lib/atlas";
+
+interface Props {
+  source: string;
+  lang: Lang;
+}
+
+const { source, lang } = Astro.props;
+const t = useTranslations(lang);
+const { title, url, host } = resolveSource(source);
+---
+
+{
+  url ? (
+    <a href={url} rel="noopener noreferrer" lang="en" class="external">
+      {title}
+      <span class="host">
+        {host}
+        <span aria-hidden="true">↗</span>
+      </span>
+      <span class="visually-hidden">({t("link.external")})</span>
+    </a>
+  ) : (
+    <code>{source}</code>
+  )
+}
+
+<style>
+  .external {
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .host {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+</style>

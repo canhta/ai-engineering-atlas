@@ -1,0 +1,148 @@
+/*
+ * Design tokens: the only file allowed to hold literal colour values.
+ * Roles and intent: site/DESIGN.md. Components use the semantic tokens at the
+ * bottom, never the scale steps. Scales follow the Radix Colors 12-step
+ * structure (gray: sand, accent: indigo, states: amber/green/red).
+ * scripts/check-contrast.mjs verifies the text and border pairs.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* gray: warm neutral (sand) */
+  --gray-1: #fdfdfc;
+  --gray-2: #f9f9f8;
+  --gray-3: #f1f0ef;
+  --gray-4: #e9e8e6;
+  --gray-5: #e2e1de;
+  --gray-6: #dad9d6;
+  --gray-7: #cfceca;
+  --gray-8: #bcbbb5;
+  --gray-9: #8d8d86;
+  --gray-10: #82827c;
+  --gray-11: #63635e;
+  --gray-12: #21201c;
+
+  /* accent: ink blue (indigo) */
+  --accent-1: #fdfdfe;
+  --accent-2: #f7f9ff;
+  --accent-3: #edf2fe;
+  --accent-4: #e1e9ff;
+  --accent-5: #d2deff;
+  --accent-6: #c1d0ff;
+  --accent-7: #abbdf9;
+  --accent-8: #8da4ef;
+  --accent-9: #3e63dd;
+  --accent-10: #3358d4;
+  --accent-11: #3a5bc7;
+  --accent-12: #1f2d5c;
+
+  --amber-3: #fff7c2;
+  --amber-11: #ab6400;
+  --green-3: #e6f6eb;
+  --green-11: #218358;
+  --red-3: #feebec;
+  --red-11: #ce2c31;
+
+  --on-solid: #ffffff;
+
+  /* Theme-specific: accent-10 is too light for white text in dark mode. */
+  --action-bg-hover: var(--accent-10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-1: #111110;
+    --gray-2: #191918;
+    --gray-3: #222221;
+    --gray-4: #2a2a28;
+    --gray-5: #31312e;
+    --gray-6: #3b3a37;
+    --gray-7: #494844;
+    --gray-8: #62605b;
+    --gray-9: #6f6d66;
+    --gray-10: #7c7b74;
+    --gray-11: #b5b3ad;
+    --gray-12: #eeeeec;
+
+    --accent-1: #11131f;
+    --accent-2: #141726;
+    --accent-3: #182449;
+    --accent-4: #1d2e62;
+    --accent-5: #253974;
+    --accent-6: #304384;
+    --accent-7: #3a4f97;
+    --accent-8: #435db1;
+    --accent-9: #3e63dd;
+    --accent-10: #5472e4;
+    --accent-11: #9eb1ff;
+    --accent-12: #d6e1ff;
+
+    --amber-3: #302008;
+    --amber-11: #ffca16;
+    --green-3: #132d21;
+    --green-11: #3dd68c;
+    --red-3: #3b1219;
+    --red-11: #ff9592;
+
+    --action-bg-hover: var(--accent-8);
+  }
+}
+
+:root {
+  /* Semantic tokens: the only colour names components use. */
+  --bg: var(--gray-1);
+  --bg-subtle: var(--gray-2);
+  --bg-component: var(--gray-3);
+  --bg-component-hover: var(--gray-4);
+  --bg-component-active: var(--gray-5);
+  --border: var(--gray-6);
+  --border-strong: var(--gray-9);
+  --text: var(--gray-12);
+  --text-muted: var(--gray-11);
+  --link: var(--accent-11);
+  --focus: var(--accent-9);
+  --action-bg: var(--accent-9);
+  --action-text: var(--on-solid);
+  --ready-marker: var(--accent-9);
+
+  --state-gap: var(--amber-11);
+  --state-gap-bg: var(--amber-3);
+  --state-demonstrated: var(--green-11);
+  --state-demonstrated-bg: var(--green-3);
+  --state-beyond: var(--accent-11);
+  --pass: var(--green-11);
+  --fail: var(--red-11);
+
+  /* Type */
+  --text-ui: 0.9375rem;
+  --text-small: 0.8125rem;
+  --text-reading: 1.0625rem;
+  --text-h1: 1.75rem;
+  --text-h2: 1.25rem;
+  --text-h3: 1.0625rem;
+  --leading-ui: 1.5;
+  --leading-reading: 1.6;
+  --leading-heading: 1.25;
+  --measure: 68ch;
+
+  /* Space: 8px grid */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Shape */
+  --radius: 4px;
+  --radius-large: 6px;
+  --border-width: 1px;
+  --row-height: 2.25rem;
+  --target-min: 1.5rem;
+
+  /* Motion */
+  --duration: 120ms;
+  --ease: ease-out;
+}

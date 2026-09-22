@@ -2,11 +2,26 @@
 
 Guidance for work under `site/` (the web atlas at aie.canhta.com) and its Cloudflare Worker. The repository-wide rules in the root [AGENTS.md](../AGENTS.md) still apply.
 
-Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Phase 0 (data) is done; the Astro app is being built in Phase 1.
+Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Stack: Astro (static output) with React Aria islands, Node 26, pnpm, Cloudflare Workers static assets.
+
+## Commands
+
+Run from `site/` unless noted.
+
+| Command | Use |
+|---|---|
+| `pnpm install` | Install; build scripts are allowed only for the packages in `pnpm-workspace.yaml` |
+| `pnpm run dev` | Dev server. Astro's CSP and `_headers` do not apply in dev |
+| `pnpm run check` | Typecheck, style lint, i18n parity, token contrast, headers, build |
+| `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787) |
+| `node scripts/capture.mjs` | With preview running: screenshots (en/vi × light/dark × 375/1280), axe, header and overflow checks |
+| `make site-check` | From the repository root: what CI runs for the site |
+
+`astro check` needs TypeScript 6; TypeScript 7 lacks the API it uses. Keep `typescript` on `^6` until Astro supports 7.
 
 ## Before you change anything
 
-- **UI, styles, layout, copy, or i18n strings** → read [DESIGN.md](DESIGN.md) first. It is the design source of truth; token values live in `src/styles/tokens.css`.
+- **UI, styles, layout, copy, or i18n strings** → read [DESIGN.md](DESIGN.md) first. It is the design source of truth; token values live in [src/styles/tokens.css](src/styles/tokens.css), and `stylelint.config.mjs` rejects literal colours, gradients, blur, shadows, and non-token fonts, radii, and durations elsewhere.
 - **Anything the site shows about a competency** → change the curriculum YAML at the repository root, then regenerate the data. The site renders contracts; it does not own curriculum content.
 
 ## Data contract
@@ -22,7 +37,8 @@ Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Phase 
 
 ## Bilingual
 
-- Every UI string key exists in both `en` and `vi`.
+- Every UI string key exists in both [src/i18n/en.json](src/i18n/en.json) and `vi.json` with the same `{params}`; `pnpm run check:i18n` enforces it.
+- Curriculum text rendered on a `/vi/` page carries `lang="en"` (WCAG 3.1.2).
 - English contracts are canonical. Vietnamese route text comes only from reviewed `competency.vi.yaml` files; a missing or stale translation shows English with `lang="en"` and the marker "chưa dịch / not yet translated". Machine translation is never rendered.
 - The repository owner reviews Vietnamese before merge.
 
@@ -40,6 +56,6 @@ Design and scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Phase 
 
 ## Done means
 
-- `make check` passes.
-- For UI changes: pages reviewed against [DESIGN.md](DESIGN.md) in both languages, light and dark themes, at 375px and 1280px widths.
+- `make check` and `make site-check` pass.
+- For UI changes: `node scripts/capture.mjs` reports no problems, and you have looked at the screenshots against [DESIGN.md](DESIGN.md).
 - Any command, token, or convention you changed is updated in this file or DESIGN.md in the same change.

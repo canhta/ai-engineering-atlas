@@ -1,0 +1,261 @@
+---
+// Fixed section order from competency.yaml (DESIGN.md → Route page):
+// Why → Prerequisites → Diagnostic → Learning route → Practice / Lab → Exit evidence → Transfer.
+import Base from "../../../../layouts/Base.astro";
+import ExternalLink from "../../../../components/ExternalLink.astro";
+import StatusLabel from "../../../../components/StatusLabel.astro";
+import { languages, useTranslations, type Lang } from "../../../../i18n";
+import { competency, labFor, levels, readyCompetencies, repoUrl, routes } from "../../../../lib/atlas";
+import { routeUrl } from "../../../../lib/urls";
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as Lang[]).flatMap((lang) =>
+    readyCompetencies.map((c) => ({ params: { lang, id: c.id } })),
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const route = routes[Astro.params.id as string]!;
+const t = useTranslations(lang);
+// Route text is English until a reviewed competency.<lang>.yaml exists (site/AGENTS.md → Bilingual).
+const en = lang === "en" ? undefined : "en";
+const bridges = route.prerequisite_support ?? {};
+const lab = labFor(route.id);
+const levelName = (levels[route.target_level] ?? "").replaceAll("-", " ");
+---
+
+<Base lang={lang} title={route.title} description={route.why}>
+  <header class="route-head">
+    <h1 lang={en}>{route.title}</h1>
+    <p class="meta">
+      <code>{route.id}</code>
+      <span>{t("route.level")}: {route.target_level} <span lang={en}>({levelName})</span></span>
+      <span>{t("route.types")}: {route.competency_types.map((type) => t(`type.${type}` as never)).join(", ")}</span>
+      <StatusLabel status="ready" lang={lang} />
+    </p>
+    {en && <p class="untranslated" role="note">{t("translation.missing")}</p>}
+  </header>
+
+  <h2>{t("route.why")}</h2>
+  <p class="reading" lang={en}>{route.why}</p>
+
+  <h2>{t("route.prerequisites")}</h2>
+  {
+    route.prerequisites.length === 0 ? (
+      <p class="muted">{t("route.prerequisites.none")}</p>
+    ) : (
+      <ul class="plain">
+        {route.prerequisites.map((p) => {
+          const bridge = bridges[p];
+          const title = competency(p)?.title ?? p;
+          return (
+            <li>
+              {routes[p] ? (
+                <a href={routeUrl(lang, p)} lang={en}>{title}</a>
+              ) : (
+                <span lang={en}>{title}</span>
+              )}{" "}
+              <code class="muted">{p}</code>
+              {bridge && (
+                <div class="bridge">
+                  <p class="label">{t("route.bridge")}</p>
+                  {bridge.diagnostic && <p lang={en}>{bridge.diagnostic}</p>}
+                  <p>
+                    <ExternalLink source={bridge.source} lang={lang} />
+                  </p>
+                  {bridge.locator && <p lang={en}>{bridge.locator}</p>}
+                  {bridge.purpose && <p class="muted" lang={en}>{bridge.purpose}</p>}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+
+  <h2>{t("route.outcomes")}</h2>
+  <ul class="reading" lang={en}>
+    {route.outcomes.map((o) => <li>{o}</li>)}
+  </ul>
+
+  <h2>{t("route.diagnostic")}</h2>
+  <p class="muted">{t("route.diagnostic.intro")}</p>
+  <ol class="reading" lang={en}>
+    {route.diagnostic.tasks.map((task) => <li>{task}</li>)}
+  </ol>
+  <details class="pass">
+    <summary>{t("route.passCondition")}</summary>
+    <p class="reading" lang={en}>{route.diagnostic.pass_condition}</p>
+  </details>
+
+  <h2 id="learning-route">{t("route.learningRoute")}</h2>
+  <p class="muted">{t("route.learningRoute.intro")}</p>
+  <div class="table-scroll" role="region" tabindex="0" aria-labelledby="learning-route">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{t("route.col.source")}</th>
+          <th scope="col">{t("route.col.locator")}</th>
+          <th scope="col">{t("route.col.purpose")}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          (route.learning_route.mental_model ?? []).map((item) => (
+            <tr>
+              <td class="source">
+                <ExternalLink source={item.source} lang={lang} />
+              </td>
+              <td lang={en}>{item.locator}</td>
+              <td lang={en}>{item.purpose}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <h2>{t("route.practice")}</h2>
+  {
+    route.learning_route.guided_practice?.length ? (
+      <>
+        <h3>{t("route.practice.guided")}</h3>
+        <ul class="reading" lang={en}>
+          {route.learning_route.guided_practice.map((p) => <li>{p.task}</li>)}
+        </ul>
+      </>
+    ) : null
+  }
+  {
+    route.learning_route.independent_practice?.length ? (
+      <>
+        <h3>{t("route.practice.independent")}</h3>
+        <ul class="reading" lang={en}>
+          {route.learning_route.independent_practice.map((p) => (
+            <li>
+              {p.task}
+              {p.artifact && (
+                <>
+                  {" "}
+                  <a href={repoUrl(p.artifact)}>
+                    <code>{p.artifact}</code>
+                  </a>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : null
+  }
+  {
+    lab && (
+      <p>
+        {t("route.lab")}: <a href={repoUrl(lab.path)} lang={en}>{lab.title}</a>
+      </p>
+    )
+  }
+  {
+    route.experiments?.length ? (
+      <>
+        <h3>{t("route.experiments")}</h3>
+        <ul class="reading" lang={en}>
+          {route.experiments.map((e) => <li>{e}</li>)}
+        </ul>
+      </>
+    ) : null
+  }
+
+  <h2>{t("route.exitEvidence")}</h2>
+  <ul class="reading" lang={en}>
+    {route.exit_evidence.map((e) => <li>{e}</li>)}
+  </ul>
+
+  {
+    route.transfer && (
+      <>
+        <h2>{t("route.transfer")}</h2>
+        <p class="reading" lang={en}>{route.transfer.task}</p>
+      </>
+    )
+  }
+
+  <p class="contract"><a href={repoUrl(route.path)}>{t("route.source")}</a></p>
+</Base>
+
+<style>
+  .route-head {
+    border-bottom: var(--border-width) solid var(--border);
+    padding-bottom: var(--space-4);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--text-small);
+    margin: 0;
+  }
+
+  .untranslated {
+    margin: var(--space-3) 0 0;
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-width) solid var(--border-strong);
+    border-radius: var(--radius);
+    font-size: var(--text-small);
+  }
+
+  .plain {
+    list-style: none;
+    padding: 0;
+  }
+
+  .plain > li {
+    padding: var(--space-2) 0;
+    border-bottom: var(--border-width) solid var(--border);
+  }
+
+  .bridge {
+    margin-top: var(--space-2);
+    padding-left: var(--space-3);
+    border-left: 2px solid var(--border-strong);
+    max-width: var(--measure);
+  }
+
+  .bridge p {
+    margin: 0 0 var(--space-1);
+  }
+
+  .label {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+
+  .pass {
+    max-width: var(--measure);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .pass summary {
+    cursor: pointer;
+    min-height: var(--target-min);
+    font-weight: 500;
+  }
+
+  .pass p {
+    margin: var(--space-2) 0 0;
+  }
+
+  .source {
+    min-width: 14rem;
+  }
+
+  .contract {
+    margin-top: var(--space-8);
+    font-size: var(--text-small);
+  }
+</style>

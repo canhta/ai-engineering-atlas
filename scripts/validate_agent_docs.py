@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import re
 import sys
 
@@ -21,6 +22,8 @@ CHAIN_BYTES = 32 * 1024
 
 MAKE_RE = re.compile(r"`make ([a-z][a-z0-9-]*)")
 SCRIPT_RE = re.compile(r"`python3? (scripts/[\w./-]+\.py)")
+PNPM_RE = re.compile(r"`pnpm run ([\w:-]+)")
+NODE_RE = re.compile(r"`node (scripts/[\w./-]+\.mjs)")
 TARGET_RE = re.compile(r"^([a-z][a-z0-9-]*):", re.MULTILINE)
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 
@@ -67,6 +70,8 @@ for path in agents_files:
 # 3. Commands named in agent docs exist.
 makefile = (ROOT / "Makefile").read_text(encoding="utf-8")
 make_targets = set(TARGET_RE.findall(makefile))
+site_package = ROOT / "site" / "package.json"
+site_scripts = set(json.loads(site_package.read_text(encoding="utf-8")).get("scripts", {})) if site_package.exists() else set()
 doc_files = agents_files + skill_files + design_files + [ROOT / "CONTRIBUTING.md"]
 
 for path in doc_files:
@@ -77,6 +82,12 @@ for path in doc_files:
     for script in SCRIPT_RE.findall(text):
         if not (ROOT / script).exists():
             errors.append(f"{rel(path)}: `{script}` does not exist")
+    for script in PNPM_RE.findall(text):
+        if script not in site_scripts:
+            errors.append(f"{rel(path)}: `pnpm run {script}` is not a script in site/package.json")
+    for script in NODE_RE.findall(text):
+        if not (ROOT / "site" / script).exists():
+            errors.append(f"{rel(path)}: `node {script}` does not exist under site/")
 
 # 4. Skills follow the Agent Skills spec: name matches directory, description set.
 for path in skill_files:
