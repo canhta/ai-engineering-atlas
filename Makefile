@@ -1,3 +1,6 @@
+schemas:
+	python scripts/validate_schemas.py
+
 validate:
 	python scripts/validate_repo.py
 
@@ -10,4 +13,4 @@ links:
 labs:
 	python scripts/validate_labs.py
 
-check: validate status links labs
+check: schemas validate status links labs

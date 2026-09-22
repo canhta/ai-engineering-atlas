@@ -17,6 +17,9 @@ jobs:
 
       - run: pip install -r requirements-dev.txt
 
+      - name: Validate JSON Schemas
+        run: python scripts/validate_schemas.py
+
       - name: Validate curriculum contracts
         run: python scripts/validate_repo.py
 
