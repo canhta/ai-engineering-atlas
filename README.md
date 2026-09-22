@@ -9,13 +9,9 @@ A gap-driven roadmap for software engineers learning modern AI engineering.
 
 ## A note from the author
 
-I'm a software engineer learning my way into AI Engineering.
+I'm a software engineer learning my way into AI Engineering, and this repo is where I organize and share that journey.
 
-I started this repository because I wanted a learning path that was deeper than a list of tools or courses, but still practical enough to use while building real systems. As I learn, I use this repo to organize the concepts, resources, experiments, mistakes, and evidence that help me close my own gaps.
-
-So this is also a learning journey in public. The curriculum will keep evolving as I study, build, test assumptions, and find better sources.
-
-I'm sharing it in case the structure, notes, or path are useful to other engineers making a similar transition. If you find a gap, a better source, or a better way to learn something here, contributions and discussion are very welcome.
+I'm learning in public, so the roadmap will keep evolving as I study, build, and find better ways to understand things. Hopefully it can be useful to other engineers making a similar transition too.
 
 ## What this repository does
 
