@@ -166,7 +166,7 @@ Repository fact: most of the 116 items are `coverage`, and all declared edges to
 | Marketing hero, countdown, stars, enrolment counts | Boot.dev, master.dev | AGENTS.md bans marketing; show ready/mapped counts |
 | Uniform icon/illustration card grids | Brilliant, master.dev, Boot.dev | Equal weight misrepresents maturity; hides status and locators |
 | Sparkle icons, floating "Ask anything" | roadmap.sh, Hugging Face | Novel icons get ignored ([NN/g](https://www.nngroup.com/articles/prompt-controls-genai/)); covers content on mobile |
-| Done/Skip toggles, "% complete" rings, "N of M steps" | roadmap.sh, master.dev, fCC | Reward consumption; contradict LEARNING_MODEL.md |
+| Done/Skip toggles, "% complete" rings, "N of M steps" | roadmap.sh, master.dev, fCC | Reward consumption; contradict ../docs/LEARNING_MODEL.md |
 | Padlocks, streaks, XP, leaderboards | Boot.dev nav | Same |
 | One text-size step, every section equal weight | current atlas | Reads as generic; Stripe uses H1 + subtitle + section size steps |
 | Scroll-triggered motion | — | Vestibular trigger ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)) |

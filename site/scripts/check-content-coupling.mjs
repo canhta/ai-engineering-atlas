@@ -16,7 +16,7 @@ const readJson = (path) => JSON.parse(readFileSync(join(repo, path), "utf8"));
 
 // Payload keys of content-model blocks that happen to share a name with a content key.
 const PAYLOAD_KEYS = ["tasks", "pass_condition", "items", "rows", "locator", "purpose", "resource", "body", "title", "id", "type", "step", "fields", "ref", "path"];
-// Words the site's own learner-evidence vocabulary uses (progress.yaml evidence kinds, LEARNING_MODEL.md).
+// Words the site's own learner-evidence vocabulary uses (progress.yaml evidence kinds, docs/LEARNING_MODEL.md).
 const EVIDENCE_KINDS = ["transfer"];
 
 function schemaNames(schema, { values = false } = {}) {

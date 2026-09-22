@@ -2,11 +2,11 @@
 
 The curriculum is grouped by domain. The numbering is a navigation aid, not a required study order.
 
-**Learner entry point:** [START_HERE.md](../START_HERE.md)  
-**Coverage map:** [ROADMAP.md](../ROADMAP.md)  
+**Learner entry point:** [../docs/START_HERE.md](../docs/START_HERE.md)  
+**Coverage map:** [../docs/ROADMAP.md](../docs/ROADMAP.md)  
 **Live maturity status:** [STATUS.md](STATUS.md)  
 **Canonical catalog:** [catalog.yaml](catalog.yaml)  
-**Competency contract:** [CURRICULUM.md](../CURRICULUM.md)
+**Competency contract:** [../docs/CURRICULUM.md](../docs/CURRICULUM.md)
 
 ## Domains
 

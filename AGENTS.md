@@ -6,8 +6,8 @@ Guidance for AI agents and coding assistants working in this repository.
 
 Before changing curriculum, assessments, learning routes, labs, projects, resources, or public-facing learning content, read:
 
-1. [LEARNING_MODEL.md](LEARNING_MODEL.md)
-2. [CURRICULUM.md](CURRICULUM.md)
+1. [docs/LEARNING_MODEL.md](docs/LEARNING_MODEL.md)
+2. [docs/CURRICULUM.md](docs/CURRICULUM.md)
 3. [curriculum/catalog.yaml](curriculum/catalog.yaml)
 4. [CONTRIBUTING.md](CONTRIBUTING.md)
 
@@ -15,7 +15,7 @@ The learning model takes precedence over folder conventions.
 
 For work under `site/` (web atlas, Cloudflare Worker), read [site/AGENTS.md](site/AGENTS.md) first.
 
-For any Vietnamese text, follow [VIETNAMESE_STYLE.md](VIETNAMESE_STYLE.md).
+For any Vietnamese text, follow [docs/VIETNAMESE_STYLE.md](docs/VIETNAMESE_STYLE.md).
 
 Do not create content merely because a directory or schema field exists.
 
@@ -69,43 +69,19 @@ Other high-quality sources may be used when they are more authoritative for a co
 
 ## Curriculum workflow
 
-When adding or changing a competency:
+Answer the questions above from reviewed sources, then:
 
-1. Gather curriculum evidence.
-2. Check the canonical catalog.
-3. Define the observable capability.
-4. Identify prerequisites using catalog IDs.
-5. If a ready route depends on a coverage-only prerequisite, add a targeted prerequisite bridge with a diagnostic and verified source locator.
-6. Decide the competency type and appropriate evidence.
-7. Design a diagnostic that can reveal prior knowledge.
-8. Select a precise learning route through real sources.
-9. Select or design practice.
-10. Define exit evidence.
-11. Add transfer, project integration, or delayed review when required.
-12. Check for overlap with existing competencies.
-13. Use an RFC for substantive changes.
-14. Run `make check`.
+1. check the catalog for overlap and take prerequisite IDs from it;
+2. give every coverage-only prerequisite of a ready route a bridge with a diagnostic and a verified source locator;
+3. write the contract in this order: capability, diagnostic, learning route, practice, exit evidence, transfer or review;
+4. open an RFC for substantive changes;
+5. run `make check`.
 
 Do not equate "covered by a book/course" with "learned."
 
 ## Source rules
 
-Prefer precise source locations over broad recommendations.
-
-Bad:
-
-- "Read Stanford CS336."
-- "Read AI Engineering."
-- "Watch 3Blue1Brown."
-
-Better:
-
-- exact chapter;
-- exact lecture;
-- exact section;
-- exact assignment;
-- exact visual segment;
-- exact production case or standard.
+Locate the source exactly: chapter, lecture, section, assignment, visual segment, production case, or standard. "Read Stanford CS336", "Read AI Engineering", and "Watch 3Blue1Brown" are not learning routes.
 
 For a ready route, verify the locator against the source before committing it.
 
@@ -127,16 +103,7 @@ The learner-facing result must answer: **what do I open, what exactly do I read,
 
 ## Practice packaging
 
-Practice should match the capability.
-
-When a lab is useful, prefer:
-
-- a clear task;
-- starter state;
-- runnable checks where appropriate;
-- failure or debugging work;
-- a transfer challenge when relevant;
-- a reference solution that is not the default path.
+Practice should match the capability. A lab, where one helps, gives a clear task, starter state, runnable checks, failure or debugging work, a transfer challenge where relevant, and a reference solution that is not the default path.
 
 Do not create an empty lab directory to satisfy a template.
 
@@ -161,11 +128,9 @@ Use [assessments/evidence-rubric.md](assessments/evidence-rubric.md) when review
 
 Do not force all learners through the same instruction.
 
-When prior knowledge is low, prefer worked examples, visual explanation, guided tasks, and immediate feedback.
-
-When knowledge is partial, prefer targeted reading, completion tasks, debugging, and comparison.
-
-When knowledge is strong, prefer diagnostics, independent implementation, transfer tasks, trade-off analysis, and failure investigation.
+- Low prior knowledge: worked examples, visual explanation, guided tasks, immediate feedback.
+- Partial: targeted reading, completion tasks, debugging, comparison.
+- Strong: diagnostics, independent implementation, transfer tasks, trade-off analysis, failure investigation.
 
 ## AI assistance
 
@@ -197,42 +162,14 @@ AI must not:
 
 Before changing README files, landing pages, metadata, or contribution docs, study comparable open-source repositories and reuse established conventions where appropriate.
 
-Prefer:
+Write concretely: short introductions, clear navigation, tables and indexes, real links, verifiable claims, explicit maturity and status.
 
-- concrete descriptions;
-- short introductions;
-- clear navigation;
-- tables and indexes;
-- real links;
-- verifiable claims;
-- explicit maturity/status.
-
-Avoid:
-
-- manifesto language;
-- marketing superlatives;
-- generic AI-generated prose;
-- repeated "not X, but Y" constructions;
-- decorative diagrams with no learning or navigation value;
-- empty directories created only to make the repository look complete;
-- presenting coverage nodes as finished lessons.
+Avoid manifesto language, marketing superlatives, generic AI-generated prose, repeated "not X, but Y" constructions, decorative diagrams that carry no learning or navigation value, empty directories that make the repository look complete, and coverage nodes presented as finished lessons.
 
 ## Before committing
 
-Check:
-
-- Does this change follow LEARNING_MODEL.md?
-- Is every competency/reference registered in the catalog?
-- Does every coverage-only prerequisite of a ready route have a prerequisite bridge?
-- Is the competency evidence-based?
-- Is the learning route precise enough to start immediately?
-- Were source locators actually verified?
-- Does practice match the capability?
-- Does assessment measure the stated outcome?
-- Did I distinguish demonstrated, transferred, retained, and applied evidence?
-- Did I avoid generating content merely to fill a template?
-- Is maturity represented truthfully?
-- Is public wording concrete and restrained?
-- Does `make check` pass?
+- `make check` passes.
+- Every rule above that the change touches is met, in particular: catalog IDs, verified locators, bridges for coverage-only prerequisites, assessment matching the capability type, and maturity stated truthfully.
+- Nothing was generated merely to fill a template.
 
 If not, revise before committing.

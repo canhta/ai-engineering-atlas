@@ -156,11 +156,11 @@ Coverage:
 
 Ready route:
 
-- [Self-Attention](curriculum/06-llm-foundations/self-attention/)
+- [Self-Attention](../curriculum/06-llm-foundations/self-attention/)
 
 Project integration:
 
-- [Tiny Transformer](projects/tiny-transformer/)
+- [Tiny Transformer](../projects/tiny-transformer/)
 
 ---
 
@@ -226,12 +226,12 @@ Coverage:
 
 Ready routes:
 
-- [Model Selection](curriculum/07-ai-engineering/model-selection/)
-- [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
+- [Model Selection](../curriculum/07-ai-engineering/model-selection/)
+- [AI Evaluation and Experimentation](../curriculum/07-ai-engineering/evaluation/)
 
 Project integration:
 
-- [Knowledge Assistant](projects/knowledge-assistant/)
+- [Knowledge Assistant](../projects/knowledge-assistant/)
 
 ---
 
@@ -253,7 +253,7 @@ Coverage:
 
 Ready route:
 
-- [Deterministic vs Agentic Design](curriculum/08-agents/deterministic-vs-agentic/)
+- [Deterministic vs Agentic Design](../curriculum/08-agents/deterministic-vs-agentic/)
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 
@@ -281,7 +281,7 @@ Coverage:
 
 Project integration:
 
-- later milestones of the [Knowledge Assistant](projects/knowledge-assistant/).
+- later milestones of the [Knowledge Assistant](../projects/knowledge-assistant/).
 
 ---
 
@@ -305,7 +305,7 @@ Coverage:
 
 Ready route:
 
-- [Prompt Injection and Trust Boundaries](curriculum/10-security-governance/prompt-injection/)
+- [Prompt Injection and Trust Boundaries](../curriculum/10-security-governance/prompt-injection/)
 
 These topics extend normal application security; they do not replace it.
 

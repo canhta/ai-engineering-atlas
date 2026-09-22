@@ -1,4 +1,4 @@
-// Deterministic next-step recommendation (web atlas RFC → Phase 2; LEARNING_MODEL.md → AI tutor
+// Deterministic next-step recommendation (web atlas RFC → Phase 2; docs/LEARNING_MODEL.md → AI tutor
 // contract: "recommend a next competency from prerequisites and learner state"). This file is the
 // only place the rules live. The result is advice: it never changes a state, and it reads only
 // recorded states and review dates, never opened sources or self-reported confidence.

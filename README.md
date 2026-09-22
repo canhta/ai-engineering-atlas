@@ -31,8 +31,8 @@ target
 
 ## Use the Atlas
 
-1. [Start here](START_HERE.md) — choose a target, run the baseline scan, create a learner record.
-2. [Roadmap](ROADMAP.md) — browse the audited coverage map.
+1. [Start here](docs/START_HERE.md) — choose a target, run the baseline scan, create a learner record.
+2. [Roadmap](docs/ROADMAP.md) — browse the audited coverage map.
 3. [Applied AI Engineer path](paths/applied-ai-engineer.md) — a reference path for the main audience.
 4. [Curriculum](curriculum/) — enter domains and ready competency routes.
 5. [Projects](projects/) — integrate skills in evolving reference systems.
@@ -72,7 +72,7 @@ This maturity model is intentional: a topic is not presented as a finished lesso
 
 ## Learning design
 
-The full contract is in [LEARNING_MODEL.md](LEARNING_MODEL.md).
+The full contract is in [docs/LEARNING_MODEL.md](docs/LEARNING_MODEL.md).
 
 Key rules:
 
@@ -92,15 +92,15 @@ Read:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [AGENTS.md](AGENTS.md)
-- [CURRICULUM.md](CURRICULUM.md)
-- [VERSIONING.md](VERSIONING.md)
+- [docs/CURRICULUM.md](docs/CURRICULUM.md)
+- [docs/VERSIONING.md](docs/VERSIONING.md)
 - [resources/REVIEW_POLICY.md](resources/REVIEW_POLICY.md)
 
 Run `make check` before a pull request. Substantial curriculum changes should include evidence and use the RFC process.
 
 ## Acknowledgements
 
-The learning design draws on patterns from [OSSU Computer Science](https://github.com/ossu/computer-science), [Microsoft learning repositories](https://github.com/microsoft/ML-For-Beginners), [Made With ML](https://github.com/GokuMohandas/Made-With-ML), [roadmap.sh](https://roadmap.sh/), and the learning research referenced in [LEARNING_MODEL.md](LEARNING_MODEL.md).
+The learning design draws on patterns from [OSSU Computer Science](https://github.com/ossu/computer-science), [Microsoft learning repositories](https://github.com/microsoft/ML-For-Beginners), [Made With ML](https://github.com/GokuMohandas/Made-With-ML), [roadmap.sh](https://roadmap.sh/), and the learning research referenced in [docs/LEARNING_MODEL.md](docs/LEARNING_MODEL.md).
 
 ## License
 

@@ -13,7 +13,7 @@ SKIP_DIRS = {"node_modules", ".git", ".astro", "dist", "worktrees"}
 # Line budgets. Claude Code recommends <200 lines per instruction file; the root
 # file predates this check, so its budget only stops further growth.
 LINE_BUDGETS = {
-    "AGENTS.md": 240,
+    "AGENTS.md": 200,
     "site/AGENTS.md": 150,
     "site/DESIGN.md": 300,
 }

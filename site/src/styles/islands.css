@@ -1698,8 +1698,45 @@
   }
 }
 
-.table-scroll {
+.table-stack {
   overflow-x: auto;
+}
+
+/* Wide tables stack into labelled rows on a phone instead of scrolling sideways
+   (DESIGN.md → Progress). Same pattern as the sources and atlas tables. */
+@media (width < 768px) {
+  .table-stack {
+    overflow-x: visible;
+  }
+
+  .evidence-table thead {
+    display: none;
+  }
+
+  .evidence-table tr,
+  .evidence-table td {
+    display: block;
+  }
+
+  .evidence-table tr {
+    padding: var(--space-4) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .evidence-table td {
+    padding: 0 0 var(--space-3);
+    border: 0;
+  }
+
+  .evidence-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: var(--space-1);
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    font-weight: 550;
+    color: var(--ink-muted);
+  }
 }
 
 .progress-view > h2 {

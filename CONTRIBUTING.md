@@ -4,8 +4,8 @@ Contributions are welcome while the curriculum is being built.
 
 Before contributing to curriculum or learning content, read:
 
-1. [LEARNING_MODEL.md](LEARNING_MODEL.md)
-2. [CURRICULUM.md](CURRICULUM.md)
+1. [docs/LEARNING_MODEL.md](docs/LEARNING_MODEL.md)
+2. [docs/CURRICULUM.md](docs/CURRICULUM.md)
 3. [curriculum/catalog.yaml](curriculum/catalog.yaml)
 4. [AGENTS.md](AGENTS.md) if using an AI assistant
 
@@ -151,7 +151,7 @@ make check
 
 before opening a PR.
 
-For curriculum release semantics, see [VERSIONING.md](VERSIONING.md).
+For curriculum release semantics, see [docs/VERSIONING.md](docs/VERSIONING.md).
 
 ## Writing and layout
 

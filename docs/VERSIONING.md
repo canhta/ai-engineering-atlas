@@ -12,7 +12,7 @@ Use semantic-style versions:
 MAJOR.MINOR.PATCH
 ```
 
-The current version is recorded in [curriculum/manifest.yaml](curriculum/manifest.yaml).
+The current version is recorded in [curriculum/manifest.yaml](../curriculum/manifest.yaml).
 
 ## MAJOR
 
@@ -67,7 +67,7 @@ Replacing a book, lecture, or article should normally be a MINOR or PATCH change
 Before publishing a curriculum release:
 
 1. `make check` is green;
-2. [curriculum/STATUS.md](curriculum/STATUS.md) matches the catalog;
+2. [curriculum/STATUS.md](../curriculum/STATUS.md) matches the catalog;
 3. ready-route sources are within their review intervals;
 4. CHANGELOG entries describe learner-facing changes;
 5. migrations are documented if evidence/progress semantics changed;

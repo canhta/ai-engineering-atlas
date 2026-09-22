@@ -20,7 +20,7 @@ Your target affects depth and ordering. It does not change what a competency mea
 
 ## 2. Run the baseline scan
 
-Use [assessments/baseline.md](assessments/baseline.md).
+Use [assessments/baseline.md](../assessments/baseline.md).
 
 The scan is intentionally broad. Its job is not to produce a score. Its job is to answer:
 
@@ -32,8 +32,8 @@ For strong areas, move directly to competency diagnostics. For weak areas, start
 
 If you want to track progress in Git:
 
-1. copy [progress/profile.example.yaml](progress/profile.example.yaml) to a file in your fork;
-2. copy [progress/progress.example.yaml](progress/progress.example.yaml);
+1. copy [progress/profile.example.yaml](../progress/profile.example.yaml) to a file in your fork;
+2. copy [progress/progress.example.yaml](../progress/progress.example.yaml);
 3. record evidence, not hours watched.
 
 The core states are:
@@ -42,7 +42,7 @@ The core states are:
 unassessed → gap → learning → demonstrated → transferred → retained → applied
 ```
 
-See [progress/README.md](progress/README.md).
+See [progress/README.md](../progress/README.md).
 
 ## 4. Pick one gap
 
@@ -57,9 +57,9 @@ Prefer:
 - tool retry semantics;
 - prompt-injection boundaries.
 
-Browse the human-readable [Roadmap](ROADMAP.md) first. Check [Curriculum Status](curriculum/STATUS.md) to see which topics currently have complete learning routes.
+Browse the human-readable [Roadmap](ROADMAP.md) first. Check [Curriculum Status](../curriculum/STATUS.md) to see which topics currently have complete learning routes.
 
-The machine-readable [competency catalog](curriculum/catalog.yaml) provides stable IDs for progress/tooling, but learners should not need to browse raw YAML to choose what to study.
+The machine-readable [competency catalog](../curriculum/catalog.yaml) provides stable IDs for progress/tooling, but learners should not need to browse raw YAML to choose what to study.
 
 Coverage nodes are part of the audited roadmap but may not yet have a complete learning route. If a ready route depends on one of those coverage-only prerequisites, the route provides a **prerequisite bridge**: a quick diagnostic plus a precise source section for patching only the blocking gap.
 
@@ -79,7 +79,7 @@ The source is there to build the missing mental model. Consuming the source is n
 
 ## 6. Produce evidence
 
-Use [assessments/evidence-rubric.md](assessments/evidence-rubric.md).
+Use [assessments/evidence-rubric.md](../assessments/evidence-rubric.md).
 
 Good evidence is inspectable:
 
@@ -99,8 +99,8 @@ Confidence alone is not evidence.
 
 Two reference projects carry competencies across multiple domains:
 
-- [Tiny Transformer](projects/tiny-transformer/) — model internals and inference foundations;
-- [Knowledge Assistant](projects/knowledge-assistant/) — retrieval, evaluation, agents, and production engineering.
+- [Tiny Transformer](../projects/tiny-transformer/) — model internals and inference foundations;
+- [Knowledge Assistant](../projects/knowledge-assistant/) — retrieval, evaluation, agents, and production engineering.
 
 These projects evolve over time. They are not tutorials to copy line by line.
 
@@ -119,7 +119,7 @@ A passing exit test today is "demonstrated." It is not automatically "retained" 
 
 ## 9. Review the learning cycle
 
-After a meaningful cluster of work — several related competencies, a major project milestone, or roughly 6-12 weeks — run a [portfolio review](assessments/portfolio-review.md).
+After a meaningful cluster of work — several related competencies, a major project milestone, or roughly 6-12 weeks — run a [portfolio review](../assessments/portfolio-review.md).
 
 Use it to decide:
 

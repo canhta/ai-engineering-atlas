@@ -6,7 +6,7 @@ Curriculum changes are tracked separately from routine documentation and reposit
 
 ### Added
 
-- Learner onboarding in [START_HERE.md](START_HERE.md).
+- Learner onboarding in [docs/START_HERE.md](docs/START_HERE.md).
 - Broad baseline scan, evidence rubric, and periodic portfolio review.
 - Learner progress/profile format and schema.
 - Applied AI Engineer reference path.

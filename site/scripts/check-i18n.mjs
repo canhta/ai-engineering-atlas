@@ -1,6 +1,6 @@
 // Every UI string key exists, non-empty, in every language, with the same {params};
 // Vietnamese values stay within 1.3 × the English length + 12 characters and follow the
-// mechanical rules of VIETNAMESE_STYLE.md (UI strings and every vi value in the content model).
+// mechanical rules of docs/VIETNAMESE_STYLE.md (UI strings and every vi value in the content model).
 import { readdirSync, readFileSync } from "node:fs";
 
 const dir = new URL("../src/i18n/", import.meta.url);
@@ -25,7 +25,7 @@ for (const [lang, dict] of Object.entries(dicts)) {
   }
 }
 
-// VIETNAMESE_STYLE.md → Checks. Word rules match whole words, case-insensitively.
+// docs/VIETNAMESE_STYLE.md → Checks. Word rules match whole words, case-insensitively.
 const viRules = [
   [/\s[.,:;?!)\]”]/u, "space before punctuation"],
   [/,\s+(và|hoặc)(?![\p{L}])/u, "comma before và/hoặc"],
@@ -52,4 +52,4 @@ if (errors.length) {
   for (const e of errors) console.error(`- ${e}`);
   process.exit(1);
 }
-console.log(`OK: ${Object.keys(reference).length} UI strings present in ${Object.keys(dicts).join(", ")}; ${viValues.length} vi values follow VIETNAMESE_STYLE.md`);
+console.log(`OK: ${Object.keys(reference).length} UI strings present in ${Object.keys(dicts).join(", ")}; ${viValues.length} vi values follow docs/VIETNAMESE_STYLE.md`);

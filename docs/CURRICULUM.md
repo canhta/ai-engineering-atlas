@@ -8,11 +8,11 @@ The learning lifecycle is defined in [LEARNING_MODEL.md](LEARNING_MODEL.md).
 
 ### 1. Domain manifest
 
-[curriculum/manifest.yaml](curriculum/manifest.yaml) defines the broad domains and default depth.
+[curriculum/manifest.yaml](../curriculum/manifest.yaml) defines the broad domains and default depth.
 
 ### 2. Competency catalog
 
-[curriculum/catalog.yaml](curriculum/catalog.yaml) is the canonical registry of stable competency IDs.
+[curriculum/catalog.yaml](../curriculum/catalog.yaml) is the canonical registry of stable competency IDs.
 
 A catalog item may be:
 
@@ -51,7 +51,7 @@ It should define:
 
 ### 4. Resource registry
 
-[resources/](resources/) identifies external sources.
+[resources/](../resources/) identifies external sources.
 
 The exact chapter, lecture, assignment, or documentation locator belongs in the competency route.
 
@@ -98,4 +98,4 @@ Use a curriculum RFC when proposing:
 
 Resource replacements normally do not require a curriculum change unless they alter what the learner is expected to know or do.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [rfcs/0000-template.md](rfcs/0000-template.md).
+See [CONTRIBUTING.md](../CONTRIBUTING.md) and [rfcs/0000-template.md](../rfcs/0000-template.md).

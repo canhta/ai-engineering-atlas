@@ -49,7 +49,7 @@ export const icons = {
   importFile: UploadSimpleIcon,
   run: PlayIcon,
   stop: StopIcon,
-  // Learner states (LEARNING_MODEL.md), each paired with a text label
+  // Learner states (docs/LEARNING_MODEL.md), each paired with a text label
   unassessed: CircleDashedIcon,
   gap: CircleHalfIcon,
   learning: CircleHalfIcon,

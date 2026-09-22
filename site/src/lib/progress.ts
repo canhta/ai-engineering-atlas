@@ -1,4 +1,4 @@
-// Learner progress: state transitions backed by evidence (LEARNING_MODEL.md, progress/README.md).
+// Learner progress: state transitions backed by evidence (docs/LEARNING_MODEL.md, progress/README.md).
 // Pure functions over the progress.yaml v2 shape (schemas/progress.schema.json); storage lives in
 // progress-store.ts. A state changes only when an evidence item is recorded.
 import { parse, stringify } from "yaml";

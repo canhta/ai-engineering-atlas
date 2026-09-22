@@ -89,7 +89,7 @@ def render():
         "",
         "## Promotion rule",
         "",
-        "A coverage item becomes ready only when it satisfies the contract in [../LEARNING_MODEL.md](../LEARNING_MODEL.md), including:",
+        "A coverage item becomes ready only when it satisfies the contract in [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md), including:",
         "",
         "- diagnostic;",
         "- verified source locator;",

@@ -81,7 +81,7 @@ Repository facts that shape the design:
 
 1. **The repository stays the source of truth.** The site reads YAML at build time and never holds curriculum content of its own. No lesson text is written for the site.
 2. **Maturity is visible.** `coverage` nodes render as "mapped, no route yet" with no route page. Only `ready` (and `seeded`, if used) nodes get a learning page.
-3. **Progress follows LEARNING_MODEL.md.** State changes need an evidence record; reading a source never changes state. Self-reported evidence is labelled `review_method: self`.
+3. **Progress follows ../docs/LEARNING_MODEL.md.** State changes need an evidence record; reading a source never changes state. Self-reported evidence is labelled `review_method: self`.
 4. **Progress is portable.** Browser state imports and exports `progress.yaml` that validates against `schemas/progress.schema.json`.
 5. **Drift fails CI.** The site data build runs in `make check`.
 

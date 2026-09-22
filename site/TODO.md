@@ -58,13 +58,13 @@ Last updated: 2026-09-22
 - [x] Milestone 2: the plate (`src/components/plate/`) in overview, explore, and progress modes; Home, Atlas (plate, list, filters, drawer with `?item=`, `?ready=1`, `?group=`), and Progress rebuilt on it; mobile Playwright project
 - [x] Milestone 3: seven distinguishable learner states (fill and hue per state), one bridge wording, capture at 390/1440 over home, atlas, drawer, progress, and route, and tests for the states surfaces must handle (unknown `?item=`, empty review queue, import errors, storage blocked, JavaScript off, reduced motion)
 - [ ] Owner review of the live survey-plate redesign and the Vietnamese wording
-- [ ] Before-hydration pass: Atlas filters and the field log are disabled until hydration; decide whether the Atlas plate should also work without JavaScript (tiles as `?item=` links that open a server-rendered drawer)
+- [x] Before-hydration pass: controls are disabled until hydration. The Atlas drawer stays a JavaScript surface; Home, Progress, ready rows, and route pages work without it (DESIGN.md → states)
 
 ### Phase 1 follow-ups
 
 - [ ] Graph view (React Flow + ELK), or retire it: the plate now draws declared prerequisite lines on hover and focus (owner decision)
 - [x] Remember the language choice: `/` opens the language of the last page viewed
-- [ ] Scroll hint for wide tables on mobile: sources and atlas tables stack into labelled rows; the Progress evidence table still scrolls sideways
+- [x] Wide tables stack into labelled rows on mobile: sources, atlas, and the Progress evidence table
 - [x] Home ready-route rows wrap unevenly at 375px (rebuilt in milestone 2)
 - [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)
 
@@ -105,7 +105,7 @@ Last updated: 2026-09-22
 
 ### Harness upkeep
 
-- [ ] Root `AGENTS.md` is 232 lines (Claude recommends <200); prune in a separate change
+- [x] Root `AGENTS.md` pruned to 175 lines; the budget in `validate_agent_docs.py` is now 200
 - [ ] Owner decision on updating the global `writing-for-agents` skill (differences listed in the agent-harness research)
 
 ## Owner decisions still open

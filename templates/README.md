@@ -7,7 +7,7 @@ They are **authoring aids**, not requirements to create every possible file.
 Before using them:
 
 1. verify the competency exists in [../curriculum/catalog.yaml](../curriculum/catalog.yaml);
-2. read [../LEARNING_MODEL.md](../LEARNING_MODEL.md);
+2. read [../docs/LEARNING_MODEL.md](../docs/LEARNING_MODEL.md);
 3. inspect the two ready examples:
    - [Self-Attention](../curriculum/06-llm-foundations/self-attention/)
    - [AI Evaluation](../curriculum/07-ai-engineering/evaluation/)

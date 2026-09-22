@@ -148,7 +148,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           </a>
         </div>
       ) : (
-        <div className="table-scroll" role="region" tabIndex={0} aria-label={t("progress.withEvidence")}>
+        <div className="table-stack" role="region" tabIndex={0} aria-label={t("progress.withEvidence")}>
           <table className="evidence-table">
             <thead>
               <tr>
@@ -164,13 +164,19 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
               {entries.map(([ref, entry]) => (
                 <tr key={ref}>
                   <td>{link(ref)}</td>
-                  <td>
+                  <td data-label={t("log.state")}>
                     <StateBadge state={entry.current_state} label={stateLabels[entry.current_state]} />
                   </td>
-                  <td>{stateLabels[entry.target_state]}</td>
-                  <td className="tabular">{entry.evidence.length}</td>
-                  <td className="tabular">{dateCell(entry.evidence.at(-1)?.recorded_at, "")}</td>
-                  <td className="tabular">{dateCell(entry.review_on, "—")}</td>
+                  <td data-label={t("log.target")}>{stateLabels[entry.target_state]}</td>
+                  <td className="tabular" data-label={t("progress.col.evidence")}>
+                    {entry.evidence.length}
+                  </td>
+                  <td className="tabular" data-label={t("progress.col.last")}>
+                    {dateCell(entry.evidence.at(-1)?.recorded_at, "")}
+                  </td>
+                  <td className="tabular" data-label={t("log.nextReview")}>
+                    {dateCell(entry.review_on, "—")}
+                  </td>
                 </tr>
               ))}
             </tbody>

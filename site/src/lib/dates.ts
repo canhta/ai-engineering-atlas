@@ -1,4 +1,4 @@
-// Dates shown to learners (VIETNAMESE_STYLE.md → Punctuation and numbers): the page locale's
+// Dates shown to learners (docs/VIETNAMESE_STYLE.md → Punctuation and numbers): the page locale's
 // format through Intl, never by hand. Vietnamese pages read dd/mm/yyyy; English pages "Jan 1, 2026".
 // Files keep ISO dates (progress.yaml); render them inside <time dateTime={iso}>.
 import type { Lang } from "../i18n";

@@ -2,7 +2,7 @@
 
 AI is a learning and maintenance assistant for this repository. It is not an authority that defines the curriculum.
 
-The detailed learning contract lives in [LEARNING_MODEL.md](LEARNING_MODEL.md). Agent implementation rules live in [AGENTS.md](AGENTS.md).
+The detailed learning contract lives in [LEARNING_MODEL.md](LEARNING_MODEL.md). Agent implementation rules live in [AGENTS.md](../AGENTS.md).
 
 ## AI may
 
