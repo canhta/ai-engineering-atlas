@@ -1,0 +1,30 @@
+id: project.knowledge-assistant
+title: Knowledge Assistant
+spines: [ai-system, production]
+purpose: "Evolve one evidence-driven knowledge system from baseline search to reliable operation."
+milestones:
+  - product-frame
+  - lexical-baseline
+  - vector-retrieval
+  - hybrid-and-reranking
+  - rag
+  - evaluation-harness
+  - data-lifecycle
+  - tool-or-agent-workflow
+  - service-and-observability
+  - release-gate
+  - security-failure-work
+  - incident-and-feedback
+competencies:
+  - ai.evaluation
+evidence:
+  - product-brief
+  - baseline-results
+  - versioned-eval-set
+  - experiment-results
+  - decision-records
+  - traces
+  - security-tests
+  - release-decision
+  - incident-analysis
+  - regression-tests
