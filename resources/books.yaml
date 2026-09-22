@@ -8,6 +8,7 @@ resources:
     covers: [deep-learning, math-foundations]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 365
 
   - id: book.raschka-llm-from-scratch
     type: book
@@ -18,6 +19,7 @@ resources:
     covers: [llm-foundations, llm.self-attention]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 365
 
   - id: book.chip-huyen-ai-engineering
     type: book
@@ -28,6 +30,7 @@ resources:
     covers: [ai.evaluation, model-selection, retrieval, agents, production-ai]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 365
 
   - id: book.designing-ml-systems
     type: book
@@ -38,3 +41,4 @@ resources:
     covers: [ml-systems, production-ai]
     source_verified: true
     last_checked: 2026-09-22
+    review_interval_days: 365
