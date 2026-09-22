@@ -1,0 +1,20 @@
+---
+// Pages of other collections whose items have blocks (projects today), same sheet renderer.
+import ItemSheet from "../../../../components/sheet/ItemSheet.astro";
+import { languages, type Lang } from "../../../../i18n";
+import { collections, pagedItems, pageSegment } from "../../../../lib/atlas";
+
+export function getStaticPaths() {
+  const langs = Object.keys(languages) as Lang[];
+  return collections
+    .filter((c) => !c.page_when)
+    .flatMap((c) => pagedItems(c).map((item) => ({ c, item })))
+    .flatMap(({ c, item }) =>
+      langs.map((lang) => ({ params: { lang, collection: pageSegment(c), id: item.id }, props: { collection: c, item } })),
+    );
+}
+
+const { collection, item } = Astro.props;
+---
+
+<ItemSheet collection={collection} item={item} lang={Astro.params.lang as Lang} />

@@ -1,7 +1,8 @@
 ---
-// Renders a Carbon icon as static SVG (no client JavaScript). Decorative by default:
+// Renders a registry icon as static SVG (no client JavaScript). Decorative:
 // every icon sits next to a text label (DESIGN.md → Icons).
-import { icons, type IconName } from "../lib/icons";
+import { Icon } from "./react/Icon";
+import type { IconName } from "../lib/icons";
 
 interface Props {
   name: IconName;
@@ -9,7 +10,6 @@ interface Props {
 }
 
 const { name, size = 16 } = Astro.props;
-const Component = icons[name];
 ---
 
-<Component size={size} aria-hidden="true" focusable="false" className="icon" />
+<Icon name={name} size={size} />

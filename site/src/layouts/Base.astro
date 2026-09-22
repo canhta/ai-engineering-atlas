@@ -1,27 +1,33 @@
 ---
+// Global frame (DESIGN.md → Global frame): floating pill nav, full-screen menu on mobile, footer.
 import { Font } from "astro:assets";
 import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/islands.css";
+import Icon from "../components/Icon.astro";
+import DueCount from "../components/react/DueCount";
 import { languages, useTranslations, type Lang } from "../i18n";
+import { site, text } from "../lib/atlas";
 import { homeUrl, mapUrl, progressUrl, switchLang } from "../lib/urls";
-import { REPO_URL } from "../lib/atlas";
 
 interface Props {
   lang: Lang;
   title?: string;
   description?: string;
+  /** Section of the site this page belongs to, for the active tab. */
+  section?: "atlas" | "progress";
 }
 
-const { lang, title, description } = Astro.props;
+const { lang, title, description, section } = Astro.props;
 const t = useTranslations(lang);
-const pageTitle = title ? `${title} · ${t("site.name")}` : t("site.name");
+const siteTitle = text(site.title, lang).value;
+const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const path = Astro.url.pathname;
-const navItems = [
-  { href: homeUrl(lang), label: t("nav.home") },
-  { href: mapUrl(lang), label: t("nav.map") },
-  { href: progressUrl(lang), label: t("nav.progress") },
-];
+const tabs = [
+  { id: "atlas", href: mapUrl(lang), label: t("nav.atlas") },
+  { id: "progress", href: progressUrl(lang), label: t("nav.progress") },
+] as const;
+const langs = Object.entries(languages) as [Lang, string][];
 ---
 
 <!doctype html>
@@ -30,125 +36,408 @@ const navItems = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
-    <meta name="description" content={description ?? t("site.tagline")} />
-    {
-      (Object.keys(languages) as Lang[]).map((l) => (
-        <link rel="alternate" hreflang={l} href={new URL(switchLang(path, l), Astro.site)} />
-      ))
-    }
-    <Font cssVariable="--font-sans" preload={[{ subset: "latin", weight: 400 }]} />
-    <Font cssVariable="--font-serif" />
+    <meta name="description" content={description ?? text(site.tagline, lang).value} />
+    {langs.map(([l]) => <link rel="alternate" hreflang={l} href={new URL(switchLang(path, l), Astro.site)} />)}
+    <Font cssVariable="--font-sans" preload={[{ subset: "latin" }]} />
+    <Font cssVariable="--font-reading" />
     <Font cssVariable="--font-mono" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container bar">
-        <nav aria-label={t("nav.label")}>
-          <ul>
-            {
-              navItems.map((item) => (
-                <li>
-                  <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
-                    {item.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-        <p class="lang-switch" aria-label={t("lang.label")}>
+    <a class="skip-link" href="#main">{t("nav.skip")}</a>
+    <header class="nav-wrap">
+      <nav class="nav" aria-label={t("nav.label")}>
+        <a class="wordmark" href={homeUrl(lang)}>{siteTitle}</a>
+        <ul class="nav-tabs">
           {
-            (Object.entries(languages) as [Lang, string][]).map(([l, name], i) => (
-              <>
-                {i > 0 && <span aria-hidden="true"> · </span>}
+            tabs.map((tab) => (
+              <li>
+                <a class="nav-tab" href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
+                  {tab.label}
+                  {tab.id === "progress" && <DueCount client:idle lang={lang} />}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <ul class="nav-langs" aria-label={t("lang.label")}>
+          {
+            langs.map(([l, name]) => (
+              <li>
                 {l === lang ? (
-                  <span aria-current="true">{name}</span>
+                  <span class="nav-lang" aria-current="true" lang={l}>
+                    {name}
+                  </span>
                 ) : (
-                  <a href={switchLang(path, l)} hreflang={l} lang={l}>
+                  <a class="nav-lang" href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
                     {name}
                   </a>
                 )}
-              </>
+              </li>
             ))
           }
-        </p>
-      </div>
+        </ul>
+        <button class="menu-button" type="button" aria-haspopup="dialog" aria-controls="site-menu" data-menu-open>
+          {t("nav.menu")}
+          <Icon name="menu" />
+        </button>
+      </nav>
     </header>
-    <main class="container">
+
+    <dialog class="menu" id="site-menu" aria-label={t("nav.label")}>
+      <div class="menu-head">
+        <a class="wordmark" href={homeUrl(lang)}>{siteTitle}</a>
+        <button class="menu-button menu-close" type="button" data-menu-close>
+          {t("nav.close")}
+          <Icon name="close" />
+        </button>
+      </div>
+      <ul class="menu-links">
+        <li style="--i: 0">
+          <a href={homeUrl(lang)} aria-current={path === homeUrl(lang) ? "page" : undefined}>{t("nav.home")}</a>
+        </li>
+        {
+          tabs.map((tab, i) => (
+            <li style={`--i: ${i + 1}`}>
+              <a href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
+                {tab.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="menu-langs" aria-label={t("lang.label")} style={`--i: ${tabs.length + 1}`}>
+        {
+          langs.map(([l, name]) => (
+            <li>
+              {l === lang ? (
+                <span aria-current="true" lang={l}>
+                  {name}
+                </span>
+              ) : (
+                <a href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
+                  {name}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </dialog>
+
+    <main id="main" class="page">
       <slot />
     </main>
-    <footer class="site-footer">
-      <div class="container bar">
-        <a href={REPO_URL}>{t("footer.source")}</a>
-        <span class="muted">{t("footer.license")}</span>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <p class="footer-title">{siteTitle}</p>
+        <ul>
+          <li><a href={site.repository}>{t("footer.repository")}</a></li>
+          <li>{t("footer.license")}</li>
+        </ul>
       </div>
     </footer>
+
+    <script>
+      // Menu overlay: a modal <dialog> makes the page inert (focus stays inside) and closes on Esc.
+      const menu = document.querySelector<HTMLDialogElement>("#site-menu");
+      const opener = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+      opener?.addEventListener("click", () => menu?.showModal());
+      document.querySelector("[data-menu-close]")?.addEventListener("click", () => menu?.close());
+      menu?.addEventListener("close", () => opener?.focus());
+      menu?.addEventListener("click", (event) => {
+        if (event.target === menu) menu.close();
+      });
+
+      // Remember the language the learner reads in; `/` uses it (src/pages/index.astro).
+      const remember = (lang: string) => {
+        try {
+          localStorage.setItem("atlas.lang", lang);
+        } catch {
+          // Storage unavailable: `/` falls back to English.
+        }
+      };
+      remember(document.documentElement.lang);
+      for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-lang-choice]")) {
+        link.addEventListener("click", () => remember(link.dataset.langChoice ?? "en"));
+      }
+    </script>
   </body>
 </html>
 
 <style>
-  .container {
-    max-width: 72rem;
-    margin: 0 auto;
+  .skip-link {
+    position: absolute;
+    left: var(--space-4);
+    top: calc(-1 * var(--space-16));
+    z-index: 30;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--sheet);
+    color: var(--ink);
+  }
+
+  .skip-link:focus {
+    top: var(--space-4);
+  }
+
+  .nav-wrap {
+    position: sticky;
+    top: var(--nav-offset);
+    z-index: 20;
     padding: 0 var(--space-4);
+    margin-top: var(--nav-offset);
   }
 
-  main.container {
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-12);
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    max-width: var(--nav-max);
+    min-height: var(--nav-height);
+    margin: 0 auto;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--glass);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    box-shadow: var(--shadow-float);
   }
 
-  .bar {
+  .wordmark {
+    font-weight: 700;
+    font-variation-settings: "wdth" var(--wdth-display);
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-tabs {
+    flex: 1;
+  }
+
+  .nav-tab,
+  .nav-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-pill);
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color var(--duration-control) var(--ease);
+  }
+
+  .nav-tab:hover,
+  .nav-lang:is(a):hover {
+    color: var(--ink);
+  }
+
+  .nav-tab[aria-current="page"] {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--route);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.5em;
+  }
+
+  .nav-lang[aria-current] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .menu-button {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.5rem;
+    margin-left: auto;
+    padding: 0 var(--space-4);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--sheet);
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  @media (width < 768px) {
+    .nav-wrap {
+      padding: 0 var(--space-2);
+    }
+
+    .nav {
+      padding-left: var(--space-5);
+    }
+
+    .nav-tabs,
+    .nav-langs {
+      display: none !important;
+    }
+
+    .menu-button {
+      display: inline-flex;
+    }
+  }
+
+  .menu {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    border: 0;
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  .menu[open] {
+    animation: menu-in var(--duration-sheet) var(--ease);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .menu::backdrop {
+    background: var(--scrim);
+  }
+
+  .menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--nav-height);
+  }
+
+  .menu-close {
+    display: inline-flex;
+  }
+
+  .menu-links {
+    margin: var(--space-12) 0 var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+
+  .menu-links li,
+  .menu-langs {
+    opacity: 0;
+    transform: translateY(var(--space-8));
+    transition:
+      opacity var(--duration-sheet) var(--ease),
+      transform var(--duration-sheet) var(--ease);
+    transition-delay: calc(var(--i) * 60ms);
+  }
+
+  .menu[open] .menu-links li,
+  .menu[open] .menu-langs {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    .menu[open] .menu-links li,
+    .menu[open] .menu-langs {
+      opacity: 0;
+      transform: translateY(var(--space-8));
+    }
+  }
+
+  .menu-links a {
+    display: block;
+    padding: var(--space-2) 0;
+    font-size: var(--text-display-s);
+    font-weight: 700;
+    font-variation-settings: "wdth" var(--wdth-display);
+    line-height: var(--leading-display);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .menu-links a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-color: var(--route);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.2em;
+  }
+
+  .menu-langs {
+    display: flex;
+    gap: var(--space-6);
+    margin: 0;
+    padding: var(--space-6) 0 0;
+    border-top: var(--border-width) solid var(--line);
+    list-style: none;
+  }
+
+  .menu-langs a,
+  .menu-langs span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+
+  .menu-langs [aria-current] {
+    font-weight: 600;
+  }
+
+  .page {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-12) var(--gutter) var(--space-24);
+  }
+
+  @media (width < 768px) {
+    .page {
+      padding: var(--space-8) var(--space-4) var(--space-16);
+    }
+  }
+
+  .footer {
+    border-top: var(--border-width) solid var(--line);
+    color: var(--ink-muted);
+    font-size: var(--text-small);
+  }
+
+  .footer-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-3);
-    min-height: 3rem;
-  }
-
-  .site-header {
-    border-bottom: var(--border-width) solid var(--border);
-    background: var(--bg-subtle);
-  }
-
-  .site-header ul {
-    display: flex;
     gap: var(--space-4);
-    list-style: none;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-8) var(--gutter) var(--space-12);
+  }
+
+  .footer-title {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .footer ul {
+    display: flex;
+    gap: var(--space-6);
     margin: 0;
     padding: 0;
-  }
-
-  .site-header a {
-    color: var(--text);
-    text-decoration: none;
-    display: inline-block;
-    padding: var(--space-1) 0;
-    min-height: var(--target-min);
-  }
-
-  .site-header a:hover,
-  .site-header a[aria-current="page"] {
-    text-decoration: underline;
-  }
-
-  nav a[aria-current="page"] {
-    font-weight: 600;
-  }
-
-  .lang-switch {
-    margin: 0;
-    color: var(--text-muted);
-  }
-
-  .lang-switch [aria-current] {
-    color: var(--text);
-  }
-
-  .site-footer {
-    border-top: var(--border-width) solid var(--border);
-    color: var(--text-muted);
-    font-size: var(--text-small);
+    list-style: none;
   }
 </style>

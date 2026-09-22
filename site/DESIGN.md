@@ -61,7 +61,7 @@ desktop ≥ 1024                                                  mobile < 768
  learning modern AI engineering.
  Diagnose first, read the exact source, prove it with evidence.        one muted line
  ( Find your starting point  (↗) )    How the atlas works              pill CTA → /map/?ready=1
- legend   ⬚ mapped   □ ready   ◧ gap or learning   ■ demonstrated or beyond
+ legend   ⬚ mapped   □ ready   ◧ gap   ◧ learning   ■ demonstrated or beyond
 ╭───────────────────────────────────── plate ──────────────────────────────────────╮
 │ Software engineering    Systems             Data engineering    ML foundations   │
 │ ⬚⬚⬚⬚⬚⬚⬚⬚                ⬚⬚⬚⬚⬚⬚⬚⬚⬚           ⬚⬚⬚⬚⬚⬚              ⬚⬚⬚⬚⬚⬚⬚⬚⬚        │
@@ -80,22 +80,28 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 ### The plate: one component, three modes
 
 - Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in the wide display width, sentence case, with "N ready of M".
-- Tiles: one per item, in content order. Encoding uses shape and fill, never colour alone:
-  - mapped (no page): dotted outline, no fill;
-  - ready, unassessed: ink outline;
-  - gap or learning: half fill;
-  - demonstrated: full fill;
-  - transferred, retained, applied: full fill with the state's icon.
-- Desktop: hovering or focusing a tile draws its declared prerequisite lines (from `relations`) and shows a title tooltip. Selecting opens the drawer (Map) or goes to the Map with the drawer open (Home).
-- Modes: `overview` (Home), `explore` (Map; filters dim non-matching tiles), `progress` (Progress; fill by learner state).
-- Accessibility: each tile is a button named "<title>, <status>, your state: <state>"; arrow keys move within a region, Tab moves between regions; the list view is the full equivalent.
+- Tiles: one per item, in content order. Every state has its own fill or icon and its own hue; colour is never the only cue:
+
+  | State | Tile | Hue token |
+  |---|---|---|
+  | mapped (no page) | dotted outline, no fill | `line-strong` |
+  | ready, unassessed | ink outline | `ink` |
+  | gap | half fill | `state-gap` (amber) |
+  | learning | three-quarter fill | `state-learning` (blue) |
+  | demonstrated | full fill | `state-demonstrated` (green) |
+  | transferred, retained, applied | full fill with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
+
+- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`.
+- Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) and shows a title tooltip (hidden from assistive tech; the tile's name carries the title). Below 1024 there are no lines.
+- Modes: `overview` (Home) and `progress` (Progress): tiles are links to `/map/?item=<id>`, so they work without JavaScript; mapped tiles recede in progress mode but stay clickable. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles.
+- Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); arrow keys move within a region, Tab moves between regions; the list view is the full equivalent.
 
 ### Atlas
 
 ```text
  Atlas                                                        [ Plate | List ]
  116 competencies in 12 domains. Select one to see why it matters and where to start.
- [ Search… ]  Status ▾  Level ▾  Your state ▾  Project ▾     Showing 19 of 116   Clear
+ [ Search… ]  Level ▾  Your state ▾  Project ▾  [ ] Ready routes only   Showing 19 of 116   Clear
  legend
  ╭──────────── plate (explore) ──────────────╮ ╭─ drawer, 40%, over the dimmed plate ─╮
  │                                            │ │ AI engineering / Tool calling      ✕ │
@@ -113,6 +119,8 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 
 - List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
+- Filters: the collection's facets, except the page condition field, which is the "Ready routes only" toggle (`?ready=1`); your state; one facet per related collection (projects).
+- URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
 - Mobile: filters behind "Filters (n)" opening a sheet; the drawer is a full-screen sheet; the URL keeps `?item=`.
 - Empty filter result: "No competency matches these filters." and Clear filters.
 
@@ -121,9 +129,9 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 ```text
  Atlas / AI engineering / Tool calling                                      breadcrumb
  Tool Calling                                                               display
- Tool-enabled AI systems cross a boundary from model suggestions …          first text block as subtitle, 20–22px
+ Tool-enabled AI systems cross a boundary from model suggestions …          first text block as a lead, 20px (18px mobile), ink-muted, ≤ 60ch
  (L3 deep engineering) (engineering skill) (system operation)    View contract ↗   Copy link
- Not feeling ready? Needs ■ AI evaluation and ⬚ API design (a bridge is on this page)
+ Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
 ┌ rail 220 ──────────┬ content, reading column ≤ 68ch ─────────┬ field log 320, sticky ──┐
 │ Outcomes           │ blocks in content order                 │ ╭─ double bezel ───────╮ │
 │ 1 Diagnostic    ◧  │                                         │ │ Your state   ◧ gap   │ │
@@ -161,7 +169,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 
 ### States every surface handles
 
-Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works for the session and says so once); import errors listed inline; Phase 2 signed out ("Sign in to use AI help").
+Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home and Progress tiles, ready rows, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").
 
 ## Visual system
 
@@ -173,9 +181,9 @@ Before hydration (controls disabled, no learner state drawn); empty; filtered to
 | `sheet` | raised surfaces: plate core, drawer, field log core |
 | `ink`, `ink-muted` | text; muted for secondary text |
 | `line` | hairlines and contour strokes: translucent ink, not flat grey |
-| `route` | magenta: ready tiles, selection ring, primary action |
+| `route` | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
 | `water` | teal: links |
-| `state-gap`, `state-demonstrated`, `state-beyond` | amber, green, a magenta shade; always with shape and label |
+| `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied` | one hue per learner state (see The plate); always with shape and label |
 
 `pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
 
@@ -200,7 +208,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 ### Motion
 
 - Easing `cubic-bezier(0.32, 0.72, 0, 1)`; 180ms for controls, 450ms for the drawer and sheets.
-- One orchestrated moment: on first view of the Home plate, tiles settle region by region (700ms total at most). Sections do not fade in on scroll.
+- One orchestrated moment: on every Home load, plate regions settle in order (CSS only, 700ms total at most, no session script). Sections do not fade in on scroll.
 - Other motion answers an action: the drawer slides, disclosures open, the selection ring grows.
 - `prefers-reduced-motion`: every transition is instant and the plate appears at once.
 - Animate only `transform` and `opacity`. Blur only on the floating nav and overlays.

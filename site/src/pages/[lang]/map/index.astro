@@ -1,35 +1,34 @@
 ---
+// Atlas (DESIGN.md → Atlas): plate and list over the tracked collection, filters, and the drawer.
 import Base from "../../../layouts/Base.astro";
-import MapExplorer, { type MapGroup } from "../../../components/react/MapExplorer";
+import AtlasExplorer from "../../../components/react/AtlasExplorer";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
-import { competencies, competency, domains, projects, routes } from "../../../lib/atlas";
+import { site, stateLabels, text, trackedCollection as c } from "../../../lib/atlas";
+import { facets, itemDetails, listColumns, plateRegions, relatedFacets } from "../../../lib/summaries";
+import { mapUrl } from "../../../lib/urls";
 
 export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const groups: MapGroup[] = domains.map((d) => ({
-  id: d.id,
-  title: d.title,
-  items: competencies
-    .filter((c) => c.domain === d.id)
-    .map((c) => ({
-      id: c.id,
-      title: c.title,
-      ready: Boolean(routes[c.id]),
-      level: routes[c.id]?.target_level ?? "",
-      prerequisites: (routes[c.id]?.prerequisites ?? []).map((p) => ({
-        id: p,
-        title: competency(p)?.title ?? p,
-        ready: Boolean(routes[p]),
-      })),
-    })),
-}));
-const projectFilters = projects.map((p) => ({ id: p.id, title: p.title, competencies: p.competencies }));
+const regions = plateRegions(lang);
+const total = regions.reduce((n, r) => n + r.tiles.length, 0);
 ---
 
-<Base lang={lang} title={t("map.title")}>
-  <h1>{t("map.title")}</h1>
-  <p class="reading">{t("map.intro")}</p>
-  <MapExplorer client:load lang={lang} groups={groups} projects={projectFilters} />
+<Base lang={lang} title={t("map.title")} section="atlas">
+  <AtlasExplorer
+    client:load
+    lang={lang}
+    title={t("map.title")}
+    intro={t("map.intro", { count: total, groups: regions.length })}
+    atlasUrl={mapUrl(lang)}
+    contributeUrl={`${site.repository}/blob/main/CONTRIBUTING.md`}
+    regions={regions}
+    details={itemDetails(lang)}
+    facets={facets(lang)}
+    relatedFacets={relatedFacets(lang)}
+    itemLabel={text(c.label, lang).value}
+    listColumns={listColumns(lang)}
+    stateLabels={stateLabels(lang)}
+  />
 </Base>

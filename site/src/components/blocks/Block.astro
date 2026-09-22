@@ -1,0 +1,65 @@
+---
+// Block registry (rfcs/0000-content-model.md → Blocks): one component per block type; an
+// unknown type renders as `data`, so content never disappears silently.
+import type { Lang } from "../../i18n";
+import { BLOCK_TYPES, resolveResource, text, type Block, type Localized } from "../../lib/atlas";
+import type { TargetState } from "../../lib/progress";
+import Diagnostic, { type NextLink } from "../react/Diagnostic";
+import SourceTable from "../react/SourceTable";
+import DataBlock from "./DataBlock.astro";
+import ListBlock from "./ListBlock.astro";
+import PracticeBlock from "./PracticeBlock.astro";
+import PrerequisitesBlock from "./PrerequisitesBlock.astro";
+import TextBlock from "./TextBlock.astro";
+
+interface Props {
+  block: Block;
+  lang: Lang;
+  itemRef: string;
+  /** Learner target for tracked items; undefined when the collection does not track progress. */
+  target?: TargetState;
+  /** Following blocks, for the diagnostic's next-step links. */
+  after: Block[];
+  headingId: string;
+}
+
+const { block, lang, itemRef, target, after, headingId } = Astro.props;
+const known = (BLOCK_TYPES as readonly string[]).includes(block.type);
+const link = (b: Block | undefined): NextLink | undefined => (b ? { id: b.id, title: text(b.title, lang) } : undefined);
+const sourceRows =
+  block.type === "sources"
+    ? block.rows.map((row) => ({
+        ...resolveResource(row.resource),
+        key: `${itemRef}#${block.id}#${row.resource}`,
+        locator: text(row.locator, lang),
+        purpose: text(row.purpose, lang),
+      }))
+    : [];
+const tasks: Localized[] = block.type === "diagnostic" ? block.tasks.map((prompt) => text(prompt, lang)) : [];
+---
+
+{block.type === "text" && <TextBlock block={block} lang={lang} />}
+{block.type === "list" && <ListBlock block={block} lang={lang} />}
+{block.type === "prerequisites" && <PrerequisitesBlock block={block} lang={lang} />}
+{block.type === "practice" && <PracticeBlock block={block} lang={lang} />}
+{block.type === "sources" && <SourceTable client:load lang={lang} labelledBy={headingId} rows={sourceRows} />}
+{
+  block.type === "diagnostic" &&
+    (target ? (
+      <Diagnostic
+        client:load
+        lang={lang}
+        itemRef={itemRef}
+        target={target}
+        tasks={tasks}
+        passCondition={text(block.pass_condition, lang)}
+        next={{
+          gap: link(after.find((b) => b.type === "sources")),
+          meets: link(after.find((b) => b.type === "practice")),
+        }}
+      />
+    ) : (
+      <ListBlock block={{ ...block, type: "list", items: block.tasks, ordered: true }} lang={lang} />
+    ))
+}
+{(block.type === "data" || !known) && <DataBlock value={"value" in block ? block.value : block} lang={lang} />}

@@ -1,18 +1,19 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import ProgressDashboard from "../../../components/react/ProgressDashboard";
+import ProgressView from "../../../components/react/ProgressView";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
-import { competencies, readyCompetencies } from "../../../lib/atlas";
+import { stateLabels } from "../../../lib/atlas";
+import { itemDetails, plateRegions } from "../../../lib/summaries";
+import { mapUrl } from "../../../lib/urls";
 
 export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const titles = Object.fromEntries(competencies.map((c) => [c.id, c.title]));
 ---
 
-<Base lang={lang} title={t("progress.title")}>
-  <h1>{t("progress.title")}</h1>
-  <p class="reading">{t("progress.intro")}</p>
-  <ProgressDashboard client:load lang={lang} titles={titles} readyIds={readyCompetencies.map((c) => c.id)} />
+<Base lang={lang} title={t("progress.title")} section="progress">
+  <h1 class="display">{t("progress.title")}</h1>
+  <p class="lead">{t("progress.intro")}</p>
+  <ProgressView client:load lang={lang} atlasUrl={mapUrl(lang)} regions={plateRegions(lang)} details={itemDetails(lang)} stateLabels={stateLabels(lang)} />
 </Base>

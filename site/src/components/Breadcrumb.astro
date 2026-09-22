@@ -1,0 +1,71 @@
+---
+// Breadcrumb for deep pages (DESIGN.md → Information architecture). The last crumb is the page.
+import { useTranslations, type Lang } from "../i18n";
+
+export interface Crumb {
+  label: string;
+  href?: string;
+  lang?: string;
+}
+
+interface Props {
+  lang: Lang;
+  crumbs: Crumb[];
+}
+
+const { lang, crumbs } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav class="breadcrumb" aria-label={t("nav.breadcrumb")}>
+  <ol>
+    {
+      crumbs.map((c, i) => (
+        <li>
+          {i === crumbs.length - 1 ? (
+            <span aria-current="page" lang={c.lang}>
+              {c.label}
+            </span>
+          ) : c.href ? (
+            <a href={c.href} lang={c.lang}>
+              {c.label}
+            </a>
+          ) : (
+            <span lang={c.lang}>{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 0;
+    margin: 0 0 var(--space-6);
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .breadcrumb li:not(:last-child)::after {
+    content: "/";
+    margin: 0 var(--space-2);
+    color: var(--line-strong);
+  }
+
+  .breadcrumb a {
+    color: var(--ink-muted);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--ink);
+  }
+
+  .breadcrumb [aria-current] {
+    color: var(--ink);
+  }
+</style>
