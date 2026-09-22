@@ -1,0 +1,20 @@
+resources:
+  - id: visual.jay-alammar-illustrated-transformer
+    type: visual
+    title: The Illustrated Transformer
+    author: Jay Alammar
+    url: https://jalammar.github.io/illustrated-transformer/
+    roles: [visual]
+    covers: [llm.self-attention, transformers]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: visual.3blue1brown-attention
+    type: visual
+    title: Attention in Transformers, Step-by-Step
+    author: 3Blue1Brown
+    url: https://www.3blue1brown.com/lessons/attention/
+    roles: [visual]
+    covers: [llm.self-attention]
+    source_verified: true
+    last_checked: 2026-09-22
