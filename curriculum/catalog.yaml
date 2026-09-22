@@ -94,8 +94,8 @@ competencies:
   # Agents
   - {id: agents.fundamentals, title: Agent Fundamentals, domain: agents, status: coverage}
   - {id: agents.deterministic-vs-agentic, title: Deterministic vs Agentic Design, domain: agents, status: ready, route: curriculum/08-agents/deterministic-vs-agentic}
-  - {id: agents.state, title: Agent State, domain: agents, status: coverage}
-  - {id: agents.memory, title: Agent Memory, domain: agents, status: coverage}
+  - {id: agents.state, title: Agent State, domain: agents, status: ready, route: curriculum/08-agents/state}
+  - {id: agents.memory, title: Agent Memory, domain: agents, status: ready, route: curriculum/08-agents/memory}
   - {id: agents.planning, title: Planning, domain: agents, status: coverage}
   - {id: agents.verification, title: Verification, domain: agents, status: coverage}
   - {id: agents.multi-agent, title: Multi-Agent Systems, domain: agents, status: coverage}
