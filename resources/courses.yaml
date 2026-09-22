@@ -1,0 +1,27 @@
+resources:
+  - id: course.mit-6s191
+    type: course
+    title: MIT Introduction to Deep Learning
+    url: https://introtodeeplearning.com/
+    roles: [primary, visual]
+    covers: [deep-learning]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: course.stanford-cs336
+    type: course
+    title: Stanford CS336 — Language Modeling From Scratch
+    url: https://cs336.stanford.edu/
+    roles: [reference, specialization]
+    covers: [llm-systems, language-model-training]
+    source_verified: true
+    last_checked: 2026-09-22
+
+  - id: course.huggingface-llm
+    type: course
+    title: Hugging Face LLM Course
+    url: https://huggingface.co/learn/llm-course/
+    roles: [reference, practice]
+    covers: [transformers, open-source-models]
+    source_verified: true
+    last_checked: 2026-09-22
