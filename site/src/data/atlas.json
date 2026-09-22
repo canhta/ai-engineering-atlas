@@ -6481,6 +6481,12 @@
                   "en": "verification-loop"
                 },
                 {
+                  "en": "long-running-runtime"
+                },
+                {
+                  "en": "orchestrated-flow"
+                },
+                {
                   "en": "service-and-observability"
                 },
                 {
@@ -6550,6 +6556,12 @@
                 },
                 {
                   "en": "verification-experiment"
+                },
+                {
+                  "en": "long-running-experiment"
+                },
+                {
+                  "en": "orchestration-experiment"
                 },
                 {
                   "en": "decision-records"
@@ -6689,7 +6701,17 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "agents.long-running"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "agents.memory"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "agents.orchestration"
     },
     {
       "type": "member",
