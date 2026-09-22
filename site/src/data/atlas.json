@@ -7,7 +7,7 @@
     },
     "tagline": {
       "en": "A gap-driven roadmap for software engineers learning modern AI engineering.",
-      "vi": "Lộ trình theo khoảng trống năng lực cho kỹ sư phần mềm học AI engineering hiện đại."
+      "vi": "Lộ trình AI engineering cho kỹ sư phần mềm, học đúng phần mình còn thiếu."
     },
     "repository": "https://github.com/canhta/ai-engineering-atlas"
   },
@@ -34,21 +34,21 @@
       "data-engineering": {
         "label": {
           "en": "Data Engineering",
-          "vi": "Kỹ thuật dữ liệu"
+          "vi": "Data engineering"
         },
         "order": 2
       },
       "ml-foundations": {
         "label": {
           "en": "ML Foundations",
-          "vi": "Nền tảng học máy"
+          "vi": "Nền tảng ML"
         },
         "order": 3
       },
       "deep-learning": {
         "label": {
           "en": "Deep Learning",
-          "vi": "Học sâu"
+          "vi": "Deep learning"
         },
         "order": 4
       },
@@ -62,7 +62,7 @@
       "ai-engineering": {
         "label": {
           "en": "AI Engineering",
-          "vi": "Kỹ thuật AI"
+          "vi": "AI engineering"
         },
         "order": 6
       },
@@ -76,14 +76,14 @@
       "production-ai": {
         "label": {
           "en": "Production AI",
-          "vi": "AI trong production"
+          "vi": "AI trên production"
         },
         "order": 8
       },
       "security-governance": {
         "label": {
           "en": "Security & Governance",
-          "vi": "Bảo mật và quản trị"
+          "vi": "Bảo mật & quản trị"
         },
         "order": 9
       },
@@ -97,7 +97,7 @@
       "specializations": {
         "label": {
           "en": "Specializations",
-          "vi": "Chuyên sâu"
+          "vi": "Chuyên ngành"
         },
         "order": 11
       }
@@ -113,28 +113,28 @@
       "L1": {
         "label": {
           "en": "working knowledge",
-          "vi": "kiến thức làm việc"
+          "vi": "biết dùng"
         },
         "order": 1
       },
       "L2": {
         "label": {
           "en": "practical competence",
-          "vi": "năng lực thực hành"
+          "vi": "làm được"
         },
         "order": 2
       },
       "L3": {
         "label": {
           "en": "deep engineering competence",
-          "vi": "năng lực kỹ thuật chuyên sâu"
+          "vi": "hiểu sâu"
         },
         "order": 3
       },
       "L4": {
         "label": {
           "en": "specialist depth",
-          "vi": "chuyên sâu chuyên gia"
+          "vi": "chuyên gia"
         },
         "order": 4
       }
@@ -143,14 +143,14 @@
       "ready": {
         "label": {
           "en": "ready",
-          "vi": "sẵn sàng"
+          "vi": "có lộ trình"
         },
         "order": 0
       },
       "coverage": {
         "label": {
           "en": "mapped, no route",
-          "vi": "đã lập bản đồ, chưa có lộ trình"
+          "vi": "chưa có lộ trình"
         },
         "order": 1
       }
@@ -187,14 +187,14 @@
       "design-judgment": {
         "label": {
           "en": "design judgment",
-          "vi": "phán đoán thiết kế"
+          "vi": "quyết định thiết kế"
         },
         "order": 4
       },
       "production-competency": {
         "label": {
           "en": "production competency",
-          "vi": "năng lực vận hành production"
+          "vi": "vận hành production"
         },
         "order": 5
       }
@@ -210,7 +210,7 @@
       "gap": {
         "label": {
           "en": "gap",
-          "vi": "còn khoảng trống"
+          "vi": "còn thiếu"
         },
         "order": 1
       },
@@ -224,28 +224,28 @@
       "demonstrated": {
         "label": {
           "en": "demonstrated",
-          "vi": "đã chứng minh"
+          "vi": "đã làm được"
         },
         "order": 3
       },
       "transferred": {
         "label": {
           "en": "transferred",
-          "vi": "đã chuyển giao"
+          "vi": "vận dụng được"
         },
         "order": 4
       },
       "retained": {
         "label": {
           "en": "retained",
-          "vi": "đã ghi nhớ"
+          "vi": "nhớ lâu"
         },
         "order": 5
       },
       "applied": {
         "label": {
           "en": "applied",
-          "vi": "đã áp dụng"
+          "vi": "dùng trong dự án"
         },
         "order": 6
       }
@@ -256,7 +256,7 @@
       "id": "competencies",
       "label": {
         "en": "Competencies",
-        "vi": "Năng lực"
+        "vi": "Kỹ năng"
       },
       "fields": {
         "domain": {
@@ -269,21 +269,21 @@
         "status": {
           "label": {
             "en": "Status",
-            "vi": "Trạng thái"
+            "vi": "Tình trạng"
           },
           "vocabulary": "status"
         },
         "target_level": {
           "label": {
             "en": "Target level",
-            "vi": "Cấp độ mục tiêu"
+            "vi": "Mức mục tiêu"
           },
           "vocabulary": "level"
         },
         "competency_types": {
           "label": {
             "en": "Capability type",
-            "vi": "Loại năng lực"
+            "vi": "Loại kỹ năng"
           },
           "vocabulary": "competency_type"
         },
@@ -320,20 +320,20 @@
       "id": "labs",
       "label": {
         "en": "Labs",
-        "vi": "Bài lab"
+        "vi": "Lab"
       },
       "ref_prefix": "lab",
       "fields": {
         "path": {
           "label": {
             "en": "Repository path",
-            "vi": "Đường dẫn trong repository"
+            "vi": "Đường dẫn repo"
           }
         },
         "files": {
           "label": {
             "en": "Files",
-            "vi": "Tệp"
+            "vi": "File"
           }
         }
       }
@@ -349,13 +349,13 @@
         "path": {
           "label": {
             "en": "Repository path",
-            "vi": "Đường dẫn trong repository"
+            "vi": "Đường dẫn repo"
           }
         },
         "spines": {
           "label": {
             "en": "Spines",
-            "vi": "Trục dự án"
+            "vi": "Nhóm"
           }
         }
       }
@@ -371,7 +371,7 @@
         "path": {
           "label": {
             "en": "Repository path",
-            "vi": "Đường dẫn trong repository"
+            "vi": "Đường dẫn repo"
           }
         }
       }
@@ -805,7 +805,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Understand and debug the information-mixing mechanism used by transformer models, including its masking and sequence-length costs."
@@ -816,7 +816,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -871,7 +871,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -900,7 +900,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -929,7 +929,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -949,7 +949,7 @@
               "id": "visual",
               "title": {
                 "en": "Visual explanation",
-                "vi": "Giải thích trực quan"
+                "vi": "Minh họa trực quan"
               },
               "step": true,
               "rows": [
@@ -1021,7 +1021,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -1041,7 +1041,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -1068,7 +1068,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -1174,7 +1174,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "AI features fail when teams jump from a vague user pain to a model or framework without defining the job, simplest baseline, constraints, success evidence, and acceptable failure behavior."
@@ -1185,7 +1185,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": []
             },
@@ -1194,7 +1194,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -1220,7 +1220,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -1243,7 +1243,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -1311,7 +1311,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -1328,7 +1328,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -1355,7 +1355,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -1391,7 +1391,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Select a model from task-specific evidence and product constraints rather than popularity, one benchmark, or maximum capability."
@@ -1402,7 +1402,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -1430,7 +1430,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -1459,7 +1459,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -1485,7 +1485,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -1544,7 +1544,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -1561,7 +1561,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -1588,7 +1588,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -1635,7 +1635,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Model behavior depends on the full inference context, not only prompt wording. Useful systems must select, organize, trim, retrieve, and compact instructions, examples, external data, tool information, history, and state under a finite attention budget."
@@ -1646,7 +1646,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -1674,7 +1674,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -1706,7 +1706,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -1729,7 +1729,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -1797,7 +1797,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -1820,7 +1820,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -1847,7 +1847,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -1884,7 +1884,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Downstream systems need predictable contracts, but valid JSON or schema-conforming output does not guarantee semantic correctness. Engineers must design response schemas, handle refusal and incomplete states, validate business invariants deterministically, and version the contract safely."
@@ -1895,7 +1895,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -1908,7 +1908,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -1943,7 +1943,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -1966,7 +1966,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -2043,7 +2043,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -2066,7 +2066,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -2096,7 +2096,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -2134,7 +2134,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Tool-enabled AI systems cross a boundary from model suggestions into real application behavior. Engineers must design clear tool contracts, validate model-generated arguments, enforce policy in deterministic code, handle failures and retries safely, shape tool results for context, and evaluate raw tool traces rather than only final answers."
@@ -2145,7 +2145,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -2173,7 +2173,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -2211,7 +2211,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -2237,7 +2237,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -2332,7 +2332,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -2361,7 +2361,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -2391,7 +2391,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -2429,7 +2429,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Embeddings make semantic retrieval possible, but useful systems depend on query/document task fit, similarity behavior, model choice, normalization, domain mismatch, and measured comparison against simpler retrieval."
@@ -2440,7 +2440,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -2468,7 +2468,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -2494,7 +2494,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -2520,7 +2520,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -2597,7 +2597,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -2617,7 +2617,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -2644,7 +2644,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -2681,7 +2681,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Retrieval systems need a measurable baseline before semantic search, RAG, reranking, or agents can be justified. Engineers must be able to represent queries and documents, rank results, evaluate relevance, and diagnose lexical failure modes."
@@ -2692,7 +2692,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -2705,7 +2705,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -2731,7 +2731,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -2754,7 +2754,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -2822,7 +2822,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -2839,7 +2839,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -2866,7 +2866,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -2913,7 +2913,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Chunk boundaries determine what a retriever can find and what evidence reaches generation. Treating chunking as a framework default can hide boundary loss, duplicated context, broad noisy chunks, and corpus-structure mismatch."
@@ -2924,7 +2924,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -2943,7 +2943,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -2969,7 +2969,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -2992,7 +2992,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -3060,7 +3060,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -3080,7 +3080,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -3107,7 +3107,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -3154,7 +3154,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "First-stage retrieval is optimized for candidate generation and scale, while a more expensive query-document scorer can improve ordering on a smaller candidate set. Reranking only helps if the needed evidence was retrieved in the first place and the quality gain justifies added latency and cost."
@@ -3165,7 +3165,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -3181,7 +3181,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -3207,7 +3207,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -3230,7 +3230,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -3298,7 +3298,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -3318,7 +3318,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -3345,7 +3345,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -3403,7 +3403,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "End-to-end answer quality can hide whether a RAG system failed at retrieval, context selection, generation, or evaluation itself. Reliable iteration requires component evidence, failure attribution, evaluator provenance, and regression cases."
@@ -3414,7 +3414,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -3430,7 +3430,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -3456,7 +3456,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -3479,7 +3479,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -3556,7 +3556,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -3576,7 +3576,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -3606,7 +3606,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -3654,7 +3654,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "AI system changes are difficult to reason about without repeatable evidence for quality, failures, variance, latency, and cost."
@@ -3665,7 +3665,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -3705,7 +3705,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -3740,7 +3740,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -3766,7 +3766,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -3834,7 +3834,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -3854,7 +3854,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -3881,7 +3881,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -3929,7 +3929,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "A reliable AI system must decide when evidence is sufficient to answer and when it should abstain, fall back, or escalate. Useful trust decisions require validated signals, held-out threshold selection, and explicit risk–coverage trade-offs rather than model self-reported confidence alone."
@@ -3940,7 +3940,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -3968,7 +3968,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -4009,7 +4009,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -4035,7 +4035,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -4112,7 +4112,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -4138,7 +4138,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -4177,7 +4177,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -4294,7 +4294,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Add model-directed autonomy only when fixed workflows cannot satisfy the task well enough and the measured benefit justifies the added cost and failure surface."
@@ -4305,7 +4305,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -4348,7 +4348,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -4377,7 +4377,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -4403,7 +4403,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -4462,7 +4462,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -4479,7 +4479,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -4509,7 +4509,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -4547,7 +4547,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Multi-step and interruptible agent workflows need explicit durable execution state so they can resume correctly after failures, avoid duplicated side effects, and project only the state needed for the next model call."
@@ -4558,7 +4558,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -4574,7 +4574,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -4615,7 +4615,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -4641,7 +4641,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -4736,7 +4736,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -4762,7 +4762,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -4801,7 +4801,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -4839,7 +4839,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Cross-session memory can improve continuity and personalization, but uncontrolled retention creates stale facts, harmful recall, privacy and isolation failures, and context noise. Engineers need explicit admission, retrieval, provenance, lifecycle, and evaluation policies."
@@ -4850,7 +4850,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -4869,7 +4869,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -4910,7 +4910,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -4936,7 +4936,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -5031,7 +5031,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -5060,7 +5060,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -5102,7 +5102,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -5139,7 +5139,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Explicit planning is useful when task structure depends on intermediate results, but planner scaffolding should remain inspectable, stateful, revisable, and removable when it does not improve outcomes enough to justify its cost."
@@ -5150,7 +5150,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -5169,7 +5169,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -5213,7 +5213,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -5239,7 +5239,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -5316,7 +5316,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -5339,7 +5339,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -5372,7 +5372,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -5410,7 +5410,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "Agent narration is not proof that a task succeeded. Reliable systems verify real environment state, artifacts, tests, authoritative data, or calibrated judgments and use failed verification to repair, retry, replan, abstain, or escalate."
@@ -5421,7 +5421,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -5452,7 +5452,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -5499,7 +5499,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -5525,7 +5525,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -5620,7 +5620,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -5646,7 +5646,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -5688,7 +5688,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
@@ -5876,7 +5876,7 @@
               "id": "why",
               "title": {
                 "en": "Why",
-                "vi": "Vì sao"
+                "vi": "Vì sao cần học"
               },
               "body": {
                 "en": "LLM inputs can influence model behavior in unintended ways, so privileged actions and data access must remain protected even when the model or external content is adversarially influenced."
@@ -5887,7 +5887,7 @@
               "id": "prerequisites",
               "title": {
                 "en": "Prerequisites",
-                "vi": "Điều kiện tiên quyết"
+                "vi": "Cần biết trước"
               },
               "items": [
                 {
@@ -5942,7 +5942,7 @@
               "id": "outcomes",
               "title": {
                 "en": "Outcomes",
-                "vi": "Kết quả đầu ra"
+                "vi": "Bạn sẽ làm được"
               },
               "items": [
                 {
@@ -5971,7 +5971,7 @@
               "id": "diagnostic",
               "title": {
                 "en": "Diagnostic",
-                "vi": "Chẩn đoán"
+                "vi": "Kiểm tra đầu vào"
               },
               "step": true,
               "tasks": [
@@ -5997,7 +5997,7 @@
               "id": "sources",
               "title": {
                 "en": "Learning route",
-                "vi": "Lộ trình học"
+                "vi": "Tài liệu cần đọc"
               },
               "step": true,
               "rows": [
@@ -6065,7 +6065,7 @@
               "id": "experiments",
               "title": {
                 "en": "Experiments",
-                "vi": "Thí nghiệm"
+                "vi": "Thử nghiệm"
               },
               "items": [
                 {
@@ -6082,7 +6082,7 @@
               "id": "exit-evidence",
               "title": {
                 "en": "Exit evidence",
-                "vi": "Bằng chứng đầu ra"
+                "vi": "Bằng chứng hoàn thành"
               },
               "step": true,
               "items": [
@@ -6109,7 +6109,7 @@
               "id": "transfer",
               "title": {
                 "en": "Transfer",
-                "vi": "Chuyển giao"
+                "vi": "Vận dụng"
               },
               "step": true,
               "body": {
