@@ -8,7 +8,7 @@ The project is deliberately generic: use public technical documentation, a publi
 
 ## Product frame
 
-Before choosing models or a vector database, write a one-page product brief.
+Before choosing models or a vector database, complete the [AI Product and Problem Framing](../../curriculum/07-ai-engineering/product-framing/) route and write a one-page product brief.
 
 ### User
 
@@ -63,9 +63,9 @@ This follows the same discipline as Made With ML's product-first approach: probl
 
 ---
 
-## Milestone 0 — simple baseline
+## Milestone 0 — lexical baseline
 
-Build the simplest useful retrieval baseline.
+Use the [Search and Retrieval](../../curriculum/07-ai-engineering/search-retrieval/) route and build the simplest useful retrieval baseline.
 
 A keyword or lexical search is preferred over starting with RAG.
 
@@ -80,7 +80,7 @@ A keyword or lexical search is preferred over starting with RAG.
 
 ## Milestone 1 — embeddings and vector retrieval
 
-Add embedding-based retrieval.
+Use the [Embeddings for AI Applications](../../curriculum/07-ai-engineering/embeddings/) route and add embedding-based retrieval.
 
 Do not remove the lexical baseline.
 
