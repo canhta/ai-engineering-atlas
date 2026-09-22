@@ -1,7 +1,7 @@
 id: ai.structured-outputs
 title: Structured Outputs
 domain: ai-engineering
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - system-operation
