@@ -73,12 +73,12 @@ competencies:
   - {id: ai.embeddings, title: Embeddings for AI Applications, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/embeddings}
   - {id: retrieval.search, title: Search and Retrieval, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/search-retrieval}
   - {id: retrieval.vector-search, title: Vector Search Internals, domain: ai-engineering, status: coverage}
-  - {id: retrieval.chunking, title: Chunking, domain: ai-engineering, status: coverage}
+  - {id: retrieval.chunking, title: Chunking, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/chunking}
   - {id: retrieval.filtering, title: Retrieval Filtering, domain: ai-engineering, status: coverage}
-  - {id: retrieval.reranking, title: Reranking, domain: ai-engineering, status: coverage}
+  - {id: retrieval.reranking, title: Reranking, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/reranking}
   - {id: retrieval.query-transformation, title: Query Transformation, domain: ai-engineering, status: coverage}
   - {id: retrieval.advanced-rag, title: Advanced RAG Patterns, domain: ai-engineering, status: coverage}
-  - {id: retrieval.rag-evaluation, title: RAG Evaluation, domain: ai-engineering, status: coverage}
+  - {id: retrieval.rag-evaluation, title: RAG Evaluation, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/rag-evaluation}
   - {id: retrieval.data-lifecycle, title: Retrieval Data Lifecycle, domain: ai-engineering, status: coverage}
   - {id: ai.evaluation, title: AI Evaluation and Experimentation, domain: ai-engineering, status: ready, route: curriculum/07-ai-engineering/evaluation}
   - {id: ai.evaluation-reliability, title: Evaluation Reliability and Statistical Discipline, domain: ai-engineering, status: coverage}
