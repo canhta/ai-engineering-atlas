@@ -1,0 +1,121 @@
+id: production.latency
+title: "Latency Engineering"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "AI latency is an end-to-end critical-path problem spanning application work, retrieval, tools, gateway/provider calls, model input/output processing, retries, queueing, and optional streaming. The production skill is to define a user-relevant latency objective, measure distributions and tail behavior, find the dominant path, change one bottleneck, and prove that the improvement does not silently degrade quality or reliability."
+curriculum_evidence:
+  - docs.openai-latency-optimization
+  - docs.otel-genai-metrics
+  - docs.google-sre-slo
+  - docs.google-sre-monitoring
+prerequisites:
+  - production.observability
+  - ai.evaluation
+  - systems.performance-engineering
+prerequisite_support:
+  systems.performance-engineering:
+    diagnostic: "Given a request-latency histogram and a trace, distinguish mean from p50/p95/p99, identify the critical path, and state what evidence is needed before claiming a bottleneck."
+    source: docs.google-sre-monitoring
+    locator: "Sections \"The Four Golden Signals\" and \"Worrying About Your Tail (or, Instrumentation and Performance)\""
+    purpose: "Patch distribution, tail-latency, saturation, and bottleneck reasoning needed for AI latency work without requiring the full Performance Engineering curriculum."
+outcomes:
+  - "Define a latency objective from product and user needs."
+  - "Distinguish end-to-end workflow latency from model or provider operation latency."
+  - "Distinguish time-to-first-chunk from total completion time when streaming exists."
+  - "Inspect p50, p95, p99, or comparable distributions instead of relying on arithmetic mean alone."
+  - "Separate successful-request latency from failed-request latency."
+  - "Identify the request critical path from traces."
+  - "Measure the contribution of retrieval, reranking, tools, gateway, provider/model, retries, and application stages."
+  - "Identify serial model or tool calls that can be removed, combined, or safely parallelized."
+  - "Determine when output generation is a dominant latency driver."
+  - "Determine whether input or context size is materially affecting latency rather than assuming it is."
+  - "Compare smaller or faster model routes against the existing quality contract."
+  - "Distinguish user-perceived latency from total system completion."
+  - "Reason about queueing, load, and saturation when tail latency worsens."
+  - "Preserve timeout, retry, fallback, and correctness behavior while optimizing."
+  - "Design a before-and-after latency experiment on representative requests."
+  - "Report quality and error effects alongside latency distributions."
+  - "Reject an optimization that improves median latency while materially worsening tail latency, errors, or quality."
+  - "Choose a deterministic or non-LLM path when it is the simplest valid latency optimization."
+diagnostic:
+  tasks:
+    - "Given one Knowledge Assistant trace, identify the critical path and the stage worth optimizing first."
+    - "Explain how average latency can improve while p99 user experience gets worse."
+    - "Compare reducing input tokens, reducing output tokens, removing one sequential provider call, and streaming, and state which latency metric each change is expected to affect."
+    - "Design a latency experiment that cannot win by silently reducing answer quality."
+  pass_condition: "Skip introductory material only if the learner can connect product latency objectives, distribution and tail measurements, critical-path analysis, and quality-preserving performance experiments."
+learning_route:
+  mental_model:
+    - source: docs.openai-latency-optimization
+      locator: "Sections \"Seven principles\", \"Generate fewer tokens\", \"Use fewer input tokens\", \"Make fewer requests\", \"Parallelize\", \"Make your users wait less\", and \"Don’t default to an LLM\""
+      purpose: "Establish a practical taxonomy of AI-specific latency levers and the fact that the best lever depends on the measured path and product constraints."
+    - source: docs.otel-genai-metrics
+      locator: "Metrics \"gen_ai.client.operation.duration\", \"gen_ai.client.operation.time_to_first_chunk\", and \"gen_ai.invoke_workflow.duration\""
+      purpose: "Separate provider-operation duration, streaming first-chunk latency, and whole-workflow duration."
+    - source: docs.google-sre-slo
+      locator: "Latency percentile discussion in \"Service Level Objectives\", including the 50th, 95th, and 99th percentile example"
+      purpose: "Ground typical versus tail latency reasoning and define user-relevant objectives with distributions rather than averages."
+    - source: docs.google-sre-monitoring
+      locator: "Sections \"The Four Golden Signals\" and \"Worrying About Your Tail (or, Instrumentation and Performance)\""
+      purpose: "Connect latency to errors, traffic, saturation, histograms, and tail behavior under load."
+  guided_practice:
+    - task: "Take one representative Knowledge Assistant trace, annotate every latency component, mark the serial critical path and safely parallelizable work, then choose the first optimization only after estimating its measured contribution."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/performance-economics/
+      task: "Baseline a representative Knowledge Assistant workload, capture latency distributions and quality evidence, make one targeted performance change, rerun the same workload under comparable conditions, and keep or revert the change from quality, error, and tail-latency evidence."
+experiments:
+  - "Remove or combine one sequential request and measure the end-to-end effect."
+  - "Shorten output while holding the task-quality criteria constant."
+  - "Reduce input or context size and verify whether the measured latency effect is material rather than assumed."
+  - "Parallelize one independent operation and verify correctness and failure behavior."
+  - "Compare a faster or smaller model on a bounded task against the quality gate."
+  - "Increase traffic or concurrency and inspect p95/p99 or comparable tail-latency behavior."
+  - "When streaming exists, separate time-to-first-chunk from full completion time."
+  - "Reject at least one latency optimization because quality, errors, or tail latency regresses."
+exit_evidence:
+  - "A user- or product-relevant latency objective or SLO is explicit."
+  - "The representative workload or request set is versioned or otherwise inspectable."
+  - "Baseline latency includes p50/p95/p99 or a comparable distribution rather than mean alone."
+  - "A critical-path trace identifies the dominant stages."
+  - "Component latency breakdown includes relevant retrieval, tool, gateway, model/provider, retry, and application work."
+  - "Successful and failed request latency are handled separately."
+  - "Time-to-first-chunk is recorded only when the path actually streams."
+  - "One measured bottleneck hypothesis is written before optimization."
+  - "A before-and-after experiment uses the same or comparable workload."
+  - "Quality evidence is compared before and after the optimization."
+  - "Error and reliability effects are compared before and after the optimization."
+  - "Load or concurrency behavior includes a tail-latency observation."
+  - "At least one latency optimization is kept from evidence."
+  - "At least one latency optimization is rejected or reverted from evidence."
+  - "The final decision records the dominant remaining latency constraint."
+transfer:
+  task: "Redesign the latency experiment for a different AI workload with a different user interaction pattern, model/provider path, concurrency profile, and quality constraint."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.openai-latency-optimization
+    - docs.otel-genai-metrics
+    - docs.google-sre-slo
+    - docs.google-sre-monitoring
+  practice:
+    - docs.openai-latency-optimization
+    - docs.google-sre-monitoring
+  production-reference:
+    - docs.otel-genai-metrics
+    - docs.google-sre-slo
+    - docs.google-sre-monitoring
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

@@ -633,3 +633,123 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: docs.openai-latency-optimization
+    type: documentation
+    title: OpenAI — Latency optimization
+    author: OpenAI
+    url: https://developers.openai.com/api/docs/guides/latency-optimization
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.latency
+      - critical-path
+      - request-count
+      - output-latency
+      - parallelism
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.openai-cost-optimization
+    type: documentation
+    title: OpenAI — Cost optimization
+    author: OpenAI
+    url: https://developers.openai.com/api/docs/guides/cost-optimization
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - reference
+    covers:
+      - production.cost
+      - token-cost
+      - request-cost
+      - batch
+      - flex-processing
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 60
+
+  - id: docs.google-sre-slo
+    type: guide
+    title: Google SRE — Service Level Objectives
+    author: Google
+    url: https://sre.google/sre-book/service-level-objectives/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.latency
+      - slo
+      - percentiles
+      - tail-latency
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.google-sre-monitoring
+    type: guide
+    title: Google SRE — Monitoring Distributed Systems
+    author: Google
+    url: https://sre.google/sre-book/monitoring-distributed-systems/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.latency
+      - latency
+      - errors
+      - saturation
+      - tail-latency
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.finops-unit-economics
+    type: guide
+    title: FinOps Framework — Unit Economics
+    author: FinOps Foundation
+    url: https://www.finops.org/framework/capabilities/unit-economics/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - production.cost
+      - unit-economics
+      - cost-per-outcome
+      - cost-efficiency
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180
+
+  - id: docs.finops-allocation
+    type: guide
+    title: FinOps Framework — Allocation
+    author: FinOps Foundation
+    url: https://framework.finops.org/framework/capabilities/allocation/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - production.cost
+      - allocation
+      - shared-cost
+      - attribution
+    source_verified: true
+    last_checked: 2026-09-22
+    review_interval_days: 180

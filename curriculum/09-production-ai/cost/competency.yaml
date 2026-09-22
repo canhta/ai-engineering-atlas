@@ -1,0 +1,111 @@
+id: production.cost
+title: "Cost Engineering"
+domain: production-ai
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "Production AI spend comes from model usage, retrieval, tools, retries, agent loops, shared infrastructure, observability, and background work. Cost engineering connects attributed usage to technical and product unit economics so a change is judged by cost per useful outcome together with quality, latency, and reliability rather than by raw spend or price per token alone."
+curriculum_evidence:
+  - docs.finops-unit-economics
+  - docs.finops-allocation
+  - docs.openai-cost-optimization
+  - docs.otel-genai-metrics
+prerequisites:
+  - production.observability
+  - ai.evaluation
+  - ai.product-framing
+outcomes:
+  - "Define the cost boundary for one AI product or workflow."
+  - "Attribute variable usage to feature, workflow, tenant, model route, or request class."
+  - "Distinguish total spend from unit cost."
+  - "Define at least one technical unit metric such as cost per request, token, or workflow."
+  - "Define one product or business unit metric such as cost per successful answer, task, case, or tenant."
+  - "Account for input, output, cached input, tools, retrieval, retries, and shared service cost when material."
+  - "Distinguish interactive synchronous work from batch or background work with different latency-value trade-offs."
+  - "Identify dominant cost drivers from production usage rather than intuition."
+  - "Compare smaller or cheaper models under the existing quality contract."
+  - "Measure whether reducing tokens or requests actually reduces unit cost."
+  - "Detect runaway agent, tool, or retry amplification as a cost failure."
+  - "Define budget or spend-guardrail behavior for abnormal cost growth."
+  - "Explain when a more expensive request is justified by a higher successful-outcome rate."
+  - "Compare cost changes together with quality and latency."
+  - "Avoid using current provider list prices as the competency itself."
+  - "Make and defend one production optimization decision from unit economics."
+diagnostic:
+  tasks:
+    - "Given total monthly model spend and request count, explain why cost per request may still be a misleading product metric."
+    - "Build a cost equation for one Knowledge Assistant request including provider, retrieval, tool, retry, and shared costs that materially apply."
+    - "Explain how switching to a cheaper model can increase cost per successful task."
+    - "Choose one unit metric for an interactive assistant and a different unit metric for an offline enrichment pipeline."
+  pass_condition: "Skip introductory material only if the learner can attribute meaningful AI cost, define a useful denominator, and evaluate optimization against quality and latency rather than spend alone."
+learning_route:
+  mental_model:
+    - source: docs.finops-unit-economics
+      locator: "Sections \"Definition\" and \"Define Unit Metrics which support Organizational Goals\", including resource-efficiency and business-unit metric examples"
+      purpose: "Move from raw spend to technical and product unit economics that connect technology cost to delivered value."
+    - source: docs.finops-allocation
+      locator: "Sections \"Maintain an allocation strategy\", \"Maintain a tagging & hierarchy strategy\", \"Maintain a shared cost strategy\", and \"Validate allocation compliance\""
+      purpose: "Establish that useful unit economics requires attributable usage and an explicit policy for direct and shared costs."
+    - source: docs.openai-cost-optimization
+      locator: "Sections \"Cost and latency\", \"Batch API\", and \"Flex processing\""
+      purpose: "Inspect concrete AI cost levers and latency-for-cost trade-offs while keeping the transferable model provider-independent."
+    - source: docs.otel-genai-metrics
+      locator: "Metric \"gen_ai.client.token.usage\" plus model/provider attributes used to correlate usage to the request path"
+      purpose: "Connect measured provider usage to request, route, and release identity instead of estimating cost from prompt text alone."
+  guided_practice:
+    - task: "For one Knowledge Assistant workflow, define direct and shared cost categories, one technical unit and one useful-outcome unit, attribute usage by model route and workflow, calculate baseline unit cost, and identify the largest controllable driver."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/performance-economics/
+      task: "Freeze the Knowledge Assistant quality contract, baseline cost per useful outcome, change one cost driver, rerun the same workload, compare cost, quality, latency, and errors, then keep or reject the change."
+experiments:
+  - "Compare total spend, cost per request, and cost per successful answer and explain why they can lead to different decisions."
+  - "Compare two model or routing configurations using cost per successful task rather than price per token alone."
+  - "Reduce one token or request driver and measure the actual unit-cost effect."
+  - "Inject retry or agent-loop amplification and verify the abnormal-spend guardrail or alert."
+  - "Move one latency-insensitive workload to an asynchronous or batch-style path and record the latency/cost trade-off."
+  - "Allocate shared retrieval, gateway, or observability cost when it is material to the workflow."
+  - "Reject at least one cheaper configuration because quality, latency, or reliability violates the product contract."
+exit_evidence:
+  - "The cost boundary states which direct, variable, and shared costs are included."
+  - "Allocation dimensions identify relevant product, feature, workflow, tenant, route, or request classes."
+  - "A technical unit metric is defined and calculated."
+  - "A product or useful-outcome unit metric is defined and calculated."
+  - "Baseline total cost and unit cost are inspectable for the representative workload."
+  - "Provider, model, request, and token or usage breakdown is included where available."
+  - "Retry, tool, and agent-loop amplification is represented in the cost model."
+  - "At least one abnormal-spend budget guardrail or alert is defined and tested."
+  - "A before-and-after optimization experiment uses the same or comparable workload."
+  - "Quality is compared before and after the cost change."
+  - "Latency is compared before and after the cost change."
+  - "Cost per successful outcome is compared before and after the change."
+  - "At least one cost optimization is kept from evidence."
+  - "At least one nominally cheaper configuration is rejected because it violates quality, latency, or reliability constraints."
+  - "The final decision identifies the dominant remaining cost driver."
+transfer:
+  task: "Redesign the unit-economics model for a different AI workload with a different value unit, shared infrastructure mix, traffic shape, and latency tolerance."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.finops-unit-economics
+    - docs.finops-allocation
+    - docs.openai-cost-optimization
+    - docs.otel-genai-metrics
+  practice:
+    - docs.finops-unit-economics
+    - docs.openai-cost-optimization
+  production-reference:
+    - docs.finops-allocation
+    - docs.otel-genai-metrics
+metadata:
+  last_reviewed: 2026-09-22
+  evidence_required: true

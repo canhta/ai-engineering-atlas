@@ -25,6 +25,8 @@ milestones:
   - mcp-interoperability
   - model-gateway-boundary
   - observability-and-replay
+  - latency-engineering
+  - cost-engineering
   - versioned-release-candidate
   - progressive-release-and-rollback
   - security-failure-work
@@ -53,6 +55,8 @@ competencies:
   - agents.mcp
   - production.model-gateway
   - production.observability
+  - production.latency
+  - production.cost
   - production.versioning
   - production.release-engineering
   - security.prompt-injection
@@ -88,6 +92,12 @@ evidence:
   - telemetry-privacy-test
   - diagnostic-replay-record
   - production-overhead-record
+  - latency-objective
+  - latency-baseline
+  - critical-path-record
+  - unit-economics-record
+  - performance-economics-experiment
+  - rejected-optimization-record
   - release-manifest
   - release-manifest-diff
   - alias-resolution-test

@@ -22,6 +22,8 @@ For provider control and production diagnosis, continue with the [Production Bou
 
 For artifact identity, progressive delivery, and rollback drills, continue with the [Release Lifecycle evidence contract](release-lifecycle/). Every evaluation, trace, rollout, and rollback decision should point to a concrete release manifest rather than a mutable environment label.
 
+For latency and unit-economics work, continue with the [Performance & Economics evidence contract](performance-economics/). Reuse the same representative workload, quality/evaluation lineage, traces, and release identity so an optimization cannot win by changing the task.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -477,7 +479,55 @@ Instrument the request path so a production failure can be explained without tre
 
 **Decision:** keep only telemetry that is actionable, privacy-safe, and worth its overhead.
 
-## Milestone 21 — versioned release candidate
+## Milestone 21 — latency engineering
+
+Use the [Latency Engineering](../../curriculum/09-production-ai/latency/) route and the [Performance & Economics evidence contract](performance-economics/).
+
+Measure the existing Knowledge Assistant path before optimizing it.
+
+**Evidence:**
+
+- product/user latency objective;
+- representative workload;
+- p50/p95/p99 or comparable latency distribution;
+- critical-path trace;
+- component-latency breakdown;
+- success/error latency treatment;
+- TTFC only when streaming applies;
+- measured bottleneck hypothesis;
+- before/after optimization;
+- quality and error comparison;
+- load/tail observation;
+- one optimization kept;
+- one optimization rejected or reverted.
+
+**Decision:** keep only the change that improves the declared latency objective without violating quality, error, or tail-latency constraints.
+
+## Milestone 22 — cost engineering
+
+Use the [Cost Engineering](../../curriculum/09-production-ai/cost/) route and continue in the same [Performance & Economics evidence contract](performance-economics/).
+
+Optimize the cost of useful behavior rather than raw provider spend.
+
+**Evidence:**
+
+- cost boundary;
+- allocation dimensions;
+- direct/variable/shared cost inventory;
+- technical unit metric;
+- product/useful-outcome unit metric;
+- baseline total and unit cost;
+- provider/model/request/token or usage breakdown where available;
+- retry/tool/agent amplification treatment;
+- abnormal-spend guardrail;
+- before/after optimization;
+- quality/latency/cost-per-successful-outcome comparison;
+- one cost optimization kept;
+- one nominally cheaper configuration rejected.
+
+**Decision:** keep the configuration with better unit economics under the quality, latency, and reliability contract rather than the lowest nominal price.
+
+## Milestone 23 — versioned release candidate
 
 Use the [Model Prompt and Retrieval Versioning](../../curriculum/09-production-ai/versioning/) route and the [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -502,7 +552,7 @@ Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, 
 
 **Decision:** keep only identity fields that make evaluation, incident diagnosis, replay, and rollback more precise; avoid redundant version metadata that does not change behavior.
 
-## Milestone 22 — progressive release and rollback
+## Milestone 24 — progressive release and rollback
 
 Use the [AI Release Engineering](../../curriculum/09-production-ai/release-engineering/) route and continue in the same [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -525,7 +575,7 @@ Release a concrete candidate manifest, not a moving alias.
 
 **Decision:** promote, pause, abort, roll back, or simplify the rollout process from evidence rather than deployment completion alone.
 
-## Milestone 23 — security failure work
+## Milestone 25 — security failure work
 
 Test realistic trust-boundary failures.
 
@@ -538,7 +588,7 @@ At minimum consider:
 
 Mitigations should live outside the model prompt when the control requires real authorization or isolation.
 
-## Milestone 24 — incident and feedback loop
+## Milestone 26 — incident and feedback loop
 
 Inject or analyze one failure:
 

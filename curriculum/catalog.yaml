@@ -248,8 +248,20 @@ competencies:
     }
   - { id: production.caching, title: AI Caching, domain: production-ai, status: coverage }
   - { id: production.streaming, title: Streaming, domain: production-ai, status: coverage }
-  - { id: production.cost, title: Cost Engineering, domain: production-ai, status: coverage }
-  - { id: production.latency, title: Latency Engineering, domain: production-ai, status: coverage }
+  - {
+      id: production.cost,
+      title: Cost Engineering,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/cost,
+    }
+  - {
+      id: production.latency,
+      title: Latency Engineering,
+      domain: production-ai,
+      status: ready,
+      route: curriculum/09-production-ai/latency,
+    }
   - {
       id: production.observability,
       title: AI Observability and Request Replay,

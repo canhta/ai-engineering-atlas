@@ -7358,7 +7358,326 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/cost",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "Production AI spend comes from model usage, retrieval, tools, retries, agent loops, shared infrastructure, observability, and background work. Cost engineering connects attributed usage to technical and product unit economics so a change is judged by cost per useful outcome together with quality, latency, and reliability rather than by raw spend or price per token alone."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "ai.product-framing"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define the cost boundary for one AI product or workflow."
+                },
+                {
+                  "en": "Attribute variable usage to feature, workflow, tenant, model route, or request class."
+                },
+                {
+                  "en": "Distinguish total spend from unit cost."
+                },
+                {
+                  "en": "Define at least one technical unit metric such as cost per request, token, or workflow."
+                },
+                {
+                  "en": "Define one product or business unit metric such as cost per successful answer, task, case, or tenant."
+                },
+                {
+                  "en": "Account for input, output, cached input, tools, retrieval, retries, and shared service cost when material."
+                },
+                {
+                  "en": "Distinguish interactive synchronous work from batch or background work with different latency-value trade-offs."
+                },
+                {
+                  "en": "Identify dominant cost drivers from production usage rather than intuition."
+                },
+                {
+                  "en": "Compare smaller or cheaper models under the existing quality contract."
+                },
+                {
+                  "en": "Measure whether reducing tokens or requests actually reduces unit cost."
+                },
+                {
+                  "en": "Detect runaway agent, tool, or retry amplification as a cost failure."
+                },
+                {
+                  "en": "Define budget or spend-guardrail behavior for abnormal cost growth."
+                },
+                {
+                  "en": "Explain when a more expensive request is justified by a higher successful-outcome rate."
+                },
+                {
+                  "en": "Compare cost changes together with quality and latency."
+                },
+                {
+                  "en": "Avoid using current provider list prices as the competency itself."
+                },
+                {
+                  "en": "Make and defend one production optimization decision from unit economics."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given total monthly model spend and request count, explain why cost per request may still be a misleading product metric."
+                },
+                {
+                  "en": "Build a cost equation for one Knowledge Assistant request including provider, retrieval, tool, retry, and shared costs that materially apply."
+                },
+                {
+                  "en": "Explain how switching to a cheaper model can increase cost per successful task."
+                },
+                {
+                  "en": "Choose one unit metric for an interactive assistant and a different unit metric for an offline enrichment pipeline."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can attribute meaningful AI cost, define a useful denominator, and evaluate optimization against quality and latency rather than spend alone."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.finops-unit-economics",
+                  "locator": {
+                    "en": "Sections \"Definition\" and \"Define Unit Metrics which support Organizational Goals\", including resource-efficiency and business-unit metric examples"
+                  },
+                  "purpose": {
+                    "en": "Move from raw spend to technical and product unit economics that connect technology cost to delivered value."
+                  }
+                },
+                {
+                  "resource": "docs.finops-allocation",
+                  "locator": {
+                    "en": "Sections \"Maintain an allocation strategy\", \"Maintain a tagging & hierarchy strategy\", \"Maintain a shared cost strategy\", and \"Validate allocation compliance\""
+                  },
+                  "purpose": {
+                    "en": "Establish that useful unit economics requires attributable usage and an explicit policy for direct and shared costs."
+                  }
+                },
+                {
+                  "resource": "docs.openai-cost-optimization",
+                  "locator": {
+                    "en": "Sections \"Cost and latency\", \"Batch API\", and \"Flex processing\""
+                  },
+                  "purpose": {
+                    "en": "Inspect concrete AI cost levers and latency-for-cost trade-offs while keeping the transferable model provider-independent."
+                  }
+                },
+                {
+                  "resource": "docs.otel-genai-metrics",
+                  "locator": {
+                    "en": "Metric \"gen_ai.client.token.usage\" plus model/provider attributes used to correlate usage to the request path"
+                  },
+                  "purpose": {
+                    "en": "Connect measured provider usage to request, route, and release identity instead of estimating cost from prompt text alone."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "For one Knowledge Assistant workflow, define direct and shared cost categories, one technical unit and one useful-outcome unit, attribute usage by model route and workflow, calculate baseline unit cost, and identify the largest controllable driver."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Freeze the Knowledge Assistant quality contract, baseline cost per useful outcome, change one cost driver, rerun the same workload, compare cost, quality, latency, and errors, then keep or reject the change."
+                      },
+                      "path": "projects/knowledge-assistant/performance-economics/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Compare total spend, cost per request, and cost per successful answer and explain why they can lead to different decisions."
+                },
+                {
+                  "en": "Compare two model or routing configurations using cost per successful task rather than price per token alone."
+                },
+                {
+                  "en": "Reduce one token or request driver and measure the actual unit-cost effect."
+                },
+                {
+                  "en": "Inject retry or agent-loop amplification and verify the abnormal-spend guardrail or alert."
+                },
+                {
+                  "en": "Move one latency-insensitive workload to an asynchronous or batch-style path and record the latency/cost trade-off."
+                },
+                {
+                  "en": "Allocate shared retrieval, gateway, or observability cost when it is material to the workflow."
+                },
+                {
+                  "en": "Reject at least one cheaper configuration because quality, latency, or reliability violates the product contract."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "The cost boundary states which direct, variable, and shared costs are included."
+                },
+                {
+                  "en": "Allocation dimensions identify relevant product, feature, workflow, tenant, route, or request classes."
+                },
+                {
+                  "en": "A technical unit metric is defined and calculated."
+                },
+                {
+                  "en": "A product or useful-outcome unit metric is defined and calculated."
+                },
+                {
+                  "en": "Baseline total cost and unit cost are inspectable for the representative workload."
+                },
+                {
+                  "en": "Provider, model, request, and token or usage breakdown is included where available."
+                },
+                {
+                  "en": "Retry, tool, and agent-loop amplification is represented in the cost model."
+                },
+                {
+                  "en": "At least one abnormal-spend budget guardrail or alert is defined and tested."
+                },
+                {
+                  "en": "A before-and-after optimization experiment uses the same or comparable workload."
+                },
+                {
+                  "en": "Quality is compared before and after the cost change."
+                },
+                {
+                  "en": "Latency is compared before and after the cost change."
+                },
+                {
+                  "en": "Cost per successful outcome is compared before and after the change."
+                },
+                {
+                  "en": "At least one cost optimization is kept from evidence."
+                },
+                {
+                  "en": "At least one nominally cheaper configuration is rejected because it violates quality, latency, or reliability constraints."
+                },
+                {
+                  "en": "The final decision identifies the dominant remaining cost driver."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the unit-economics model for a different AI workload with a different value unit, shared infrastructure mix, traffic shape, and latency tolerance."
+              }
+            }
+          ]
         }
       },
       {
@@ -7368,7 +7687,347 @@
         },
         "fields": {
           "domain": "production-ai",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/09-production-ai/latency",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "AI latency is an end-to-end critical-path problem spanning application work, retrieval, tools, gateway/provider calls, model input/output processing, retries, queueing, and optional streaming. The production skill is to define a user-relevant latency objective, measure distributions and tail behavior, find the dominant path, change one bottleneck, and prove that the improvement does not silently degrade quality or reliability."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.observability"
+                },
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "systems.performance-engineering",
+                  "bridge": {
+                    "diagnostic": {
+                      "en": "Given a request-latency histogram and a trace, distinguish mean from p50/p95/p99, identify the critical path, and state what evidence is needed before claiming a bottleneck."
+                    },
+                    "resource": "docs.google-sre-monitoring",
+                    "locator": {
+                      "en": "Sections \"The Four Golden Signals\" and \"Worrying About Your Tail (or, Instrumentation and Performance)\""
+                    },
+                    "purpose": {
+                      "en": "Patch distribution, tail-latency, saturation, and bottleneck reasoning needed for AI latency work without requiring the full Performance Engineering curriculum."
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define a latency objective from product and user needs."
+                },
+                {
+                  "en": "Distinguish end-to-end workflow latency from model or provider operation latency."
+                },
+                {
+                  "en": "Distinguish time-to-first-chunk from total completion time when streaming exists."
+                },
+                {
+                  "en": "Inspect p50, p95, p99, or comparable distributions instead of relying on arithmetic mean alone."
+                },
+                {
+                  "en": "Separate successful-request latency from failed-request latency."
+                },
+                {
+                  "en": "Identify the request critical path from traces."
+                },
+                {
+                  "en": "Measure the contribution of retrieval, reranking, tools, gateway, provider/model, retries, and application stages."
+                },
+                {
+                  "en": "Identify serial model or tool calls that can be removed, combined, or safely parallelized."
+                },
+                {
+                  "en": "Determine when output generation is a dominant latency driver."
+                },
+                {
+                  "en": "Determine whether input or context size is materially affecting latency rather than assuming it is."
+                },
+                {
+                  "en": "Compare smaller or faster model routes against the existing quality contract."
+                },
+                {
+                  "en": "Distinguish user-perceived latency from total system completion."
+                },
+                {
+                  "en": "Reason about queueing, load, and saturation when tail latency worsens."
+                },
+                {
+                  "en": "Preserve timeout, retry, fallback, and correctness behavior while optimizing."
+                },
+                {
+                  "en": "Design a before-and-after latency experiment on representative requests."
+                },
+                {
+                  "en": "Report quality and error effects alongside latency distributions."
+                },
+                {
+                  "en": "Reject an optimization that improves median latency while materially worsening tail latency, errors, or quality."
+                },
+                {
+                  "en": "Choose a deterministic or non-LLM path when it is the simplest valid latency optimization."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given one Knowledge Assistant trace, identify the critical path and the stage worth optimizing first."
+                },
+                {
+                  "en": "Explain how average latency can improve while p99 user experience gets worse."
+                },
+                {
+                  "en": "Compare reducing input tokens, reducing output tokens, removing one sequential provider call, and streaming, and state which latency metric each change is expected to affect."
+                },
+                {
+                  "en": "Design a latency experiment that cannot win by silently reducing answer quality."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can connect product latency objectives, distribution and tail measurements, critical-path analysis, and quality-preserving performance experiments."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.openai-latency-optimization",
+                  "locator": {
+                    "en": "Sections \"Seven principles\", \"Generate fewer tokens\", \"Use fewer input tokens\", \"Make fewer requests\", \"Parallelize\", \"Make your users wait less\", and \"Don’t default to an LLM\""
+                  },
+                  "purpose": {
+                    "en": "Establish a practical taxonomy of AI-specific latency levers and the fact that the best lever depends on the measured path and product constraints."
+                  }
+                },
+                {
+                  "resource": "docs.otel-genai-metrics",
+                  "locator": {
+                    "en": "Metrics \"gen_ai.client.operation.duration\", \"gen_ai.client.operation.time_to_first_chunk\", and \"gen_ai.invoke_workflow.duration\""
+                  },
+                  "purpose": {
+                    "en": "Separate provider-operation duration, streaming first-chunk latency, and whole-workflow duration."
+                  }
+                },
+                {
+                  "resource": "docs.google-sre-slo",
+                  "locator": {
+                    "en": "Latency percentile discussion in \"Service Level Objectives\", including the 50th, 95th, and 99th percentile example"
+                  },
+                  "purpose": {
+                    "en": "Ground typical versus tail latency reasoning and define user-relevant objectives with distributions rather than averages."
+                  }
+                },
+                {
+                  "resource": "docs.google-sre-monitoring",
+                  "locator": {
+                    "en": "Sections \"The Four Golden Signals\" and \"Worrying About Your Tail (or, Instrumentation and Performance)\""
+                  },
+                  "purpose": {
+                    "en": "Connect latency to errors, traffic, saturation, histograms, and tail behavior under load."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Take one representative Knowledge Assistant trace, annotate every latency component, mark the serial critical path and safely parallelizable work, then choose the first optimization only after estimating its measured contribution."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Baseline a representative Knowledge Assistant workload, capture latency distributions and quality evidence, make one targeted performance change, rerun the same workload under comparable conditions, and keep or revert the change from quality, error, and tail-latency evidence."
+                      },
+                      "path": "projects/knowledge-assistant/performance-economics/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Remove or combine one sequential request and measure the end-to-end effect."
+                },
+                {
+                  "en": "Shorten output while holding the task-quality criteria constant."
+                },
+                {
+                  "en": "Reduce input or context size and verify whether the measured latency effect is material rather than assumed."
+                },
+                {
+                  "en": "Parallelize one independent operation and verify correctness and failure behavior."
+                },
+                {
+                  "en": "Compare a faster or smaller model on a bounded task against the quality gate."
+                },
+                {
+                  "en": "Increase traffic or concurrency and inspect p95/p99 or comparable tail-latency behavior."
+                },
+                {
+                  "en": "When streaming exists, separate time-to-first-chunk from full completion time."
+                },
+                {
+                  "en": "Reject at least one latency optimization because quality, errors, or tail latency regresses."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A user- or product-relevant latency objective or SLO is explicit."
+                },
+                {
+                  "en": "The representative workload or request set is versioned or otherwise inspectable."
+                },
+                {
+                  "en": "Baseline latency includes p50/p95/p99 or a comparable distribution rather than mean alone."
+                },
+                {
+                  "en": "A critical-path trace identifies the dominant stages."
+                },
+                {
+                  "en": "Component latency breakdown includes relevant retrieval, tool, gateway, model/provider, retry, and application work."
+                },
+                {
+                  "en": "Successful and failed request latency are handled separately."
+                },
+                {
+                  "en": "Time-to-first-chunk is recorded only when the path actually streams."
+                },
+                {
+                  "en": "One measured bottleneck hypothesis is written before optimization."
+                },
+                {
+                  "en": "A before-and-after experiment uses the same or comparable workload."
+                },
+                {
+                  "en": "Quality evidence is compared before and after the optimization."
+                },
+                {
+                  "en": "Error and reliability effects are compared before and after the optimization."
+                },
+                {
+                  "en": "Load or concurrency behavior includes a tail-latency observation."
+                },
+                {
+                  "en": "At least one latency optimization is kept from evidence."
+                },
+                {
+                  "en": "At least one latency optimization is rejected or reverted from evidence."
+                },
+                {
+                  "en": "The final decision records the dominant remaining latency constraint."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the latency experiment for a different AI workload with a different user interaction pattern, model/provider path, concurrency profile, and quality constraint."
+              }
+            }
+          ]
         }
       },
       {
@@ -9399,6 +10058,12 @@
                   "en": "observability-and-replay"
                 },
                 {
+                  "en": "latency-engineering"
+                },
+                {
+                  "en": "cost-engineering"
+                },
+                {
                   "en": "versioned-release-candidate"
                 },
                 {
@@ -9513,6 +10178,24 @@
                 },
                 {
                   "en": "production-overhead-record"
+                },
+                {
+                  "en": "latency-objective"
+                },
+                {
+                  "en": "latency-baseline"
+                },
+                {
+                  "en": "critical-path-record"
+                },
+                {
+                  "en": "unit-economics-record"
+                },
+                {
+                  "en": "performance-economics-experiment"
+                },
+                {
+                  "en": "rejected-optimization-record"
                 },
                 {
                   "en": "release-manifest"
@@ -9756,6 +10439,16 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "production.cost"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "production.latency"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "production.model-gateway"
     },
     {
@@ -9956,6 +10649,16 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "production.cost"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
+      "to": "production.latency"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "production.model-gateway"
     },
     {
@@ -9997,6 +10700,11 @@
       "type": "prerequisite",
       "from": "ai.product-framing",
       "to": "ai.model-selection"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.product-framing",
+      "to": "production.cost"
     },
     {
       "type": "prerequisite",
@@ -10052,6 +10760,16 @@
       "type": "prerequisite",
       "from": "ml.experimental-design",
       "to": "ai.evaluation"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.cost"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.observability",
+      "to": "production.latency"
     },
     {
       "type": "prerequisite",
@@ -10137,6 +10855,11 @@
       "type": "prerequisite",
       "from": "systems.cloud-infrastructure",
       "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
+      "from": "systems.performance-engineering",
+      "to": "production.latency"
     }
   ],
   "resources": {
@@ -10296,6 +11019,18 @@
       "author": "Iterative",
       "url": "https://dvc.org/doc/command-reference/"
     },
+    "docs.finops-allocation": {
+      "title": "FinOps Framework — Allocation",
+      "type": "guide",
+      "author": "FinOps Foundation",
+      "url": "https://framework.finops.org/framework/capabilities/allocation/"
+    },
+    "docs.finops-unit-economics": {
+      "title": "FinOps Framework — Unit Economics",
+      "type": "guide",
+      "author": "FinOps Foundation",
+      "url": "https://www.finops.org/framework/capabilities/unit-economics/"
+    },
     "docs.google-adk-memory": {
       "title": "Google ADK — Memory: Long-term knowledge",
       "type": "documentation",
@@ -10319,6 +11054,18 @@
       "type": "guide",
       "author": "Google",
       "url": "https://sre.google/workbook/canarying-releases/"
+    },
+    "docs.google-sre-monitoring": {
+      "title": "Google SRE — Monitoring Distributed Systems",
+      "type": "guide",
+      "author": "Google",
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/"
+    },
+    "docs.google-sre-slo": {
+      "title": "Google SRE — Service Level Objectives",
+      "type": "guide",
+      "author": "Google",
+      "url": "https://sre.google/sre-book/service-level-objectives/"
     },
     "docs.google-structured-outputs": {
       "title": "Google Gemini API — Structured outputs",
@@ -10428,11 +11175,23 @@
       "author": "OpenAI",
       "url": "https://openai.github.io/openai-agents-python/running_agents/"
     },
+    "docs.openai-cost-optimization": {
+      "title": "OpenAI — Cost optimization",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://developers.openai.com/api/docs/guides/cost-optimization"
+    },
     "docs.openai-function-calling": {
       "title": "OpenAI — Function Calling",
       "type": "documentation",
       "author": "OpenAI",
       "url": "https://help.openai.com/en/articles/8555517-function-calling-in-the-openai-api"
+    },
+    "docs.openai-latency-optimization": {
+      "title": "OpenAI — Latency optimization",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://developers.openai.com/api/docs/guides/latency-optimization"
     },
     "docs.otel-genai-metrics": {
       "title": "OpenTelemetry GenAI semantic conventions — metrics",

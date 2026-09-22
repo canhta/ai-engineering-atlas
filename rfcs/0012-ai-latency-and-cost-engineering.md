@@ -1,8 +1,10 @@
 # RFC 0012 — AI Latency and Cost Engineering
 
-- Status: Draft
+- Status: Accepted
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
+- Reviewed: 2026-09-22
+- Review decision: Approved by repository owner
 
 ## Summary
 
@@ -739,16 +741,16 @@ These are evidence/examples, not mandatory vendors or frameworks.
 
 ## Review checklist
 
-- [ ] Latency is defined as an end-to-end critical-path/product objective, not only model speed.
-- [ ] Tail latency/distributions are required.
-- [ ] Successful and failed latency are distinguished.
-- [ ] TTFC is only required when streaming applies.
-- [ ] Quality is frozen/compared during latency experiments.
-- [ ] Cost uses allocation and unit economics rather than raw spend alone.
-- [ ] At least one product/outcome unit metric is required.
-- [ ] Cost per successful outcome can reject a nominally cheaper model.
-- [ ] Retry/tool/agent amplification is included as a cost failure mode.
-- [ ] Latency/cost trade-offs remain explicit.
-- [ ] Caching and streaming stay separate mechanism competencies.
-- [ ] Provider-specific sources are examples rather than definitions.
-- [ ] Reviewer explicitly approves or requests changes before route implementation.
+- [x] Latency is defined as an end-to-end critical-path/product objective, not only model speed.
+- [x] Tail latency/distributions are required.
+- [x] Successful and failed latency are distinguished.
+- [x] TTFC is only required when streaming applies.
+- [x] Quality is frozen/compared during latency experiments.
+- [x] Cost uses allocation and unit economics rather than raw spend alone.
+- [x] At least one product/outcome unit metric is required.
+- [x] Cost per successful outcome can reject a nominally cheaper model.
+- [x] Retry/tool/agent amplification is included as a cost failure mode.
+- [x] Latency/cost trade-offs remain explicit.
+- [x] Caching and streaming stay separate mechanism competencies.
+- [x] Provider-specific sources are examples rather than definitions.
+- [x] Reviewer explicitly approves or requests changes before route implementation.
