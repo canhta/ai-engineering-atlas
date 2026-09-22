@@ -57,7 +57,9 @@ Prefer:
 - tool retry semantics;
 - prompt-injection boundaries.
 
-Run the competency diagnostic before opening the source material.
+Use the [competency catalog](curriculum/catalog.yaml) to find the stable ID, then run the competency diagnostic before opening source material.
+
+Coverage nodes are part of the roadmap but may not yet have a complete learning route. Check [curriculum/STATUS.md](curriculum/STATUS.md) for what is ready.
 
 ## 5. Follow the learning route
 
@@ -112,6 +114,19 @@ Ask:
 - Have I used it inside a larger system?
 
 A passing exit test today is "demonstrated." It is not automatically "retained" or "applied."
+
+## 9. Review the learning cycle
+
+After a meaningful cluster of work — several related competencies, a major project milestone, or roughly 6-12 weeks — run a [portfolio review](assessments/portfolio-review.md).
+
+Use it to decide:
+
+- which state transitions are supported by evidence;
+- where transfer still fails;
+- what complexity you correctly rejected;
+- what the next 1-3 gaps should be.
+
+Then begin the next cycle.
 
 ## Suggested first session
 
