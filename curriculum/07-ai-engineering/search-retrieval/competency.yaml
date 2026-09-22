@@ -31,7 +31,7 @@ learning_route:
   guided_practice:
     - task: For five queries, manually inspect top results from a lexical search, label relevance, and classify each miss before changing the algorithm.
   independent_practice:
-    - artifact: projects/knowledge-assistant/
+    - artifact: projects/knowledge-assistant/foundation/
       task: Implement the Knowledge Assistant lexical baseline and record the corpus version, query set, relevance labels, top-k results, retrieval metric, latency, and failure taxonomy.
 experiments:
   - Change tokenization, stop-word handling, or term weighting and measure whether the same query set improves or regresses.
