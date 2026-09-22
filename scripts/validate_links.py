@@ -10,7 +10,7 @@ errors = []
 LINK_RE = re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
 BACKTICK_FENCE = chr(96) * 3
 TILDE_FENCE = '~' * 3
-SKIP_DIRS = {'node_modules', '.git', '.astro', 'dist', '.wrangler'}
+SKIP_DIRS = {'node_modules', '.git', '.astro', 'dist', '.wrangler', 'worktrees'}
 
 
 def without_fenced_code(text: str) -> str:

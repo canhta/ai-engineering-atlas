@@ -8,7 +8,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_DIRS = {"node_modules", ".git", ".astro", "dist"}
+SKIP_DIRS = {"node_modules", ".git", ".astro", "dist", "worktrees"}
 
 # Line budgets. Claude Code recommends <200 lines per instruction file; the root
 # file predates this check, so its budget only stops further growth.
