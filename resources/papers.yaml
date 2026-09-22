@@ -21,7 +21,7 @@ resources:
     last_checked: 2026-09-22
     review_interval_days: 365
 
-- id: paper.selectivenet
+  - id: paper.selectivenet
     type: paper
     title: SelectiveNet — A Deep Neural Network with an Integrated Reject Option
     author: Yonatan Geifman and Ran El-Yaniv
