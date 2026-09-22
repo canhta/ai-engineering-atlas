@@ -1,49 +1,100 @@
 # Learning method
 
-The roadmap is intended to be used selectively rather than completed from top to bottom.
+This is the learner-facing summary of [LEARNING_MODEL.md](LEARNING_MODEL.md).
 
-## Study loop
+The roadmap is not meant to be completed mechanically from top to bottom.
 
-For each competency:
+## Start with evidence
 
-1. **Diagnose** — attempt the diagnostic before studying.
-2. **Choose a primary source** — use one main source rather than several overlapping courses.
-3. **Build a mental model** — use diagrams or interactive material when the mechanism is easier to understand visually.
-4. **Implement** — write the smallest useful implementation or configuration.
-5. **Experiment** — change one variable and measure the result.
-6. **Explain** — describe the mechanism and trade-offs without relying on notes.
-7. **Exit test** — move on when the stated criteria are satisfied.
+For a domain or competency:
 
-## Suggested time split
+1. Try the diagnostic before opening the learning material.
+2. If you can already demonstrate the required capability, skip the instruction.
+3. If not, identify the smallest gap and study only what is needed to close it.
 
-A useful default for engineering topics is:
+## Learn through a task
 
-- 20% reading or watching
-- 50% implementation and experiments
-- 20% explanation and debugging
-- 10% review
+A useful learning sequence is:
 
-The split should change with the subject. Mathematics needs more exercises; production topics need more failure testing and measurement.
+~~~text
+Why does this matter?
+      ↓
+Build the mental model
+      ↓
+Study a worked example when needed
+      ↓
+Do the task independently
+      ↓
+Change or break it
+      ↓
+Measure / debug
+      ↓
+Explain the result
+      ↓
+Exit test
+      ↓
+Transfer to a different problem
+~~~
+
+Important skills should later be used inside one of the project spines and recalled again after a delay.
+
+## Use one primary route
+
+Prefer one primary source for the missing mental model, plus a visual or practice source when it adds something different.
+
+Do not open several overlapping courses simply because they are listed.
+
+A learning route should point to the exact chapter, lecture, section, or assignment whenever possible.
+
+## Match practice to the skill
+
+Different knowledge needs different practice.
+
+- concepts: explain, distinguish, calculate;
+- mechanisms: trace, visualize, implement;
+- engineering skills: build, test, debug;
+- system operations: configure, observe, recover;
+- design judgment: compare alternatives under constraints;
+- production skills: ship, measure, diagnose, mitigate.
 
 ## Visualization
 
-Use visualization for:
+Use visualization when it helps inspect a mechanism or result.
 
-- **concepts** — prerequisite and dependency maps
-- **mechanisms** — attention, backpropagation, retrieval, model execution
-- **runtime behavior** — traces, matrices, distributions, latency, memory
-- **experiments** — quality, cost, throughput, recall, variance
+Useful examples:
 
-The purpose is to test the mental model, not to decorate the notes.
+- prerequisite maps;
+- attention matrices;
+- embedding projections;
+- retrieval rankings;
+- traces;
+- latency and cost timelines;
+- experiment charts.
+
+Visualization is useful when it tests a mental model, not when it merely decorates a page.
 
 ## Review
 
-Prefer active recall over rereading.
+Prefer retrieval over rereading.
 
-Useful review tasks include:
+After a delay, try to:
 
-- redraw the architecture
-- reimplement a small component
-- explain the trade-offs from memory
-- diagnose a deliberately broken example
-- rerun an experiment and predict the result before looking
+- explain the mechanism from memory;
+- redraw the system;
+- reimplement a small component;
+- solve a variant;
+- diagnose a failure.
+
+A suggested default for important material is roughly one day, one week, and one month, but the schedule should adapt to the learner and the competency.
+
+## What "done" means
+
+Immediate success means the competency has been **demonstrated**.
+
+Stronger evidence may include:
+
+- transferred — solved in a new context;
+- retained — recalled after a delay;
+- applied — used in an integrated or real system.
+
+The complete model is in [LEARNING_MODEL.md](LEARNING_MODEL.md).
