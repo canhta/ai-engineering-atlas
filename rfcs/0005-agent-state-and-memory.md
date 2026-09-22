@@ -41,6 +41,53 @@ measured tool-enabled workflow
 
 ## Evidence
 
+### Google ADK — Conversational Context: Session, State, and Memory
+
+https://adk.dev/sessions/
+
+Verified section:
+
+- **Core Concepts**
+
+The documentation explicitly separates:
+
+- `Session` — one current conversation thread and its event history;
+- `State` — mutable data used inside that session;
+- `Memory` — searchable information that can span past sessions or external sources.
+
+This is the clearest conceptual boundary for the curriculum: execution/session state, long-term memory, and current model context are related but not interchangeable.
+
+### Google ADK — State: The Session's Scratchpad
+
+https://adk.dev/sessions/state/
+
+Verified sections:
+
+- **What is session.state?**
+- **Key Characteristics of State**
+- **How State is Updated: Recommended Methods**
+
+The source emphasizes serializable, mutable state and tracked updates tied to session events. The curriculum should extract the general engineering principles rather than require ADK.
+
+### Google ADK — Memory: Long-term knowledge with MemoryService
+
+https://adk.dev/sessions/memory/
+
+Verified sections:
+
+- **Memory: Long-term knowledge with MemoryService**
+- **The MemoryService role**
+
+The source separates current-session state/history from searchable cross-session information and exposes explicit ingest/search operations. The route extends this with provenance, scope, correction, deletion, freshness, and harm evaluation because those are required for a production-quality memory lifecycle.
+
+### Temporal — Durable Execution
+
+https://docs.temporal.io/
+
+Temporal's documentation defines durable execution around resuming application execution after crashes, network failures, or infrastructure outages.
+
+This supports the state requirement that persistence must enable recovery semantics rather than merely save a transcript. Temporal is a production reference, not a required framework.
+
 ### Agent state
 
 #### Anthropic — Scaling Managed Agents: Decoupling the brain from the hands
@@ -440,6 +487,10 @@ Rejected. LangGraph is useful as a concrete checkpointer/store distinction, but 
   - `agents.state` ← `agents.deterministic-vs-agentic`, `ai.context-engineering`
   - `agents.memory` ← `agents.state`, `ai.context-engineering`, `ai.evaluation`
 - new resources:
+  - `docs.google-adk-session-state-memory`
+  - `docs.google-adk-state`
+  - `docs.google-adk-memory`
+  - `docs.temporal-overview`
   - `article.anthropic-managed-agents`
   - `article.anthropic-long-running-harnesses`
   - `docs.langgraph-persistence`
