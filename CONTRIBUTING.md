@@ -55,6 +55,24 @@ The golden examples are:
 - [Self-Attention](curriculum/06-llm-foundations/self-attention/)
 - [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
 
+## Learner-facing source links
+
+For every `seeded` or `ready` competency, the learner README contains a generated **Learning sources** block derived from:
+
+- `learning_route.mental_model`;
+- `prerequisite_support`;
+- the canonical URLs in `resources/*.yaml`.
+
+Do not maintain that block by hand. After changing a source, locator, purpose, prerequisite bridge, or resource URL, run:
+
+```bash
+python scripts/render_learning_sources.py --write
+```
+
+Then run `make check`. CI fails when the learner-facing block is missing or stale.
+
+The goal is that a learner can open a route and immediately see **what source to open, exactly what to read, and why it is there** without reading YAML.
+
 ## Proposing a resource
 
 Include:
