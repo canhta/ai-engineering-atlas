@@ -5,7 +5,7 @@ import { basicSetup } from "codemirror";
 import { indentWithTab } from "@codemirror/commands";
 import { python } from "@codemirror/lang-python";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
-import { Compartment, EditorState, type Extension } from "@codemirror/state";
+import { EditorState } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
 
@@ -17,7 +17,8 @@ const theme = EditorView.theme({
     height: "100%",
   },
   "&.cm-focused": { outline: "2px solid var(--focus)", outlineOffset: "-2px" },
-  ".cm-scroller": { fontFamily: "var(--font-mono)", lineHeight: "var(--leading-ui)" },
+  // No ligatures: learners read and retype code, so `==` and `->` must look as typed.
+  ".cm-scroller": { fontFamily: "var(--font-mono)", lineHeight: "var(--leading-ui)", fontVariantLigatures: "none" },
   ".cm-content": { caretColor: "var(--route)", padding: "var(--space-3) 0" },
   ".cm-cursor, .cm-dropCursor": { borderLeftColor: "var(--route)" },
   "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection": {
@@ -63,28 +64,25 @@ export function CodeEditor({ value, onChange, readOnly = false, label, described
   const view = useRef<EditorView | null>(null);
   const change = useRef(onChange);
   change.current = onChange;
-  const attrs = useRef(new Compartment());
-
   useEffect(() => {
-    // tabindex keeps read-only files reachable by keyboard, so their scroll area is too.
-    const contentAttributes = (): Extension =>
-      EditorView.contentAttributes.of({
-        "aria-label": label,
-        lang: "en",
-        tabindex: "0",
-        ...(describedBy ? { "aria-describedby": describedBy } : {}),
-      });
     const state = EditorState.create({
       doc: value,
       extensions: [
         basicSetup,
         python(),
-        keymap.of([indentWithTab]),
+        // Tab indents only where the learner can type; read-only files keep Tab for focus.
+        readOnly ? [] : keymap.of([indentWithTab]),
         theme,
         syntaxHighlighting(highlight),
         EditorState.readOnly.of(readOnly),
         EditorView.editable.of(!readOnly),
-        attrs.current.of(contentAttributes()),
+        // tabindex keeps read-only files reachable by keyboard, so their scroll area is too.
+        EditorView.contentAttributes.of({
+          "aria-label": label,
+          lang: "en",
+          tabindex: "0",
+          ...(describedBy ? { "aria-describedby": describedBy } : {}),
+        }),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) change.current?.(update.state.doc.toString());
         }),

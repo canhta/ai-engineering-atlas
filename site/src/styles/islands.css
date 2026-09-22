@@ -1829,6 +1829,11 @@
   height: 100%;
 }
 
+.lab-core code,
+.lab-core pre {
+  font-variant-ligatures: none;
+}
+
 .code-fallback {
   height: 100%;
   margin: 0;

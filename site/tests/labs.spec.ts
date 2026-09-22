@@ -86,6 +86,73 @@ test("pasting the reference solution passes and offers evidence", async ({ page 
   await expect(page.getByRole("button", { name: "Record evidence" })).toBeVisible();
 });
 
+test("a passing run records automated implementation evidence with the code's hash", async ({ page }) => {
+  await open(page);
+  const code = withReference(lab("starter.py"), lab("solution.py"));
+  await setCode(page, code);
+  await run(page).click();
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "pass", LOAD);
+  await page.getByRole("button", { name: "Record evidence" }).click();
+  await expect(page.locator(".lab-competency")).toHaveText("Prompt Injection and Trust Boundaries");
+  const hash = await page.evaluate(async (text) => {
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  }, code);
+  await expect(page.getByLabel("What does the artifact show?")).toHaveValue(new RegExp(`tests\\.py passed in the browser \\(Pyodide [\\d.]+\\)\\. starter\\.py SHA-256: ${hash}`));
+  await page.getByLabel("This shows the capability is").selectOption("demonstrated");
+  await page.getByRole("button", { name: "Save evidence" }).click();
+  await expect(page.getByText("Saved. Your state is now demonstrated.")).toBeVisible();
+
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("atlas.progress.v2") ?? "{}"));
+  const evidence = stored.competencies["security.prompt-injection"].evidence[0];
+  expect(evidence).toMatchObject({ kind: "implementation", review_method: "automated", independence: "independent", supports_state: "demonstrated" });
+  expect(evidence.note).toContain(hash);
+});
+
+test("the reference solution opens only after confirming and marks later evidence reference-open", async ({ page }) => {
+  await open(page);
+  await page.getByRole("button", { name: "Show the reference solution" }).click();
+  await expect(page.getByText("Try the lab yourself first.")).toBeVisible();
+  await page.getByRole("button", { name: "Open the solution" }).click();
+  await expect(page.getByRole("tab", { name: /solution\.py/ })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("textbox", { name: "solution.py, read only" })).toContainText("def authorize");
+  await expect(page.getByText("You opened the reference solution.")).toBeVisible();
+
+  await page.reload();
+  await page.waitForFunction(() => document.querySelectorAll("astro-island[ssr]").length === 0);
+  await setCode(page, withReference(lab("starter.py"), lab("solution.py")));
+  await run(page).click();
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "pass", LOAD);
+  await page.getByRole("button", { name: "Record evidence" }).click();
+  await expect(page.getByText("Checked by the lab tests (automated), reference open.")).toBeVisible();
+  await page.getByRole("button", { name: "Save evidence" }).click();
+  const stored = await page.evaluate(() => JSON.parse(localStorage.getItem("atlas.progress.v2") ?? "{}"));
+  expect(stored.competencies["security.prompt-injection"].evidence[0].independence).toBe("reference-open");
+});
+
+test("the draft survives a reload, and Reset to starter asks first", async ({ page }) => {
+  await open(page);
+  await setCode(page, "print('draft')\n");
+  await expect.poll(() => page.evaluate(() => localStorage.getItem("atlas.lab-code.v1.lab:prompt-injection-boundaries"))).toContain("draft");
+  await page.reload();
+  await page.waitForFunction(() => document.querySelectorAll("astro-island[ssr]").length === 0);
+  await expect(editor(page)).toContainText("print('draft')");
+  await page.getByRole("button", { name: "Reset to starter" }).click();
+  await page.getByRole("button", { name: "Cancel" }).click();
+  await expect(editor(page)).toContainText("print('draft')");
+  await page.getByRole("button", { name: "Reset to starter" }).click();
+  await page.getByRole("button", { name: "Replace my code" }).click();
+  await expect(editor(page)).toContainText("def authorize");
+});
+
+test("@mobile the lab page stacks the brief and the bench, with a jump to the code", async ({ page }) => {
+  await open(page);
+  await page.getByRole("link", { name: "Go to the code" }).click();
+  await expect(page.getByRole("heading", { name: "Run the tests" })).toBeInViewport();
+  await run(page).click();
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "error", LOAD);
+});
+
 test("Stop interrupts a runaway run and the next run works", async ({ page }) => {
   await open(page);
   await setCode(page, `${lab("starter.py")}\nwhile True:\n    pass\n`);
