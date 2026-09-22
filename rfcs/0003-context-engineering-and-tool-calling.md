@@ -1,6 +1,6 @@
 # RFC: Context Engineering and Tool Calling Slice
 
-- Status: Accepted
+- Status: Accepted — implementation amendment pending review
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-22
 - Reviewed: 2026-09-22
@@ -303,7 +303,7 @@ Implementation will use this corrected dependency:
 - prompt-injection/trust-boundary behavior remains mandatory in Tool Calling outcomes, practice, and applied evidence;
 - the existing `security.prompt-injection` route remains the dedicated deeper security route and can reference ready Tool Calling after promotion.
 
-This is a topology correction, not a reduction of the security requirement. The repository validator should also reject prerequisite cycles so this class of error cannot silently recur.
+This is a topology correction, not a reduction of the security requirement. Because prerequisite changes are substantive under repository governance, this amendment requires explicit repository-owner review before Tool Calling is promoted to `ready`. The repository validator now rejects prerequisite cycles so this class of error cannot silently recur.
 
 ## Knowledge Assistant integration
 
