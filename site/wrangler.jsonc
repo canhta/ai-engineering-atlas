@@ -3,6 +3,7 @@
   // is added in Phase 2; see rfcs/0000-interactive-web-atlas.md.
   "name": "ai-engineering-atlas",
   "compatibility_date": "2026-09-22",
+  "routes": [{ "pattern": "ai-eng.canhta.com", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"

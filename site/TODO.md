@@ -37,11 +37,21 @@ Last updated: 2026-09-22
 
 ### Launch
 
-- [ ] First green run of the `site` CI job on GitHub
-- [ ] Deploy the Worker `ai-engineering-atlas` with `wrangler deploy`
-- [ ] Custom domain `ai-eng.canhta.com` (needs the `canhta.com` zone in the Cloudflare account)
+- [x] First green run of the `site` CI job on GitHub (run 35696021496)
+- [x] Deploy the Worker `ai-engineering-atlas` with `wrangler deploy`
+- [x] Custom domain `ai-eng.canhta.com`; production passes `capture.mjs` (headers, axe, overflow)
 - [ ] Deploy from CI on push to `main` (Cloudflare API token as a GitHub secret)
 - [ ] Link the site from the root `README.md`
+
+### Content-driven site (next, owner request)
+
+- [ ] Versioned content model contract: collections → items → typed blocks; the site renders only the contract
+- [ ] Content-side presentation config (field → block, section order, en/vi section titles, vocabularies); unmapped fields render through a generic block and are reported
+- [ ] Site renderer uses a block registry; no curriculum field names in `site/src`
+
+### Visual redesign (next, owner request)
+
+- [ ] Redesign against the `high-end-visual-design` and `frontend-design` skills; update DESIGN.md and tokens first, then components
 
 ### Phase 1 follow-ups
 
