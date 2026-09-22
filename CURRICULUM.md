@@ -1,8 +1,51 @@
 # Curriculum
 
-AI Engineering Atlas is organized as a graph of competencies rather than a fixed sequence of lessons.
+AI Engineering Atlas separates the curriculum into layers so coverage, teaching material, and learner evidence do not collapse into one file.
 
-The learning lifecycle and mastery model are defined in [LEARNING_MODEL.md](LEARNING_MODEL.md). Curriculum structure must serve that model.
+The learning lifecycle is defined in [LEARNING_MODEL.md](LEARNING_MODEL.md).
+
+## Curriculum layers
+
+### 1. Domain manifest
+
+[curriculum/manifest.yaml](curriculum/manifest.yaml) defines the broad domains and default depth.
+
+### 2. Competency catalog
+
+[curriculum/catalog.yaml](curriculum/catalog.yaml) is the canonical registry of stable competency IDs.
+
+A catalog item may be:
+
+- **coverage** — it belongs in the audited roadmap but does not yet have a complete learning route;
+- **ready** — it has a lifecycle-based competency package that satisfies the repository contract.
+
+This allows prerequisites and projects to reference a stable graph without pretending every node is already a finished lesson.
+
+### 3. Ready competency package
+
+A ready competency has its own folder with `competency.yaml` and learner-facing `README.md`.
+
+It should define:
+
+- why the capability belongs in the curriculum;
+- competency type;
+- target level and evidence states;
+- prerequisites using catalog IDs;
+- observable outcomes;
+- diagnostic;
+- precise source route;
+- guided/independent practice;
+- experiments or failure work when appropriate;
+- exit evidence;
+- transfer when relevant;
+- delayed retrieval when relevant;
+- project integration when relevant.
+
+### 4. Resource registry
+
+[resources/](resources/) identifies external sources.
+
+The exact chapter, lecture, assignment, or documentation locator belongs in the competency route.
 
 ## Competency levels
 
@@ -16,40 +59,21 @@ The learning lifecycle and mastery model are defined in [LEARNING_MODEL.md](LEAR
 
 These levels describe capability depth. Retention and real-system application are tracked separately.
 
-## A competency is more than a topic
-
-A mature competency should define:
-
-- why it belongs in the curriculum;
-- competency type;
-- target level;
-- prerequisites;
-- observable outcomes;
-- diagnostic evidence;
-- precise learning route;
-- guided or independent practice;
-- experiments or failure work when appropriate;
-- exit evidence;
-- transfer task when transfer matters;
-- project-spine connection when integration matters;
-- delayed review when retention matters;
-- reviewed sources.
-
-A learner may skip instruction when diagnostic evidence already satisfies the required capability. They should not receive a mastery state solely because they report familiarity.
-
 ## Evidence states
 
-Learner progress may move through:
+Learner evidence may move through:
 
+```text
 unassessed → gap → learning → demonstrated → transferred → retained → applied
+```
 
-Not every competency or learner needs the final state. Role and target depth determine how far evidence must go.
+Not every competency needs the final state. Role and target depth determine how far evidence must go.
 
 ## Curriculum versus resources
 
 The competency describes the capability.
 
-Books, lectures, papers, assignments, visual explanations, and repositories are resources used to reach or assess that capability.
+Books, lectures, papers, assignments, visuals, and repositories are resources used to build or assess that capability.
 
 Replacing a resource should not silently redefine the competency.
 
@@ -57,13 +81,13 @@ Replacing a resource should not silently redefine the competency.
 
 Use a curriculum RFC when proposing:
 
-- a new required competency;
-- removing a required competency;
+- adding/removing a catalog competency;
+- changing domain placement;
 - changing prerequisites;
 - changing target depth;
 - changing observable outcomes;
-- changing the evidence required for completion.
+- changing required evidence.
 
 Resource replacements normally do not require a curriculum change unless they alter what the learner is expected to know or do.
 
-See [LEARNING_MODEL.md](LEARNING_MODEL.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [rfcs/0000-template.md](rfcs/0000-template.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [rfcs/0000-template.md](rfcs/0000-template.md).
