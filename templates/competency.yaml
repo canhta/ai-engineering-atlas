@@ -1,0 +1,70 @@
+# Copy into a competency folder only after the catalog item exists.
+# Remove comments and fields that are not relevant.
+id: domain.example
+title: Example Competency
+domain: ai-engineering
+status: ready
+
+competency_types:
+  - engineering-skill
+
+target_level: L2
+target_states:
+  - demonstrated
+
+why: >-
+  State the engineering problem this capability solves and why it belongs
+  in the curriculum.
+
+curriculum_evidence:
+  - source.id
+
+prerequisites:
+  - existing.catalog-id
+
+outcomes:
+  - State an observable capability using an action verb.
+  - Include debugging/design evidence when the competency requires it.
+
+diagnostic:
+  tasks:
+    - A task attempted before instruction.
+  pass_condition: >-
+    Define what evidence lets an experienced learner skip guided instruction.
+
+learning_route:
+  mental_model:
+    - source: source.id
+      locator: Exact chapter / section / lecture / documentation page
+      purpose: Why this exact material is used
+  guided_practice:
+    - task: Optional worked or partially guided task
+  independent_practice:
+    - artifact: labs/example/
+      task: Independent task that produces inspectable evidence
+  visual: []
+
+experiments: []
+
+exit_evidence:
+  - Evidence that directly matches an outcome.
+
+# Include only when target states require it.
+# transfer:
+#   task: Different context that tests adaptation rather than repetition.
+
+# review:
+#   suggested_intervals_days: [7, 30]
+#   retrieval_tasks:
+#     - Reconstruct or solve without rereading first.
+
+# project_spines:
+#   - ai-system
+
+resources:
+  teaching:
+    - source.id
+
+metadata:
+  last_reviewed: YYYY-MM-DD
+  evidence_required: true
