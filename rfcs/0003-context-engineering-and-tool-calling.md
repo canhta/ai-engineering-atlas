@@ -293,6 +293,18 @@ The learner must provide:
 - failure taxonomy;
 - decision on whether the workflow should remain deterministic or motivates later agentic control.
 
+## Implementation amendment
+
+During route authoring, the existing ready `security.prompt-injection` route was found to already list `ai.tool-calling` as a prerequisite with a targeted bridge. Making `security.prompt-injection` a hard prerequisite of `ai.tool-calling` would therefore create a circular prerequisite once Tool Calling becomes ready.
+
+Implementation will use this corrected dependency:
+
+- `ai.tool-calling` hard prerequisites: `ai.evaluation`, `systems.api-service-design`
+- prompt-injection/trust-boundary behavior remains mandatory in Tool Calling outcomes, practice, and applied evidence;
+- the existing `security.prompt-injection` route remains the dedicated deeper security route and can reference ready Tool Calling after promotion.
+
+This is a topology correction, not a reduction of the security requirement. The repository validator should also reject prerequisite cycles so this class of error cannot silently recur.
+
 ## Knowledge Assistant integration
 
 If approved, add a new evidence package such as:
@@ -358,7 +370,7 @@ Not proposed as a hard prerequisite because the existing ready `security.prompt-
   - `ai.tool-calling`
 - prerequisite relationships proposed:
   - `ai.context-engineering` ← `ai.evaluation`, `ai.prompt-engineering`
-  - `ai.tool-calling` ← `ai.evaluation`, `security.prompt-injection`, `systems.api-service-design`
+  - `ai.tool-calling` ← `ai.evaluation`, `systems.api-service-design`; trust-boundary integration with `security.prompt-injection` remains required but is not a hard prerequisite to avoid a cycle
 - new/updated resources:
   - `article.anthropic-context-engineering`
   - `article.openai-harness-engineering`
