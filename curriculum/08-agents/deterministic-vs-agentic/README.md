@@ -4,6 +4,25 @@
 **Target:** L3 deep engineering competence  
 **Evidence target:** demonstrated → transferred → applied
 
+<!-- learning-sources:start -->
+## Learning sources
+
+Open these exact source locations, then return to the practice and evidence tasks below.
+
+| Source | Read / inspect | Why |
+| --- | --- | --- |
+| [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) | Sections: "What are agents?", "When (and when not) to use agents", "Building blocks, workflows, and agents", and "Combining and customizing these patterns" | Distinguish fixed workflows from agents, learn common workflow patterns, and use measured complexity as the selection principle. |
+
+### Prerequisite patches
+
+Use these only when the diagnostic exposes the specific gap.
+
+| Gap | Source | Read / inspect | Why |
+| --- | --- | --- | --- |
+| `ai.tool-calling` | [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) | Building block: The augmented LLM; Appendix 2: Prompt engineering your tools. | Patch the model-to-tool interface needed before comparing agentic control strategies. |
+| `software.testing` | [Made With ML — Testing Machine Learning Systems](https://madewithml.com/courses/mlops/testing/) | Testing lesson sections "Types of tests" and system/regression testing discussion. | Patch the testing discipline required to compare workflow and agent failures on the same task set. |
+<!-- learning-sources:end -->
+
 ## Why this matters
 
 Agentic systems add flexibility, but also cost, latency, non-determinism, and a larger failure surface.
