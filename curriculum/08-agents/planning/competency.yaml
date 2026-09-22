@@ -1,7 +1,7 @@
 id: agents.planning
 title: Planning
 domain: agents
-status: seeded
+status: ready
 competency_types:
   - engineering-skill
   - design-judgment
