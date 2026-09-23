@@ -1,6 +1,7 @@
 // Typed reader of the content model v2 (rfcs/0000-content-model.md, schemas/site-data.schema.json).
 // The site knows collections, items, blocks, vocabularies, relations, and resources; it never
 // names a curriculum field (scripts/check-content-coupling.mjs enforces this).
+import { Lexer, type Token } from "marked";
 import model from "../data/atlas.json" with { type: "json" };
 import type { Lang } from "../i18n";
 import { refOf } from "./refs.ts";
@@ -380,15 +381,71 @@ export const relationsFrom = (type: string, ref: string) => relations.filter((r)
  */
 export function trackedItemsPointingAt(ref: string): Item[] {
   if (resolveRef(ref)?.collection.id === trackedCollection.id) return [];
+  return trackedWithPage(relations.filter((r) => r.to === ref).map((r) => r.from));
+}
+
+/**
+ * Tracked items (with a page) that an item of another collection points at through any relation,
+ * e.g. the routes a project brings together. A tracked item always gets [].
+ */
+export function trackedItemsFrom(ref: string): Item[] {
+  if (resolveRef(ref)?.collection.id === trackedCollection.id) return [];
+  return trackedWithPage(relations.filter((r) => r.from === ref).map((r) => r.to));
+}
+
+/** The tracked items with a page among these refs, once each, in relation order. */
+function trackedWithPage(refs: string[]): Item[] {
   const seen = new Set<string>();
-  return relations
-    .filter((r) => r.to === ref)
-    .map((r) => resolveRef(r.from))
+  return refs
+    .map((ref) => resolveRef(ref))
     .filter((found): found is { collection: Collection; item: Item } =>
       Boolean(found && found.collection.id === trackedCollection.id && found.item.page),
     )
     .map((found) => found.item)
     .filter((item) => !seen.has(item.id) && Boolean(seen.add(item.id)));
+}
+
+// ---------------------------------------------------------------------------------------------
+// Catalogue: what a collection index says about each item (DESIGN.md → Collection indexes)
+
+/** How an item's page runs: a `runner` block (in the browser, with tests), a `form`, or neither. */
+export function benchOf(item: Item): "runner" | "form" | undefined {
+  for (const block of item.page?.blocks ?? []) if (block.type === "runner" || block.type === "form") return block.type;
+  return undefined;
+}
+
+const plainText = (tokens: Token[] = []): string =>
+  tokens
+    .map((t) => ("tokens" in t && t.tokens ? plainText(t.tokens) : t.type === "br" ? " " : "text" in t ? t.text : ""))
+    .join("");
+
+/**
+ * The first passage of a Markdown body as plain text. Lines before the first heading are a
+ * preamble (a README's link back to what it accompanies), so the passage opens the first section;
+ * a sentence ending in a colon takes the list it introduces with it.
+ */
+export function firstPassage(markdown: string): string | undefined {
+  const tokens = Lexer.lex(markdown);
+  const heading = tokens.findIndex((t) => t.type === "heading");
+  const at = tokens.findIndex((t, i) => i > heading && t.type === "paragraph");
+  const paragraph = tokens[at];
+  if (paragraph?.type !== "paragraph") return undefined;
+  let passage = plainText(paragraph.tokens).trim();
+  const next = tokens.slice(at + 1).find((t) => t.type !== "space");
+  if (passage.endsWith(":") && next?.type === "list") {
+    const items = (next.items as Token[]).map((i) => plainText("tokens" in i ? i.tokens : []).trim());
+    passage = `${passage} ${items.map((i) => i.replace(/[;,.]$/, "")).join(", ")}.`;
+  }
+  return passage.replace(/\s+/g, " ") || undefined;
+}
+
+/** What an item asks: the first passage of its first text block, or undefined without one. */
+export function passageOf(item: Item, lang: Lang): Localized | undefined {
+  const block = item.page?.blocks.find((b) => b.type === "text");
+  if (block?.type !== "text") return undefined;
+  const body = text(block.body, lang);
+  const value = block.format === "markdown" ? firstPassage(body.value) : body.value.split(/\n\s*\n/)[0]?.trim();
+  return value ? { value, lang: body.lang } : undefined;
 }
 
 // ---------------------------------------------------------------------------------------------

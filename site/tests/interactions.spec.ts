@@ -839,7 +839,7 @@ test("each collection has an index page, reachable from the atlas", async ({ pag
 
   // Every lab is listed, and each says which competency it is practice for.
   const labs = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8")).items.labs;
-  await expect(page.locator(".collection-index > li")).toHaveCount(labs.length);
+  await expect(page.locator(".catalogue tbody tr")).toHaveCount(labs.length);
   await page.getByRole("link", { name: "Self-Attention Lab" }).click();
   await expect(page).toHaveURL(/\/en\/labs\/self-attention\/$/);
 });

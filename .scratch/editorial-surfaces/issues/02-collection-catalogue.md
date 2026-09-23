@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Every item of each collection appears once; items with a page link to it; "practice for" / member links go to their routes
-- [ ] "How it runs" is derived from the item's blocks, not configured per lab
-- [ ] No horizontal scroll at 390; the page no longer leaves the right half empty at 1440
-- [ ] Browser tests read items and relations from the model; DESIGN.md's collection index lines replaced in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] Every item of each collection appears once; items with a page link to it; "practice for" / member links go to their routes
+- [x] "How it runs" is derived from the item's blocks, not configured per lab
+- [x] No horizontal scroll at 390; the page no longer leaves the right half empty at 1440
+- [x] Browser tests read items and relations from the model; DESIGN.md's collection index lines replaced in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

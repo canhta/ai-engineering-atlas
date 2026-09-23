@@ -36,13 +36,13 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/                     Home
 /{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
 /{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
-/{lang}/<collection>/         Index of a collection (labs, projects, paths), linked from the Atlas
+/{lang}/<collection>/         Catalogue of a collection (labs, projects, paths), linked from the Atlas
 /{lang}/sources/             Library: every source the routes cite, searchable
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Logbook: evidence log, next steps, review queue, your data
 ```
 
-Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
 
 ## Global frame
 

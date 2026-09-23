@@ -1,19 +1,26 @@
 ---
-// Index of a collection that is not the tracked one (labs, projects, paths today). Generic: the
-// content model names the collection and its fields, so a new collection gets a page with no new
-// code (DESIGN.md → Information architecture).
+// Index of a collection that is not the tracked one (labs, projects, paths today), set as a
+// printed catalogue (DESIGN.md → Collection indexes): one ruled row per item with what it asks, how
+// it runs, and the routes it is practice for or brings together, each with the learner's state
+// glyph after hydration. Generic: columns appear only when some item has the data, so a new
+// collection gets a page with no new code.
 import Breadcrumb from "../../../components/Breadcrumb.astro";
+import PrereqLine, { type PrereqEntry } from "../../../components/react/PrereqLine";
 import Base from "../../../layouts/Base.astro";
 import { languages, type Lang, useTranslations } from "../../../i18n";
 import {
+  benchOf,
   collections,
-  fieldChips,
   itemsOf,
   itemUrl,
+  langAttr,
   pageSegment,
+  passageOf,
   text,
   trackedCollection,
+  trackedItemsFrom,
   trackedItemsPointingAt,
+  type Item,
 } from "../../../lib/atlas";
 import { refOf } from "../../../lib/refs";
 import { mapUrl } from "../../../lib/urls";
@@ -29,27 +36,51 @@ const { collection } = Astro.props;
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const label = text(collection.label, lang);
+const items = itemsOf(collection.id);
 
-const rows = itemsOf(collection.id).map((item) => {
+// The routes an item relates to: the tracked items pointing at it (what a lab is practice for) or,
+// when none in this collection do, the ones it points at (the routes a project brings together).
+const inward = items.some((item) => trackedItemsPointingAt(refOf(collection, item)).length > 0);
+const relatedLead = t(inward ? "collection.practisesFor" : "collection.covers");
+const relatedOf = (ref: string): PrereqEntry[] =>
+  (inward ? trackedItemsPointingAt(ref) : trackedItemsFrom(ref)).map((tracked: Item) => {
+    const trackedRef = refOf(trackedCollection, tracked);
+    return { ref: trackedRef, title: text(tracked.title, lang), url: itemUrl(lang, trackedRef) };
+  });
+
+const benchLabel = {
+  runner: t("collection.runs.runner"),
+  form: t("collection.runs.form"),
+  none: t("collection.runs.none"),
+};
+
+const rows = items.map((item) => {
   const ref = refOf(collection, item);
   return {
     ref,
     title: text(item.title, lang),
     url: itemUrl(lang, ref),
-    chips: (collection.list_fields ?? []).flatMap((field) => fieldChips(collection, item, field, lang)),
-    // What this item is practice for: the tracked items that point at it.
-    practises: trackedItemsPointingAt(ref).map((tracked) => ({
-      ref: refOf(trackedCollection, tracked),
-      title: text(tracked.title, lang),
-    })),
+    asks: passageOf(item, lang),
+    bench: item.page ? benchLabel[benchOf(item) ?? "none"] : undefined,
+    related: relatedOf(ref),
   };
 });
 const withPage = rows.filter((row) => row.url).length;
+
+// A column shows when some item has something to put in it; "how it runs" only when some item runs
+// in the browser, so a collection without a bench never reads "README only" on every row.
+const columns = {
+  asks: rows.some((row) => row.asks),
+  bench: items.some((item) => benchOf(item)),
+  related: rows.some((row) => row.related.length > 0),
+};
+// With titles alone there is nothing to head; the ink rule then sits above the first row.
+const headed = Object.values(columns).some(Boolean);
 ---
 
 <Base lang={lang} title={label.value} description={t("collection.intro", { label: label.value })}>
   <Breadcrumb lang={lang} crumbs={[{ label: t("nav.atlas"), href: mapUrl(lang) }, { label: label.value }]} />
-  <h1 class="page-title" lang={label.lang === lang ? undefined : label.lang}>
+  <h1 class="page-title" lang={langAttr(label, lang)}>
     {label.value}
   </h1>
   <p class="lead">
@@ -58,62 +89,187 @@ const withPage = rows.filter((row) => row.url).length;
       : t("collection.count", { shown: withPage, total: rows.length })}
   </p>
 
-  <ul class="collection-index">
-    {rows.map((row) => (
-      <li>
-        <div class="collection-head">
-          {row.url ? (
-            <a href={row.url} lang={row.title.lang === lang ? undefined : row.title.lang}>
-              {row.title.value}
-            </a>
-          ) : (
-            <span lang={row.title.lang === lang ? undefined : row.title.lang}>{row.title.value}</span>
-          )}
-          {row.chips.map((chip) => (
-            <span class="chip">{chip.label.value}</span>
-          ))}
-        </div>
-        {row.practises.length > 0 && (
-          <p class="muted small">
-            {t("collection.practisesFor")}{" "}
-            {row.practises.map((item, i) => (
-              <>
-                {i > 0 && ", "}
-                <a href={itemUrl(lang, item.ref)}>{item.title.value}</a>
-              </>
-            ))}
-          </p>
+  <table
+    class:list={["catalogue", { headed, "has-bench": columns.bench, "has-related": columns.related }]}
+    role="table"
+    aria-label={label.value}
+  >
+    <thead role="rowgroup" class:list={{ "visually-hidden": !headed }}>
+      <tr role="row">
+        <th scope="col" role="columnheader">
+          {t("collection.col.title")}
+        </th>
+        {columns.asks && (
+          <th scope="col" role="columnheader">
+            {t("collection.col.asks")}
+          </th>
         )}
-      </li>
-    ))}
-  </ul>
+        {columns.bench && (
+          <th scope="col" role="columnheader">
+            {t("collection.col.runs")}
+          </th>
+        )}
+        {columns.related && (
+          <th scope="col" role="columnheader">
+            {relatedLead}
+          </th>
+        )}
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+      {rows.map((row) => (
+        <tr role="row" data-ref={row.ref}>
+          <th scope="row" role="rowheader" class="catalogue-title">
+            {row.url ? (
+              <a href={row.url} lang={langAttr(row.title, lang)}>
+                {row.title.value}
+              </a>
+            ) : (
+              <span lang={langAttr(row.title, lang)}>{row.title.value}</span>
+            )}
+          </th>
+          {columns.asks && (
+            <td role="cell" class="catalogue-asks">
+              {row.asks && <span lang={langAttr(row.asks, lang)}>{row.asks.value}</span>}
+            </td>
+          )}
+          {columns.bench && (
+            <td role="cell" class="catalogue-bench">
+              {row.bench && (
+                <>
+                  <span class="cell-label">{t("collection.col.runs")}: </span>
+                  {row.bench}
+                </>
+              )}
+            </td>
+          )}
+          {columns.related && (
+            <td role="cell" class="catalogue-related">
+              {row.related.length > 0 && (
+                <PrereqLine client:idle lang={lang} entries={row.related} lead={relatedLead} />
+              )}
+            </td>
+          )}
+        </tr>
+      ))}
+    </tbody>
+  </table>
 </Base>
 
 <style>
-  .collection-index {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    max-width: var(--measure);
+  /* A printed catalogue: full width, an ink rule under the column heads, hairlines between rows. */
+  .catalogue {
     margin: var(--space-8) 0 var(--space-12);
-    padding: 0;
-    list-style: none;
+    table-layout: fixed;
   }
 
-  .collection-index li {
-    padding-bottom: var(--space-5);
-    border-bottom: var(--border-width) solid var(--line);
+  .catalogue th,
+  .catalogue td {
+    padding: var(--space-5) var(--space-6) var(--space-5) 0;
   }
 
-  .collection-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-3);
-    font-size: var(--text-h3);
+  .catalogue :is(th, td):last-child {
+    padding-right: 0;
   }
 
-  .collection-index p {
-    margin: var(--space-2) 0 0;
+  .catalogue thead th {
+    padding-block: 0 var(--space-2);
+  }
+
+  @media (width >= 768px) {
+    .catalogue:not(.headed) tbody tr:first-child > * {
+      border-top: var(--border-width) solid var(--ink);
+    }
+  }
+
+  .catalogue thead th:first-child {
+    width: 24%;
+  }
+
+  .catalogue.has-bench thead th:nth-child(3) {
+    width: 13rem;
+  }
+
+  .catalogue.has-related thead th:last-child {
+    width: 32%;
+  }
+
+  /* Without a bench column the related routes take the room: a project lists dozens. */
+  .catalogue.has-related:not(.has-bench) thead th:last-child {
+    width: 48%;
+  }
+
+  .catalogue-title {
+    border-bottom-color: var(--line);
+    font-family: var(--font-reading);
+    font-size: var(--text-lead);
+    font-weight: 500;
+    line-height: var(--leading-heading);
+    color: var(--ink);
+  }
+
+  .catalogue-asks {
+    font-family: var(--font-reading);
+    font-size: var(--text-reading);
+    line-height: 1.5;
+  }
+
+  .catalogue-bench {
+    color: var(--ink-muted);
+  }
+
+  /* The related routes read as the prerequisite line does, without its rule; the column head names them. */
+  .catalogue-related :global(.prereq-line) {
+    padding-top: 0;
+    border-top: 0;
+    line-height: 1.9;
+  }
+
+  .catalogue-related :global(.prereq-lead) {
+    display: none;
+  }
+
+  @media (width < 768px) {
+    .catalogue {
+      table-layout: auto;
+    }
+
+    .catalogue thead {
+      display: none;
+    }
+
+    .catalogue tr,
+    .catalogue th,
+    .catalogue td {
+      display: block;
+    }
+
+    .catalogue tr {
+      padding: var(--space-5) 0;
+      border-bottom: var(--border-width) solid var(--line);
+    }
+
+    .catalogue tbody tr:first-child {
+      border-top: var(--border-width) solid var(--ink);
+    }
+
+    .catalogue th,
+    .catalogue td {
+      padding: 0;
+      border: 0;
+    }
+
+    .catalogue td:empty {
+      display: none;
+    }
+
+    .catalogue :is(th, td) + td {
+      margin-top: var(--space-2);
+    }
+
+    .catalogue-related :global(.prereq-lead) {
+      display: inline;
+      font-size: var(--text-small);
+    }
   }
 </style>
