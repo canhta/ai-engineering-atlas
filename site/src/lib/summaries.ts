@@ -9,7 +9,6 @@ import {
   fieldChips,
   groupsOf,
   hasPage,
-  headerChips,
   itemsOf,
   itemUrl,
   type Localized,
@@ -59,14 +58,10 @@ export interface ItemDetail {
   groupLabel?: Localized;
   href?: string;
   maturity: string;
-  /** Header field values with short codes, for Home's ready rows. */
-  chips: { code?: string; label: Localized }[];
   /** The details line, as on the item's page. */
   details: Details;
   lead?: Localized;
   needs: { ref: string; title: Localized; href?: string; bridged: boolean }[];
-  /** Source count, for Home's ready rows. */
-  sources: number;
   diagnosticAnchor?: string;
   related: { label: Localized; items: { title: Localized; href?: string }[] }[];
   target?: string;
@@ -159,12 +154,6 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
       groupLabel: groupField ? vocabularyLabel(c.fields[groupField]?.vocabulary, groupValue, lang) : undefined,
       href: itemUrl(lang, ref),
       maturity: maturityOf(item, lang),
-      chips: page
-        ? headerChips(c, item, lang).map((chip) => ({
-            code: chip.value.length <= 3 && chip.value !== chip.label.value ? chip.value : undefined,
-            label: chip.label,
-          }))
-        : [],
       details: detailsOf(c, item, lang),
       lead: lead?.type === "text" ? text(lead.body, lang) : undefined,
       needs: relationsTo("prerequisite", ref).map((r) => ({
@@ -173,7 +162,6 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
         href: itemUrl(lang, r.from),
         bridged: bridged.has(r.from),
       })),
-      sources: blocks.reduce((n, b) => n + (b.type === "sources" ? b.rows.length : 0), 0),
       diagnosticAnchor: diagnostic?.id,
       related: [...byCollection.values()],
       target: page ? targetOf(c, item) : undefined,

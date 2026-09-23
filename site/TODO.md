@@ -67,7 +67,7 @@ Last updated: 2026-09-23
 - [x] 03 Home shows the method: title, promise, start action, the plate, then a server-rendered specimen of the route `site.specimen` names (first diagnostic task, first source with its exact locator and why, exit evidence, margin notes); next steps lead once there is evidence; the four-step row and ready-routes list removed. New vi strings await owner review
 - [x] 04 Route page as a chapter: section label, details line (`detailsOf()` in `atlas.ts`, also in the Atlas drawer) instead of chips, numbered contents rail, sources as a bibliography with the locator first, field log in a sticky ruled margin column; project pages share it, lab workbenches unchanged
 - [ ] 05 Region locator plate at the top of the route's margin column
-- [ ] After 03: drop `chips` and `sources` from `ItemDetail` and the `drawer.sources` strings once Home's ready rows are gone (they are their only users)
+- [x] After 03: `chips` and `sources` dropped from `ItemDetail`, and the `drawer.sources` strings with them
 - [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
 
 ### Phase 1 follow-ups
