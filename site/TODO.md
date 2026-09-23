@@ -78,7 +78,7 @@ Last updated: 2026-09-23
 - [ ] Restructure the collection indexes (Labs, Projects, Paths): a single 692px column of titles and "Practice for" lines, with the right half of the page empty at 1440 and nothing about what each lab or project asks
 - [ ] Restructure Library: one long column (22,000px at 1440) with type chips and indented citing rows; no grouping or reading order, and the right half empty at 1440
 - [ ] Project pages: milestones render as raw IDs (`product-frame`, `lexical-baseline`) in reading type; the project needs titled milestones from the content model before its page can read like a route
-- [ ] The Prerequisites block's glyphs are server-rendered and never show the learner's state, while the prerequisite line above it does
+- [x] The Prerequisites block shows the learner's state: each head is an island (`PrereqHead.tsx`) that server-renders the maturity glyph and label and takes the state glyph and label after hydration, as the prerequisite line does (`tests/prerequisites.spec.ts`)
 - [ ] Plate, last desktop row: Multimodal and Specializations stretch beside the taller Security & Governance block. `plate-layout.ts` balances columns, not heights; balancing heights needs the tile count per row, left for when the plate's rules next change
 - [ ] Home specimen at 1440: the diagnostic entry is shorter than the source entry beside it and leaves space under it; filling it would be decoration, so it waits for the specimen to show more of the diagnostic (for example the pass condition)
 - [ ] Home on a phone: the specimen sits below the stacked plate (about 3,000px down); "See a route up close" jumps to it. The design keeps plate first; revisit if analytics show visitors never reach it

@@ -10,10 +10,11 @@ import {
   langAttr,
   resolveRef,
   resolveResource,
+  stateLabels,
   text,
   type PrerequisitesBlock,
 } from "../../lib/atlas";
-import { TileGlyph } from "../plate/TileGlyph";
+import PrereqHead from "../react/PrereqHead";
 import ResourceLink from "./ResourceLink.astro";
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
 
 const { block, lang } = Astro.props;
 const t = useTranslations(lang);
+const labels = stateLabels(lang);
 const entries = block.items.map((entry) => {
   const found = resolveRef(entry.ref);
   return {
@@ -43,17 +45,15 @@ const entries = block.items.map((entry) => {
     const question = b?.diagnostic && text(b.diagnostic, lang);
     return (
       <li id={b ? bridgeAnchor(e.ref) : undefined}>
-        <p class="prereq-head">
-          <TileGlyph fill={e.ready ? "ready" : "mapped"} />
-          {e.url ? (
-            <a href={e.url} lang={langAttr(e.title, lang)}>
-              {e.title.value}
-            </a>
-          ) : (
-            <span lang={langAttr(e.title, lang)}>{e.title.value}</span>
-          )}
-          <span class="muted small">{t(e.ready ? "prereq.ready" : "prereq.mapped")}</span>
-        </p>
+        <PrereqHead
+          client:idle
+          lang={lang}
+          itemRef={e.ref}
+          title={e.title}
+          url={e.url}
+          maturity={t(e.ready ? "prereq.ready" : "prereq.mapped")}
+          stateLabels={labels}
+        />
         {b && (
           <div class="bridge">
             <p class="bridge-label">{t("prereq.bridgeLabel")}</p>
@@ -95,7 +95,8 @@ const entries = block.items.map((entry) => {
     list-style: none;
   }
 
-  .prereq-head {
+  /* The head is an island (PrereqHead.tsx) so it can take the learner's state after hydration. */
+  .prereq-list :global(.prereq-head) {
     display: flex;
     flex-wrap: wrap;
     align-items: center;

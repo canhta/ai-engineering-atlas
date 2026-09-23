@@ -146,6 +146,9 @@ describe("block renderer", () => {
   test("prerequisites link pages and show bridges", async () => {
     const html = await render("prerequisites");
     expect(html).toContain('href="/en/routes/ai.evaluation/"');
+    // Each head is an island that server-renders the maturity and takes the learner's state later.
+    expect(html).toContain("astro-island");
+    expect(html).toMatch(/class="prereq-state[^"]*">ready route</);
     expect(html).toContain("Bridge question");
     expect(html).toContain("Bridge locator");
     expect(html).toContain('id="bridge-systems.api-service-design"');
