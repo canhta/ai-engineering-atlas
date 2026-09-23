@@ -33,6 +33,8 @@ const SOURCES = (routeBlocks.find((b) => b.id === "sources")?.rows ?? []).length
 
 /** Wait until every island on the page has hydrated (Astro removes the `ssr` attribute). */
 async function hydrated(page: Page) {
+  // Right after a navigation the islands may not be parsed yet, and zero pending islands would pass.
+  await page.waitForLoadState("load");
   await page.waitForFunction(() => document.querySelectorAll("astro-island[ssr]").length === 0);
 }
 

@@ -69,6 +69,7 @@ Last updated: 2026-09-22
 - [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)
 - [x] "Practice for" lists only tracked items pointing at another collection's item (a lab, a project); a prerequisite between routes no longer shows as practice (`atlas.test.ts`)
 - [x] The floating nav blurs what scrolls under it: the build kept only `-webkit-backdrop-filter`, which Chromium ignores, so the unprefixed declaration is the only one
+- [x] Two DESIGN.md tells removed: the trailing "Atlas →" link on collection indexes (the breadcrumb links back), and "N/M done" on Progress region rows, now "N of M demonstrated" on one shared column grid
 
 ### Phase 1b: in-browser labs
 
