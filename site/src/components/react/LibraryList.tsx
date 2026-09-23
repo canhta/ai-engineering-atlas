@@ -29,6 +29,7 @@ const onClient = () => true;
 const onServer = () => false;
 
 const anchor = (kind: string) => `type-${kind || "other"}`;
+const SECTIONS = "library-sections";
 
 export default function LibraryList({ lang, sections }: Props) {
   const t = useTranslations(lang);
@@ -106,6 +107,12 @@ export default function LibraryList({ lang, sections }: Props) {
         ) : (
           <nav aria-labelledby="library-contents-head">
             <ul className="library-kinds">
+              <li>
+                <a className="library-kind" href={`#${SECTIONS}`}>
+                  <span className="library-kind-label">{t("library.allKinds")}</span>
+                  <span className="tabular">{total}</span>
+                </a>
+              </li>
               {sections.map((section) => (
                 <li key={section.kind}>
                   <a className="library-kind" href={`#${anchor(section.kind)}`}>
@@ -125,7 +132,7 @@ export default function LibraryList({ lang, sections }: Props) {
         </p>
       </search>
 
-      <div className="library-sections">
+      <div className="library-sections" id={SECTIONS}>
         {count === 0 ? (
           <div className="empty">
             <p>{t("library.noResults")}</p>
@@ -163,7 +170,7 @@ export default function LibraryList({ lang, sections }: Props) {
                         ))}
                         {entry.citations.length > SHOWN && (
                           <li className="library-more">
-                            <details>
+                            <details open={matchesOnlyCollapsed(entry, needle)}>
                               <summary>{t("library.more", { n: entry.citations.length - SHOWN })}</summary>
                               <ul className="library-citations">
                                 {entry.citations.slice(SHOWN).map((citation) => (
@@ -183,6 +190,17 @@ export default function LibraryList({ lang, sections }: Props) {
       </div>
     </div>
   );
+}
+
+/**
+ * Whether a search matches this source only through a citation behind "and N more": then the
+ * disclosure opens, so the reason the source is listed is in view.
+ */
+function matchesOnlyCollapsed(entry: LibraryEntry, needle: string): boolean {
+  if (!needle) return false;
+  const has = (value: string | undefined) => Boolean(value?.toLowerCase().includes(needle));
+  const shown = [entry.title, entry.author, entry.host, ...entry.citations.slice(0, SHOWN).map((c) => c.title.value)];
+  return !shown.some(has) && entry.citations.slice(SHOWN).some((c) => has(c.title.value));
 }
 
 function Citation({

@@ -84,9 +84,11 @@ function FacetMenu(props: {
   value: string;
   options: MenuOption[];
   isDisabled: boolean;
+  /** Open below the button even when there is more room above (the mobile sheet). */
+  below?: boolean;
   onChange: (value: string) => void;
 }) {
-  const { lang, label, value, options, isDisabled, onChange } = props;
+  const { lang, label, value, options, isDisabled, below = false, onChange } = props;
   const current = options.find((o) => o.id === value) ?? options[0];
   return (
     <MenuTrigger>
@@ -98,7 +100,7 @@ function FacetMenu(props: {
         </span>
         <Icon name="expand" />
       </Button>
-      <Popover className="facet-popover" placement="bottom start" offset={4}>
+      <Popover className="facet-popover" placement="bottom start" offset={4} shouldFlip={!below}>
         <Menu
           className="facet-menu"
           aria-label={label}
@@ -215,7 +217,9 @@ export default function AtlasExplorer(props: Props) {
     id,
     label: local(t(`map.filter.state.${id}`)),
   }));
-  const controls: ReactNode = (
+  // In the mobile sheet a menu opens downward only: flipped above its button it would cover the
+  // sheet's title, so the sheet keeps room below its buttons instead (DESIGN.md → Atlas).
+  const controls = (inSheet: boolean): ReactNode => (
     <>
       {facets.map((f) => (
         <FacetMenu
@@ -225,6 +229,7 @@ export default function AtlasExplorer(props: Props) {
           value={facetValues[f.field] ?? "any"}
           options={[anyOption, ...f.options.map((o) => ({ id: o.value, label: o.label }))]}
           isDisabled={!hydrated}
+          below={inSheet}
           onChange={(value) => setFacetValues((v) => ({ ...v, [f.field]: value }))}
         />
       ))}
@@ -234,6 +239,7 @@ export default function AtlasExplorer(props: Props) {
         value={stateFilter}
         options={stateOptions}
         isDisabled={!hydrated}
+        below={inSheet}
         onChange={(value) => setStateFilter(value as StateFilter)}
       />
       {relatedFacets.map((f, i) => (
@@ -244,6 +250,7 @@ export default function AtlasExplorer(props: Props) {
           value={related[i]}
           options={[anyOption, ...f.options.map((o) => ({ id: o.ref, label: o.title }))]}
           isDisabled={!hydrated}
+          below={inSheet}
           onChange={(value) => setRelated((r) => r.map((v, j) => (j === i ? value : v)))}
         />
       ))}
@@ -316,7 +323,7 @@ export default function AtlasExplorer(props: Props) {
             )}
           </div>
         </SearchField>
-        <div className="filter-controls">{controls}</div>
+        <div className="filter-controls">{controls(false)}</div>
         <Button className="button filter-open" isDisabled={!hydrated} onPress={() => setFiltersOpen(true)}>
           {t("map.filters", { count: activeFilters - (query.trim() ? 1 : 0) })}
         </Button>
@@ -421,7 +428,7 @@ export default function AtlasExplorer(props: Props) {
       )}
 
       <ModalOverlay className="bottom-sheet-overlay" isDismissable isOpen={filtersOpen} onOpenChange={setFiltersOpen}>
-        <Modal className="bottom-sheet">
+        <Modal className="bottom-sheet filter-bottom-sheet">
           <Dialog className="bottom-sheet-dialog" aria-labelledby="filters-title">
             <div className="bottom-sheet-head">
               <h2 id="filters-title" className="log-title">
@@ -431,7 +438,7 @@ export default function AtlasExplorer(props: Props) {
                 {t("map.showResults", { shown })}
               </Button>
             </div>
-            <div className="filter-sheet">{controls}</div>
+            <div className="filter-sheet">{controls(true)}</div>
             {filtering && (
               <Button className="button-quiet" onPress={clear}>
                 {t("map.clear")}

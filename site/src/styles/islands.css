@@ -1592,6 +1592,11 @@
   margin-left: auto;
 }
 
+/* Room under the filter buttons: their menus open downward, never over the sheet's title. */
+.filter-bottom-sheet {
+  min-height: min(92dvh, 40rem);
+}
+
 .results {
   display: flex;
   flex-wrap: wrap;

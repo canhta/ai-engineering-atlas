@@ -201,7 +201,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                         {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
                       </time>
                       {detail?.href && (
-                        <a className="button button-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
+                        <a className="button" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
                           {t("progress.startReview")}
                         </a>
                       )}

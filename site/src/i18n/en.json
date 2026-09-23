@@ -75,6 +75,7 @@
   "prereq.bridge": "(bridge on the route page)",
   "prereq.bridgeHere": "(bridge below)",
   "prereq.bridgeLabel": "If the diagnostic shows this gap",
+  "prereq.state": "your state: {state}",
   "rail.label": "On this page",
   "rail.stepOf": "Step {n} of {total}",
   "rail.answered": "{n} of {total} answered",

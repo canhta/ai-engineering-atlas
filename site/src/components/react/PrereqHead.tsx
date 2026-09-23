@@ -25,17 +25,21 @@ export default function PrereqHead({ lang, itemRef, title, url, maturity, stateL
   const state = ready && progress ? stateOf(progress, itemRef) : null;
   const shown = state && state !== "unassessed" ? state : null;
   const titleLang = title.lang === lang ? undefined : title.lang;
+  // The glyph is hidden from assistive tech; the label beside it describes the link.
+  const labelId = `prereq-state-${itemRef.replace(/[^\w-]/g, "-")}`;
   return (
     <p className="prereq-head">
       <TileGlyph fill={tileFill(ready, shown)} state={shown} />
       {url ? (
-        <a href={url} lang={titleLang}>
+        <a href={url} lang={titleLang} aria-describedby={labelId}>
           {title.value}
         </a>
       ) : (
         <span lang={titleLang}>{title.value}</span>
       )}
-      <span className="prereq-state muted small">{shown ? (stateLabels[shown] ?? shown) : maturity}</span>
+      <span id={labelId} className="prereq-state muted small">
+        {shown ? (stateLabels[shown] ?? shown) : maturity}
+      </span>
     </p>
   );
 }

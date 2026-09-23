@@ -75,6 +75,7 @@
   "prereq.bridge": "(có phần bổ trợ trên trang lộ trình)",
   "prereq.bridgeHere": "(có phần bổ trợ bên dưới)",
   "prereq.bridgeLabel": "Nếu bài kiểm tra cho thấy bạn còn thiếu phần này",
+  "prereq.state": "trạng thái: {state}",
   "rail.label": "Trong trang",
   "rail.stepOf": "Bước {n}/{total}",
   "rail.answered": "Đã trả lời {n}/{total}",

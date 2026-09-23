@@ -42,7 +42,7 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/search/              Search: routes, labs, projects, and sources by title (?q=<query>)
 ```
 
-Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), **Search**, language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **How it works** reads like a field guide's "how to use this book" (`src/lib/how.ts`, no island): section heads in a left column; the learner states as a key (glyph, label, meaning from the state vocabulary's `description`); a ruled two-column table of evidence per capability type (the other described vocabulary); the route's `step` blocks as a book's contents, numbered like the rail (a step only some routes have is unnumbered, "on some routes") and linking to the specimen route; a short passage on delayed review. No numbered-step row. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), **Search**, language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **How it works** reads like a field guide's "how to use this book" (`src/lib/how.ts`, no island): section heads in a left column; the learner states as a key (glyph, label, meaning from the state vocabulary's `description`); a ruled two-column table of evidence per capability type (the other described vocabulary); the route's `step` blocks as a book's contents, numbered like the rail (a step only some routes have is unnumbered, "on some routes") and linking to the specimen route; a short passage on delayed review. No numbered-step row. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration; beyond six they run in per region (italic region label, vocabulary order). A column shows only when some item fills it; an untranslated passage carries `lang` and the marker sits under the lead. Below 768 rows stack as entries with inline labels.
 
 ## Global frame
 
@@ -132,7 +132,7 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
 - Filters: a ruled key between hairlines above the legend, not a form. Search; one quiet menu button per facet naming its current choice (the collection's facets, except the page condition field, which is the "Ready routes only" toggle, `?ready=1`; your state; one per related collection, projects); the toggle; the live count (`role="status"`); Clear. A button opens a React Aria menu of options, the current one on a magenta rule and `aria-checked`; focus returns to the button on close. No native selects; all disabled until hydration.
 - URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
-- Mobile: filters behind "Filters (n)" opening a sheet, the same menu buttons as full-width rows; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
+- Mobile: filters behind "Filters (n)" opening a sheet, the same menu buttons as full-width rows, their menus opening downward into room the sheet keeps, never over its title; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
 
 ### Route sheet
 
@@ -182,7 +182,7 @@ A field logbook. The Atlas answers "what is there"; Progress answers "where do I
 
 - Region bars: one row per region with a ready route, ordered by share done, one segment per state in its hue, the rest `line`; each row links to `?group=`. Counts and the legend carry the meaning (a screen-reader line per row); before hydration the bars are empty and the count reads "… of N".
 - Evidence log (main column, under an ink rule): every evidence record once, newest first (`evidenceLog()` in `progress.ts`), read-only. An entry is the date in the gutter (`formatDate`, printed once per day), the competency's glyph and title link, a details line (supports + state badge, kind, review method), and the note excerpt in Newsreader (cut at ~160 characters). On a phone the date sits above the entry. Empty: "Start with a diagnostic on any ready route" and the start CTA.
-- Margin (behind a `line` hairline, each section opening on an ink rule with a UI-sized head, like the route's field log): next steps, the review queue, and Your data (export/import, confirmation and errors inline, the storage note). Below 1024 it follows the log.
+- Margin (behind a `line` hairline, each section opening on an ink rule with a UI-sized head, like the route's field log): next steps, the review queue, and Your data (export/import, confirmation and errors inline, the storage note). The margin has no primary: "Start review" and Your data's actions are outlined secondaries (`button`). Below 1024 it follows the log.
 
 **Next step.** Computed by `src/lib/recommend.ts` from prerequisites, states, and review dates; advice only, never a state change. Ranked: check due, continue (gap, learning), start (prerequisites demonstrated or bridged), transfer, apply. Home shows up to 3 beside the hero once there is evidence, and keeps the start CTA; Progress shows up to 5 above the queue, without due checks (the queue has them). A row is the rank in `route`, the tile glyph and title link (a due check links to the diagnostic), and the reason as one muted line: hairline rows, no cards. In the field log it is one line under "Next:", either "Recommended next (n of 5)." with the reason or "Learn first:" with the blocking prerequisites.
 
@@ -192,13 +192,14 @@ A bibliography in sections: every source the atlas routes through, and which par
 for. Built by `library()` in `src/lib/summaries.ts` from the blocks (sources, practice, bridges), so
 a source cannot appear without a page citing it, or drift from it.
 
-- Contents column (sticky from 1024, above the list on a phone): the search field, "Contents" over an
-  ink rule listing each resource type with its count, then the announced count. Without JavaScript
-  the types link to their sections; hydrated, each is a toggle (current: ink, magenta underline).
+- Contents column (sticky from 1024, above the list on a phone): search, "Contents" over an ink rule
+  listing "All types" and each type with its count, then the announced count. Without JavaScript the
+  rows link to the sections; hydrated, the same rows are toggles (current: ink, magenta underline).
 - One section per type present, in the vocabulary's order (Newsreader h2 and count); entries on
-  hairlines, ordered by how many pages cite them. An entry sets the source (title linking out, author
-  and host) beside its citing pages, each running in with its locators in the reading face; after two,
-  the rest sit behind a native `<details>` "and N more". Grouping and collapse are server-rendered.
+  hairlines, ordered by how many pages cite them. An entry sets the source (title linking out,
+  author and host) beside its citing pages, each running in with its locators in the reading face;
+  after two, the rest sit behind a native `<details>` "and N more", which a search matching only
+  them opens. Grouping and collapse are server-rendered.
 
 ### Labs
 
@@ -309,7 +310,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ## Accessibility baseline (WCAG 2.2 AA)
 
-- 1.4.1: state is shape, label, and colour.
+- 1.4.1: state is shape, label, and colour; a glyph without a visible label (prerequisite line, catalogue) names it in visually hidden text, and a visible label describes its link.
 - 1.4.11: meaningful lines and focus rings reach 3:1.
 - 2.5.7: nothing requires dragging.
 - 2.5.8: targets are at least 24px, tiles included.

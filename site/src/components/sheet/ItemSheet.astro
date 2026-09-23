@@ -137,8 +137,16 @@ const railEntries: RailEntry[] = blocks.map((b) => {
           {t("translation.missing")}
         </p>
       )}
-      {prereqs.length > 0 && <PrereqLine client:idle lang={lang} entries={prereqs} />}
-      {practisedBy.length > 0 && <PrereqLine client:idle lang={lang} entries={practisedBy} lead={t("lab.practises")} />}
+      {prereqs.length > 0 && <PrereqLine client:idle lang={lang} stateLabels={stateLabels(lang)} entries={prereqs} />}
+      {practisedBy.length > 0 && (
+        <PrereqLine
+          client:idle
+          lang={lang}
+          stateLabels={stateLabels(lang)}
+          entries={practisedBy}
+          lead={t("lab.practises")}
+        />
+      )}
       <div class="sheet-actions">
         <a class="button-quiet" href={repoUrl(page.source_path)} rel="noopener noreferrer">
           {t("sheet.contract")}

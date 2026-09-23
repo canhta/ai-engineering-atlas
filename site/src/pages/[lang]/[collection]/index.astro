@@ -5,17 +5,20 @@
 // glyph after hydration. Generic: columns appear only when some item has the data, so a new
 // collection gets a page with no new code.
 import Breadcrumb from "../../../components/Breadcrumb.astro";
-import PrereqLine, { type PrereqEntry } from "../../../components/react/PrereqLine";
+import PrereqLine, { type PrereqEntry, type PrereqGroup } from "../../../components/react/PrereqLine";
 import Base from "../../../layouts/Base.astro";
 import { languages, type Lang, useTranslations } from "../../../i18n";
 import {
   benchOf,
   collections,
+  groupOf,
+  groupsOf,
   itemsOf,
   itemUrl,
   langAttr,
   pageSegment,
   passageOf,
+  stateLabels,
   text,
   trackedCollection,
   trackedItemsFrom,
@@ -42,11 +45,30 @@ const items = itemsOf(collection.id);
 // when none in this collection do, the ones it points at (the routes a project brings together).
 const inward = items.some((item) => trackedItemsPointingAt(refOf(collection, item)).length > 0);
 const relatedLead = t(inward ? "collection.practisesFor" : "collection.covers");
-const relatedOf = (ref: string): PrereqEntry[] =>
-  (inward ? trackedItemsPointingAt(ref) : trackedItemsFrom(ref)).map((tracked: Item) => {
-    const trackedRef = refOf(trackedCollection, tracked);
-    return { ref: trackedRef, title: text(tracked.title, lang), url: itemUrl(lang, trackedRef) };
-  });
+const relatedOf = (ref: string): Item[] => (inward ? trackedItemsPointingAt(ref) : trackedItemsFrom(ref));
+const entryOf = (tracked: Item): PrereqEntry => {
+  const trackedRef = refOf(trackedCollection, tracked);
+  return { ref: trackedRef, title: text(tracked.title, lang), url: itemUrl(lang, trackedRef) };
+};
+
+// Beyond six routes a row groups them by region, in the vocabulary's order, so a project that
+// brings together dozens reads as a short run per region instead of one long line.
+const GROUP_BEYOND = 6;
+const regionOrder = groupsOf(trackedCollection).map((g) => g.value);
+const rank = (region: string) => (regionOrder.includes(region) ? regionOrder.indexOf(region) : regionOrder.length);
+const groupedOf = (related: Item[]): PrereqGroup[] | undefined => {
+  if (related.length <= GROUP_BEYOND) return undefined;
+  const regions = new Map<string, PrereqGroup>();
+  for (const tracked of related) {
+    const region = groupOf(trackedCollection, tracked, lang);
+    const key = region?.value ?? "";
+    const group = regions.get(key) ?? { label: region?.label ?? { value: "", lang }, entries: [] };
+    group.entries.push(entryOf(tracked));
+    regions.set(key, group);
+  }
+  return [...regions.entries()].sort(([a], [b]) => rank(a) - rank(b)).map(([, group]) => group);
+};
+const labels = stateLabels(lang);
 
 const benchLabel = {
   runner: t("collection.runs.runner"),
@@ -56,16 +78,20 @@ const benchLabel = {
 
 const rows = items.map((item) => {
   const ref = refOf(collection, item);
+  const related = relatedOf(ref);
   return {
     ref,
     title: text(item.title, lang),
     url: itemUrl(lang, ref),
     asks: passageOf(item, lang),
     bench: item.page ? benchLabel[benchOf(item) ?? "none"] : undefined,
-    related: relatedOf(ref),
+    related: related.map(entryOf),
+    groups: groupedOf(related),
   };
 });
 const withPage = rows.filter((row) => row.url).length;
+// Text without a reviewed translation renders in English with its own `lang`, under the marker.
+const untranslated = rows.some((row) => row.title.lang !== lang || (row.asks && row.asks.lang !== lang));
 
 // A column shows when some item has something to put in it; "how it runs" only when some item runs
 // in the browser, so a collection without a bench never reads "README only" on every row.
@@ -88,6 +114,11 @@ const headed = Object.values(columns).some(Boolean);
       ? t("collection.all", { total: rows.length })
       : t("collection.count", { shown: withPage, total: rows.length })}
   </p>
+  {untranslated && (
+    <p class="untranslated small" role="note">
+      {t("translation.missing")}
+    </p>
+  )}
 
   <table
     class:list={["catalogue", { headed, "has-bench": columns.bench, "has-related": columns.related }]}
@@ -146,7 +177,14 @@ const headed = Object.values(columns).some(Boolean);
           {columns.related && (
             <td role="cell" class="catalogue-related">
               {row.related.length > 0 && (
-                <PrereqLine client:idle lang={lang} entries={row.related} lead={relatedLead} />
+                <PrereqLine
+                  client:idle
+                  lang={lang}
+                  stateLabels={labels}
+                  entries={row.related}
+                  groups={row.groups}
+                  lead={relatedLead}
+                />
               )}
             </td>
           )}
@@ -227,6 +265,35 @@ const headed = Object.values(columns).some(Boolean);
 
   .catalogue-related :global(.prereq-lead) {
     display: none;
+  }
+
+  /* Many routes: one run-in line per region, its label italic like the plate's region labels. */
+  .catalogue-related :global(.prereq-groups) {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .catalogue-related :global(.prereq-group-label) {
+    display: inline;
+    margin-right: var(--space-2);
+    font-family: var(--font-reading);
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  .catalogue-related :global(.prereq-group dd) {
+    display: inline;
+    margin: 0;
+  }
+
+  .untranslated {
+    display: inline-block;
+    margin: var(--space-4) 0 0;
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-width) dashed var(--line-strong);
+    border-radius: var(--radius-mark);
+    color: var(--ink-muted);
   }
 
   @media (width < 768px) {
