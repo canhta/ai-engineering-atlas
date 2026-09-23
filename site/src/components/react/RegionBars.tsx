@@ -68,7 +68,7 @@ export default function RegionBars({ lang, atlasUrl, regions, stateOf, stateLabe
                 <span className="region-rest" style={{ flexGrow: row.ready - (loaded ? row.started : 0) }} />
               </span>
               <span className="region-count tabular">
-                {loaded ? t("progress.regionCount", { done: row.done, ready: row.ready }) : `…/${row.ready}`}
+                {t("progress.regionCount", { done: loaded ? row.done : "…", ready: row.ready })}
               </span>
             </a>
             <span className="visually-hidden">

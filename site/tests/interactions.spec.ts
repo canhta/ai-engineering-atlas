@@ -7,10 +7,14 @@ const ROUTE_REF = "ai.tool-calling";
 // Counts come from the content model, never typed in: the curriculum grows, and a test that
 // pins "19 of 116" fails on the next route promotion rather than on a real regression.
 type Model = {
-  collections: { id: string; page_when?: unknown; progress?: { tracks?: boolean } }[];
+  collections: { id: string; group_by?: string; page_when?: unknown; progress?: { tracks?: boolean } }[];
   items: Record<
     string,
-    { id: string; page?: { blocks: { id: string; type: string; tasks?: unknown[]; rows?: unknown[] }[] } }[]
+    {
+      id: string;
+      fields: Record<string, unknown>;
+      page?: { blocks: { id: string; type: string; tasks?: unknown[]; rows?: unknown[] }[] };
+    }[]
   >;
 };
 const model: Model = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8"));
@@ -18,7 +22,12 @@ const tracked = model.collections.find((c) => c.progress?.tracks)!;
 const trackedItems = model.items[tracked.id];
 const TOTAL = trackedItems.length;
 const READY = trackedItems.filter((i) => i.page).length;
-const routeBlocks = trackedItems.find((i) => i.id === ROUTE_REF)!.page!.blocks;
+const routeItem = trackedItems.find((i) => i.id === ROUTE_REF)!;
+const routeBlocks = routeItem.page!.blocks;
+/** Ready routes in the route's region, the denominator of its row on Progress. */
+const REGION_READY = trackedItems.filter(
+  (i) => i.page && i.fields[tracked.group_by!] === routeItem.fields[tracked.group_by!],
+).length;
 const TASKS = (routeBlocks.find((b) => b.type === "diagnostic")?.tasks ?? []).length;
 const SOURCES = (routeBlocks.find((b) => b.id === "sources")?.rows ?? []).length;
 
@@ -270,7 +279,7 @@ test("recorded evidence shows on the route, the progress page, and the atlas fil
   await expect(page.locator(".region-bars .tile")).toHaveCount(0);
   const domain = page.locator(".region-bars li", { hasText: "AI engineering" });
   await expect(domain.locator(".region-share[data-state='demonstrated']")).toBeVisible();
-  await expect(domain).toContainText("done");
+  await expect(domain).toContainText(`1 of ${REGION_READY} demonstrated`);
   await expect(domain.getByRole("link")).toHaveAttribute("href", /\/en\/map\/\?group=/);
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 
@@ -490,6 +499,8 @@ test("the library lists every source, searchable, linking out and back to the ro
   await open(page, "/en/map/");
   await page.getByRole("navigation", { name: "Also in the atlas" }).getByRole("link", { name: "Library" }).click();
   await expect(page).toHaveURL(/\/en\/sources\/$/);
+  // Typing before the search island hydrates is lost, so wait for it.
+  await hydrated(page);
   await expect(page.locator(".library > li")).toHaveCount(sources);
 
   // Each entry links to the public resource and cites the routes that use it.
@@ -513,4 +524,10 @@ test("the library lists every source, searchable, linking out and back to the ro
   ).length;
   await expect(page.locator(".library > li")).toHaveCount(papers);
   await expect(page.getByRole("status")).toContainText(`${papers} of ${sources} sources`);
+});
+
+test("the floating nav blurs the content scrolling under it", async ({ page }) => {
+  await open(page, ROUTE);
+  // The build once kept only the -webkit- declaration, which Chromium ignores.
+  await expect(page.locator(".nav")).not.toHaveCSS("backdrop-filter", "none");
 });

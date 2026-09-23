@@ -67,6 +67,8 @@ Last updated: 2026-09-22
 - [x] Wide tables stack into labelled rows on mobile: sources, atlas, and the Progress evidence table
 - [x] Home ready-route rows wrap unevenly at 375px (rebuilt in milestone 2)
 - [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC)
+- [x] "Practice for" lists only tracked items pointing at another collection's item (a lab, a project); a prerequisite between routes no longer shows as practice (`atlas.test.ts`)
+- [x] The floating nav blurs what scrolls under it: the build kept only `-webkit-backdrop-filter`, which Chromium ignores, so the unprefixed declaration is the only one
 
 ### Phase 1b: in-browser labs
 

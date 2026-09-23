@@ -3,7 +3,6 @@
 // content model names the collection and its fields, so a new collection gets a page with no new
 // code (DESIGN.md → Information architecture).
 import Breadcrumb from "../../../components/Breadcrumb.astro";
-import Icon from "../../../components/Icon.astro";
 import Base from "../../../layouts/Base.astro";
 import { languages, type Lang, useTranslations } from "../../../i18n";
 import {
@@ -88,13 +87,6 @@ const withPage = rows.filter((row) => row.url).length;
       </li>
     ))}
   </ul>
-
-  <p class="muted small">
-    <a href={mapUrl(lang)}>
-      {t("nav.atlas")}
-      <Icon name="forward" />
-    </a>
-  </p>
 </Base>
 
 <style>

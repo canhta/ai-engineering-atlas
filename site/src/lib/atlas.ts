@@ -1,9 +1,9 @@
 // Typed reader of the content model v2 (rfcs/0000-content-model.md, schemas/site-data.schema.json).
 // The site knows collections, items, blocks, vocabularies, relations, and resources; it never
 // names a curriculum field (scripts/check-content-coupling.mjs enforces this).
-import model from "../data/atlas.json";
+import model from "../data/atlas.json" with { type: "json" };
 import type { Lang } from "../i18n";
-import { refOf } from "./refs";
+import { refOf } from "./refs.ts";
 
 // ---------------------------------------------------------------------------------------------
 // Contract types
@@ -340,8 +340,13 @@ export function targetOf(c: Collection, item: Item): string | undefined {
 export const relationsTo = (type: string, ref: string) => relations.filter((r) => r.type === type && r.to === ref);
 export const relationsFrom = (type: string, ref: string) => relations.filter((r) => r.type === type && r.from === ref);
 
-/** Tracked items (with a page) that point at this item through any relation, e.g. the competencies a lab practises. */
+/**
+ * Tracked items (with a page) that point at an item of another collection through any relation,
+ * e.g. the competencies a lab practises. Relations between tracked items (one competency needing
+ * another) never count, so a tracked item always gets [].
+ */
 export function trackedItemsPointingAt(ref: string): Item[] {
+  if (resolveRef(ref)?.collection.id === trackedCollection.id) return [];
   const seen = new Set<string>();
   return relations
     .filter((r) => r.to === ref)
