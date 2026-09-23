@@ -6,11 +6,11 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] One section per resource type present, with a count; every source appears exactly once
-- [ ] Citations beyond two are collapsed and can be expanded; every citation stays reachable
-- [ ] Search and type filter update the sections and the announced count; without JavaScript the full grouped list reads
-- [ ] The page height at 1440 is a fraction of today's and the right half is used; no horizontal scroll at 390
-- [ ] Browser tests from the model; DESIGN.md's Library section replaced in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] One section per resource type present, with a count; every source appears exactly once
+- [x] Citations beyond two are collapsed and can be expanded; every citation stays reachable
+- [x] Search and type filter update the sections and the announced count; without JavaScript the full grouped list reads
+- [x] The page height at 1440 is a fraction of today's and the right half is used; no horizontal scroll at 390
+- [x] Browser tests from the model; DESIGN.md's Library section replaced in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

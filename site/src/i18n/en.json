@@ -276,8 +276,10 @@
   "library.intro": "Every source the atlas routes you through, and exactly which part of it each route asks you to read.",
   "library.search": "Search sources",
   "library.searchPlaceholder": "Title, author, site…",
-  "library.kind": "Type",
   "library.allKinds": "All types",
   "library.results": "{shown} of {total} sources",
+  "library.contents": "Contents",
+  "library.otherKind": "Other",
+  "library.more": "and {n} more",
   "library.noResults": "No source matches."
 }

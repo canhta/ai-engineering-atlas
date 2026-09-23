@@ -229,12 +229,12 @@ export function nextLinks(lang: Lang, refs?: string[]): Record<string, NextLink>
 // Library (DESIGN.md → Library): every source the atlas routes through, with the items that cite
 // it and the exact locators. Built from the blocks themselves, so it cannot drift from the routes.
 
+/** One page citing a source, with every locator it gives (a route may cite two chapters). */
 export interface LibraryCitation {
   ref: string;
   title: Localized;
   url?: string;
-  locator?: Localized;
-  purpose?: Localized;
+  locators: Localized[];
 }
 
 export interface LibraryEntry {
@@ -249,10 +249,42 @@ export interface LibraryEntry {
   haystack: string;
 }
 
-export function library(lang: Lang): LibraryEntry[] {
+/** One resource type's sources, in the vocabulary's order; `kind` is empty for untyped sources. */
+export interface LibrarySection {
+  kind: string;
+  /** The type's vocabulary label; absent for untyped sources (the page names that section). */
+  label?: Localized;
+  entries: LibraryEntry[];
+}
+
+/**
+ * The Library as sections, one per resource type present, each ordered by how many items cite a
+ * source (the load-bearing ones first). Every cited source appears exactly once.
+ */
+export function library(lang: Lang): LibrarySection[] {
+  const entries = libraryEntries(lang);
+  const order = vocabularyValues("resource_type");
+  const rank = (kind: string) => (order.includes(kind) ? order.indexOf(kind) : order.length);
+  const kinds = [...new Set(entries.map((entry) => entry.kind ?? ""))].sort(
+    (a, b) => rank(a) - rank(b) || a.localeCompare(b),
+  );
+  return kinds.map((kind) => ({
+    kind,
+    label: kind ? vocabularyLabel("resource_type", kind, lang) : undefined,
+    entries: entries
+      .filter((entry) => (entry.kind ?? "") === kind)
+      .sort((a, b) => b.citations.length - a.citations.length || a.title.localeCompare(b.title)),
+  }));
+}
+
+function libraryEntries(lang: Lang): LibraryEntry[] {
   const found = new Map<string, LibraryEntry>();
 
-  const cite = (key: string | undefined, citation: LibraryCitation) => {
+  const cite = (
+    key: string | undefined,
+    where: { ref: string; title: Localized; url?: string },
+    locator: Localized | undefined,
+  ) => {
     if (!key) return;
     const resolved = resolveResource(key);
     if (!resolved.url) return;
@@ -266,10 +298,12 @@ export function library(lang: Lang): LibraryEntry[] {
       citations: [],
       haystack: "",
     };
-    const same = (a?: Localized, b?: Localized) => a?.value === b?.value;
-    if (!entry.citations.some((c) => c.ref === citation.ref && same(c.locator, citation.locator))) {
+    let citation = entry.citations.find((c) => c.ref === where.ref);
+    if (!citation) {
+      citation = { ...where, locators: [] };
       entry.citations.push(citation);
     }
+    if (locator && !citation.locators.some((l) => l.value === locator.value)) citation.locators.push(locator);
     found.set(key, entry);
   };
 
@@ -279,33 +313,27 @@ export function library(lang: Lang): LibraryEntry[] {
       const where = { ref, title: text(item.title, lang), url: itemUrl(lang, ref) };
       for (const block of item.page?.blocks ?? []) {
         if (block.type === "sources") {
-          for (const row of block.rows)
-            cite(row.resource, { ...where, locator: text(row.locator, lang), purpose: text(row.purpose, lang) });
+          for (const row of block.rows) cite(row.resource, where, text(row.locator, lang));
         }
         if (block.type === "practice") {
           for (const group of block.groups)
             for (const entry of group.items)
-              cite(entry.resource, { ...where, locator: entry.locator ? text(entry.locator, lang) : undefined });
+              cite(entry.resource, where, entry.locator ? text(entry.locator, lang) : undefined);
         }
         if (block.type === "prerequisites") {
           for (const entry of block.items)
             if (entry.bridge)
-              cite(entry.bridge.resource, {
-                ...where,
-                locator: entry.bridge.locator ? text(entry.bridge.locator, lang) : undefined,
-              });
+              cite(entry.bridge.resource, where, entry.bridge.locator ? text(entry.bridge.locator, lang) : undefined);
         }
       }
     }
   }
 
-  return [...found.values()]
-    .map((entry) => ({
-      ...entry,
-      haystack: [entry.title, entry.author, entry.host, ...entry.citations.map((c) => c.title.value)]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase(),
-    }))
-    .sort((a, b) => b.citations.length - a.citations.length || a.title.localeCompare(b.title));
+  return [...found.values()].map((entry) => ({
+    ...entry,
+    haystack: [entry.title, entry.author, entry.host, ...entry.citations.map((c) => c.title.value)]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase(),
+  }));
 }

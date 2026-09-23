@@ -186,17 +186,17 @@ A field logbook. The Atlas answers "what is there"; Progress answers "where do I
 
 ### Library
 
-Every source the atlas routes through, in one searchable list. We do not rewrite these sources, so
-this page is the index of that promise: what to open, and which part of it each route asks for.
+A bibliography in sections: every source the atlas routes through, and which part of it each page asks
+for. Built by `library()` in `src/lib/summaries.ts` from the blocks (sources, practice, bridges), so
+a source cannot appear without a page citing it, or drift from it.
 
-- Built by `library()` in `src/lib/summaries.ts` from the blocks themselves (sources, practice,
-  prerequisite bridges), so a source cannot appear here without a route citing it, or drift from it.
-- A row is the source title linking out (with the external icon), its type chip, author and host,
-  then the citing items indented on a hairline: each links to its page with the exact locator under
-  it, `lang="en"` where the locator is untranslated.
-- Filters: a search field over title, author, host and citing titles, and one chip per type with its
-  count. Both run in the browser; the list is server-rendered, so it reads and links without
-  JavaScript. Ordered by how many routes cite a source, so the load-bearing ones come first.
+- Contents column (sticky from 1024, above the list on a phone): the search field, "Contents" over an
+  ink rule listing each resource type with its count, then the announced count. Without JavaScript
+  the types link to their sections; hydrated, each is a toggle (current: ink, magenta underline).
+- One section per type present, in the vocabulary's order (Newsreader h2 and count); entries on
+  hairlines, ordered by how many pages cite them. An entry sets the source (title linking out, author
+  and host) beside its citing pages, each running in with its locators in the reading face; after two,
+  the rest sit behind a native `<details>` "and N more". Grouping and collapse are server-rendered.
 
 ### Labs
 

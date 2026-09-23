@@ -2714,93 +2714,193 @@
   }
 }
 
-/* Library (DESIGN.md → Library): sources with the routes that cite them. */
-.library-filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-5);
-  margin: var(--space-8) 0 var(--space-5);
+/* ---------------------------------------------------------------- Library (DESIGN.md → Library) */
+
+/* A bibliography in sections: a contents column (search, types with counts) beside the sections,
+   sticky on desktop; each entry sets the source on the left and its citing pages on the right. */
+.library-layout {
+  display: grid;
+  gap: var(--space-8);
+  margin: var(--space-8) 0 var(--space-12);
+}
+
+.library-contents-head {
+  margin: var(--space-6) 0 var(--space-1);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--ink);
+  font-size: var(--text-small);
+  font-weight: 600;
 }
 
 .library-kinds {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.chip-button {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--target-min);
-  padding: var(--space-1) var(--space-3);
-  border: var(--border-width) solid var(--line-strong);
-  border-radius: var(--radius-mark);
-  background: transparent;
-  color: var(--ink-muted);
-  font-size: var(--text-small);
-  cursor: pointer;
-}
-
-.chip-button:hover,
-.chip-button[data-hovered] {
-  color: var(--ink);
-  background: var(--wash);
-}
-
-.chip-button.is-on {
-  border-color: var(--ink);
-  color: var(--sheet);
-  background: var(--ink);
-  font-weight: 550;
-}
-
-.library {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  max-width: var(--measure);
-  margin: var(--space-6) 0 var(--space-12);
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.library > li {
-  padding-bottom: var(--space-6);
-  border-bottom: var(--border-width) solid var(--line);
-}
-
-.library-head {
+.library-kind {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: baseline;
   gap: var(--space-3);
-  font-size: var(--text-h3);
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--space-1) 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-muted);
+  font: inherit;
+  font-size: var(--text-ui);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-control) var(--ease);
 }
 
-.library-head a {
-  display: inline-flex;
+.library-kind:hover,
+.library-kind[data-hovered],
+.library-kind[aria-pressed="true"] {
+  color: var(--ink);
+}
+
+.library-kind-label {
+  text-decoration: underline 2px transparent;
+  text-underline-offset: 0.3em;
+}
+
+.library-kind[aria-pressed="true"] .library-kind-label {
+  font-weight: 550;
+  text-decoration-color: var(--route);
+}
+
+.library-results {
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-2);
+  border-top: var(--border-width) solid var(--line);
+  font-size: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.library-section + .library-section {
+  margin-top: var(--space-10);
+}
+
+.library-section h2 {
+  display: flex;
   align-items: baseline;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  margin: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--ink);
 }
 
-.library > li > p {
+.library-section-count {
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.library {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.library-entry {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+}
+
+.library-entry + .library-entry {
+  border-top: var(--border-width) solid var(--line);
+}
+
+.library-work h3 {
+  margin: 0;
+  font-size: var(--text-h3);
+  line-height: 1.35;
+}
+
+.library-work .bib-title {
+  display: inline;
+}
+
+.library-work .bib-meta {
   margin: var(--space-1) 0 0;
 }
 
+/* A citation runs in, as in a printed index: the citing page, then its locators in the reading
+   face, each further locator on its own line. */
 .library-citations {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: var(--space-2);
-  margin: var(--space-4) 0 0;
-  padding: 0 0 0 var(--space-5);
-  border-left: var(--border-width) solid var(--line);
+  margin: 0;
+  padding: 0;
   list-style: none;
-  font-size: var(--text-small);
 }
 
-.library-locator {
-  display: block;
+.library-citation {
+  font-family: var(--font-reading);
+  font-size: 1rem;
+  font-optical-sizing: auto;
+  line-height: 1.45;
   color: var(--ink-muted);
+}
+
+.library-citation > :first-child {
+  margin-right: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 550;
+  color: var(--ink);
+}
+
+.library-locator + .library-locator {
+  display: block;
+}
+
+.library-citation > a:hover {
+  color: var(--route);
+}
+
+.library-more summary {
+  width: fit-content;
+  min-height: var(--target-min);
+  font-size: var(--text-small);
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.library-more .library-citations {
+  margin-top: var(--space-2);
+}
+
+@media (width >= 1024px) {
+  .library-layout {
+    grid-template-columns: 14rem minmax(0, 1fr);
+    column-gap: var(--space-12);
+  }
+
+  .library-contents {
+    position: sticky;
+    top: calc(var(--bar-offset) + var(--space-6));
+    align-self: start;
+    max-height: calc(100dvh - var(--bar-offset) - var(--space-8));
+    overflow: auto;
+  }
+
+  .library-entry {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--space-8);
+  }
+}
+
+@media (width < 1024px) {
+  .library-kinds {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    column-gap: var(--space-6);
+  }
 }

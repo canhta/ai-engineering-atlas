@@ -1,12 +1,11 @@
 ---
-// Library (DESIGN.md → Library): the sources the atlas routes through, searchable, each linking to
-// the public resource and to the routes that cite it. We do not rewrite these sources; we say what
-// to open and why, so this page is the index of that promise.
+// Library (DESIGN.md → Library): the sources the atlas routes through, as a bibliography in
+// sections, each linking to the public resource and to the routes that cite it. We do not rewrite
+// these sources; we say what to open and why, so this page is the index of that promise.
 import Breadcrumb from "../../../components/Breadcrumb.astro";
 import Base from "../../../layouts/Base.astro";
 import LibraryList from "../../../components/react/LibraryList";
 import { langPaths, type Lang, useTranslations } from "../../../i18n";
-import { vocabularyLabel } from "../../../lib/atlas";
 import { library } from "../../../lib/summaries";
 import { mapUrl } from "../../../lib/urls";
 
@@ -14,15 +13,15 @@ export const getStaticPaths = langPaths;
 
 const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
-const entries = library(lang);
-
-// Resource types come from the sources themselves; the content model names them (resource_type).
-const kindLabels = Object.fromEntries(
-  [...new Set(entries.map((entry) => entry.kind).filter(Boolean))].map((kind) => [
-    kind as string,
-    vocabularyLabel("resource_type", kind as string, lang).value,
-  ]),
-);
+// One section per resource type the sources carry, named by the content model (resource_type) in
+// sentence case; untyped sources, if any, close the list under "Other".
+const sections = library(lang).map((section) => {
+  const label = section.label ?? { value: t("library.otherKind"), lang };
+  return {
+    ...section,
+    label: { ...label, value: label.value.charAt(0).toLocaleUpperCase(label.lang) + label.value.slice(1) },
+  };
+});
 ---
 
 <Base lang={lang} title={t("library.title")} description={t("library.intro")}>
@@ -30,5 +29,5 @@ const kindLabels = Object.fromEntries(
   <h1 class="page-title">{t("library.title")}</h1>
   <p class="lead">{t("library.intro")}</p>
 
-  <LibraryList client:load lang={lang} entries={entries} kindLabels={kindLabels} />
+  <LibraryList client:load lang={lang} sections={sections} />
 </Base>

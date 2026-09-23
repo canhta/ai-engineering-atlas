@@ -276,8 +276,10 @@
   "library.intro": "Tất cả tài liệu atlas dẫn bạn tới, kèm phần cần đọc của từng lộ trình.",
   "library.search": "Tìm tài liệu",
   "library.searchPlaceholder": "Tên, tác giả, trang…",
-  "library.kind": "Loại",
   "library.allKinds": "Tất cả",
   "library.results": "{shown}/{total} tài liệu",
+  "library.contents": "Mục lục",
+  "library.otherKind": "Khác",
+  "library.more": "và {n} mục khác",
   "library.noResults": "Không có tài liệu nào khớp."
 }

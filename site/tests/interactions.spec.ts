@@ -857,7 +857,7 @@ test("the library lists every source, searchable, linking out and back to the ro
 
   // Each entry links to the public resource and cites the routes that use it.
   const first = page.locator(".library > li").first();
-  await expect(first.locator(".library-head a")).toHaveAttribute("href", /^https?:\/\//);
+  await expect(first.locator(".library-work h3 a")).toHaveAttribute("href", /^https?:\/\//);
   await expect(first.locator(".library-citations a").first()).toHaveAttribute("href", /\/en\/routes\//);
 
   // The status line is driven by the same state as the list, so waiting on it avoids racing hydration.
