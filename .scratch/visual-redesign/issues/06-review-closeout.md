@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md).
 
 **Blocked by:** 01, 02, 03, 04, 05.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `capture.mjs` over Home, Atlas, drawer, Progress, route, lab, Labs index, and Library reports no HTTP, header, overflow, or axe problems in both languages, both themes, both widths
-- [ ] `atlas-ui-review` findings are fixed or recorded as follow-ups with a reason
-- [ ] DESIGN.md has no references to glass, bezels, trays, pill buttons, Hubot Sans, or the settle-in animation, except in the review tells
-- [ ] TODO.md marks the redesign items done and lists the follow-up restructure specs; the owner review of the redesign and its Vietnamese strings is listed as open
-- [ ] `make check` and `make site-check` pass
+- [x] `capture.mjs` over Home, Atlas, drawer, Progress, route, lab, Labs index, and Library reports no HTTP, header, overflow, or axe problems in both languages, both themes, both widths
+- [x] `atlas-ui-review` findings are fixed or recorded as follow-ups with a reason
+- [x] DESIGN.md has no references to glass, bezels, trays, pill buttons, Hubot Sans, or the settle-in animation, except in the review tells
+- [x] TODO.md marks the redesign items done and lists the follow-up restructure specs; the owner review of the redesign and its Vietnamese strings is listed as open
+- [x] `make check` and `make site-check` pass

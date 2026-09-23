@@ -24,7 +24,7 @@ Last updated: 2026-09-23
 
 - [x] Astro 7 static site, Node 26, pnpm, Cloudflare Workers static assets config
 - [x] `/en/` and `/vi/` routes; 145 UI strings in both languages
-- [x] Tokens, fonts with Vietnamese subsets (replaced by the survey-plate redesign below)
+- [x] Tokens, fonts with Vietnamese subsets (replaced by the editorial print redesign below)
 - [x] Icons through `src/lib/icons.ts` (Phosphor since the redesign)
 - [x] Home, map, route pages (fixed section order), progress page
 - [x] Map: search, ready-only, learner-state and project filters, live count, keyboard disclosures
@@ -51,13 +51,13 @@ Last updated: 2026-09-23
 - [x] Site renderer uses a block registry; no curriculum field names in `site/src` (`src/lib/atlas.ts`, `src/components/blocks/`, `pnpm run check:coupling`)
 - [x] Site test that renders every block type from a fixture, including `data` with unknown shapes (`src/components/blocks/blocks.vitest.ts`)
 
-### Visual redesign (next, owner request)
+### Visual redesign: survey plate (replaced by the editorial print redesign below)
 
 - [x] DESIGN.md survey-plate direction; tokens (mineral ground, ink, magenta route), Hubot Sans / Newsreader / JetBrains Mono (variable, Vietnamese subsets), Phosphor light icons
 - [x] Milestone 1: global frame (floating pill nav, mobile menu overlay, breadcrumb, footer), route sheet (rail with steps and scrollspy, one-task diagnostic, sources table, field log with mobile sheet), project pages from the same renderer
 - [x] Milestone 2: the plate (`src/components/plate/`) in overview, explore, and progress modes; Home, Atlas (plate, list, filters, drawer with `?item=`, `?ready=1`, `?group=`), and Progress rebuilt on it; mobile Playwright project
 - [x] Milestone 3: seven distinguishable learner states (fill and hue per state), one bridge wording, capture at 390/1440 over home, atlas, drawer, progress, and route, and tests for the states surfaces must handle (unknown `?item=`, empty review queue, import errors, storage blocked, JavaScript off, reduced motion)
-- [ ] Owner review of the live survey-plate redesign and the Vietnamese wording
+- [x] Owner review of the survey-plate redesign: superseded, the owner rejected it (ADR 0001); the review moved to the editorial print redesign below
 - [x] Before-hydration pass: controls are disabled until hydration. The Atlas drawer stays a JavaScript surface; Home, Progress, ready rows, and route pages work without it (DESIGN.md → states)
 
 ### Editorial print redesign ([ADR 0001](../docs/adr/0001-editorial-print-direction.md), tickets in `.scratch/visual-redesign/issues/`)
@@ -68,7 +68,20 @@ Last updated: 2026-09-23
 - [x] 04 Route page as a chapter: section label, details line (`detailsOf()` in `atlas.ts`, also in the Atlas drawer) instead of chips, numbered contents rail, sources as a bibliography with the locator first, field log in a sticky ruled margin column; project pages share it, lab workbenches unchanged
 - [x] 05 Region locator plate at the top of the route's margin column: the plate in `locator` mode (`RegionLocator.astro`, server-rendered), this route filled, in-region prerequisites ringed, every mark named with a tooltip, a key, and a line linking prerequisites in other regions; omitted below 1024
 - [x] After 03: `chips` and `sources` dropped from `ItemDetail`, and the `drawer.sources` strings with them
-- [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
+- [x] 06 Review and close-out: every surface captured in en/vi, light/dark, 390/1440, with and without progress, and reviewed against DESIGN.md. Fixed: the prerequisite bridge is a hairline-hung bibliography entry (locator first), not a boxed card; sources in bridges and practice cite like the bibliography (no type chip); the practice link to a project is a plain link, not a button with an arrow; the prerequisite line keeps each item with its "(bridge below)" note; a lab without a lead loses the bare rule under its title; the unassessed ready glyph is the tile's landscape rectangle (a square read as a checkbox); Home's next steps align with the title; the locator key counts prerequisites beyond three; the field log is the bottom bar below 1024, so tablets start with the route; the diagnostic spans the reading column; the Atlas view toggle lost its fieldset padding; Library meta uses a comma, not a middle dot; the drawer takes focus as soon as it opens from the keyboard (explore tiles open it on the key itself, so React Aria no longer waits for tile transitions)
+- [ ] Owner review of the redesign and its Vietnamese strings. New or changed `vi` keys: 03 `home.jump`, `home.specimen.label`, `home.specimen.open`, `home.specimen.reading`, `home.specimen.purpose`, `home.note.diagnose.title`, `home.note.diagnose.body`, `home.note.read.title`, `home.note.read.body`, `home.note.record.title`, `home.note.record.body`; 04 `details.label`, `details.sources`, `details.sourceOne`, `details.tasks`, `details.taskOne`; 05 `plate.tileHere`, `plate.tilePrereq`, `locator.title`, `locator.description`, `locator.here`, `locator.needs`, `locator.elsewhere`; 06 `prereq.bridgeHere` (new), `prereq.bridge` (reworded for the drawer: "trên trang lộ trình"), `locator.needsMany` (new)
+
+#### Follow-ups from the redesign review (each surface gets its own spec, like 03–05)
+
+- [ ] Restructure Atlas: filters are a row of generic form selects over the plate, and the page opens with the same plate as Home, so it does not yet answer "what is there" differently; the drawer is the only surface with item detail
+- [ ] Restructure Progress: a generic dashboard (legend, bars, table, side column) whose table repeats the region bars, and "Your data" sits alone at the bottom with empty space beside it
+- [ ] Restructure the collection indexes (Labs, Projects, Paths): a single 692px column of titles and "Practice for" lines, with the right half of the page empty at 1440 and nothing about what each lab or project asks
+- [ ] Restructure Library: one long column (22,000px at 1440) with type chips and indented citing rows; no grouping or reading order, and the right half empty at 1440
+- [ ] Project pages: milestones render as raw IDs (`product-frame`, `lexical-baseline`) in reading type; the project needs titled milestones from the content model before its page can read like a route
+- [ ] The Prerequisites block's glyphs are server-rendered and never show the learner's state, while the prerequisite line above it does
+- [ ] Plate, last desktop row: Multimodal and Specializations stretch beside the taller Security & Governance block. `plate-layout.ts` balances columns, not heights; balancing heights needs the tile count per row, left for when the plate's rules next change
+- [ ] Home specimen at 1440: the diagnostic entry is shorter than the source entry beside it and leaves space under it; filling it would be decoration, so it waits for the specimen to show more of the diagnostic (for example the pass condition)
+- [ ] Home on a phone: the specimen sits below the stacked plate (about 3,000px down); "See a route up close" jumps to it. The design keeps plate first; revisit if analytics show visitors never reach it
 
 ### Phase 1 follow-ups
 

@@ -100,7 +100,7 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
   | demonstrated                   | full glyph                       | `state-demonstrated` (green)                                                     |
   | transferred, retained, applied | full glyph with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
 
-- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`. At text size (`TileGlyph`) the mapped glyph is a circle too.
+- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`. At text size (`TileGlyph`) the mapped glyph is a circle and an unassessed ready route a small landscape rectangle, the tile's shape.
 - Prerequisite lines: none at rest. Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) in `route`, edge to edge, and marks the prerequisite tiles; a mark also shows its title as a tooltip (hidden from assistive tech; the name carries it). Below 1024 there are no lines.
 - Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. `locator`: one region in a route's margin column (see Route sheet). Progress summarises by region bars and has no plate.
 - Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); routes and marks are lists; arrow keys move within a region (routes, then marks), Home and End jump, Tab moves between regions (one tab stop each); the list view is the full equivalent.
@@ -112,17 +112,17 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
  116 competencies in 12 domains. Select one to see why it matters and where to start.
  [ Search… ]  Level ▾  Your state ▾  Project ▾  [ ] Ready routes only   Showing 19 of 116   Clear
  legend
- ╭──────────── plate (explore) ──────────────╮ ╭─ drawer, 40%, over the dimmed plate ─╮
+ ┌──────────── plate (explore) ──────────────┐ ┌─ drawer, 40%, over the dimmed plate ─┐
  │                                            │ │ AI engineering                     ✕ │
  │   the selected tile has a magenta ring     │ │ Tool Calling                         │
- │                                            │ │ □ ready │ L3 deep … │ 5 sources │ …  │
+ │                                            │ │ ▭ ready │ L3 deep … │ 5 sources │ …  │
  │                                            │ │ Your state  ◧ gap     Target applied │
  │                                            │ │ Why, three lines, "More" expands     │
- │                                            │ │ Needs  ■ AI evaluation               │
- │                                            │ │        ⬚ API design (bridge inside)  │
+ │                                            │ │ Needs  ▭ AI evaluation               │
+ │                                            │ │        ○ API design (bridge on route)│
  │                                            │ │ Lab: evaluation harness              │
  │                                            │ │ [ Open route ]  Start diagnostic     │
- ╰────────────────────────────────────────────╯ ╰──────────────────────────────────────╯
+ └────────────────────────────────────────────┘ └──────────────────────────────────────┘
 ```
 
 - List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
@@ -141,7 +141,7 @@ The route page reads like a book chapter. Route, project, and lab pages share it
                       Tool Calling                                       page title, Newsreader 32–40px
                       L3 deep engineering competence │ engineering skill, system operation │ 5 sources │ 4 diagnostic tasks
                       Tool-enabled AI systems cross a boundary …         first text block as the lead, ink, ≤ 68ch
-                      Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
+                      Not feeling ready? Needs ▭ AI evaluation and ○ API design (bridge below)
                       View contract ↗   Copy link
 ┌ rail 176 ──────────┬ reading column ≤ 736 ─────────────────────────┬ margin 288, sticky ─┐
 │ On this page       │ blocks in content order, hairlines between   │ │ Where it sits      │
@@ -161,9 +161,9 @@ The route page reads like a book chapter. Route, project, and lab pages share it
 - Header: section label (the `group_by` value's label, or the collection's label linking to its index), title, details line, lead, the untranslated marker when it applies, the prerequisite line, then View contract and Copy link as quiet actions. On desktop the header lines up with the reading column.
 - Details line: the header fields (vocabulary fields other than the grouping, the page condition, and the progress target, which show elsewhere) with a short code before its label ("L3 deep engineering competence"), then the number of sources (rows across the item's sources blocks) and diagnostic tasks, from `detailsOf()` in `atlas.ts`. Items are separated by thin `line-strong` rules on wide screens (a wrapped row never starts with one) and read as a comma list on a phone; never middle dots or tags. The Atlas drawer uses the same component.
 - Contents rail: "On this page" over an ink rule, then every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded). A scrollspy marks the current section: its numeral turns magenta and its title gets a magenta underline. Anchors point at the sections on this page.
-- Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state. Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
-- Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. Collections that do not track progress have no margin column. The field log starts with an ink rule; above it, the region locator (`RegionLocator.astro`, the plate in `locator` mode, server-rendered): every competency of the item's `group_by` region as compact marks (routes small rectangles, mapped circles), this route filled magenta with `aria-current`, its prerequisites from `relations` ringed; each mark named ("…, this route", "…, needed first") with the plate's tooltip; a key naming both, and one line linking prerequisites in other regions. Items without a region show none.
-- Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content and the field log sits at the top of the content. Below 1024 the locator is omitted: the prerequisite line already links the same routes, and a map before the diagnostic would push the route down.
+- Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state. A prerequisite's bridge hangs under it on a `line-strong` rule, set the same way: question, locator, source, why. Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
+- Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. Collections that do not track progress have no margin column. The field log starts with an ink rule; above it, the region locator (`RegionLocator.astro`, the plate in `locator` mode, server-rendered): every competency of the item's `group_by` region as compact marks (routes small rectangles, mapped circles), this route filled magenta with `aria-current`, its prerequisites from `relations` ringed; each mark named ("…, this route", "…, needed first") with the plate's tooltip; a key naming both (beyond three prerequisites it counts them), and one line linking prerequisites in other regions. Items without a region show none.
+- Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content, and the field log is the bottom bar and sheet, as on a phone, so the route starts at once. Below 1024 the locator is omitted: the prerequisite line already links the same routes, and a map before the diagnostic would push the route down.
 - Mobile: section label, title, details line as a comma list, lead; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet.
 
 ### Progress
@@ -174,9 +174,9 @@ The Atlas answers "what is there"; Progress answers "where do I stand". They mus
  Progress · states come only from recorded evidence · 1 of 22 demonstrated or beyond · legend
  Where you stand                                      │ Next for you   1 ◧ Product framing (up to 5)
    AI engineering  ████▓▓░░░░░░  1 of 12 demonstrated │ Review   Due today 1   Next 7 days 0
-   Agent           ░░░░░░░░       0 of 8 demonstrated │ Tool calling  due 29/09  ( Start review (↗) )
+   Agent           ░░░░░░░░       0 of 8 demonstrated │ Tool calling  due 29/09  [ Start review ]
  Evidence by competency: title, state, target, evidence count, last recorded, next review
- Your data   ( Export progress.yaml )   ( Import progress.yaml )   confirmation and errors inline
+ Your data   [ Export progress.yaml ]   [ Import progress.yaml ]   confirmation and errors inline
 ```
 
 - One row per region that has a ready route, ordered by the share done: its ready routes in
@@ -213,18 +213,18 @@ Every lab has a page that renders its README (a Markdown `text` block). A lab wi
  View contract ↗   Copy link
 ┌ brief, 5 fr, reading column ─────────┬ bench, 7 fr, sticky under the nav, scrolls inside ─┐
 │ Lab brief                            │ Run the tests                                       │
-│ README: tasks, transfer, evidence;   │ ━━ ink rule, no tray ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
+│ README: tasks, transfer, evidence;   │ ━━ ink rule ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
 │ headings one level down; relative    │ │ starter.py your code │ tests.py │ cases.jsonl    │ │
 │ links go to atlas pages or the repo  │ │ editor (CodeMirror, 18–32rem)                    │ │
 │                                      │ │ Tab indents; Esc then Tab leaves. Draft saved.   │ │
-│                                      │ │ ( Run tests (▷) )  ( □ Stop )    ↺ Reset to starter│ │
+│                                      │ │ [ Run tests ▷ ]  [ □ Stop ]   ↺ Reset to starter │ │
 │                                      │ │ ⊗ A test failed  in 43 ms                        │ │
 │                                      │ │ tests.py, line 36  Show in editor                │ │
 │                                      │ │ ▌assert starter.authorize(normal_user, search)   │ │
-│                                      │ │ ▸ Output                                          │ │
+│                                      │ │ ▸ Output                                         │ │
 │                                      │ │ (after pass) Record evidence                     │ │
 │                                      │ │ Show the reference solution                      │ │
-│                                      │ ╰──────────────────────────────────────────────────╯ │
+│                                      │ └──────────────────────────────────────────────────┘ │
 └──────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ```
 
@@ -289,7 +289,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ### Shape and depth
 
-- Nothing is a tray or a card by default. Sections are separated by hairlines (`line`); a heavier ink rule marks the start of a working surface (the field log, the lab bench, the diagnostic, the top bar and footer).
+- Nothing is boxed or carded by default. Sections are separated by hairlines (`line`); a heavier ink rule marks the start of a working surface (the field log, the lab bench, the diagnostic, the top bar and footer).
 - The plate sits in a printed frame: an outer 1.5px ink rule, 3px of sheet, an inner ink hairline.
 - Radii are 2–4px: `radius-mark` (tiles, glyphs, chips), `radius-control` (buttons, inputs), `radius-float` (drawer edge, sheets, tooltips). Circles only for mapped marks and radios.
 - Buttons are rectangles: one magenta primary per view (`button button-primary`), outlined ink secondaries (`button`), and quiet text buttons (`button-quiet`). A button carries a text label; an icon only where it names a tool action (run, stop, export, import), never inside its own circle.
