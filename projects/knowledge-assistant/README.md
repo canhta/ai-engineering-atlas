@@ -811,7 +811,53 @@ Add one intentionally untrusted execution task only after its runtime boundary i
 
 **Decision:** an allowed execution tool runs inside the smallest filesystem, network, privilege, resource, and lifetime envelope that can complete the task.
 
-## Milestone 35 — integrated security attack path
+## Milestone 35 — supply-chain and data integrity
+
+Use [AI Supply Chain and Data Security](../../curriculum/10-security-governance/supply-chain-data/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
+
+Inventory every external artifact that can change production behavior and prove how it is admitted.
+
+**Evidence:**
+
+- AI/ML supply-chain inventory or BOM;
+- immutable artifact/version identities;
+- supplier/source and provenance records;
+- hash/signature/provenance checks where available;
+- artifact admission/quarantine policy;
+- retrieval/data origin and transformation lineage;
+- unsafe artifact loading policy;
+- tampered-artifact negative test;
+- poisoning/backdoor test;
+- downstream impact analysis for one compromised dependency;
+- quarantine/revoke/rebuild/rollback response;
+- one stale dependency removed.
+
+**Decision:** no external model/data/runtime artifact becomes trusted production behavior merely because it has a familiar name or repository origin.
+
+## Milestone 36 — guardrail engineering
+
+Use [Guardrails](../../curriculum/10-security-governance/guardrails/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
+
+Place checks on the boundary where a violation can still be prevented.
+
+**Evidence:**
+
+- guardrail threat/policy contract;
+- input/output/tool placement map;
+- one deterministic guardrail;
+- one probabilistic guardrail where semantic classification is actually needed;
+- labeled positive/negative/adversarial evaluation set;
+- false-positive/false-negative measurements;
+- blocking/parallel timing decision;
+- side-effect-before-trip negative test;
+- timeout/fail-open/fail-closed test;
+- downstream context-aware validation;
+- policy/model/schema/threshold release identity;
+- one redundant or low-value guardrail removed.
+
+**Decision:** keep a guardrail only when its placement, timing, error trade-off, and failure behavior materially reduce risk beyond the deterministic controls already present.
+
+## Milestone 37 — integrated security attack path
 
 Reuse [Prompt Injection and Trust Boundaries](../../curriculum/10-security-governance/prompt-injection/) together with the other ready security routes.
 
@@ -827,11 +873,13 @@ At minimum prove:
 - protected data cannot enter context without authorization;
 - sensitive data cannot reach an unapproved external sink;
 - sandboxed code cannot reach host/other-tenant files or forbidden network;
+- untrusted model/data/runtime artifacts cannot silently enter production;
+- guardrail placement cannot be bypassed through intermediate tool/handoff boundaries;
 - logs, traces, cache, and streaming paths do not become alternate leak channels.
 
-**Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior.
+**Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior and probabilistic guardrails miss a case.
 
-## Milestone 36 — incident and feedback loop
+## Milestone 38 — incident and feedback loop
 
 Inject or analyze one failure:
 
@@ -842,7 +890,9 @@ Inject or analyze one failure:
 - tool failure;
 - prompt-injection attempt;
 - cross-tenant access attempt;
-- sandbox policy violation.
+- sandbox policy violation;
+- poisoned/tampered artifact;
+- guardrail false negative.
 
 Produce:
 

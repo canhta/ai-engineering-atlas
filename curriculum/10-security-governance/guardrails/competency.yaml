@@ -1,0 +1,108 @@
+id: security.guardrails
+title: Guardrails
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "A guardrail is useful only when it runs at the boundary where a violation can still be prevented. AI applications may validate initial user input, retrieved/tool content, model output, or individual tool calls, and each location has different latency, side-effect, and false-positive/false-negative trade-offs. Guardrails complement—not replace—authorization, schemas, prompt-injection controls, sandboxing, output encoding, and human approval."
+curriculum_evidence:
+  - standard.owasp-llm05-output-handling
+  - docs.openai-agents-guardrails
+prerequisites:
+  - ai.evaluation
+  - security.prompt-injection
+  - security.tool-permissions
+  - security.data-exfiltration
+outcomes:
+  - "Define each guardrail by threat or policy objective, protected boundary, action on failure, and measurable error cost rather than by model/vendor name."
+  - "Distinguish deterministic validation, schema/type checks, allow/deny rules, regex/pattern checks, classifiers, model-based judges, and human review."
+  - "Prefer deterministic constraints for properties that can be enforced exactly and reserve probabilistic classifiers for genuinely semantic judgments."
+  - "Place checks on the actual source/sink boundary that matters instead of assuming one initial input filter protects the whole workflow."
+  - "Differentiate initial input guardrails, final output guardrails, and per-tool input/output guardrails."
+  - "Account for multi-agent/handoff workflows where a first-agent input check and final-agent output check do not automatically cover intermediate tool or delegated-agent boundaries."
+  - "Choose blocking versus parallel guardrail execution based on whether model/tool work may safely start before the check completes."
+  - "Run guardrails before irreversible or sensitive side effects when a violation must prevent execution."
+  - "Recognize that a post-output guardrail cannot undo an external side effect or retract data already transmitted."
+  - "Validate and encode model output according to the downstream execution context before using it in HTML, SQL, shell, paths, URLs, templates, or other interpreters."
+  - "Keep authorization and permission checks deterministic even if a guardrail classifier also scores the same request."
+  - "Build labeled positive/negative/adversarial guardrail test sets from the actual product risk rather than generic toxicity prompts."
+  - "Measure false positives, false negatives, coverage, latency, and cost for probabilistic guardrails."
+  - "Choose thresholds from the relative harm of blocking legitimate traffic versus allowing unsafe behavior."
+  - "Define fail-open or fail-closed behavior for guardrail timeout, dependency failure, malformed output, or classifier uncertainty."
+  - "Provide a safe user/developer fallback when a guardrail blocks without exposing sensitive rejected content."
+  - "Version guardrail policy, thresholds, models, schemas, and rule sets as behavior-affecting release artifacts."
+  - "Monitor tripwire/rejection rates by route/tenant/use case and investigate distribution changes rather than silently relaxing the policy."
+  - "Red-team bypasses and alternate encodings while assuming no single guardrail will achieve perfect recall."
+  - "Remove redundant or low-value guardrails whose operational burden exceeds measured protection."
+diagnostic:
+  tasks:
+    - "Given an agent that can send email, identify which checks must run before the tool call versus which can safely run only on final output."
+    - "Explain why a parallel input guardrail can still allow token spend or tool side effects before it trips."
+    - "Choose a deterministic validator and a probabilistic classifier for two different policy requirements and explain why they differ."
+    - "Design a threshold/evaluation plan when false positives annoy users but false negatives can leak sensitive data."
+  pass_condition: "Skip introductory material only if the learner can place guardrails at the correct workflow boundary, prevent side effects when required, distinguish deterministic/probabilistic checks, calibrate error trade-offs, and define failure behavior."
+learning_route:
+  mental_model:
+    - source: standard.owasp-llm05-output-handling
+      locator: "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially zero-trust treatment of model output, context-aware validation/encoding, parameterized operations, and downstream handling"
+      purpose: "Anchor guardrails in the concrete rule that model output is untrusted input to downstream systems and must be validated for its actual execution context."
+    - source: docs.openai-agents-guardrails
+      locator: "Sections \"Workflow boundaries\", \"Input guardrails\", \"Execution modes\", \"Output guardrails\", \"Tool guardrails\", and \"Tripwires\""
+      purpose: "Study a concrete runtime model showing where checks execute, why blocking versus parallel timing matters, and why per-tool guardrails are needed around intermediate side-effect boundaries."
+  guided_practice:
+    - task: "Draw every Knowledge Assistant boundary where untrusted data becomes privileged interpretation or side effect. For each boundary choose deterministic validation, classifier/model guardrail, approval, or no guardrail; then define block timing, fallback, and test cases."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Implement one deterministic and one probabilistic guardrail in the Knowledge Assistant, place them on the correct input/output/tool boundaries, measure false positives/negatives plus latency/cost, inject bypass and guardrail-failure cases, and remove or relocate one incorrectly placed check."
+experiments:
+  - "Run a side-effecting tool with a parallel initial guardrail and demonstrate why the timing is unsafe; then move or block the guardrail before execution."
+  - "Attempt HTML/Markdown, path, URL, SQL, or shell-like unsafe output and verify context-specific deterministic handling prevents interpretation where applicable."
+  - "Construct a labeled adversarial set and measure false positives/false negatives for one semantic classifier guardrail."
+  - "Change the guardrail threshold and plot or record the trade-off between legitimate blocks and missed violations."
+  - "Cause the guardrail dependency to time out or return malformed output and verify fail-open/fail-closed behavior matches the declared risk."
+  - "Route malicious content through an intermediate tool or delegated workflow step and verify a first-input/final-output-only design does not falsely claim coverage."
+  - "Trigger a blocked output and verify logs/session/user fallback do not expose the rejected sensitive payload."
+  - "Remove one duplicate/low-value guardrail or replace it with a deterministic permission/schema constraint."
+exit_evidence:
+  - "A guardrail contract maps each rule to threat/policy objective, workflow boundary, implementation type, failure action, and owner."
+  - "At least one exact property is enforced deterministically rather than through a probabilistic model."
+  - "At least one semantic guardrail has a labeled evaluation set and measured false-positive/false-negative behavior."
+  - "Threshold rationale reflects the relative cost of false positives and false negatives."
+  - "Side-effecting actions run required guardrails before execution."
+  - "A timing test demonstrates why blocking or parallel execution was chosen."
+  - "Multi-agent/tool workflow coverage is explicit rather than inferred from first-input/final-output checks."
+  - "Model output is validated/encoded for its actual downstream context."
+  - "Guardrail timeout/error/uncertainty behavior is explicit and tested."
+  - "Blocked output and telemetry paths do not leak rejected sensitive content."
+  - "Authorization, permissions, sandbox, and approval remain independent controls rather than being delegated to the guardrail."
+  - "Guardrail policy/model/schema/threshold versions are linked to release identity."
+  - "Monitoring exposes guardrail block/trip rates by relevant route or segment."
+  - "At least one bypass/alternate encoding test is durable regression evidence."
+  - "At least one guardrail is removed, relocated, or replaced because its measured value does not justify complexity."
+  - "The final decision documents known false-negative classes and the deterministic controls that bound their impact."
+transfer:
+  task: "Redesign guardrails for an enterprise support agent with multiple handoffs and write-capable tools, where latency, false positives, regulated data, and irreversible side effects have different costs."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.owasp-llm05-output-handling
+    - docs.openai-agents-guardrails
+  practice:
+    - standard.owasp-llm05-output-handling
+    - docs.openai-agents-guardrails
+  production-reference:
+    - standard.owasp-llm05-output-handling
+    - docs.openai-agents-guardrails
+metadata:
+  last_reviewed: 2026-09-23
+  evidence_required: true

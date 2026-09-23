@@ -1,0 +1,119 @@
+id: security.supply-chain-data
+title: "AI Supply Chain and Data Security"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "AI applications depend on more than source code: hosted models, downloadable weights and adapters, tokenizers, Python packages, containers, prompts, retrieval corpora, embedding/index artifacts, evaluation sets, fine-tuning data, and external services can all change system behavior or introduce code/data compromise. Production security requires an inventory, immutable identities, provenance and integrity evidence, admission policies, poisoning controls, and a response path when a supplier or artifact becomes untrusted."
+curriculum_evidence:
+  - standard.owasp-llm03-supply-chain
+  - standard.owasp-llm04-poisoning
+  - docs.cyclonedx-mlbom
+  - docs.slsa-provenance-v1.2
+prerequisites:
+  - production.versioning
+  - production.release-engineering
+  - security.sandboxing
+  - ai.evaluation
+outcomes:
+  - "Inventory behavior-affecting AI supply-chain artifacts including code dependencies, containers, model/provider versions, weights, adapters, tokenizers, prompts, retrieval corpora, indexes, datasets, tools, and external services."
+  - "Distinguish artifact identity, provenance, integrity, trust, and safety instead of treating a checksum or signature as proof that an artifact is benign."
+  - "Pin deployable artifacts to immutable versions, digests, commits, or equivalent identities rather than mutable latest names."
+  - "Record supplier/source, acquisition path, license or usage metadata where available, dependency relationships, and ownership for critical AI artifacts."
+  - "Verify hashes, signatures, provenance attestations, or repository identities before admitting external artifacts when those signals are available."
+  - "Define admission rules for untrusted model files, adapters, packages, containers, and data rather than loading them directly into privileged production or developer environments."
+  - "Avoid unsafe deserialization or executable model/package formats when a safer representation is available."
+  - "Quarantine or sandbox artifact inspection and conversion when loading an artifact could execute code."
+  - "Track origin and transformations for training, fine-tuning, retrieval, embedding, and evaluation data."
+  - "Separate raw/untrusted ingestion from approved production corpora and record the validation step that promotes data between them."
+  - "Apply access control to who may publish, replace, merge, approve, or promote models, adapters, datasets, prompts, indexes, and package dependencies."
+  - "Detect unexpected artifact or dataset changes through digest/version comparison and release-manifest lineage."
+  - "Evaluate third-party models or changed data on product-specific security and quality cases rather than trusting repository popularity or a published benchmark."
+  - "Test poisoning and backdoor hypotheses using controlled synthetic records/triggers instead of assuming average evaluation scores reveal targeted compromise."
+  - "Treat retrieval-corpus poisoning as an integrity problem even when no model training occurs."
+  - "Maintain an AI/ML bill of materials or equivalent inventory sufficient to answer which deployed systems depend on a compromised model, dataset, package, or supplier."
+  - "Correlate vulnerability/advisory or supplier changes with the release identities currently deployed."
+  - "Revoke, quarantine, replace, or roll back a compromised artifact and verify dependent caches/indexes/builds are regenerated from trusted inputs."
+  - "Convert a supply-chain or poisoning incident into durable admission, evaluation, or provenance checks."
+  - "Remove stale or unnecessary third-party artifacts whose supply-chain risk exceeds their product value."
+diagnostic:
+  tasks:
+    - "List every external artifact that can change the Knowledge Assistant's behavior even if application source code is unchanged."
+    - "Explain what a valid hash or signature proves and what it does not prove about an AI model or dataset."
+    - "Design an admission path for a newly downloaded model adapter or document corpus before it can affect production."
+    - "Given a compromised dataset version, identify which indexes, releases, caches, evaluations, and deployments must be considered downstream."
+  pass_condition: "Skip introductory material only if the learner can inventory AI artifacts, preserve immutable identity/provenance, quarantine unsafe ingestion, trace data transformations, test poisoning, and revoke/regenerate dependent production state."
+learning_route:
+  mental_model:
+    - source: standard.owasp-llm03-supply-chain
+      locator: "Sections \"Common Examples of Risks\" and \"Prevention and Mitigation Strategies\", especially weak provenance, vulnerable models/adapters, BOM inventory, hashes/signing, supplier vetting, and patching"
+      purpose: "Expand software supply-chain thinking to AI models, adapters, datasets, model providers, and development/deployment platforms."
+    - source: standard.owasp-llm04-poisoning
+      locator: "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially data origins/transformations, unverified data, sandboxing, version control, and robustness testing"
+      purpose: "Treat model, fine-tuning, embedding, and retrieval-data manipulation as integrity attacks that require lineage, controlled ingestion, and adversarial tests."
+    - source: docs.cyclonedx-mlbom
+      locator: "Sections \"Introduction to AI/ML-BOM\", \"Highlights\", and the model/dataset transparency guidance"
+      purpose: "Use an AI/ML BOM as a concrete inventory pattern for models, datasets, configuration, dependencies, provenance, and security/risk review."
+    - source: docs.slsa-provenance-v1.2
+      locator: "Section \"Provenance\" and the distinction between build provenance and source provenance"
+      purpose: "Ground provenance as verifiable information about where, when, and how an artifact was produced without confusing provenance with an assertion that the artifact is safe."
+  guided_practice:
+    - task: "Build a supply-chain graph for the Knowledge Assistant from source/build dependencies through model/provider, prompts, retrieval data/index, tools, container/runtime, and evaluation artifacts. Mark immutable identity, source, verification/admission evidence, owner, and downstream dependents."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Create an AI supply-chain inventory and admission pipeline for the Knowledge Assistant, then simulate a tampered package/model/data artifact and prove it is rejected, quarantined, or detected before an unreviewed artifact silently becomes production behavior."
+experiments:
+  - "Replace an allowed artifact with bytes that keep the same mutable name but a different digest and verify admission or release checks detect the change."
+  - "Attempt to load an untrusted executable/unsafe serialized artifact in the privileged application path and verify the secure path quarantines, rejects, or inspects it in an isolated environment."
+  - "Poison a small retrieval corpus slice with a synthetic targeted falsehood and verify provenance plus product-specific evaluation exposes the changed behavior."
+  - "Introduce a synthetic backdoor trigger into a test model/data fixture and verify targeted tests catch a failure that aggregate quality could miss."
+  - "Change a dataset or retrieval snapshot and trace every derived index/evaluation/release artifact that must be invalidated or rebuilt."
+  - "Remove provenance metadata while keeping the artifact hash intact and verify the admission policy distinguishes integrity from acceptable provenance."
+  - "Mark one supplier/model/package version compromised and use the inventory to identify affected releases and dependent artifacts."
+  - "Remove or replace one stale third-party component and verify the release/evaluation path remains reproducible."
+exit_evidence:
+  - "An AI supply-chain inventory covers software, models/providers, adapters, prompts, data/indexes, tools/services, containers/runtime, and evaluation artifacts where applicable."
+  - "Critical artifacts have immutable identities or digests and are linked to release manifests."
+  - "Supplier/source and artifact provenance are recorded separately from integrity hashes/signatures."
+  - "An admission policy defines which artifacts are automatically accepted, require review, are sandboxed/quarantined, or are forbidden."
+  - "Unsafe/executable artifact loading is isolated or avoided where practical."
+  - "Dataset/retrieval origin and transformation lineage are inspectable."
+  - "Publishing/promoting critical model/data artifacts is access-controlled."
+  - "A tampered-artifact test is rejected or detected."
+  - "A poisoning/backdoor test exercises a targeted product behavior rather than only aggregate metrics."
+  - "Changing source data invalidates or regenerates the correct derived artifacts."
+  - "An AI/ML BOM or equivalent dependency graph can identify releases affected by a compromised upstream component."
+  - "A compromised supplier/artifact scenario reaches quarantine, revocation, replacement, or rollback."
+  - "One incident or simulated compromise becomes a durable admission, evaluation, or provenance regression check."
+  - "At least one unnecessary or stale dependency is removed."
+  - "The final decision records residual supply-chain dependencies that cannot be independently verified and how their risk is bounded."
+transfer:
+  task: "Redesign supply-chain controls for a system that self-hosts open model weights and fine-tunes on external datasets, with a different mix of binary artifacts, GPU containers, adapters, data vendors, and build infrastructure."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.owasp-llm03-supply-chain
+    - standard.owasp-llm04-poisoning
+    - docs.cyclonedx-mlbom
+    - docs.slsa-provenance-v1.2
+  practice:
+    - standard.owasp-llm03-supply-chain
+    - standard.owasp-llm04-poisoning
+    - docs.cyclonedx-mlbom
+  production-reference:
+    - docs.cyclonedx-mlbom
+    - docs.slsa-provenance-v1.2
+    - standard.owasp-llm03-supply-chain
+metadata:
+  last_reviewed: 2026-09-23
+  evidence_required: true

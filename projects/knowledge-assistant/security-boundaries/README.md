@@ -97,7 +97,33 @@ Define:
 - tenant/job lifetime;
 - behavior when policy cannot be applied.
 
-## Stage 6 — attack the combined path
+## Stage 6 — control the AI supply chain
+
+Use [supply-chain-record.template.md](supply-chain-record.template.md).
+
+Inventory models/providers, adapters, code dependencies, containers, prompts, data/indexes, tools/services, and evaluation artifacts.
+
+Record immutable identity, supplier/source, provenance/integrity evidence, admission status, owner, and downstream dependents.
+
+Use synthetic tampering/poisoning fixtures to prove the admission and response path.
+
+## Stage 7 — engineer guardrails
+
+Use [guardrail-contract.template.md](guardrail-contract.template.md) and [guardrail-failure-matrix.template.md](guardrail-failure-matrix.template.md).
+
+For each guardrail define:
+
+- threat/policy objective;
+- exact workflow boundary;
+- deterministic or probabilistic implementation;
+- blocking/parallel timing;
+- failure/fallback behavior;
+- false-positive/false-negative evidence;
+- release identity.
+
+Guardrails complement deterministic security controls; they do not replace them.
+
+## Stage 8 — attack the combined path
 
 Use [security-boundary-failure-matrix.template.md](security-boundary-failure-matrix.template.md).
 

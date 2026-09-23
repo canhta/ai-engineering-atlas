@@ -12660,7 +12660,329 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/guardrails",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "A guardrail is useful only when it runs at the boundary where a violation can still be prevented. AI applications may validate initial user input, retrieved/tool content, model output, or individual tool calls, and each location has different latency, side-effect, and false-positive/false-negative trade-offs. Guardrails complement—not replace—authorization, schemas, prompt-injection controls, sandboxing, output encoding, and human approval."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "security.prompt-injection"
+                },
+                {
+                  "ref": "security.tool-permissions"
+                },
+                {
+                  "ref": "security.data-exfiltration"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define each guardrail by threat or policy objective, protected boundary, action on failure, and measurable error cost rather than by model/vendor name."
+                },
+                {
+                  "en": "Distinguish deterministic validation, schema/type checks, allow/deny rules, regex/pattern checks, classifiers, model-based judges, and human review."
+                },
+                {
+                  "en": "Prefer deterministic constraints for properties that can be enforced exactly and reserve probabilistic classifiers for genuinely semantic judgments."
+                },
+                {
+                  "en": "Place checks on the actual source/sink boundary that matters instead of assuming one initial input filter protects the whole workflow."
+                },
+                {
+                  "en": "Differentiate initial input guardrails, final output guardrails, and per-tool input/output guardrails."
+                },
+                {
+                  "en": "Account for multi-agent/handoff workflows where a first-agent input check and final-agent output check do not automatically cover intermediate tool or delegated-agent boundaries."
+                },
+                {
+                  "en": "Choose blocking versus parallel guardrail execution based on whether model/tool work may safely start before the check completes."
+                },
+                {
+                  "en": "Run guardrails before irreversible or sensitive side effects when a violation must prevent execution."
+                },
+                {
+                  "en": "Recognize that a post-output guardrail cannot undo an external side effect or retract data already transmitted."
+                },
+                {
+                  "en": "Validate and encode model output according to the downstream execution context before using it in HTML, SQL, shell, paths, URLs, templates, or other interpreters."
+                },
+                {
+                  "en": "Keep authorization and permission checks deterministic even if a guardrail classifier also scores the same request."
+                },
+                {
+                  "en": "Build labeled positive/negative/adversarial guardrail test sets from the actual product risk rather than generic toxicity prompts."
+                },
+                {
+                  "en": "Measure false positives, false negatives, coverage, latency, and cost for probabilistic guardrails."
+                },
+                {
+                  "en": "Choose thresholds from the relative harm of blocking legitimate traffic versus allowing unsafe behavior."
+                },
+                {
+                  "en": "Define fail-open or fail-closed behavior for guardrail timeout, dependency failure, malformed output, or classifier uncertainty."
+                },
+                {
+                  "en": "Provide a safe user/developer fallback when a guardrail blocks without exposing sensitive rejected content."
+                },
+                {
+                  "en": "Version guardrail policy, thresholds, models, schemas, and rule sets as behavior-affecting release artifacts."
+                },
+                {
+                  "en": "Monitor tripwire/rejection rates by route/tenant/use case and investigate distribution changes rather than silently relaxing the policy."
+                },
+                {
+                  "en": "Red-team bypasses and alternate encodings while assuming no single guardrail will achieve perfect recall."
+                },
+                {
+                  "en": "Remove redundant or low-value guardrails whose operational burden exceeds measured protection."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given an agent that can send email, identify which checks must run before the tool call versus which can safely run only on final output."
+                },
+                {
+                  "en": "Explain why a parallel input guardrail can still allow token spend or tool side effects before it trips."
+                },
+                {
+                  "en": "Choose a deterministic validator and a probabilistic classifier for two different policy requirements and explain why they differ."
+                },
+                {
+                  "en": "Design a threshold/evaluation plan when false positives annoy users but false negatives can leak sensitive data."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can place guardrails at the correct workflow boundary, prevent side effects when required, distinguish deterministic/probabilistic checks, calibrate error trade-offs, and define failure behavior."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.owasp-llm05-output-handling",
+                  "locator": {
+                    "en": "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially zero-trust treatment of model output, context-aware validation/encoding, parameterized operations, and downstream handling"
+                  },
+                  "purpose": {
+                    "en": "Anchor guardrails in the concrete rule that model output is untrusted input to downstream systems and must be validated for its actual execution context."
+                  }
+                },
+                {
+                  "resource": "docs.openai-agents-guardrails",
+                  "locator": {
+                    "en": "Sections \"Workflow boundaries\", \"Input guardrails\", \"Execution modes\", \"Output guardrails\", \"Tool guardrails\", and \"Tripwires\""
+                  },
+                  "purpose": {
+                    "en": "Study a concrete runtime model showing where checks execute, why blocking versus parallel timing matters, and why per-tool guardrails are needed around intermediate side-effect boundaries."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Draw every Knowledge Assistant boundary where untrusted data becomes privileged interpretation or side effect. For each boundary choose deterministic validation, classifier/model guardrail, approval, or no guardrail; then define block timing, fallback, and test cases."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Implement one deterministic and one probabilistic guardrail in the Knowledge Assistant, place them on the correct input/output/tool boundaries, measure false positives/negatives plus latency/cost, inject bypass and guardrail-failure cases, and remove or relocate one incorrectly placed check."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Run a side-effecting tool with a parallel initial guardrail and demonstrate why the timing is unsafe; then move or block the guardrail before execution."
+                },
+                {
+                  "en": "Attempt HTML/Markdown, path, URL, SQL, or shell-like unsafe output and verify context-specific deterministic handling prevents interpretation where applicable."
+                },
+                {
+                  "en": "Construct a labeled adversarial set and measure false positives/false negatives for one semantic classifier guardrail."
+                },
+                {
+                  "en": "Change the guardrail threshold and plot or record the trade-off between legitimate blocks and missed violations."
+                },
+                {
+                  "en": "Cause the guardrail dependency to time out or return malformed output and verify fail-open/fail-closed behavior matches the declared risk."
+                },
+                {
+                  "en": "Route malicious content through an intermediate tool or delegated workflow step and verify a first-input/final-output-only design does not falsely claim coverage."
+                },
+                {
+                  "en": "Trigger a blocked output and verify logs/session/user fallback do not expose the rejected sensitive payload."
+                },
+                {
+                  "en": "Remove one duplicate/low-value guardrail or replace it with a deterministic permission/schema constraint."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A guardrail contract maps each rule to threat/policy objective, workflow boundary, implementation type, failure action, and owner."
+                },
+                {
+                  "en": "At least one exact property is enforced deterministically rather than through a probabilistic model."
+                },
+                {
+                  "en": "At least one semantic guardrail has a labeled evaluation set and measured false-positive/false-negative behavior."
+                },
+                {
+                  "en": "Threshold rationale reflects the relative cost of false positives and false negatives."
+                },
+                {
+                  "en": "Side-effecting actions run required guardrails before execution."
+                },
+                {
+                  "en": "A timing test demonstrates why blocking or parallel execution was chosen."
+                },
+                {
+                  "en": "Multi-agent/tool workflow coverage is explicit rather than inferred from first-input/final-output checks."
+                },
+                {
+                  "en": "Model output is validated/encoded for its actual downstream context."
+                },
+                {
+                  "en": "Guardrail timeout/error/uncertainty behavior is explicit and tested."
+                },
+                {
+                  "en": "Blocked output and telemetry paths do not leak rejected sensitive content."
+                },
+                {
+                  "en": "Authorization, permissions, sandbox, and approval remain independent controls rather than being delegated to the guardrail."
+                },
+                {
+                  "en": "Guardrail policy/model/schema/threshold versions are linked to release identity."
+                },
+                {
+                  "en": "Monitoring exposes guardrail block/trip rates by relevant route or segment."
+                },
+                {
+                  "en": "At least one bypass/alternate encoding test is durable regression evidence."
+                },
+                {
+                  "en": "At least one guardrail is removed, relocated, or replaced because its measured value does not justify complexity."
+                },
+                {
+                  "en": "The final decision documents known false-negative classes and the deterministic controls that bound their impact."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign guardrails for an enterprise support agent with multiple handoffs and write-capable tools, where latency, false positives, regulated data, and irreversible side effects have different costs."
+              }
+            }
+          ]
         }
       },
       {
@@ -12680,7 +13002,344 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/supply-chain-data",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "AI applications depend on more than source code: hosted models, downloadable weights and adapters, tokenizers, Python packages, containers, prompts, retrieval corpora, embedding/index artifacts, evaluation sets, fine-tuning data, and external services can all change system behavior or introduce code/data compromise. Production security requires an inventory, immutable identities, provenance and integrity evidence, admission policies, poisoning controls, and a response path when a supplier or artifact becomes untrusted."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "production.versioning"
+                },
+                {
+                  "ref": "production.release-engineering"
+                },
+                {
+                  "ref": "security.sandboxing"
+                },
+                {
+                  "ref": "ai.evaluation"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Inventory behavior-affecting AI supply-chain artifacts including code dependencies, containers, model/provider versions, weights, adapters, tokenizers, prompts, retrieval corpora, indexes, datasets, tools, and external services."
+                },
+                {
+                  "en": "Distinguish artifact identity, provenance, integrity, trust, and safety instead of treating a checksum or signature as proof that an artifact is benign."
+                },
+                {
+                  "en": "Pin deployable artifacts to immutable versions, digests, commits, or equivalent identities rather than mutable latest names."
+                },
+                {
+                  "en": "Record supplier/source, acquisition path, license or usage metadata where available, dependency relationships, and ownership for critical AI artifacts."
+                },
+                {
+                  "en": "Verify hashes, signatures, provenance attestations, or repository identities before admitting external artifacts when those signals are available."
+                },
+                {
+                  "en": "Define admission rules for untrusted model files, adapters, packages, containers, and data rather than loading them directly into privileged production or developer environments."
+                },
+                {
+                  "en": "Avoid unsafe deserialization or executable model/package formats when a safer representation is available."
+                },
+                {
+                  "en": "Quarantine or sandbox artifact inspection and conversion when loading an artifact could execute code."
+                },
+                {
+                  "en": "Track origin and transformations for training, fine-tuning, retrieval, embedding, and evaluation data."
+                },
+                {
+                  "en": "Separate raw/untrusted ingestion from approved production corpora and record the validation step that promotes data between them."
+                },
+                {
+                  "en": "Apply access control to who may publish, replace, merge, approve, or promote models, adapters, datasets, prompts, indexes, and package dependencies."
+                },
+                {
+                  "en": "Detect unexpected artifact or dataset changes through digest/version comparison and release-manifest lineage."
+                },
+                {
+                  "en": "Evaluate third-party models or changed data on product-specific security and quality cases rather than trusting repository popularity or a published benchmark."
+                },
+                {
+                  "en": "Test poisoning and backdoor hypotheses using controlled synthetic records/triggers instead of assuming average evaluation scores reveal targeted compromise."
+                },
+                {
+                  "en": "Treat retrieval-corpus poisoning as an integrity problem even when no model training occurs."
+                },
+                {
+                  "en": "Maintain an AI/ML bill of materials or equivalent inventory sufficient to answer which deployed systems depend on a compromised model, dataset, package, or supplier."
+                },
+                {
+                  "en": "Correlate vulnerability/advisory or supplier changes with the release identities currently deployed."
+                },
+                {
+                  "en": "Revoke, quarantine, replace, or roll back a compromised artifact and verify dependent caches/indexes/builds are regenerated from trusted inputs."
+                },
+                {
+                  "en": "Convert a supply-chain or poisoning incident into durable admission, evaluation, or provenance checks."
+                },
+                {
+                  "en": "Remove stale or unnecessary third-party artifacts whose supply-chain risk exceeds their product value."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "List every external artifact that can change the Knowledge Assistant's behavior even if application source code is unchanged."
+                },
+                {
+                  "en": "Explain what a valid hash or signature proves and what it does not prove about an AI model or dataset."
+                },
+                {
+                  "en": "Design an admission path for a newly downloaded model adapter or document corpus before it can affect production."
+                },
+                {
+                  "en": "Given a compromised dataset version, identify which indexes, releases, caches, evaluations, and deployments must be considered downstream."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can inventory AI artifacts, preserve immutable identity/provenance, quarantine unsafe ingestion, trace data transformations, test poisoning, and revoke/regenerate dependent production state."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.owasp-llm03-supply-chain",
+                  "locator": {
+                    "en": "Sections \"Common Examples of Risks\" and \"Prevention and Mitigation Strategies\", especially weak provenance, vulnerable models/adapters, BOM inventory, hashes/signing, supplier vetting, and patching"
+                  },
+                  "purpose": {
+                    "en": "Expand software supply-chain thinking to AI models, adapters, datasets, model providers, and development/deployment platforms."
+                  }
+                },
+                {
+                  "resource": "standard.owasp-llm04-poisoning",
+                  "locator": {
+                    "en": "Sections \"Common Examples of Vulnerability\" and \"Prevention and Mitigation Strategies\", especially data origins/transformations, unverified data, sandboxing, version control, and robustness testing"
+                  },
+                  "purpose": {
+                    "en": "Treat model, fine-tuning, embedding, and retrieval-data manipulation as integrity attacks that require lineage, controlled ingestion, and adversarial tests."
+                  }
+                },
+                {
+                  "resource": "docs.cyclonedx-mlbom",
+                  "locator": {
+                    "en": "Sections \"Introduction to AI/ML-BOM\", \"Highlights\", and the model/dataset transparency guidance"
+                  },
+                  "purpose": {
+                    "en": "Use an AI/ML BOM as a concrete inventory pattern for models, datasets, configuration, dependencies, provenance, and security/risk review."
+                  }
+                },
+                {
+                  "resource": "docs.slsa-provenance-v1.2",
+                  "locator": {
+                    "en": "Section \"Provenance\" and the distinction between build provenance and source provenance"
+                  },
+                  "purpose": {
+                    "en": "Ground provenance as verifiable information about where, when, and how an artifact was produced without confusing provenance with an assertion that the artifact is safe."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Build a supply-chain graph for the Knowledge Assistant from source/build dependencies through model/provider, prompts, retrieval data/index, tools, container/runtime, and evaluation artifacts. Mark immutable identity, source, verification/admission evidence, owner, and downstream dependents."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Create an AI supply-chain inventory and admission pipeline for the Knowledge Assistant, then simulate a tampered package/model/data artifact and prove it is rejected, quarantined, or detected before an unreviewed artifact silently becomes production behavior."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Replace an allowed artifact with bytes that keep the same mutable name but a different digest and verify admission or release checks detect the change."
+                },
+                {
+                  "en": "Attempt to load an untrusted executable/unsafe serialized artifact in the privileged application path and verify the secure path quarantines, rejects, or inspects it in an isolated environment."
+                },
+                {
+                  "en": "Poison a small retrieval corpus slice with a synthetic targeted falsehood and verify provenance plus product-specific evaluation exposes the changed behavior."
+                },
+                {
+                  "en": "Introduce a synthetic backdoor trigger into a test model/data fixture and verify targeted tests catch a failure that aggregate quality could miss."
+                },
+                {
+                  "en": "Change a dataset or retrieval snapshot and trace every derived index/evaluation/release artifact that must be invalidated or rebuilt."
+                },
+                {
+                  "en": "Remove provenance metadata while keeping the artifact hash intact and verify the admission policy distinguishes integrity from acceptable provenance."
+                },
+                {
+                  "en": "Mark one supplier/model/package version compromised and use the inventory to identify affected releases and dependent artifacts."
+                },
+                {
+                  "en": "Remove or replace one stale third-party component and verify the release/evaluation path remains reproducible."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "An AI supply-chain inventory covers software, models/providers, adapters, prompts, data/indexes, tools/services, containers/runtime, and evaluation artifacts where applicable."
+                },
+                {
+                  "en": "Critical artifacts have immutable identities or digests and are linked to release manifests."
+                },
+                {
+                  "en": "Supplier/source and artifact provenance are recorded separately from integrity hashes/signatures."
+                },
+                {
+                  "en": "An admission policy defines which artifacts are automatically accepted, require review, are sandboxed/quarantined, or are forbidden."
+                },
+                {
+                  "en": "Unsafe/executable artifact loading is isolated or avoided where practical."
+                },
+                {
+                  "en": "Dataset/retrieval origin and transformation lineage are inspectable."
+                },
+                {
+                  "en": "Publishing/promoting critical model/data artifacts is access-controlled."
+                },
+                {
+                  "en": "A tampered-artifact test is rejected or detected."
+                },
+                {
+                  "en": "A poisoning/backdoor test exercises a targeted product behavior rather than only aggregate metrics."
+                },
+                {
+                  "en": "Changing source data invalidates or regenerates the correct derived artifacts."
+                },
+                {
+                  "en": "An AI/ML BOM or equivalent dependency graph can identify releases affected by a compromised upstream component."
+                },
+                {
+                  "en": "A compromised supplier/artifact scenario reaches quarantine, revocation, replacement, or rollback."
+                },
+                {
+                  "en": "One incident or simulated compromise becomes a durable admission, evaluation, or provenance regression check."
+                },
+                {
+                  "en": "At least one unnecessary or stale dependency is removed."
+                },
+                {
+                  "en": "The final decision records residual supply-chain dependencies that cannot be independently verified and how their risk is bounded."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign supply-chain controls for a system that self-hosts open model weights and fine-tunes on external datasets, with a different mix of binary artifacts, GPU containers, adapters, data vendors, and build infrastructure."
+              }
+            }
+          ]
         }
       },
       {
@@ -13396,6 +14055,12 @@
                   "en": "sandboxed-execution"
                 },
                 {
+                  "en": "supply-chain-and-data-integrity"
+                },
+                {
+                  "en": "guardrail-engineering"
+                },
+                {
                   "en": "integrated-security-attack-path"
                 },
                 {
@@ -13639,6 +14304,24 @@
                 },
                 {
                   "en": "sandbox-failure-matrix"
+                },
+                {
+                  "en": "ai-supply-chain-inventory"
+                },
+                {
+                  "en": "artifact-admission-record"
+                },
+                {
+                  "en": "poisoning-test-record"
+                },
+                {
+                  "en": "guardrail-contract"
+                },
+                {
+                  "en": "guardrail-evaluation"
+                },
+                {
+                  "en": "guardrail-failure-matrix"
                 },
                 {
                   "en": "security-audit-record"
@@ -13946,6 +14629,11 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "security.guardrails"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "security.multi-tenant"
     },
     {
@@ -13957,6 +14645,11 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "security.sandboxing"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "security.supply-chain-data"
     },
     {
       "type": "member",
@@ -14190,6 +14883,16 @@
     },
     {
       "type": "prerequisite",
+      "from": "ai.evaluation",
+      "to": "security.guardrails"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
+      "to": "security.supply-chain-data"
+    },
+    {
+      "type": "prerequisite",
       "from": "ai.model-selection",
       "to": "production.model-gateway"
     },
@@ -14400,6 +15103,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.release-engineering",
+      "to": "security.supply-chain-data"
+    },
+    {
+      "type": "prerequisite",
       "from": "production.streaming",
       "to": "production.architecture"
     },
@@ -14422,6 +15130,11 @@
       "type": "prerequisite",
       "from": "production.versioning",
       "to": "production.release-engineering"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.versioning",
+      "to": "security.supply-chain-data"
     },
     {
       "type": "prerequisite",
@@ -14466,6 +15179,11 @@
     {
       "type": "prerequisite",
       "from": "security.data-exfiltration",
+      "to": "security.guardrails"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.data-exfiltration",
       "to": "security.multi-tenant"
     },
     {
@@ -14485,8 +15203,23 @@
     },
     {
       "type": "prerequisite",
+      "from": "security.prompt-injection",
+      "to": "security.guardrails"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.sandboxing",
+      "to": "security.supply-chain-data"
+    },
+    {
+      "type": "prerequisite",
       "from": "security.tool-permissions",
       "to": "security.data-exfiltration"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.tool-permissions",
+      "to": "security.guardrails"
     },
     {
       "type": "prerequisite",
@@ -14767,6 +15500,12 @@
       "author": "Cloudflare",
       "url": "https://developers.cloudflare.com/ai-gateway/configuration/request-handling/"
     },
+    "docs.cyclonedx-mlbom": {
+      "title": "CycloneDX — Machine Learning Bill of Materials (AI/ML-BOM)",
+      "type": "documentation",
+      "author": "OWASP CycloneDX",
+      "url": "https://cyclonedx.org/capabilities/mlbom/"
+    },
     "docs.dvc-command-reference": {
       "title": "DVC — Command Reference",
       "type": "documentation",
@@ -14977,6 +15716,12 @@
       "author": "OpenAI",
       "url": "https://openai.github.io/openai-agents-python/multi_agent/"
     },
+    "docs.openai-agents-guardrails": {
+      "title": "OpenAI Agents SDK — Guardrails",
+      "type": "documentation",
+      "author": "OpenAI",
+      "url": "https://openai.github.io/openai-agents-python/guardrails/"
+    },
     "docs.openai-agents-results": {
       "title": "OpenAI Agents SDK — Results and resumable run state",
       "type": "documentation",
@@ -15054,6 +15799,12 @@
       "type": "documentation",
       "author": "Sentence Transformers maintainers",
       "url": "https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html"
+    },
+    "docs.slsa-provenance-v1.2": {
+      "title": "SLSA 1.2 — Provenance",
+      "type": "standard",
+      "author": "SLSA",
+      "url": "https://slsa.dev/spec/v1.2/provenance"
     },
     "docs.temporal-overview": {
       "title": "Temporal Documentation — Durable Execution",
@@ -15150,6 +15901,24 @@
       "type": "standard",
       "author": "OWASP Gen AI Security Project",
       "url": "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/"
+    },
+    "standard.owasp-llm03-supply-chain": {
+      "title": "OWASP LLM03:2025 Supply Chain",
+      "type": "standard",
+      "author": "OWASP Gen AI Security Project",
+      "url": "https://genai.owasp.org/llmrisk/llm032025-supply-chain/"
+    },
+    "standard.owasp-llm04-poisoning": {
+      "title": "OWASP LLM04:2025 Data and Model Poisoning",
+      "type": "standard",
+      "author": "OWASP Gen AI Security Project",
+      "url": "https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/"
+    },
+    "standard.owasp-llm05-output-handling": {
+      "title": "OWASP LLM05:2025 Improper Output Handling",
+      "type": "standard",
+      "author": "OWASP Gen AI Security Project",
+      "url": "https://genai.owasp.org/llmrisk/llm052025-improper-output-handling/"
     },
     "standard.owasp-llm06-excessive-agency": {
       "title": "OWASP LLM06:2025 Excessive Agency",

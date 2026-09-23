@@ -39,6 +39,8 @@ milestones:
   - tool-permission-boundary
   - data-exfiltration-boundary
   - sandboxed-execution
+  - supply-chain-and-data-integrity
+  - guardrail-engineering
   - integrated-security-attack-path
   - incident-and-feedback
 competencies:
@@ -80,6 +82,8 @@ competencies:
   - security.prompt-injection
   - security.data-exfiltration
   - security.sandboxing
+  - security.supply-chain-data
+  - security.guardrails
 evidence:
   - product-brief
   - baseline-results
@@ -157,6 +161,12 @@ evidence:
   - security-boundary-failure-matrix
   - sandbox-contract
   - sandbox-failure-matrix
+  - ai-supply-chain-inventory
+  - artifact-admission-record
+  - poisoning-test-record
+  - guardrail-contract
+  - guardrail-evaluation
+  - guardrail-failure-matrix
   - security-audit-record
   - decision-records
   - traces

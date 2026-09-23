@@ -359,13 +359,20 @@ competencies:
       status: ready,
       route: curriculum/10-security-governance/multi-tenant,
     }
-  - { id: security.guardrails, title: Guardrails, domain: security-governance, status: coverage }
+  - {
+      id: security.guardrails,
+      title: Guardrails,
+      domain: security-governance,
+      status: ready,
+      route: curriculum/10-security-governance/guardrails,
+    }
   - { id: security.safety-governance, title: AI Safety and Governance, domain: security-governance, status: coverage }
   - {
       id: security.supply-chain-data,
       title: AI Supply Chain and Data Security,
       domain: security-governance,
-      status: coverage,
+      status: ready,
+      route: curriculum/10-security-governance/supply-chain-data,
     }
   - {
       id: security.privacy-legal,

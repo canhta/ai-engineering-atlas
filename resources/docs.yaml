@@ -1380,3 +1380,69 @@ resources:
     source_verified: true
     last_checked: 2026-09-23
     review_interval_days: 90
+
+  - id: standard.owasp-llm03-supply-chain
+    type: standard
+    title: OWASP LLM03:2025 Supply Chain
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm032025-supply-chain/
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.supply-chain-data, supply-chain, model-provenance, adapters, dependencies]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: standard.owasp-llm04-poisoning
+    type: standard
+    title: OWASP LLM04:2025 Data and Model Poisoning
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.supply-chain-data, data-poisoning, model-poisoning, retrieval-integrity]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.cyclonedx-mlbom
+    type: documentation
+    title: CycloneDX — Machine Learning Bill of Materials (AI/ML-BOM)
+    author: OWASP CycloneDX
+    url: https://cyclonedx.org/capabilities/mlbom/
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.supply-chain-data, ml-bom, models, datasets, provenance]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: docs.slsa-provenance-v1.2
+    type: standard
+    title: SLSA 1.2 — Provenance
+    author: SLSA
+    url: https://slsa.dev/spec/v1.2/provenance
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [security.supply-chain-data, provenance, build-provenance, source-provenance]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: standard.owasp-llm05-output-handling
+    type: standard
+    title: OWASP LLM05:2025 Improper Output Handling
+    author: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm052025-improper-output-handling/
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.guardrails, output-validation, output-encoding, downstream-safety]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.openai-agents-guardrails
+    type: documentation
+    title: OpenAI Agents SDK — Guardrails
+    author: OpenAI
+    url: https://openai.github.io/openai-agents-python/guardrails/
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.guardrails, input-guardrails, output-guardrails, tool-guardrails, tripwires]
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 60
