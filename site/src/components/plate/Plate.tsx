@@ -1,25 +1,36 @@
-// The plate (DESIGN.md → The plate): one tile per item of the tracked collection, grouped into
-// regions by the collection's `group_by` vocabulary. Encoding is shape and fill (TileGlyph rules);
-// hovering or focusing a tile on desktop draws its declared prerequisite lines from `relations`.
-// Modes: overview (Home: tiles link to the Atlas drawer), explore (Atlas: filters dim, select opens
-// the drawer), progress (Progress: tiles link to the Atlas drawer, mapped tiles recede).
-// This folder is the only place allowed to emit SVG, and only from data.
-import { type KeyboardEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+// The plate (DESIGN.md → The plate): the tracked collection's items grouped into regions by its
+// `group_by` vocabulary, inside a printed plate frame. Items with a page are named route tiles,
+// filled and marked by the learner's state (TileGlyph rules); items without one are small circle
+// marks after them. Region placement comes from src/lib/plate-layout.ts. Hovering or focusing a
+// tile on desktop draws its declared prerequisite lines from `relations`; at rest none are drawn.
+// Modes: overview (Home: tiles link to the Atlas drawer), explore (Atlas: filters dim, select
+// opens the drawer). This folder is the only place allowed to emit SVG, and only from data.
+import {
+  type CSSProperties,
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { type Lang, useTranslations } from "../../i18n";
+import { MEDIUM, placeRegions, WIDE } from "../../lib/plate-layout";
 import { type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import type { RegionData, TileData } from "../../lib/summaries";
 import { Icon } from "../react/Icon";
-import { tileFill } from "./TileGlyph";
+import { TileGlyph, tileFill } from "./TileGlyph";
 
-export type PlateMode = "overview" | "explore" | "progress";
+export type PlateMode = "overview" | "explore";
 
 interface Props {
   lang: Lang;
   mode: PlateMode;
   regions: RegionData[];
   stateLabels: Record<string, string>;
-  /** Base URL of the Atlas; overview and progress tiles link to `<atlasUrl>?item=<ref>`. */
+  /** Base URL of the Atlas; overview tiles link to `<atlasUrl>?item=<ref>`. */
   atlasUrl: string;
   /** Explore mode: refs that match the filters (null = all match). */
   matches?: Set<string> | null;
@@ -32,11 +43,37 @@ interface Props {
 }
 
 const BEYOND: readonly State[] = ["transferred", "retained", "applied"];
+/** Prerequisite lines and the mark tooltip exist only at desktop widths (DESIGN.md → The plate). */
+const DESKTOP = "(min-width: 1024px)";
 const langOf = (text: { lang: Lang }, page: Lang) => (text.lang === page ? undefined : text.lang);
 
 interface Line {
   d: string;
   key: string;
+}
+
+/** Route tiles first, then the region's mapped marks, each in content order: the reading and arrow-key order. */
+const orderOf = (region: RegionData) => [
+  ...region.tiles.filter((tile) => tile.href),
+  ...region.tiles.filter((tile) => !tile.href),
+];
+
+/** A curve from the facing edge of one tile to the facing edge of another. */
+function linePath(a: DOMRect, b: DOMRect, box: DOMRect): string {
+  const ax = a.left - box.left + a.width / 2;
+  const ay = a.top - box.top + a.height / 2;
+  const bx = b.left - box.left + b.width / 2;
+  const by = b.top - box.top + b.height / 2;
+  if (Math.abs(bx - ax) > Math.abs(by - ay)) {
+    const dir = Math.sign(bx - ax);
+    const [sx, ex] = [ax + (dir * a.width) / 2, bx - (dir * b.width) / 2];
+    const bend = Math.min(90, Math.abs(ex - sx) / 2.5);
+    return `M ${sx} ${ay} C ${sx + dir * bend} ${ay}, ${ex - dir * bend} ${by}, ${ex} ${by}`;
+  }
+  const dir = Math.sign(by - ay) || 1;
+  const [sy, ey] = [ay + (dir * a.height) / 2, by - (dir * b.height) / 2];
+  const bend = Math.min(90, Math.abs(ey - sy) / 2.5);
+  return `M ${ax} ${sy} C ${ax} ${sy + dir * bend}, ${bx} ${ey - dir * bend}, ${bx} ${ey}`;
 }
 
 export default function Plate({
@@ -64,38 +101,58 @@ export default function Plate({
     () => new Map(regions.flatMap((r) => r.tiles.map((tile) => [tile.ref, tile] as const))),
     [regions],
   );
+  const ordered = useMemo(() => regions.map(orderOf), [regions]);
 
-  // Prerequisite lines and the tooltip for the active tile (desktop widths only).
+  // Region placement at each width with a grid; below 768 regions stack (CSS).
+  const placement = useMemo(() => {
+    const shapes = regions.map((r) => ({
+      id: r.value,
+      ready: r.tiles.filter((tile) => tile.href).length,
+      mapped: r.tiles.filter((tile) => !tile.href).length,
+    }));
+    const wide = new Map(placeRegions(shapes, WIDE).map((p) => [p.id, p]));
+    const medium = new Map(placeRegions(shapes, MEDIUM).map((p) => [p.id, p]));
+    return (id: string) => {
+      const w = wide.get(id)!;
+      const m = medium.get(id)!;
+      return {
+        "--wide-row": w.row,
+        "--wide-column": w.column,
+        "--wide-span": w.span,
+        "--medium-row": m.row,
+        "--medium-column": m.column,
+        "--medium-span": m.span,
+      } as CSSProperties;
+    };
+  }, [regions]);
+
+  // Prerequisite lines of the active tile, and the name of an active mark (desktop widths only).
   useLayoutEffect(() => {
     const tile = active ? byRef.get(active) : undefined;
     const el = active ? tiles.current.get(active) : undefined;
     const box = core.current?.getBoundingClientRect();
-    if (!tile || !el || !box || !window.matchMedia("(min-width: 1024px)").matches) {
+    if (!tile || !el || !box || !window.matchMedia(DESKTOP).matches) {
       setLines([]);
       setTip(null);
       return;
     }
-    const center = (node: HTMLElement) => {
-      const r = node.getBoundingClientRect();
-      return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
-    };
-    const to = center(el);
+    const to = el.getBoundingClientRect();
     setLines(
       tile.needs.flatMap((ref) => {
         const from = tiles.current.get(ref);
-        if (!from) return [];
-        const a = center(from);
-        const bend = Math.min(80, Math.hypot(to.x - a.x, to.y - a.y) / 3);
-        return [{ key: ref, d: `M ${a.x} ${a.y} C ${a.x} ${a.y - bend}, ${to.x} ${to.y - bend}, ${to.x} ${to.y}` }];
+        return from ? [{ key: ref, d: linePath(from.getBoundingClientRect(), to, box) }] : [];
       }),
     );
-    const r = el.getBoundingClientRect();
-    setTip({
-      x: r.left - box.left + r.width / 2,
-      y: r.top - box.top,
-      text: tile.title.value,
-      lang: langOf(tile.title, lang),
-    });
+    setTip(
+      tile.href
+        ? null
+        : {
+            x: to.left - box.left + to.width / 2,
+            y: to.top - box.top,
+            text: tile.title.value,
+            lang: langOf(tile.title, lang),
+          },
+    );
   }, [active, byRef, lang]);
 
   // `?group=`: bring the region into view once.
@@ -113,8 +170,7 @@ export default function Plate({
   );
 
   // Arrow keys move within a region (Tab moves between regions: one tab stop each).
-  const onKey = (region: RegionData, index: number) => (event: KeyboardEvent<HTMLElement>) => {
-    const list = region.tiles;
+  const onKey = (region: string, list: TileData[], index: number) => (event: KeyboardEvent<HTMLElement>) => {
     let next: number;
     if (event.key === "ArrowRight") next = Math.min(index + 1, list.length - 1);
     else if (event.key === "ArrowLeft") next = Math.max(index - 1, 0);
@@ -124,6 +180,7 @@ export default function Plate({
       const here = tiles.current.get(list[index].ref)?.getBoundingClientRect();
       if (!here) return;
       const down = event.key === "ArrowDown";
+      const middle = here.left + here.width / 2;
       let best = -1;
       let bestScore = Infinity;
       list.forEach((candidate, i) => {
@@ -131,7 +188,7 @@ export default function Plate({
         if (!r) return;
         const dy = r.top - here.top;
         if (down ? dy <= 2 : dy >= -2) return;
-        const score = Math.abs(dy) * 1000 + Math.abs(r.left - here.left);
+        const score = Math.abs(dy) * 1000 + Math.abs(r.left + r.width / 2 - middle);
         if (score < bestScore) {
           bestScore = score;
           best = i;
@@ -142,7 +199,7 @@ export default function Plate({
     event.preventDefault();
     if (next < 0 || next === index) return;
     const ref = list[next].ref;
-    setTabStop((s) => ({ ...s, [region.value]: ref }));
+    setTabStop((s) => ({ ...s, [region]: ref }));
     tiles.current.get(ref)?.focus();
   };
 
@@ -154,68 +211,97 @@ export default function Plate({
   const RegionHeading = regionHeading;
   const needed = new Set(active ? (byRef.get(active)?.needs ?? []) : []);
 
+  const renderTile = (region: string, list: TileData[], i: number, stop: string | undefined) => {
+    const tile = list[i];
+    const route = Boolean(tile.href);
+    const state = hydrated && route ? stateOf(progress, tile.ref) : null;
+    const classes = [
+      "tile",
+      route ? "tile-route" : "tile-mark",
+      matches && !matches.has(tile.ref) ? "is-dim" : "",
+      selected === tile.ref ? "is-selected" : "",
+      needed.has(tile.ref) ? "is-needed" : "",
+      active === tile.ref ? "is-active" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const props = {
+      ref: register(tile.ref),
+      className: classes,
+      tabIndex: tile.ref === stop ? 0 : -1,
+      "aria-label": nameOf(tile, state),
+      "data-ref": tile.ref,
+      "data-state": state && state !== "unassessed" ? state : undefined,
+      onKeyDown: onKey(region, list, i),
+      onFocus: () => {
+        setActive(tile.ref);
+        setTabStop((s) => (s[region] === tile.ref ? s : { ...s, [region]: tile.ref }));
+      },
+      onBlur: () => setActive((a) => (a === tile.ref ? null : a)),
+      onMouseEnter: () => setActive(tile.ref),
+      onMouseLeave: () => setActive((a) => (a === tile.ref ? null : a)),
+    };
+    const body = route ? (
+      <>
+        {/* Unassessed: the ink rectangle alone (an empty square inside would read as a checkbox). */}
+        {state && state !== "unassessed" && <TileGlyph fill={tileFill(true, state)} state={state} />}
+        {state && BEYOND.includes(state) && <Icon name={state} />}
+        <span className="tile-title" lang={langOf(tile.title, lang)}>
+          {tile.title.value}
+        </span>
+      </>
+    ) : (
+      <span className="tile-dot" aria-hidden="true" />
+    );
+    return (
+      <li key={tile.ref}>
+        {mode === "explore" ? (
+          <button type="button" {...props} onClick={() => onSelect?.(tile.ref)}>
+            {body}
+          </button>
+        ) : (
+          <a href={`${atlasUrl}?item=${encodeURIComponent(tile.ref)}`} {...props}>
+            {body}
+          </a>
+        )}
+      </li>
+    );
+  };
+
   return (
     <div className={`plate plate-${mode}`}>
       <div className="plate-core" ref={core}>
-        {regions.map((region) => {
-          const ready = region.tiles.filter((tile) => tile.href).length;
-          const stop = tabStop[region.value] ?? region.tiles[0]?.ref;
+        {regions.map((region, r) => {
+          const list = ordered[r];
+          const ready = list.filter((tile) => tile.href).length;
+          const stop = tabStop[region.value] ?? list[0]?.ref;
+          const indexes = list.map((_, i) => i);
           return (
             <section
               key={region.value}
               id={`region-${region.value}`}
-              className={`plate-region${focusGroup === region.value ? " is-focus" : ""}`}
+              className={`plate-region${ready ? " has-routes" : ""}${focusGroup === region.value ? " is-focus" : ""}`}
+              style={placement(region.value)}
               aria-labelledby={`region-${region.value}-label`}
             >
               <RegionHeading className="plate-region-label" id={`region-${region.value}-label`}>
-                <span lang={langOf(region.label, lang)}>{region.label.value}</span>
+                <span className="plate-region-name" lang={langOf(region.label, lang)}>
+                  {region.label.value}
+                </span>{" "}
                 <span className="plate-region-count tabular">
-                  {t("plate.regionCount", { ready, total: region.tiles.length })}
+                  {t("plate.regionCount", { ready, total: list.length })}
                 </span>
               </RegionHeading>
-              <div className="plate-tiles">
-                {region.tiles.map((tile, i) => {
-                  const state = hydrated && tile.href ? stateOf(progress, tile.ref) : null;
-                  const fill = tileFill(Boolean(tile.href), state);
-                  const classes = [
-                    "tile",
-                    `tile-${fill}`,
-                    state ? `tile-state-${state}` : "",
-                    matches && !matches.has(tile.ref) ? "is-dim" : "",
-                    selected === tile.ref ? "is-selected" : "",
-                    needed.has(tile.ref) ? "is-needed" : "",
-                    active === tile.ref ? "is-active" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ");
-                  const common = {
-                    ref: register(tile.ref),
-                    className: classes,
-                    tabIndex: tile.ref === stop ? 0 : -1,
-                    "aria-label": nameOf(tile, state),
-                    "data-ref": tile.ref,
-                    onKeyDown: onKey(region, i),
-                    onFocus: () => {
-                      setActive(tile.ref);
-                      setTabStop((s) => (s[region.value] === tile.ref ? s : { ...s, [region.value]: tile.ref }));
-                    },
-                    onBlur: () => setActive((a) => (a === tile.ref ? null : a)),
-                    onMouseEnter: () => setActive(tile.ref),
-                    onMouseLeave: () => setActive((a) => (a === tile.ref ? null : a)),
-                  };
-                  // biome-ignore lint/correctness/useJsxKeyInIterable: one element inside the tile, not a list item.
-                  const mark = state && BEYOND.includes(state) ? <Icon name={state} size={16} /> : null;
-                  return mode === "explore" ? (
-                    <button key={tile.ref} type="button" {...common} onClick={() => onSelect?.(tile.ref)}>
-                      {mark}
-                    </button>
-                  ) : (
-                    <a key={tile.ref} href={`${atlasUrl}?item=${encodeURIComponent(tile.ref)}`} {...common}>
-                      {mark}
-                    </a>
-                  );
-                })}
-              </div>
+              {ready > 0 && (
+                <ul className="plate-routes">
+                  {indexes.slice(0, ready).map((i) => renderTile(region.value, list, i, stop))}
+                </ul>
+              )}
+              {ready < list.length && (
+                <ul className="plate-marks">
+                  {indexes.slice(ready).map((i) => renderTile(region.value, list, i, stop))}
+                </ul>
+              )}
             </section>
           );
         })}

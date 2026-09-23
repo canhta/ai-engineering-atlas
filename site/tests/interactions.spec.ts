@@ -115,6 +115,8 @@ test("a tile opens the drawer; Esc closes it and returns focus to the tile", asy
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
   await expect(page).toHaveURL(/item=ai\.tool-calling/);
   await expect(drawer(page).getByRole("link", { name: "Open route" })).toHaveAttribute("href", ROUTE);
+  // Focus moves into the drawer (DESIGN.md → Accessibility baseline) before Esc can close it.
+  await expect.poll(() => page.evaluate(() => Boolean(document.activeElement?.closest("[role=dialog]")))).toBe(true);
   await page.keyboard.press("Escape");
   await expect(drawer(page)).toBeHidden();
   await expect(tile(page, "ai.tool-calling")).toBeFocused();
@@ -143,6 +145,8 @@ test("the list view is the plate's equivalent: disclosures and rows open the dra
 });
 
 test("?group= focuses a region and opens it in the list", async ({ page }) => {
+  await open(page, "/en/map/?group=systems");
+  await expect(page.locator("#region-systems")).toHaveClass(/is-focus/);
   await open(page, "/en/map/?group=systems&view=list");
   await expect(page.getByRole("button", { name: /^Systems/ })).toHaveAttribute("aria-expanded", "true");
 });
@@ -153,6 +157,74 @@ test("home tiles lead to the atlas drawer", async ({ page }) => {
   await expect(page).toHaveURL(/\/en\/map\/\?item=ai\.tool-calling/);
   await hydrated(page);
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
+});
+
+// ---------------------------------------------------------------- The plate carries names
+
+const plate = (page: Page) => page.locator(".plate");
+const titleOf = (item: (typeof trackedItems)[number]) => (item as unknown as { title: { en: string } }).title.en;
+const readyItems = trackedItems.filter((i) => i.page);
+const mappedItems = trackedItems.filter((i) => !i.page);
+const startsWith = (name: string) => new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`);
+
+async function namesEveryItem(page: Page, role: "link" | "button") {
+  // Every ready route shows its title on the plate and is named "<title>, <status>, your state: …".
+  await expect(plate(page).locator(".tile-route")).toHaveCount(READY);
+  for (const item of readyItems) {
+    const routeTile = tile(page, item.id);
+    await expect(routeTile).toHaveText(titleOf(item));
+    await expect(
+      plate(page).getByRole(role, { name: startsWith(`${titleOf(item)}, ready, your state: `) }),
+    ).toHaveCount(1);
+  }
+  // Every mapped competency is a reachable mark named "<title>, mapped…".
+  await expect(plate(page).locator(".tile-mark")).toHaveCount(TOTAL - READY);
+  for (const item of mappedItems) {
+    await expect(plate(page).getByRole(role, { name: startsWith(`${titleOf(item)}, mapped`) })).toHaveCount(1);
+  }
+}
+
+test("Home plate names every ready route as a link and keeps every mapped mark reachable", async ({ page }) => {
+  await open(page, "/en/");
+  await namesEveryItem(page, "link");
+  const mapped = mappedItems[0];
+  await expect(tile(page, mapped.id)).toHaveAttribute("href", `/en/map/?item=${mapped.id}`);
+});
+
+test("Atlas plate names every ready route as a button; a mapped mark opens its drawer", async ({ page }) => {
+  await open(page, "/en/map/");
+  await namesEveryItem(page, "button");
+  await tile(page, mappedItems[0].id).click();
+  await expect(drawer(page).getByRole("heading", { name: titleOf(mappedItems[0]) })).toBeVisible();
+  await expect(drawer(page).getByText("Mapped, no route yet. It shows where the roadmap is going.")).toBeVisible();
+});
+
+test("prerequisite lines appear only on hover or focus of a tile", async ({ page }) => {
+  const needs = (model as unknown as { relations: { type: string; to: string }[] }).relations.filter(
+    (r) => r.type === "prerequisite" && r.to === ROUTE_REF,
+  ).length;
+  expect(needs).toBeGreaterThan(0);
+  await open(page, "/en/map/");
+  const lines = page.locator(".plate-lines path");
+  await expect(lines).toHaveCount(0);
+  await tile(page, ROUTE_REF).hover();
+  await expect(lines).toHaveCount(needs);
+  await page.mouse.move(0, 0);
+  await expect(lines).toHaveCount(0);
+  await tile(page, ROUTE_REF).focus();
+  await expect(lines).toHaveCount(needs);
+});
+
+test("@mobile the plate stacks into readable region blocks without horizontal scroll", async ({ page }) => {
+  for (const path of ["/en/", "/en/map/"]) {
+    await open(page, path);
+    await expect(tile(page, ROUTE_REF)).toBeVisible();
+    await expect(tile(page, ROUTE_REF)).toHaveText(titleOf(routeItem));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    // No prerequisite lines below 1024.
+    await tile(page, ROUTE_REF).focus();
+    await expect(page.locator(".plate-lines path")).toHaveCount(0);
+  }
 });
 
 // ---------------------------------------------------------------- Route sheet

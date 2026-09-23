@@ -67,40 +67,43 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
  learning modern AI engineering.
  Diagnose first, read the exact source, prove it with evidence.        one muted line
  [ Find your starting point ]    How the atlas works                   primary button → /map/?ready=1
- legend   ⬚ mapped   □ ready   ◧ gap   ◧ learning   ■ demonstrated or beyond
-╭───────────────────────────────────── plate ──────────────────────────────────────╮
-│ Software engineering    Systems             Data engineering    ML foundations   │
-│ ⬚⬚⬚⬚⬚⬚⬚⬚                ⬚⬚⬚⬚⬚⬚⬚⬚⬚           ⬚⬚⬚⬚⬚⬚              ⬚⬚⬚⬚⬚⬚⬚⬚⬚        │
-│ Deep learning           LLM foundations     AI engineering      Agents           │
-│ ⬚⬚⬚⬚⬚                   ⬚⬚⬚□⬚⬚⬚⬚⬚⬚⬚         ◧□□■□□□□□□□□⬚⬚…     □□□□□⬚⬚⬚⬚⬚       │
-│ Production AI           Security & gov.     Multimodal          Specializations  │
-│ ⬚⬚⬚⬚⬚⬚⬚⬚⬚⬚⬚             □⬚⬚⬚⬚⬚⬚⬚⬚⬚          ⬚⬚⬚                 ⬚⬚⬚⬚⬚⬚⬚⬚         │
-╰──────────────────────────────────────────────────────────────────────────────────╯
+ legend   ○ mapped   ▭ ready   ◧ gap   ◧ learning   ■ demonstrated or beyond
+╔═════════════════════════════════════ plate ══════════════════════════════════════╗
+║ Software eng. 0 of 8 │ Systems 0 of 9 │ Data eng. │ ML found. │ Deep learning      ║
+║ ○○○○○○○○             │ ○○○○○○○○○      │ ○○○○○○    │ ○○○○○○○○○ │ ○○○○○              ║
+║ LLM found. 1 of 11   │ AI engineering  12 ready of 26                             ║
+║ [Self-Attention]     │ [AI Product and Problem Framing] [Model Selection] […]     ║
+║ ○○○○○○○○○○           │ ○○○○○○○○○○○○○○                                             ║
+║ Agents  9 ready of 9                 │ Production AI  11 ready of 11              ║
+║ [Agent State] [Agent Memory] […]     │ [AI Caching] [Streaming] […]               ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
  How the atlas works    1 Diagnose   2 Read the exact source   3 Practice   4 Record evidence
  (a real sequence, so numbered; one sentence each)
  Ready routes by domain: compact rows (title, level, number of sources, your state)
 ```
 
-Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with wrapping tiles (no lines), then the steps as a vertical list.
+Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with named tiles wrapping and marks in a row (no lines), then the steps as a vertical list.
 
-### The plate: one component, three modes
+### The plate: one component, two modes
 
-- Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in italic Newsreader like a map label, with "N ready of M" in Plex Sans.
-- Tiles: one per item, in content order. Every state has its own fill or icon and its own hue; colour is never the only cue:
+- Regions: one per `group_by` value in vocabulary order. Label in italic Newsreader like a map label (larger when the region has routes), then "N ready of M" in Plex Sans.
+- Placement: `src/lib/plate-layout.ts`, a pure module (region shapes in, placements out; tested in `plate-layout.test.ts`). Each region wants a span from its content (a named route asks for half a column, a mark a twelfth, at least two columns for the label). Regions are cut into rows in order so that as few columns as possible are left over on every row, the last included, and a row's leftover columns go to its least-stretched region, never beyond twice what it wants. Desktop (≥ 1024) uses 12 columns, tablet 6; below 768 regions stack as full-width blocks. The plate passes the result as `--wide-*` and `--medium-*` properties; no region width is set anywhere else.
+- Ready routes: rectangles carrying their title (Plex Sans 14px, 13px on a phone), wrapping inside the region. Mapped competencies: small circle marks (10px in a 24px target) after the routes, in content order, still links or buttons.
+- Learner state on a route tile: the rule takes the state's hue and a glyph before the title shows the fill; the three states beyond demonstrated add their icon. Unassessed shows the ink rectangle alone (an empty square would read as a checkbox). Colour is never the only cue:
 
-  | State                          | Tile                            | Hue token                                                                        |
-  | ------------------------------ | ------------------------------- | -------------------------------------------------------------------------------- |
-  | mapped (no page)               | dotted outline, no fill         | `line-strong`                                                                    |
-  | ready, unassessed              | ink outline                     | `ink`                                                                            |
-  | gap                            | half fill                       | `state-gap` (amber)                                                              |
-  | learning                       | three-quarter fill              | `state-learning` (blue)                                                          |
-  | demonstrated                   | full fill                       | `state-demonstrated` (green)                                                     |
-  | transferred, retained, applied | full fill with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
+  | State                          | Tile or glyph                    | Hue token                                                                        |
+  | ------------------------------ | -------------------------------- | -------------------------------------------------------------------------------- |
+  | mapped (no page)               | circle mark, no fill             | `line-strong`                                                                    |
+  | ready, unassessed              | ink rectangle with the title     | `ink`                                                                            |
+  | gap                            | half-filled glyph                | `state-gap` (amber)                                                              |
+  | learning                       | three-quarter glyph              | `state-learning` (blue)                                                          |
+  | demonstrated                   | full glyph                       | `state-demonstrated` (green)                                                     |
+  | transferred, retained, applied | full glyph with the state's icon | `state-transferred` (violet), `state-retained` (teal), `state-applied` (magenta) |
 
-- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`.
-- Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) and shows a title tooltip (hidden from assistive tech; the tile's name carries the title). Below 1024 there are no lines.
-- Modes: `overview` (Home) and `progress` (Progress): tiles are links to `/map/?item=<id>`, so they work without JavaScript; mapped tiles recede in progress mode but stay clickable. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles.
-- Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); arrow keys move within a region, Tab moves between regions; the list view is the full equivalent.
+- Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`. At text size (`TileGlyph`) the mapped glyph is a circle too.
+- Prerequisite lines: none at rest. Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) in `route`, edge to edge, and marks the prerequisite tiles; a mark also shows its title as a tooltip (hidden from assistive tech; the name carries it). Below 1024 there are no lines.
+- Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. Progress summarises by region bars and has no plate.
+- Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); routes and marks are lists; arrow keys move within a region (routes, then marks), Home and End jump, Tab moves between regions (one tab stop each); the list view is the full equivalent.
 
 ### Atlas
 

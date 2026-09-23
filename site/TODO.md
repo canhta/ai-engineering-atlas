@@ -63,7 +63,8 @@ Last updated: 2026-09-23
 ### Editorial print redesign ([ADR 0001](../docs/adr/0001-editorial-print-direction.md), tickets in `.scratch/visual-redesign/issues/`)
 
 - [x] 01 Print system everywhere: paper/ink/magenta tokens in light and night-chart dark, Newsreader + IBM Plex Sans (Hubot Sans removed), plain top bar and footer, no glass, bezels, trays, pill buttons, or plate settle-in; stylelint rejects undefined tokens and blur; DESIGN.md visual system and review tells rewritten
-- [ ] 02–05 Plate layout, Home with the specimen, route page (details line, bibliography, margin column)
+- [x] 02 The plate carries names: ready routes as named tiles, mapped competencies as circle marks, italic region labels with "N ready of M"; region placement from the pure, tested `src/lib/plate-layout.ts` (rows fill, no stretched last row); prerequisite lines on hover and focus only; the unused progress mode removed
+- [ ] 03–05 Home with the specimen, route page (details line, bibliography, margin column)
 - [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
 
 ### Phase 1 follow-ups

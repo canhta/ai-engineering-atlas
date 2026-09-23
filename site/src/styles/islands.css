@@ -145,9 +145,10 @@
   vertical-align: -0.05em;
 }
 
+/* Mapped: a small circle, as on the plate. */
 .tile-mapped {
-  border-style: dotted;
   border-color: var(--line-strong);
+  border-radius: 50%;
 }
 
 .tile-half::after {
@@ -977,111 +978,237 @@
   background: var(--sheet);
 }
 
+/* Regions sit on a column grid placed by src/lib/plate-layout.ts; the 1px gaps show the hairline
+   ground between them. Below 768 they stack. */
 .plate-core {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-8) var(--space-6);
-  padding: var(--space-8);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--border-width);
   border: var(--border-width) solid var(--ink);
+  background: var(--line);
 }
 
-/* Region labels set like map labels: italic Newsreader, the count in Plex Sans. */
+.plate-region {
+  /* Set inline per region from the layout module. */
+  --wide-row: auto;
+  --wide-column: auto;
+  --wide-span: 1;
+  --medium-row: auto;
+  --medium-column: auto;
+  --medium-span: 1;
+
+  min-width: 0;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  background: var(--sheet);
+}
+
+@media (width >= 768px) {
+  .plate-core {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .plate-region {
+    grid-row: var(--medium-row);
+    grid-column: var(--medium-column) / span var(--medium-span);
+  }
+}
+
+@media (width >= 1024px) {
+  .plate-core {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .plate-region {
+    grid-row: var(--wide-row);
+    grid-column: var(--wide-column) / span var(--wide-span);
+  }
+}
+
+/* Region labels set like map labels: italic Newsreader, "N ready of M" in Plex Sans. */
 .plate-region-label {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-3);
   margin: 0 0 var(--space-3);
-  font-family: var(--font-reading);
-  font-size: 1.125rem;
-  font-style: italic;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 400;
   letter-spacing: 0;
   line-height: 1.25;
 }
 
+.plate-region-name {
+  font-family: var(--font-reading);
+  font-size: 1.125rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.plate-region.has-routes .plate-region-name {
+  font-size: 1.375rem;
+}
+
 .plate-region-count {
-  font-family: var(--font-sans);
   font-size: var(--text-small);
-  font-style: normal;
-  font-weight: 450;
   color: var(--ink-muted);
 }
 
-.plate-region.is-focus .plate-region-label > span:first-child {
+.plate-region.is-focus .plate-region-name {
   text-decoration: underline;
   text-decoration-color: var(--route);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.3em;
 }
 
-.plate-tiles {
+.plate-routes,
+.plate-marks {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plate-routes {
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.plate-routes:last-child {
+  margin-bottom: 0;
+}
+
+.plate-routes li {
+  max-width: 100%;
 }
 
 .tile {
   position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: 1.625rem;
-  height: 1.625rem;
   padding: 0;
-  border: 1.5px solid var(--ink);
-  border-radius: var(--radius-mark);
+  border: 0;
   background: transparent;
   color: var(--ink);
+  font: inherit;
+  text-decoration: none;
   cursor: pointer;
-  transition: opacity var(--duration-control) var(--ease);
+  transition:
+    opacity var(--duration-control) var(--ease),
+    border-color var(--duration-control) var(--ease);
 }
 
-.tile.tile-mapped {
-  border-style: dotted;
-  border-color: var(--line-strong);
+/* A ready route: a rectangle carrying its title; the glyph and the rule take the learner's state. */
+.tile-route {
+  --tile-hue: var(--ink);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-3);
+  border: 1.5px solid var(--tile-hue);
+  border-radius: var(--radius-mark);
+  background: var(--sheet);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
 }
 
-.tile-full .icon {
-  position: relative;
-  color: var(--sheet);
+.tile-route .tile-glyph,
+.tile-route .icon {
+  flex: none;
 }
 
-.tile:hover,
-.tile.is-active {
-  outline: 1.5px solid var(--ink);
-  outline-offset: 2px;
+.tile-route .icon {
+  margin-left: calc(-1 * var(--space-1));
+  color: var(--tile-hue);
+}
+
+.tile-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tile-route[data-state="gap"] {
+  --tile-hue: var(--state-gap);
+}
+
+.tile-route[data-state="learning"] {
+  --tile-hue: var(--state-learning);
+}
+
+.tile-route[data-state="demonstrated"] {
+  --tile-hue: var(--state-demonstrated);
+}
+
+.tile-route[data-state="transferred"] {
+  --tile-hue: var(--state-transferred);
+}
+
+.tile-route[data-state="retained"] {
+  --tile-hue: var(--state-retained);
+}
+
+.tile-route[data-state="applied"] {
+  --tile-hue: var(--state-applied);
+}
+
+.tile-route:hover,
+.tile-route.is-active {
+  border-color: var(--route);
+}
+
+/* A mapped competency: a small circle in a 24px target. */
+.tile-mark {
+  display: grid;
+  place-items: center;
+  width: var(--target-min);
+  height: var(--target-min);
+}
+
+.tile-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+}
+
+.tile-mark:hover .tile-dot,
+.tile-mark.is-active .tile-dot {
+  border-color: var(--ink);
+}
+
+.tile-mark.is-needed .tile-dot {
+  border-color: var(--route);
 }
 
 .tile:focus-visible {
   outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .tile.is-dim {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
-.tile.is-selected::before,
-.tile.is-needed::before {
-  content: "";
-  position: absolute;
-  inset: -5px;
-  border: 2px solid var(--route);
-  border-radius: var(--radius-mark);
+.tile.is-selected,
+.tile-route.is-needed {
+  outline: 2px solid var(--route);
+  outline-offset: 2px;
 }
 
-.tile.is-needed::before {
-  inset: -4px;
-  border-width: 1.5px;
-}
-
-.plate-progress .tile-mapped {
-  opacity: 0.45;
+.tile-route.is-needed:not(.is-selected) {
+  outline-width: 1.5px;
+  outline-style: dashed;
 }
 
 .plate-lines {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   overflow: visible;
@@ -1104,20 +1231,20 @@
   white-space: nowrap;
   pointer-events: none;
   box-shadow: var(--shadow-float);
-  transform: translate(-50%, calc(-100% - 10px));
-}
-
-@media (width < 1024px) {
-  .plate-core {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  transform: translate(-50%, calc(-100% - 8px));
 }
 
 @media (width < 768px) {
-  .plate-core {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-6);
-    padding: var(--space-5);
+  .plate-region {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .plate-region.has-routes .plate-region-name {
+    font-size: 1.25rem;
+  }
+
+  .tile-route {
+    font-size: var(--text-small);
   }
 }
 
