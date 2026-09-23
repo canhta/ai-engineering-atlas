@@ -7,6 +7,7 @@ import {
   addDays,
   type EvidenceInput,
   emptyProgress,
+  evidenceLog,
   fromYaml,
   type Progress,
   recordEvidence,
@@ -218,4 +219,27 @@ test("invalid imports are rejected with reasons", () => {
   const result = fromYaml("version: 2\ncompetencies:\n  x:\n    current_state: mastered\n");
   assert.ok(result.errors.some((e) => e.includes("current_state")));
   assert.equal(result.progress, undefined);
+});
+
+test("the evidence log lists every record once, newest first, and changes nothing", () => {
+  let p = emptyProgress(DAY);
+  p = recordEvidence(p, "a", evidence({}), "demonstrated", "2026-09-01");
+  p = recordEvidence(p, "b", evidence({ kind: "implementation", supports_state: "learning" }), "demonstrated", DAY);
+  p = recordEvidence(p, "a", evidence({ kind: "explanation", supports_state: "learning" }), "demonstrated", DAY);
+  p = recordEvidence(p, "b", evidence({ kind: "experiment" }), "demonstrated", "2026-09-10");
+  const before = structuredClone(p);
+  const log = evidenceLog(p);
+  assert.deepEqual(
+    log.map((e) => [e.ref, e.evidence.recorded_at, e.evidence.kind]),
+    [
+      // Same date: the file keeps no time of day, so later in the file comes first.
+      ["b", DAY, "implementation"],
+      ["a", DAY, "explanation"],
+      ["b", "2026-09-10", "experiment"],
+      ["a", "2026-09-01", "diagnostic"],
+    ],
+  );
+  assert.equal(new Set(log.map((e) => e.evidence.id)).size, 4);
+  assert.deepEqual(p, before);
+  assert.deepEqual(evidenceLog(null), []);
 });

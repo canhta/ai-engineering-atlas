@@ -1,0 +1,56 @@
+# Progress fixture for the evidence log browser tests (tests/progress.spec.ts): records on several
+# dates across competencies, out of date order in the file, with every review method the log labels.
+version: 2
+updated_at: 2026-03-14
+
+competencies:
+  ai.tool-calling:
+    current_state: demonstrated
+    target_state: retained
+    evidence:
+      - id: diagnostic-20260201-1
+        kind: diagnostic
+        supports_state: gap
+        recorded_at: 2026-02-01
+        note: "Missed idempotency on retries and did not validate arguments against the schema."
+        independence: independent
+        review_method: self
+      - id: implementation-20260314-1
+        kind: implementation
+        supports_state: demonstrated
+        recorded_at: 2026-03-14
+        note: "Tool contract with argument validation, idempotency keys, and bounded retries; the harness replays a failed call twice and checks that the side effect happened exactly once, then logs the trace for review."
+        independence: minimal-hints
+        review_method: automated-and-self
+    state_history:
+      - state: gap
+        recorded_at: 2026-02-01
+        reason: "Diagnostic found a gap."
+        evidence_refs:
+          - diagnostic-20260201-1
+      - state: demonstrated
+        recorded_at: 2026-03-14
+        reason: "Exit evidence recorded."
+        evidence_refs:
+          - implementation-20260314-1
+    next_action: "Run a delayed retrieval check without reopening the sources, or attempt the transfer task."
+    review_on: 2026-03-17
+
+  ai.product-framing:
+    current_state: learning
+    target_state: applied
+    evidence:
+      - id: explanation-20260220-1
+        kind: explanation
+        supports_state: learning
+        recorded_at: 2026-02-20
+        note: "Wrote a problem statement with a measurable objective; a peer found the baseline missing."
+        independence: guided
+        review_method: peer
+    state_history:
+      - state: learning
+        recorded_at: 2026-02-20
+        reason: "Partial explanation."
+        evidence_refs:
+          - explanation-20260220-1
+    next_action: "Finish the practice and produce the exit evidence."

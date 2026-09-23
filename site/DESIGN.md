@@ -39,7 +39,7 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/<collection>/         Index of a collection (labs, projects, paths), linked from the Atlas
 /{lang}/sources/             Library: every source the routes cite, searchable
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
-/{lang}/progress/            Field log: your states, review queue, your data
+/{lang}/progress/            Logbook: evidence log, next steps, review queue, your data
 ```
 
 Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title.
@@ -168,23 +168,19 @@ The route page reads like a book chapter. Route, project, and lab pages share it
 
 ### Progress
 
-The Atlas answers "what is there"; Progress answers "where do I stand". They must not open with the same picture: the tile grid belongs to the Atlas, and Progress summarises.
+A field logbook. The Atlas answers "what is there"; Progress answers "where do I stand" and "what did I do": the tile grid belongs to the Atlas.
 
 ```text
- Progress · states come only from recorded evidence · 1 of 22 demonstrated or beyond · legend
- Where you stand                                      │ Next for you   1 ◧ Product framing (up to 5)
-   AI engineering  ████▓▓░░░░░░  1 of 12 demonstrated │ Review   Due today 1   Next 7 days 0
-   Agent           ░░░░░░░░       0 of 8 demonstrated │ Tool calling  due 29/09  [ Start review ]
- Evidence by competency: title, state, target, evidence count, last recorded, next review
- Your data   [ Export progress.yaml ]   [ Import progress.yaml ]   confirmation and errors inline
+ 1 of 22 demonstrated or beyond, legend                              │ Next for you  1 ◧ Product framing
+ Where you stand   AI engineering  ████▓▓░░░░░░  1 of 12 demonstrated │ Review  Due today 1  Next 7 days 0
+ Evidence log  3 records, newest first                                │   Tool calling  due 29/09  [Start review]
+ Sep 22, 2026  ■ Self-Attention  supports ■ demonstrated | implementation | tests and self-review │ Your data
+               Implemented causal single-head attention and masking tests.                        │ [Export] [Import]
 ```
 
-- One row per region that has a ready route, ordered by the share done: its ready routes in
-  proportion, one segment per state in its own hue, the rest left as `line`. The row links to the
-  Atlas filtered to that domain (`?group=`), so browsing stays one click away.
-- Counts and the legend carry the meaning, never the bar alone: each row names its states for a
-  screen reader, and before hydration the bars are empty with the count as "… of N demonstrated".
-- Empty: every ready route unassessed, and "Start with a diagnostic on any ready route" with the CTA.
+- Region bars: one row per region with a ready route, ordered by share done, one segment per state in its hue, the rest `line`; each row links to `?group=`. Counts and the legend carry the meaning (a screen-reader line per row); before hydration the bars are empty and the count reads "… of N".
+- Evidence log (main column, under an ink rule): every evidence record once, newest first (`evidenceLog()` in `progress.ts`), read-only. An entry is the date in the gutter (`formatDate`, printed once per day), the competency's glyph and title link, a details line (supports + state badge, kind, review method), and the note excerpt in Newsreader (cut at ~160 characters). On a phone the date sits above the entry. Empty: "Start with a diagnostic on any ready route" and the start CTA.
+- Margin (behind a `line` hairline, each section opening on an ink rule with a UI-sized head, like the route's field log): next steps, the review queue, and Your data (export/import, confirmation and errors inline, the storage note). Below 1024 it follows the log.
 
 **Next step.** Computed by `src/lib/recommend.ts` from prerequisites, states, and review dates; advice only, never a state change. Ranked: check due, continue (gap, learning), start (prerequisites demonstrated or bridged), transfer, apply. Home shows up to 3 beside the hero once there is evidence, and keeps the start CTA; Progress shows up to 5 above the queue, without due checks (the queue has them). A row is the rank in `route`, the tile glyph and title link (a due check links to the diagnostic), and the reason as one muted line: hairline rows, no cards. In the field log it is one line under "Next:", either "Recommended next (n of 5)." with the reason or "Learn first:" with the blocking prerequisites.
 

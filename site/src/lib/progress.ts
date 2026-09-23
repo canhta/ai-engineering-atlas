@@ -217,6 +217,30 @@ export function reviewQueue(progress: Progress | null, date: string, horizonDays
   };
 }
 
+/** One line of the evidence log (DESIGN.md → Progress): an evidence record and the competency it belongs to. */
+export interface LogEntry {
+  ref: string;
+  evidence: Evidence;
+}
+
+/**
+ * Every evidence record once, newest first. Records on the same date keep the reverse of the order
+ * they were written in (later in the file, or later in a competency's list, first). Read-only: the
+ * log shows what moved a state and never moves one.
+ */
+export function evidenceLog(progress: Progress | null): LogEntry[] {
+  const all = Object.entries(progress?.competencies ?? {}).flatMap(([ref, c]) =>
+    (c.evidence ?? []).map((evidence) => ({ ref, evidence })),
+  );
+  return all
+    .map((entry, order) => ({ entry, order }))
+    .sort(
+      (a, b) =>
+        String(b.entry.evidence.recorded_at).localeCompare(String(a.entry.evidence.recorded_at)) || b.order - a.order,
+    )
+    .map(({ entry }) => entry);
+}
+
 export const toYaml = (progress: Progress) => stringify(progress, { lineWidth: 0 });
 
 const isOneOf = <T extends readonly string[]>(list: T, value: unknown): value is T[number] =>

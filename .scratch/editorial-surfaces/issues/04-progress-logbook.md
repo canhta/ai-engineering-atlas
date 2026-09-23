@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] With seeded progress, every evidence record appears once, newest first, with dates via `formatDate`
-- [ ] Export and import work exactly as before (existing tests pass); storage-blocked and import-error states still show
-- [ ] Next steps and review queue sit in the margin on desktop and after the log on a phone
-- [ ] Browser tests with a seeded fixture; DESIGN.md's Progress section replaced in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] With seeded progress, every evidence record appears once, newest first, with dates via `formatDate`
+- [x] Export and import work exactly as before (existing tests pass); storage-blocked and import-error states still show
+- [x] Next steps and review queue sit in the margin on desktop and after the log on a phone
+- [x] Browser tests with a seeded fixture; DESIGN.md's Progress section replaced in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

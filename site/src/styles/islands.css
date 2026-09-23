@@ -1920,15 +1920,10 @@
   }
 }
 
-/* ---------------------------------------------------------------- Progress */
+/* ---------------------------------------------------------------- Progress: a field logbook */
 
-.summary {
-  margin: 0 0 var(--space-3);
-  font-size: var(--text-h3);
-  font-weight: 650;
-}
-
-.progress-grid {
+/* The evidence log reads in the main column; actions sit in a ruled margin, as on a route page. */
+.progress-view {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 20rem;
   gap: var(--space-10);
@@ -1936,12 +1931,148 @@
   margin: var(--space-6) 0 var(--space-12);
 }
 
-.progress-plate > p {
-  margin-top: var(--space-3);
+.summary {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-h3);
+  font-weight: 650;
 }
 
-.progress-queue h2 {
-  margin-bottom: var(--space-3);
+.progress-margin {
+  display: grid;
+  gap: var(--space-10);
+  padding-left: var(--space-8);
+  border-left: var(--border-width) solid var(--line);
+}
+
+/* Each margin section opens on an ink rule with a UI-sized head, like the route's field log. */
+.progress-margin > section {
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--ink);
+}
+
+.progress-margin h2 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+@media (width < 1024px) {
+  .progress-view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .progress-margin {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.evidence-log {
+  margin-top: var(--space-12);
+}
+
+.evidence-log > h2 {
+  margin: 0;
+}
+
+.log-count {
+  margin: var(--space-1) 0 var(--space-4);
+}
+
+.evidence-log .empty {
+  margin-top: var(--space-4);
+  border-top: var(--border-width) solid var(--ink);
+}
+
+.log-entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--border-width) solid var(--ink);
+}
+
+/* A dated line in the gutter, then the record: competency, what it supports, the note. */
+.log-entry {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-4) 0 var(--space-5);
+  border-bottom: var(--border-width) solid var(--line);
+}
+
+.entry-date {
+  padding-top: 0.15em;
+  font-size: var(--text-small);
+  color: var(--ink-muted);
+}
+
+/* A day's date is printed once; the repeat stays in the markup for screen readers. */
+.entry-date.is-same-day {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.entry-body {
+  grid-column: 2;
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.entry-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-weight: 550;
+}
+
+.entry-title .tile-glyph {
+  flex: none;
+}
+
+.entry-facts {
+  color: var(--ink-muted);
+}
+
+.entry-facts .state-badge {
+  vertical-align: middle;
+}
+
+.entry-note {
+  max-width: var(--measure);
+  margin: 0;
+  font-family: var(--font-reading);
+  font-size: var(--text-reading);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+@media (width < 640px) {
+  .log-entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .entry-body {
+    grid-column: 1;
+  }
+}
+
+.data-actions {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.progress-data code {
+  overflow-wrap: anywhere;
 }
 
 .queue-counts {
@@ -1982,8 +2113,8 @@
   overflow-x: auto;
 }
 
-/* Wide tables stack into labelled rows on a phone instead of scrolling sideways
-   (DESIGN.md → Progress). Same pattern as the sources and atlas tables. */
+/* Wide tables stack into labelled rows on a phone instead of scrolling sideways (the decision
+   form's tables). Same pattern as the sources and atlas tables. */
 @media (width < 768px) {
   .table-stack {
     overflow-x: visible;
@@ -2017,10 +2148,6 @@
     font-weight: 550;
     color: var(--ink-muted);
   }
-}
-
-.progress-view > h2 {
-  margin-top: var(--space-12);
 }
 
 .confirm {
@@ -2091,18 +2218,8 @@
   color: var(--ink-muted);
 }
 
-.progress-side {
-  display: grid;
-  gap: var(--space-10);
-}
-
-.progress-side .next-steps {
-  padding-top: 0;
-  border-top: 0;
-}
-
-.progress-side .next-title {
-  font-size: var(--text-h2);
+.progress-margin .next-steps {
+  border-top-color: var(--ink);
 }
 
 .log-advice {
@@ -2498,7 +2615,7 @@
 
 /* Progress → Where you stand (DESIGN.md → Progress). A summary, not the Atlas map: one row
    per domain, its states in proportion, the rest left empty. */
-.progress-plate > h2 {
+.region-bars {
   margin-top: var(--space-10);
 }
 
