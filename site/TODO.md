@@ -131,7 +131,7 @@ roadmap.sh gives every collection an index, a maintenance signal, and a shareabl
 - [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
 - [x] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back), linked from Home's hero and the footer (`tests/how.spec.ts`). New `vi` keys for owner review: `how.title`, `how.intro`, `how.states.title`, `how.states.note`, `how.evidence.title`, `how.evidence.intro`, `how.evidence.col`, `how.evidence.note`, `how.steps.title`, `how.steps.intro`, `how.steps.some`, `how.steps.example`, `how.review.title`, `how.review.delay`, `how.review.when`, `how.review.how`, `how.review.due`; and the new `description` (en, vi) of each `state` and `competency_type` value in `curriculum/presentation.yaml`
 - [ ] Public profile `/{lang}/u/<handle>/`: opt-in, shareable, the prerequisite for any ranking. Needs Phase 2 accounts
-- [ ] Search across everything (routes, labs, projects, sources), not just the Atlas list
+- [x] Search across everything (routes, labs, projects, sources), not just the Atlas list: `/{lang}/search/` and a Search tab in the top bar; a static index per language built from the content model (`/{lang}/search/index.json`), accent-insensitive, `?q=` shareable, a plain form without JavaScript. New `vi` keys for owner review: `nav.search`, `search.title`, `search.intro`, `search.label`, `search.placeholder`, `search.routes`, `search.citedBy`, `search.loading`, `search.failed`, `search.none`, `search.resultOne`, `search.results`, `search.browse`, `search.atlasList`
 
 ### Community and motivation (owner request)
 

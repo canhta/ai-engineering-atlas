@@ -39,22 +39,25 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Logbook: evidence log, next steps, review queue, your data
 /{lang}/how/                 How it works: the learning model as a key, linked from Home's hero and the footer
+/{lang}/search/              Search: routes, labs, projects, and sources by title (?q=<query>)
 ```
 
-Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **How it works** reads like a field guide's "how to use this book" (`src/lib/how.ts`, no island): section heads in a left column; the learner states as a key (glyph, label, meaning from the state vocabulary's `description`); a ruled two-column table of evidence per capability type (the other described vocabulary); the route's `step` blocks as a book's contents, numbered like the rail (a step only some routes have is unnumbered, "on some routes") and linking to the specimen route; a short passage on delayed review. No numbered-step row. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), **Search**, language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **How it works** reads like a field guide's "how to use this book" (`src/lib/how.ts`, no island): section heads in a left column; the learner states as a key (glyph, label, meaning from the state vocabulary's `description`); a ruled two-column table of evidence per capability type (the other described vocabulary); the route's `step` blocks as a book's contents, numbered like the rail (a step only some routes have is unnumbered, "on some routes") and linking to the specimen route; a short passage on delayed review. No numbered-step row. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
 
 ## Global frame
 
 ```text
 desktop ≥ 768                                                         mobile < 768
- AI Engineering Atlas   Atlas   Progress ³        English  Tiếng Việt │ ⌂    AI Engineering Atlas
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    Atlas  Progress   English  Tiếng Việt
+ AI Engineering Atlas   Atlas   Progress ³  Search  English  Tiếng Việt │ ⌂  AI Engineering Atlas
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    Atlas  Progress  Search  English  Tiếng Việt
  full width, ink hairline under it, sticky, never blurred; the current      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  tab stands on the hairline with a 3px magenta rule                          two rows, scrolls away with the page
  content: max 1280, 24px gutters, left aligned                               one column, 16px gutters
 ```
 
 The bar never covers focused content: it is `--nav-height` tall, `scroll-padding-top` clears it, and sticky layers below it start at `--bar-offset` (0 on a phone, where the bar scrolls away).
+
+**Search** is a quiet tab, never a floating field or a ⌘K overlay; its page reads like the index of a printed atlas: one field, then one section per kind (the tracked collection's routes, each other collection by its label, the Library's sources) with its count over an ink rule, each entry a title link in Newsreader and one muted context line (region; "practice for" or the routes a project covers; the citing pages), matches in bold on `wash`. `searchIndex()` in `summaries.ts` builds the index, emitted as static `/{lang}/search/index.json` and fetched on load; matching (`src/lib/search.ts`) ignores case and Vietnamese diacritics; `?q=` is read on load and kept with `replaceState`. Without JavaScript: a GET form and links to the Atlas list and the Library.
 
 ## Surfaces
 

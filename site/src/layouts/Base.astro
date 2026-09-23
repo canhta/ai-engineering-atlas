@@ -8,14 +8,14 @@ import Icon from "../components/Icon.astro";
 import DueCount from "../components/react/DueCount";
 import { languages, useTranslations, type Lang } from "../i18n";
 import { site, text } from "../lib/atlas";
-import { homeUrl, howUrl, mapUrl, progressUrl, switchLang } from "../lib/urls";
+import { homeUrl, howUrl, mapUrl, progressUrl, searchUrl, switchLang } from "../lib/urls";
 
 interface Props {
   lang: Lang;
   title?: string;
   description?: string;
   /** Section of the site this page belongs to, for the active tab. */
-  section?: "atlas" | "progress";
+  section?: "atlas" | "progress" | "search";
 }
 
 const { lang, title, description, section } = Astro.props;
@@ -26,6 +26,7 @@ const path = Astro.url.pathname;
 const tabs = [
   { id: "atlas", href: mapUrl(lang), label: t("nav.atlas") },
   { id: "progress", href: progressUrl(lang), label: t("nav.progress") },
+  { id: "search", href: searchUrl(lang), label: t("nav.search") },
 ] as const;
 const langs = Object.entries(languages) as [Lang, string][];
 // Owner links are content (site.links), so adding one is a presentation.yaml change.

@@ -6,11 +6,11 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Searching a route, a lab, a project, and a source title (taken from the model) each finds it under the right kind; counts announced
-- [ ] `?q=` pre-fills and runs the search; clearing restores the empty state
-- [ ] The index is built from the content model at build time and served same-origin; the page passes the real CSP in e2e
-- [ ] Keyboard and screen-reader friendly; readable at 390 and 1440
-- [ ] DESIGN.md information architecture and global nav updated within budget; site/TODO.md item ticked with new vi keys listed
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] Searching a route, a lab, a project, and a source title (taken from the model) each finds it under the right kind; counts announced
+- [x] `?q=` pre-fills and runs the search; clearing restores the empty state
+- [x] The index is built from the content model at build time and served same-origin; the page passes the real CSP in e2e
+- [x] Keyboard and screen-reader friendly; readable at 390 and 1440
+- [x] DESIGN.md information architecture and global nav updated within budget; site/TODO.md item ticked with new vi keys listed
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

@@ -1,0 +1,135 @@
+---
+// Search across everything (DESIGN.md → Information architecture): routes, labs, projects, and
+// sources, found by title from one field, set like the index of a printed atlas. The island loads
+// the built index (./index.json.ts); without JavaScript the form and the browse links remain.
+import Base from "../../../layouts/Base.astro";
+import SearchPage from "../../../components/react/SearchPage";
+import { langPaths, type Lang, useTranslations } from "../../../i18n";
+import { libraryUrl, mapUrl, searchUrl } from "../../../lib/urls";
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} title={t("search.title")} description={t("search.intro")} section="search">
+  <h1 class="page-title">{t("search.title")}</h1>
+  <p class="lead">{t("search.intro")}</p>
+  <div class="search">
+    <SearchPage
+      client:load
+      lang={lang}
+      action={searchUrl(lang)}
+      indexUrl={`${searchUrl(lang)}index.json`}
+      atlasListUrl={`${mapUrl(lang)}?view=list`}
+      libraryUrl={libraryUrl(lang)}
+    />
+  </div>
+</Base>
+
+<style>
+  /* A printed index: one field, then kind headings over an ink rule, entries on hairlines, each a
+     title in the reading face and one muted line of context. */
+  .search {
+    max-width: 48rem;
+    margin: var(--space-8) 0 var(--space-12);
+  }
+
+  .search :global(.search-summary) {
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .search :global(.search-kind) {
+    margin-top: var(--space-10);
+  }
+
+  .search :global(.search-kind h2) {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin: 0;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--ink);
+  }
+
+  .search :global(.search-count) {
+    font-family: var(--font-sans);
+    font-size: var(--text-ui);
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+
+  .search :global(.search-list) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .search :global(.search-entry) {
+    padding: var(--space-3) 0;
+  }
+
+  .search :global(.search-entry + .search-entry) {
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .search :global(.search-title) {
+    font-family: var(--font-reading);
+    font-size: var(--text-lead);
+    font-weight: 500;
+    line-height: var(--leading-heading);
+  }
+
+  .search :global(.search-title .icon) {
+    margin-inline-start: var(--space-1);
+    vertical-align: -0.1em;
+  }
+
+  .search :global(.search-context) {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .search :global(.search-lead) {
+    color: var(--ink);
+  }
+
+  /* The matched text: heavier ink on a faint wash, never the route magenta. */
+  .search :global(.search-hit) {
+    background: var(--wash);
+    color: inherit;
+    font-weight: 650;
+  }
+
+  .search :global(.search-browse) {
+    margin-top: var(--space-10);
+    padding-top: var(--space-2);
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .search :global(.search-browse-head) {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-small);
+    font-weight: 600;
+  }
+
+  .search :global(.search-browse ul) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .search :global(.search-browse a) {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-min);
+  }
+</style>

@@ -7,11 +7,13 @@ import {
   type Details,
   detailsOf,
   fieldChips,
+  groupOf,
   groupsOf,
   hasPage,
   itemsOf,
   itemUrl,
   type Localized,
+  pagedItems,
   relations,
   relationsTo,
   resolveRef,
@@ -20,11 +22,14 @@ import {
   targetOf,
   text,
   trackedItems,
+  trackedItemsFrom,
+  trackedItemsPointingAt,
   vocabularyLabel,
   vocabularyValues,
 } from "./atlas";
 import { type GraphItem, graphOf } from "./recommend";
 import { refOf, refPrefix } from "./refs";
+import type { SearchEntry, SearchIndex } from "./search";
 
 export interface TileData {
   ref: string;
@@ -336,4 +341,95 @@ function libraryEntries(lang: Lang): LibraryEntry[] {
       .join(" ")
       .toLowerCase(),
   }));
+}
+
+// ---------------------------------------------------------------------------------------------
+// Search (DESIGN.md → Information architecture): every item with a page, one kind per collection,
+// then every source the Library lists. Emitted per language as a static JSON asset
+// (src/pages/[lang]/search/index.json.ts) that the Search island fetches, same origin.
+
+/** Related titles shown in a result's context line before "and N more". */
+const CONTEXT_SHOWN = 3;
+
+const contextOf = (lead: string, parts: Localized[]): SearchEntry["context"] =>
+  parts.length === 0
+    ? undefined
+    : {
+        lead,
+        parts: parts.slice(0, CONTEXT_SHOWN),
+        more: parts.length > CONTEXT_SHOWN ? parts.length - CONTEXT_SHOWN : undefined,
+      };
+
+/** The UI strings the index carries, in the page language. */
+export interface SearchLabels {
+  /** Heading for the tracked collection's items with a page. */
+  routes: string;
+  /** Context leads: a lab's routes, a project's routes, a source's citing pages. */
+  practisesFor: string;
+  covers: string;
+  citedBy: string;
+  /** Heading for the sources. */
+  library: string;
+}
+
+export function searchIndex(lang: Lang, labels: SearchLabels): SearchIndex {
+  const kinds: SearchIndex["kinds"] = collections
+    .filter((collection) => pagedItems(collection).length > 0)
+    .map((collection) => {
+      const paged = pagedItems(collection);
+      const tracked = collection === c;
+      // As the catalogue does: a lab is practice for the routes pointing at it; a project covers
+      // the routes it points at.
+      const inward = paged.some((item) => trackedItemsPointingAt(refOf(collection, item)).length > 0);
+      return {
+        id: collection.id,
+        // The tracked collection's items with a page are its routes (their pages live under /routes/).
+        label: tracked ? { value: labels.routes, lang } : text(collection.label, lang),
+        entries: paged.map((item): SearchEntry => {
+          const ref = refOf(collection, item);
+          const title = text(item.title, lang);
+          // A translated title still finds its item by the English one.
+          const english = title.lang === "en" ? "" : item.title.en;
+          const href = itemUrl(lang, ref) ?? "";
+          if (tracked) {
+            const group = groupOf(c, item, lang);
+            return {
+              title,
+              href,
+              context: group ? { parts: [group.label] } : undefined,
+              terms: [group?.label.value, english].filter(Boolean).join(" "),
+            };
+          }
+          const related = (inward ? trackedItemsPointingAt(ref) : trackedItemsFrom(ref)).map((r) =>
+            text(r.title, lang),
+          );
+          return {
+            title,
+            href,
+            context: contextOf(inward ? labels.practisesFor : labels.covers, related),
+            terms: english,
+          };
+        }),
+      };
+    });
+
+  // Sources, the load-bearing ones (cited by the most pages) first, as in the Library.
+  const sources = library(lang)
+    .flatMap((section) => section.entries)
+    .sort((a, b) => b.citations.length - a.citations.length);
+  kinds.push({
+    id: "sources",
+    label: { value: labels.library, lang },
+    entries: sources.map((entry) => ({
+      title: { value: entry.title, lang: "en" },
+      href: entry.url,
+      external: true,
+      context: contextOf(
+        labels.citedBy,
+        entry.citations.map((citation) => citation.title),
+      ),
+      terms: [entry.author, entry.host].filter(Boolean).join(" "),
+    })),
+  });
+  return { kinds };
 }
