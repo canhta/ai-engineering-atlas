@@ -1,11 +1,12 @@
 ---
 // Item sheet (DESIGN.md → Route sheet), rendered generically from an item's blocks, set like a
 // book chapter: section label, title, details line, lead, prerequisite line, then contents rail |
-// reading column | margin column with the field log. Items of collections that do not track
+// reading column | margin column with the region locator and the field log. Items of collections that do not track
 // progress get the same sheet without the margin column; a runner or form makes it a workbench.
 import Base from "../../layouts/Base.astro";
 import Icon from "../Icon.astro";
 import Block from "../blocks/Block.astro";
+import RegionLocator from "../plate/RegionLocator.astro";
 import DetailsLine from "../react/DetailsLine";
 import FieldLog from "../react/FieldLog";
 import PrereqLine, { type PrereqEntry } from "../react/PrereqLine";
@@ -225,7 +226,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
         </div>
         {target && (
           <div class="sheet-margin">
-            {/* Room at the top of the margin column for the region locator plate (DESIGN.md → Route sheet). */}
+            <RegionLocator lang={lang} collection={c} item={item} itemRef={ref} />
             <FieldLog
               client:load
               lang={lang}

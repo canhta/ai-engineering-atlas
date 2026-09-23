@@ -1246,6 +1246,148 @@
   }
 }
 
+/* Region locator (DESIGN.md → Route sheet): the plate cropped to one region in the route's margin
+   column. Routes shrink to small rectangles and mapped items keep their circle; this route is
+   filled magenta, its prerequisites ringed. Desktop only: below 1024 the prerequisite line in the
+   header carries the same links. */
+.locator {
+  margin-bottom: var(--space-6);
+}
+
+.locator-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.plate-locator .plate-core {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.plate-locator .plate-region {
+  grid-row: auto;
+  grid-column: auto;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+}
+
+.plate-locator .plate-region.has-routes .plate-region-name {
+  font-size: 1.125rem;
+}
+
+.plate-locator .plate-routes {
+  gap: 0;
+  margin-bottom: var(--space-1);
+}
+
+.plate-locator .tile-route {
+  display: grid;
+  place-items: center;
+  width: var(--target-min);
+  min-height: 0;
+  height: var(--target-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.tile-box {
+  width: 0.875rem;
+  height: 0.625rem;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-mark);
+  background: var(--sheet);
+}
+
+.plate-locator .tile-route:hover .tile-box,
+.plate-locator .tile-route.is-active .tile-box,
+.plate-locator .tile-route.is-needed .tile-box {
+  border-color: var(--route);
+}
+
+.plate-locator .tile.is-needed:not(.is-selected) {
+  outline: none;
+}
+
+/* This route: filled. Its prerequisites: ringed. Shape tells them apart; the key names them. */
+.plate-locator .is-here .tile-box,
+.locator-glyph.is-here {
+  border-color: var(--route);
+  background: var(--route);
+}
+
+.plate-locator .is-prereq .tile-box,
+.plate-locator .is-prereq .tile-dot,
+.locator-glyph.is-prereq {
+  border-color: var(--ink);
+  outline: 1.5px solid var(--route);
+  outline-offset: 2px;
+}
+
+.plate-locator .plate-tip {
+  width: max-content;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.locator-key {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.locator-key li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.locator-glyph {
+  flex: none;
+  width: 0.875rem;
+  height: 0.625rem;
+  margin-left: 3px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-mark);
+}
+
+.locator-glyph.is-mapped {
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-inline: 5px 2px;
+  border-color: var(--line-strong);
+  border-radius: 50%;
+}
+
+.locator-key .locator-legend {
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  color: var(--ink-muted);
+}
+
+.locator-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.locator-elsewhere {
+  margin: var(--space-3) 0 0;
+  color: var(--ink-muted);
+}
+
+.locator-elsewhere a {
+  color: var(--ink);
+}
+
+@media (width < 1024px) {
+  .locator {
+    display: none;
+  }
+}
+
 .legend {
   display: flex;
   flex-wrap: wrap;

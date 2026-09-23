@@ -1,0 +1,112 @@
+---
+// Region locator (DESIGN.md → Route sheet): at the top of a route's margin column, a crop of the
+// plate showing the route's own region. Drawn from the content model for any tracked item: its
+// group is the region, `relations` give its prerequisites. The plate marks every competency in
+// the region (this route filled, its in-region prerequisites ringed), a key names both, and one
+// line links the prerequisites that sit in other regions. Server-rendered; the island only adds
+// tooltips, hover lines, and arrow keys; below 1024 the locator is hidden (DESIGN.md).
+import Plate from "./Plate";
+import { type Lang, useTranslations } from "../../i18n";
+import { groupOf, itemUrl, langAttr, resolveRef, stateLabels, text, type Collection, type Item } from "../../lib/atlas";
+import { plateRegions } from "../../lib/summaries";
+import { mapUrl } from "../../lib/urls";
+
+interface Props {
+  lang: Lang;
+  collection: Collection;
+  item: Item;
+  itemRef: string;
+}
+
+const { lang, collection, item, itemRef } = Astro.props;
+const t = useTranslations(lang);
+const group = groupOf(collection, item, lang);
+const region = group ? plateRegions(lang).find((r) => r.value === group.value) : undefined;
+const here = region?.tiles.find((tile) => tile.ref === itemRef);
+const inRegion = new Set(region?.tiles.map((tile) => tile.ref));
+const needs = here?.needs ?? [];
+const needed = region?.tiles.filter((tile) => needs.includes(tile.ref)) ?? [];
+const elsewhere = needs
+  .filter((ref) => !inRegion.has(ref))
+  .map((ref) => {
+    const found = resolveRef(ref);
+    return {
+      ref,
+      title: found ? text(found.item.title, lang) : { value: ref, lang: "en" as const },
+      href: itemUrl(lang, ref) ?? `${mapUrl(lang)}?item=${encodeURIComponent(ref)}`,
+      region: found ? groupOf(found.collection, found.item, lang)?.label : undefined,
+    };
+  });
+---
+
+{region && here && (
+  <section class="locator" aria-labelledby="locator-title" aria-describedby="locator-description">
+    <h2 id="locator-title" class="locator-title">
+      {t("locator.title")}
+    </h2>
+    <p id="locator-description" class="visually-hidden">
+      {t("locator.description", { region: region.label.value })}
+    </p>
+    <Plate
+      client:idle
+      lang={lang}
+      mode="locator"
+      regions={[region]}
+      stateLabels={stateLabels(lang)}
+      atlasUrl={mapUrl(lang)}
+      regionHeading="h3"
+      current={itemRef}
+    />
+    <ul class="locator-key small">
+      <li>
+        <span class="locator-glyph is-here" aria-hidden="true" />
+        <span>
+          {t("locator.here")}: <span lang={langAttr(here.title, lang)}>{here.title.value}</span>
+        </span>
+      </li>
+      {needed.length > 0 && (
+        <li>
+          <span class="locator-glyph is-prereq" aria-hidden="true" />
+          <span>
+            {t("locator.needs")}:{" "}
+            {needed.map((tile, i) => (
+              <>
+                {i > 0 && ", "}
+                <span lang={langAttr(tile.title, lang)}>{tile.title.value}</span>
+              </>
+            ))}
+          </span>
+        </li>
+      )}
+      <li class="locator-legend">
+        <span>
+          <span class="locator-glyph" aria-hidden="true" />
+          {t("legend.ready")}
+        </span>
+        <span>
+          <span class="locator-glyph is-mapped" aria-hidden="true" />
+          {t("legend.mapped")}
+        </span>
+      </li>
+    </ul>
+    {elsewhere.length > 0 && (
+      <p class="locator-elsewhere small">
+        {t("locator.elsewhere")}{" "}
+        {elsewhere.map((e, i) => (
+          <>
+            {i > 0 && ", "}
+            <a href={e.href} lang={langAttr(e.title, lang)}>
+              {e.title.value}
+            </a>
+            {e.region && (
+              <span class="muted" lang={langAttr(e.region, lang)}>
+                {" "}
+                ({e.region.value})
+              </span>
+            )}
+          </>
+        ))}
+      </p>
+    )}
+  </section>
+)}

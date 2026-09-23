@@ -35,6 +35,7 @@ type Model = {
       };
     }[]
   >;
+  relations: { type: string; from: string; to: string }[];
 };
 const model: Model = JSON.parse(readFileSync(new URL("../src/data/atlas.json", import.meta.url), "utf8"));
 const tracked = model.collections.find((c) => c.progress?.tracks)!;
@@ -391,6 +392,54 @@ test("the field log stays in the margin column beside the reading column while s
   expect(log!.x).toBeGreaterThanOrEqual(reading!.x + reading!.width);
 });
 
+test("the margin's locator plate names the route and its prerequisites, in its region and beyond", async ({ page }) => {
+  // The first ready route whose declared prerequisites sit both in its own region and in others.
+  const regionOf = (id: string) => trackedItems.find((i) => i.id === id)?.fields[groupField];
+  const needsOf = (id: string) =>
+    model.relations.filter((r) => r.type === "prerequisite" && r.to === id).map((r) => r.from);
+  const route = trackedItems.find(
+    (i) =>
+      i.page &&
+      needsOf(i.id).some((n) => regionOf(n) === i.fields[groupField]) &&
+      needsOf(i.id).some((n) => regionOf(n) !== i.fields[groupField]),
+  )!;
+  const inside = needsOf(route.id).filter((n) => regionOf(n) === route.fields[groupField]);
+  const outside = needsOf(route.id).filter((n) => regionOf(n) !== route.fields[groupField]);
+  const inRegion = trackedItems.filter((i) => i.fields[groupField] === route.fields[groupField]);
+  const titleOf = (id: string) => trackedItems.find((i) => i.id === id)!.title.en;
+  const named = (title: string, end: string) =>
+    new RegExp(`^${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}, .*${end}$`);
+
+  await open(page, `/en/routes/${route.id}/`);
+  const locator = page.getByRole("region", { name: "Where this route sits" });
+  await expect(locator).toBeVisible();
+  // Every competency of the region is a mark named by its title; the route is marked as this page.
+  const marks = locator.getByRole("listitem").getByRole("link");
+  const names = await marks.evaluateAll((els) => els.map((el) => el.getAttribute("aria-label")));
+  expect(names).toHaveLength(inRegion.length);
+  for (const item of inRegion) expect(names.some((n) => n?.startsWith(`${item.title.en}, `))).toBe(true);
+  await expect(locator.getByRole("link", { name: named(route.title.en, "this route") })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  for (const ref of inside) {
+    await expect(locator.getByRole("link", { name: named(titleOf(ref), "needed first") })).toBeVisible();
+    await expect(locator.getByRole("listitem").filter({ hasText: "Needed first:" })).toContainText(titleOf(ref));
+  }
+  for (const ref of outside) {
+    const item = trackedItems.find((i) => i.id === ref)!;
+    await expect(locator.getByRole("link", { name: item.title.en, exact: true })).toHaveAttribute(
+      "href",
+      item.page ? `/en/routes/${ref}/` : `/en/map/?item=${encodeURIComponent(ref)}`,
+    );
+  }
+});
+
+test("@mobile the locator plate gives way below 1024 so the route starts at once", async ({ page }) => {
+  await open(page, ROUTE);
+  await expect(page.getByRole("region", { name: "Where this route sits" })).toBeHidden();
+});
+
 test("an item of another collection shares the sheet: section label, contents rail, no field log", async ({ page }) => {
   // A page without a runner or form block (those are workbenches, covered in labs.spec.ts).
   const reading = (i: Model["items"][string][number]) =>
@@ -405,6 +454,7 @@ test("an item of another collection shares the sheet: section label, contents ra
   );
   await expect(rail(page)).toBeVisible();
   await expect(fieldLog(page)).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Where this route sits" })).toHaveCount(0);
 });
 
 test("diagnostic: one task per card, then the pass condition, record a gap", async ({ page }) => {

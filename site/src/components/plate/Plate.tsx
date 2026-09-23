@@ -4,7 +4,9 @@
 // marks after them. Region placement comes from src/lib/plate-layout.ts. Hovering or focusing a
 // tile on desktop draws its declared prerequisite lines from `relations`; at rest none are drawn.
 // Modes: overview (Home: tiles link to the Atlas drawer), explore (Atlas: filters dim, select
-// opens the drawer). This folder is the only place allowed to emit SVG, and only from data.
+// opens the drawer), locator (a route page's margin: one region as compact marks, the current
+// route filled, its prerequisites ringed, every mark named by a tooltip). This folder is the only
+// place allowed to emit SVG, and only from data.
 import {
   type CSSProperties,
   type KeyboardEvent,
@@ -23,7 +25,7 @@ import type { RegionData, TileData } from "../../lib/summaries";
 import { Icon } from "../react/Icon";
 import { TileGlyph, tileFill } from "./TileGlyph";
 
-export type PlateMode = "overview" | "explore";
+export type PlateMode = "overview" | "explore" | "locator";
 
 interface Props {
   lang: Lang;
@@ -40,6 +42,8 @@ interface Props {
   focusGroup?: string | null;
   /** Heading level of region labels under the page outline. */
   regionHeading?: "h2" | "h3";
+  /** Locator mode: the route whose page this is; its prerequisites are ringed. */
+  current?: string;
 }
 
 const BEYOND: readonly State[] = ["transferred", "retained", "applied"];
@@ -87,6 +91,7 @@ export default function Plate({
   onSelect,
   focusGroup,
   regionHeading = "h2",
+  current,
 }: Props) {
   const t = useTranslations(lang);
   const [progress] = useProgress();
@@ -96,12 +101,16 @@ export default function Plate({
   const [active, setActive] = useState<string | null>(null);
   const [lines, setLines] = useState<Line[]>([]);
   const [tip, setTip] = useState<{ x: number; y: number; text: string; lang?: string } | null>(null);
+  const tipRef = useRef<HTMLSpanElement>(null);
+  const locator = mode === "locator";
   const [tabStop, setTabStop] = useState<Record<string, string>>({});
   const byRef = useMemo(
     () => new Map(regions.flatMap((r) => r.tiles.map((tile) => [tile.ref, tile] as const))),
     [regions],
   );
   const ordered = useMemo(() => regions.map(orderOf), [regions]);
+  /** Locator mode: what the current route needs, ringed at rest (hover lines come on top). */
+  const prereqs = useMemo(() => new Set(current ? (byRef.get(current)?.needs ?? []) : []), [byRef, current]);
 
   // Region placement at each width with a grid; below 768 regions stack (CSS).
   const placement = useMemo(() => {
@@ -144,7 +153,7 @@ export default function Plate({
       }),
     );
     setTip(
-      tile.href
+      tile.href && !locator
         ? null
         : {
             x: to.left - box.left + to.width / 2,
@@ -153,7 +162,16 @@ export default function Plate({
             lang: langOf(tile.title, lang),
           },
     );
-  }, [active, byRef, lang]);
+  }, [active, byRef, lang, locator]);
+
+  // Keep the tooltip inside the plate: a narrow plate (locator) would clip a centred tip.
+  useLayoutEffect(() => {
+    const el = tipRef.current;
+    const width = core.current?.clientWidth;
+    if (!tip || !el || !width) return;
+    const half = el.offsetWidth / 2;
+    el.style.left = `${Math.min(Math.max(tip.x, half), Math.max(half, width - half))}px`;
+  }, [tip]);
 
   // `?group=`: bring the region into view once.
   useEffect(() => {
@@ -203,10 +221,14 @@ export default function Plate({
     tiles.current.get(ref)?.focus();
   };
 
-  const nameOf = (tile: TileData, state: State | null) =>
-    tile.href && state
-      ? t("plate.tileName", { title: tile.title.value, maturity: tile.maturity, state: stateLabels[state] })
-      : t("plate.tileNameMapped", { title: tile.title.value, maturity: tile.maturity });
+  const nameOf = (tile: TileData, state: State | null) => {
+    const name =
+      tile.href && state
+        ? t("plate.tileName", { title: tile.title.value, maturity: tile.maturity, state: stateLabels[state] })
+        : t("plate.tileNameMapped", { title: tile.title.value, maturity: tile.maturity });
+    if (tile.ref === current) return t("plate.tileHere", { name });
+    return prereqs.has(tile.ref) ? t("plate.tilePrereq", { name }) : name;
+  };
 
   const RegionHeading = regionHeading;
   const needed = new Set(active ? (byRef.get(active)?.needs ?? []) : []);
@@ -222,6 +244,8 @@ export default function Plate({
       selected === tile.ref ? "is-selected" : "",
       needed.has(tile.ref) ? "is-needed" : "",
       active === tile.ref ? "is-active" : "",
+      tile.ref === current ? "is-here" : "",
+      prereqs.has(tile.ref) ? "is-prereq" : "",
     ]
       .filter(Boolean)
       .join(" ");
@@ -231,7 +255,8 @@ export default function Plate({
       tabIndex: tile.ref === stop ? 0 : -1,
       "aria-label": nameOf(tile, state),
       "data-ref": tile.ref,
-      "data-state": state && state !== "unassessed" ? state : undefined,
+      "data-state": state && state !== "unassessed" && !locator ? state : undefined,
+      "aria-current": tile.ref === current ? ("page" as const) : undefined,
       onKeyDown: onKey(region, list, i),
       onFocus: () => {
         setActive(tile.ref);
@@ -241,7 +266,10 @@ export default function Plate({
       onMouseEnter: () => setActive(tile.ref),
       onMouseLeave: () => setActive((a) => (a === tile.ref ? null : a)),
     };
-    const body = route ? (
+    // Locator marks are compact: a small rectangle for a route, the circle for a mapped item.
+    const body = locator ? (
+      <span className={route ? "tile-box" : "tile-dot"} aria-hidden="true" />
+    ) : route ? (
       <>
         {/* Unassessed: the ink rectangle alone (an empty square inside would read as a checkbox). */}
         {state && state !== "unassessed" && <TileGlyph fill={tileFill(true, state)} state={state} />}
@@ -260,7 +288,7 @@ export default function Plate({
             {body}
           </button>
         ) : (
-          <a href={`${atlasUrl}?item=${encodeURIComponent(tile.ref)}`} {...props}>
+          <a href={(locator && tile.href) || `${atlasUrl}?item=${encodeURIComponent(tile.ref)}`} {...props}>
             {body}
           </a>
         )}
@@ -274,14 +302,14 @@ export default function Plate({
         {regions.map((region, r) => {
           const list = ordered[r];
           const ready = list.filter((tile) => tile.href).length;
-          const stop = tabStop[region.value] ?? list[0]?.ref;
+          const stop = tabStop[region.value] ?? (list.some((tile) => tile.ref === current) ? current : list[0]?.ref);
           const indexes = list.map((_, i) => i);
           return (
             <section
               key={region.value}
               id={`region-${region.value}`}
               className={`plate-region${ready ? " has-routes" : ""}${focusGroup === region.value ? " is-focus" : ""}`}
-              style={placement(region.value)}
+              style={locator ? undefined : placement(region.value)}
               aria-labelledby={`region-${region.value}-label`}
             >
               <RegionHeading className="plate-region-label" id={`region-${region.value}-label`}>
@@ -313,7 +341,13 @@ export default function Plate({
           </svg>
         )}
         {tip && (
-          <span className="plate-tip" aria-hidden="true" lang={tip.lang} style={{ left: tip.x, top: tip.y }}>
+          <span
+            ref={tipRef}
+            className="plate-tip"
+            aria-hidden="true"
+            lang={tip.lang}
+            style={{ left: tip.x, top: tip.y }}
+          >
             {tip.text}
           </span>
         )}

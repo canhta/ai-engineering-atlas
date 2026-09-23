@@ -102,7 +102,7 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
 
 - Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`. At text size (`TileGlyph`) the mapped glyph is a circle too.
 - Prerequisite lines: none at rest. Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) in `route`, edge to edge, and marks the prerequisite tiles; a mark also shows its title as a tooltip (hidden from assistive tech; the name carries it). Below 1024 there are no lines.
-- Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. Progress summarises by region bars and has no plate.
+- Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. `locator`: one region in a route's margin column (see Route sheet). Progress summarises by region bars and has no plate.
 - Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); routes and marks are lists; arrow keys move within a region (routes, then marks), Home and End jump, Tab moves between regions (one tab stop each); the list view is the full equivalent.
 
 ### Atlas
@@ -144,8 +144,8 @@ The route page reads like a book chapter. Route, project, and lab pages share it
                       Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
                       View contract ↗   Copy link
 ┌ rail 176 ──────────┬ reading column ≤ 736 ─────────────────────────┬ margin 288, sticky ─┐
-│ On this page       │ blocks in content order, hairlines between   │ │ (region locator    │
-│ ━━━━━━━━━━━━━━━━━━ │                                              │ │  plate, later)     │
+│ On this page       │ blocks in content order, hairlines between   │ │ Where it sits      │
+│ ━━━━━━━━━━━━━━━━━━ │                                              │ │ ▭▭▭■▭◘▭▭ ○○○○○○○   │
 │   Prerequisites    │ 1 Diagnostic: one task at a time, "Task 2 of │ │ ━━ ink rule ━━━━━━ │
 │ 1 Diagnostic       │   4", answer, Next; then the pass condition, │ │ Field log          │
 │ 2 Learning route   │   self-assess, Record result                 │ │ Your state  ◧ gap  │
@@ -162,8 +162,8 @@ The route page reads like a book chapter. Route, project, and lab pages share it
 - Details line: the header fields (vocabulary fields other than the grouping, the page condition, and the progress target, which show elsewhere) with a short code before its label ("L3 deep engineering competence"), then the number of sources (rows across the item's sources blocks) and diagnostic tasks, from `detailsOf()` in `atlas.ts`. Items are separated by thin `line-strong` rules on wide screens (a wrapped row never starts with one) and read as a comma list on a phone; never middle dots or tags. The Atlas drawer uses the same component.
 - Contents rail: "On this page" over an ink rule, then every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded). A scrollspy marks the current section: its numeral turns magenta and its title gets a magenta underline. Anchors point at the sections on this page.
 - Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state. Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
-- Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. The field log starts with an ink rule; the region locator plate goes above it. Collections that do not track progress have no margin column.
-- Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content and the field log sits at the top of the content.
+- Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. Collections that do not track progress have no margin column. The field log starts with an ink rule; above it, the region locator (`RegionLocator.astro`, the plate in `locator` mode, server-rendered): every competency of the item's `group_by` region as compact marks (routes small rectangles, mapped circles), this route filled magenta with `aria-current`, its prerequisites from `relations` ringed; each mark named ("…, this route", "…, needed first") with the plate's tooltip; a key naming both, and one line linking prerequisites in other regions. Items without a region show none.
+- Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content and the field log sits at the top of the content. Below 1024 the locator is omitted: the prerequisite line already links the same routes, and a map before the diagnostic would push the route down.
 - Mobile: section label, title, details line as a comma list, lead; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet.
 
 ### Progress

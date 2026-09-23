@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md). Primary source: variant B's locator plate on `pr
 
 **Blocked by:** 02 (The plate carries names), 04 (The route page reads like a chapter).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The locator plate is drawn from the content model's region and relations for any route, not configured per route
-- [ ] The current route and its in-region prerequisites are distinguishable by shape and label, not colour alone; out-of-region prerequisites are named links
-- [ ] Each mark is reachable and named; the plate has a short accessible description
-- [ ] Browser test: on a route with prerequisites, the locator plate names the route and links its out-of-region prerequisites; DESIGN.md's route sheet section describes it
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed
+- [x] The locator plate is drawn from the content model's region and relations for any route, not configured per route
+- [x] The current route and its in-region prerequisites are distinguishable by shape and label, not colour alone; out-of-region prerequisites are named links
+- [x] Each mark is reachable and named; the plate has a short accessible description
+- [x] Browser test: on a route with prerequisites, the locator plate names the route and links its out-of-region prerequisites; DESIGN.md's route sheet section describes it
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed

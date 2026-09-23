@@ -66,7 +66,7 @@ Last updated: 2026-09-23
 - [x] 02 The plate carries names: ready routes as named tiles, mapped competencies as circle marks, italic region labels with "N ready of M"; region placement from the pure, tested `src/lib/plate-layout.ts` (rows fill, no stretched last row); prerequisite lines on hover and focus only; the unused progress mode removed
 - [x] 03 Home shows the method: title, promise, start action, the plate, then a server-rendered specimen of the route `site.specimen` names (first diagnostic task, first source with its exact locator and why, exit evidence, margin notes); next steps lead once there is evidence; the four-step row and ready-routes list removed. New vi strings await owner review
 - [x] 04 Route page as a chapter: section label, details line (`detailsOf()` in `atlas.ts`, also in the Atlas drawer) instead of chips, numbered contents rail, sources as a bibliography with the locator first, field log in a sticky ruled margin column; project pages share it, lab workbenches unchanged
-- [ ] 05 Region locator plate at the top of the route's margin column
+- [x] 05 Region locator plate at the top of the route's margin column: the plate in `locator` mode (`RegionLocator.astro`, server-rendered), this route filled, in-region prerequisites ringed, every mark named with a tooltip, a key, and a line linking prerequisites in other regions; omitted below 1024
 - [x] After 03: `chips` and `sources` dropped from `ItemDetail`, and the `drawer.sources` strings with them
 - [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
 
