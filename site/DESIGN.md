@@ -121,7 +121,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with
  │                                            │ │ Needs  ■ AI evaluation               │
  │                                            │ │        ⬚ API design (bridge inside)  │
  │                                            │ │ Lab: evaluation harness              │
- │                                            │ │ ( Open route (↗) )  Start diagnostic │
+ │                                            │ │ [ Open route ]  Start diagnostic     │
  ╰────────────────────────────────────────────╯ ╰──────────────────────────────────────╯
 ```
 
@@ -130,8 +130,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
 - Filters: the collection's facets, except the page condition field, which is the "Ready routes only" toggle (`?ready=1`); your state; one facet per related collection (projects).
 - URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
-- Mobile: filters behind "Filters (n)" opening a sheet; the drawer is a full-screen sheet; the URL keeps `?item=`.
-- Empty filter result: "No competency matches these filters." and Clear filters.
+- Mobile: filters behind "Filters (n)" opening a sheet; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
 
 ### Route sheet
 
@@ -162,9 +161,8 @@ The route page reads like a book chapter. Route, project, and lab pages share it
 - Header: section label (the `group_by` value's label, or the collection's label linking to its index), title, details line, lead, the untranslated marker when it applies, the prerequisite line, then View contract and Copy link as quiet actions. On desktop the header lines up with the reading column.
 - Details line: the header fields (vocabulary fields other than the grouping, the page condition, and the progress target, which show elsewhere) with a short code before its label ("L3 deep engineering competence"), then the number of sources (rows across the item's sources blocks) and diagnostic tasks, from `detailsOf()` in `atlas.ts`. Items are separated by thin `line-strong` rules on wide screens (a wrapped row never starts with one) and read as a comma list on a phone; never middle dots or tags. The Atlas drawer uses the same component.
 - Contents rail: "On this page" over an ink rule, then every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded). A scrollspy marks the current section: its numeral turns magenta and its title gets a magenta underline. Anchors point at the sections on this page.
-- Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state.
+- Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state. Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
 - Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. The field log starts with an ink rule; the region locator plate goes above it. Collections that do not track progress have no margin column.
-- Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
 - Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content and the field log sits at the top of the content.
 - Mobile: section label, title, details line as a comma list, lead; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet.
 
