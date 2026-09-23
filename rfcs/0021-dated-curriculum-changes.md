@@ -3,7 +3,7 @@
 - Status: Draft
 - Author: Canh Ta
 - Created: 2026-09-24
-- Numbering: 0020 was the next free curriculum number when drafted. Two other RFCs (structured paths, project milestones) were being drafted at the same time and may need the same number; renumber on merge if so.
+- Numbering: renumbered from 0020 on merge; 0020 is structured learning paths.
 
 ## Problem
 
