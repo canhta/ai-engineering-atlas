@@ -126,12 +126,6 @@
   white-space: nowrap;
 }
 
-.chip-kind {
-  min-height: 1.375rem;
-  padding: 0 var(--space-2);
-  color: var(--ink-muted);
-}
-
 /* Tile glyph: the plate encoding at text size (DESIGN.md → The plate) */
 .tile-glyph {
   position: relative;
@@ -143,6 +137,13 @@
   border-radius: var(--radius-mark);
   overflow: hidden;
   vertical-align: -0.05em;
+}
+
+/* Ready, unassessed: a small landscape rectangle, the named tile's shape (a square would read as a checkbox). */
+.tile-ready {
+  width: 1.125rem;
+  height: 0.625rem;
+  vertical-align: 0.05em;
 }
 
 /* Mapped: a small circle, as on the plate. */
@@ -668,7 +669,8 @@
   display: none;
 }
 
-@media (width < 768px) {
+/* Below 1024 the field log leaves the column for a bottom bar opening a sheet (DESIGN.md → Route sheet). */
+@media (width < 1024px) {
   .field-log {
     display: none;
   }
@@ -783,7 +785,13 @@
   margin: 0;
   padding-top: var(--space-5);
   border-top: var(--border-width) solid var(--line);
-  line-height: 2;
+  line-height: 1.75;
+}
+
+/* A lab without a lead: the practice line follows the title directly, without a rule of its own. */
+.page-title + astro-island > .prereq-line {
+  padding-top: var(--space-2);
+  border-top: 0;
 }
 
 .prereq-lead {
@@ -794,20 +802,27 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin: 0 var(--space-1);
+  margin-left: var(--space-1);
   font-weight: 550;
 }
 
 .prereq-note {
-  margin-right: var(--space-1);
   font-size: var(--text-small);
   color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+/* On wider screens a prerequisite and its bridge note wrap as one. */
+@media (width >= 768px) {
+  .prereq-entry {
+    white-space: nowrap;
+  }
 }
 
 /* ---------------------------------------------------------------- Diagnostic */
 
 .diag {
-  max-width: var(--measure);
+  max-width: var(--reading-width);
 }
 
 .diag-card {
@@ -1427,6 +1442,9 @@
 
 .view-toggle {
   display: inline-flex;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
   border: var(--border-width) solid var(--ink);
   border-radius: var(--radius-control);
   overflow: hidden;

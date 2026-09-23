@@ -140,6 +140,9 @@ test("a tile opens the drawer; Esc closes it and returns focus to the tile", asy
   await tile(page, "ai.tool-calling").focus();
   await page.keyboard.press("Enter");
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
+  // Focus is inside the drawer as soon as it shows (DESIGN.md → Accessibility baseline), not after the
+  // plate's transitions settle.
+  expect(await page.evaluate(() => Boolean(document.activeElement?.closest("[role=dialog]")))).toBe(true);
   await expect(page).toHaveURL(/item=ai\.tool-calling/);
   await expect(drawer(page).getByRole("link", { name: "Open route" })).toHaveAttribute("href", ROUTE);
   // The details line replaces tags: counts from the model, never joined by middle dots.
@@ -151,8 +154,6 @@ test("a tile opens the drawer; Esc closes it and returns focus to the tile", asy
     "href",
     `${ROUTE}#${routeBlocks.find((b) => b.type === "diagnostic")!.id}`,
   );
-  // Focus moves into the drawer (DESIGN.md → Accessibility baseline) before Esc can close it.
-  await expect.poll(() => page.evaluate(() => Boolean(document.activeElement?.closest("[role=dialog]")))).toBe(true);
   await page.keyboard.press("Escape");
   await expect(drawer(page)).toBeHidden();
   await expect(tile(page, "ai.tool-calling")).toBeFocused();
@@ -424,8 +425,8 @@ test("the margin's locator plate names the route and its prerequisites, in its r
   );
   for (const ref of inside) {
     await expect(locator.getByRole("link", { name: named(titleOf(ref), "needed first") })).toBeVisible();
-    await expect(locator.getByRole("listitem").filter({ hasText: "Needed first:" })).toContainText(titleOf(ref));
   }
+  await expectNeededKey(page, inside.map(titleOf));
   for (const ref of outside) {
     const item = trackedItems.find((i) => i.id === ref)!;
     await expect(locator.getByRole("link", { name: item.title.en, exact: true })).toHaveAttribute(
@@ -433,6 +434,34 @@ test("the margin's locator plate names the route and its prerequisites, in its r
       item.page ? `/en/routes/${ref}/` : `/en/map/?item=${encodeURIComponent(ref)}`,
     );
   }
+});
+
+/** The locator key names up to three in-region prerequisites and counts beyond that (each mark keeps its name). */
+async function expectNeededKey(page: Page, titles: string[]) {
+  const key = page
+    .getByRole("region", { name: "Where this route sits" })
+    .getByRole("listitem")
+    .filter({ hasText: "Needed first:" });
+  if (titles.length > 3) {
+    await expect(key).toContainText(`${titles.length} routes, ringed`);
+    for (const title of titles) await expect(key).not.toContainText(title);
+  } else {
+    for (const title of titles) await expect(key).toContainText(title);
+  }
+}
+
+test("the locator key stays one short line on the route with the most in-region prerequisites", async ({ page }) => {
+  const needsInRegion = (i: (typeof trackedItems)[number]) =>
+    model.relations
+      .filter((r) => r.type === "prerequisite" && r.to === i.id)
+      .map((r) => trackedItems.find((t) => t.id === r.from))
+      .filter((t) => t && t.fields[groupField] === i.fields[groupField])
+      .map((t) => t!.title.en);
+  const route = trackedItems
+    .filter((i) => i.page)
+    .reduce((a, b) => (needsInRegion(b).length > needsInRegion(a).length ? b : a));
+  await open(page, `/en/routes/${route.id}/`);
+  await expectNeededKey(page, needsInRegion(route));
 });
 
 test("@mobile the locator plate gives way below 1024 so the route starts at once", async ({ page }) => {
@@ -741,6 +770,19 @@ test("@mobile the field log opens as a sheet from the bottom bar", async ({ page
   await expect(sheet).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(sheet).toBeHidden();
+});
+
+test("on a tablet the route leads with its content; the field log is the bottom bar", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 900 });
+  await open(page, ROUTE);
+  await expect(fieldLog(page)).toBeHidden();
+  const bar = page.locator(".log-bar");
+  await expect(bar.getByRole("button", { name: "Record evidence" })).toBeVisible();
+  // Nothing of the field log sits between the header and the first section.
+  const first = page.locator(".sheet-content > section").first();
+  const head = await page.locator(".sheet-head").boundingBox();
+  const top = await first.boundingBox();
+  expect(top!.y - (head!.y + head!.height)).toBeLessThan(160);
 });
 
 test("@mobile the drawer is a full-screen sheet", async ({ page }) => {

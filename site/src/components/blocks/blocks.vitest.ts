@@ -149,6 +149,8 @@ describe("block renderer", () => {
     expect(html).toContain("Bridge question");
     expect(html).toContain("Bridge locator");
     expect(html).toContain('id="bridge-systems.api-service-design"');
+    // Set like a bibliography entry: the exact locator before the source it points into.
+    expect(html.indexOf("Bridge locator")).toBeLessThan(html.indexOf("aws.amazon.com"));
   });
 
   test("diagnostic renders the first task card as an island", async () => {
@@ -177,6 +179,7 @@ describe("block renderer", () => {
     const html = await render("practice");
     expect(html).toContain("/tree/main/labs/self-attention");
     expect(html).toContain("Chapter 3");
+    expect(html.indexOf("Chapter 3")).toBeLessThan(html.indexOf("aws.amazon.com"));
   });
 
   test("markdown text shifts headings, resolves relative links, and escapes raw HTML", async () => {

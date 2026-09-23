@@ -1,7 +1,6 @@
 ---
 // Practice groups; each item links to its referenced item page, its repository path, or its
-// resource with the exact locator.
-import Icon from "../Icon.astro";
+// resource, the exact locator first as in the bibliography.
 import ResourceLink from "./ResourceLink.astro";
 import { useTranslations, type Lang } from "../../i18n";
 import { itemUrl, langAttr, repoUrl, resolveRef, resolveResource, text, type PracticeBlock } from "../../lib/atlas";
@@ -43,13 +42,14 @@ const groups = block.groups.map((g) => ({
             {(i.refTitle || i.path || i.resource) && (
               <div class="practice-links">
                 {i.refTitle && i.page && (
-                  <a class="button" href={i.page}>
-                    <span lang={langAttr(i.refCollection!, lang)}>{i.refCollection!.value}</span>
-                    <span class="button-strong" lang={langAttr(i.refTitle, lang)}>
+                  <p class="practice-item">
+                    <span class="muted" lang={langAttr(i.refCollection!, lang)}>
+                      {i.refCollection!.value}
+                    </span>{" "}
+                    <a href={i.page} lang={langAttr(i.refTitle, lang)}>
                       {i.refTitle.value}
-                    </span>
-                    <Icon name="forward" />
-                  </a>
+                    </a>
+                  </p>
                 )}
                 {i.path && (
                   <a class="practice-path" href={repoUrl(i.path)}>
@@ -64,12 +64,12 @@ const groups = block.groups.map((g) => ({
                 )}
                 {i.resource && (
                   <div class="practice-resource">
-                    <ResourceLink resource={i.resource} lang={lang} />
                     {i.locator && (
-                      <p class="small" lang={langAttr(i.locator, lang)}>
+                      <p class="bib-locator" lang={langAttr(i.locator, lang)}>
                         {i.locator.value}
                       </p>
                     )}
+                    <ResourceLink resource={i.resource} lang={lang} />
                   </div>
                 )}
               </div>
@@ -131,12 +131,16 @@ const groups = block.groups.map((g) => ({
     font-weight: 550;
   }
 
-  .practice-resource p {
-    margin: var(--space-1) 0 0;
-    max-width: var(--measure);
+  .practice-item {
+    margin: 0;
   }
 
-  .button-strong {
-    font-weight: 600;
+  .practice-item a {
+    font-weight: 550;
+  }
+
+  .practice-resource p {
+    margin: 0 0 var(--space-1);
+    max-width: var(--measure);
   }
 </style>

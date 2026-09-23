@@ -398,11 +398,16 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     display: none;
   }
 
+  /* Below 1024 the field log leaves the column for the bottom bar (FieldLog); the margin column stays empty. */
   @media (width < 1024px) {
+    .sheet.tracked {
+      padding-bottom: var(--space-16);
+    }
+
     .sheet-grid,
     .sheet:not(.tracked) .sheet-grid {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "rail" "margin" "content";
+      grid-template-areas: "rail" "content" "margin";
       row-gap: var(--space-6);
     }
 
@@ -441,15 +446,6 @@ const railEntries: RailEntry[] = blocks.map((b) => {
   }
 
   @media (width < 768px) {
-    /* The field log leaves the column for the bottom bar (FieldLog); the margin column stays empty. */
-    .sheet-grid {
-      grid-template-areas: "rail" "content" "margin";
-    }
-
-    .sheet.tracked {
-      padding-bottom: var(--space-16);
-    }
-
     .sheet-head {
       margin-bottom: var(--space-8);
     }

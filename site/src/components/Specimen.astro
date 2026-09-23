@@ -167,6 +167,11 @@ const t = useTranslations(lang);
     line-height: var(--leading-title);
   }
 
+  /* At title size the link underline takes the hairline, not the meaningful stroke. */
+  .specimen-title a:not(:hover) {
+    text-decoration-color: var(--line);
+  }
+
   .specimen-untranslated {
     display: inline-block;
     margin: var(--space-3) 0 0;

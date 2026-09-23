@@ -90,7 +90,7 @@ export default function LibraryList({ lang, entries, kindLabels }: Props) {
                 </a>
                 {entry.kind && <span className="chip">{kindLabels[entry.kind] ?? entry.kind}</span>}
               </div>
-              <p className="muted small">{[entry.author, entry.host].filter(Boolean).join(" · ")}</p>
+              <p className="muted small">{[entry.author, entry.host].filter(Boolean).join(", ")}</p>
               <ul className="library-citations">
                 {entry.citations.map((citation) => (
                   <li key={`${citation.ref}-${citation.locator?.value ?? ""}`}>

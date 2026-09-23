@@ -189,6 +189,13 @@ export default function Plate({
 
   // Arrow keys move within a region (Tab moves between regions: one tab stop each).
   const onKey = (region: string, list: TileData[], index: number) => (event: KeyboardEvent<HTMLElement>) => {
+    // Explore tiles open the drawer from the key itself: a key-made click reads to React Aria as a
+    // screen-reader (virtual) click, and it then holds focus back until the tile transitions end.
+    if (mode === "explore" && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      onSelect?.(list[index].ref);
+      return;
+    }
     let next: number;
     if (event.key === "ArrowRight") next = Math.min(index + 1, list.length - 1);
     else if (event.key === "ArrowLeft") next = Math.max(index - 1, 0);

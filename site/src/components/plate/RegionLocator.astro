@@ -18,6 +18,9 @@ interface Props {
   itemRef: string;
 }
 
+/** Beyond this many in-region prerequisites the key counts them; each mark still carries its name. */
+const NAMED_MAX = 3;
+
 const { lang, collection, item, itemRef } = Astro.props;
 const t = useTranslations(lang);
 const group = groupOf(collection, item, lang);
@@ -69,12 +72,14 @@ const elsewhere = needs
           <span class="locator-glyph is-prereq" aria-hidden="true" />
           <span>
             {t("locator.needs")}:{" "}
-            {needed.map((tile, i) => (
-              <>
-                {i > 0 && ", "}
-                <span lang={langAttr(tile.title, lang)}>{tile.title.value}</span>
-              </>
-            ))}
+            {needed.length > NAMED_MAX
+              ? t("locator.needsMany", { count: needed.length })
+              : needed.map((tile, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    <span lang={langAttr(tile.title, lang)}>{tile.title.value}</span>
+                  </>
+                ))}
           </span>
         </li>
       )}

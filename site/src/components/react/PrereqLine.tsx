@@ -1,6 +1,6 @@
 // "Not feeling ready? Needs …" (DESIGN.md → Route sheet): each prerequisite with its tile glyph
 // (mapped, ready, or filled by the learner's state after hydration) and a link to its page or
-// to the bridge on this page.
+// to the bridge further down this page.
 import { Fragment } from "react";
 import { type Lang, useTranslations } from "../../i18n";
 import type { Localized } from "../../lib/atlas";
@@ -40,7 +40,7 @@ export default function PrereqLine({ lang, entries, lead }: { lang: Lang; entrie
           </>
         );
         return (
-          <Fragment key={i}>
+          <span key={i} className="prereq-entry">
             {href ? (
               <a className="prereq-item" href={href}>
                 {label}
@@ -48,8 +48,13 @@ export default function PrereqLine({ lang, entries, lead }: { lang: Lang; entrie
             ) : (
               <span className="prereq-item">{label}</span>
             )}
-            {e.bridgeAnchor && <span className="prereq-note">{t("prereq.bridge")}</span>}
-          </Fragment>
+            {e.bridgeAnchor && (
+              <>
+                {" "}
+                <span className="prereq-note">{t("prereq.bridgeHere")}</span>
+              </>
+            )}
+          </span>
         );
       })}
     </p>
