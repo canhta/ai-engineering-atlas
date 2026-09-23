@@ -1,0 +1,342 @@
+---
+// The Home specimen (DESIGN.md → Home): one ready route set like an atlas inset, built from its own
+// blocks by src/lib/specimen.ts. Server-rendered, no island: it reads and links without JavaScript.
+import Icon from "./Icon.astro";
+import { useTranslations, type Lang } from "../i18n";
+import { langAttr } from "../lib/atlas";
+import type { Specimen } from "../lib/specimen";
+
+interface Props {
+  lang: Lang;
+  specimen: Specimen;
+}
+
+const { lang, specimen: s } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="specimen" class="specimen" aria-labelledby="specimen-title">
+  <div class="specimen-frame">
+    <header class="specimen-head">
+      <div>
+        <p class="specimen-label">
+          {t("home.specimen.label")}
+          {s.group && (
+            <span class="specimen-group" lang={langAttr(s.group, lang)}>
+              {s.group.value}
+            </span>
+          )}
+        </p>
+        <h2 id="specimen-title" class="specimen-title">
+          <a href={s.href} lang={langAttr(s.title, lang)}>
+            {s.title.value}
+          </a>
+        </h2>
+        {s.untranslated && (
+          <p class="specimen-untranslated small" role="note">
+            {t("translation.missing")}
+          </p>
+        )}
+      </div>
+      <a class="button" href={s.href}>
+        {t("home.specimen.open")}
+      </a>
+    </header>
+
+    <div class="specimen-entries">
+      <div class="specimen-cell">
+        <section class="specimen-entry" aria-labelledby="specimen-diagnose">
+          <div class="specimen-note">
+            <h3 id="specimen-diagnose">{t("home.note.diagnose.title")}</h3>
+            <p>{t("home.note.diagnose.body")}</p>
+          </div>
+          <div class="specimen-body">
+            <p class="specimen-meta">
+              <span lang={langAttr(s.diagnostic.title, lang)}>{s.diagnostic.title.value}</span>
+              <span class="tabular">{t("diag.taskOf", { n: 1, total: s.diagnostic.count })}</span>
+            </p>
+            <p class="specimen-prompt" lang={langAttr(s.diagnostic.prompt, lang)}>
+              {s.diagnostic.prompt.value}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div class="specimen-cell">
+        <section class="specimen-entry" aria-labelledby="specimen-read">
+          <div class="specimen-note">
+            <h3 id="specimen-read">{t("home.note.read.title")}</h3>
+            <p>{t("home.note.read.body")}</p>
+          </div>
+          <div class="specimen-body">
+            <p class="specimen-meta">
+              <span lang={langAttr(s.reading.title, lang)}>{s.reading.title.value}</span>
+              <span class="tabular">{t("home.specimen.reading", { total: s.reading.count })}</span>
+            </p>
+            <p class="specimen-locator" lang={langAttr(s.reading.locator, lang)}>
+              {s.reading.locator.value}
+            </p>
+            <p class="specimen-cite">
+              {s.reading.resource.url ? (
+                <a href={s.reading.resource.url} rel="noopener noreferrer" lang="en">
+                  {s.reading.resource.title}
+                  <span class="visually-hidden">({t("link.external")})</span>
+                </a>
+              ) : (
+                <span lang="en">{s.reading.resource.title}</span>
+              )}
+              <span class="specimen-details">
+                {s.reading.kind && <span lang={langAttr(s.reading.kind, lang)}>{s.reading.kind.value}</span>}
+                {s.reading.resource.host && (
+                  <span>
+                    {s.reading.resource.host}
+                    <Icon name="external" />
+                  </span>
+                )}
+              </span>
+            </p>
+            <p class="specimen-purpose">
+              <span class="specimen-purpose-label">{t("home.specimen.purpose")}</span>{" "}
+              <span lang={langAttr(s.reading.purpose, lang)}>{s.reading.purpose.value}</span>
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div class="specimen-cell specimen-cell-wide">
+        <section class="specimen-entry" aria-labelledby="specimen-record">
+          <div class="specimen-note">
+            <h3 id="specimen-record">{t("home.note.record.title")}</h3>
+            <p>{t("home.note.record.body")}</p>
+          </div>
+          <div class="specimen-body">
+            <p class="specimen-meta" lang={langAttr(s.evidence.title, lang)}>
+              {s.evidence.title.value}
+            </p>
+            <ol class="specimen-criteria">
+              {s.evidence.items.map((item) => (
+                <li lang={langAttr(item, lang)}>{item.value}</li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* An atlas inset: the plate's printed frame (outer ink rule, sheet, inner hairline). */
+  .specimen {
+    padding: 3px;
+    border: 1.5px solid var(--ink);
+    background: var(--sheet);
+  }
+
+  .specimen-frame {
+    border: var(--border-width) solid var(--ink);
+  }
+
+  .specimen-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-8);
+    padding: var(--space-5) var(--space-6) var(--space-6);
+    border-bottom: var(--border-width) solid var(--ink);
+  }
+
+  .specimen-label {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-small);
+    font-weight: 600;
+  }
+
+  .specimen-group {
+    margin-left: var(--space-3);
+    padding-left: var(--space-3);
+    border-left: var(--border-width) solid var(--line-strong);
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+
+  .specimen-title {
+    margin: 0;
+    font-size: var(--text-title);
+    line-height: var(--leading-title);
+  }
+
+  .specimen-untranslated {
+    display: inline-block;
+    margin: var(--space-3) 0 0;
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-width) dashed var(--line-strong);
+    border-radius: var(--radius-mark);
+    color: var(--ink-muted);
+  }
+
+  /* Entries on a hairline ground, as the plate's regions: the diagnostic and the source side by
+     side from 1024, the evidence across the full width under them. */
+  .specimen-entries {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--border-width);
+    background: var(--line);
+  }
+
+  @media (width >= 1024px) {
+    .specimen-entries {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .specimen-cell-wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Each cell is a container: a wide entry sets its note in a margin column beside the body,
+     a narrow one puts the note on top. */
+  .specimen-cell {
+    container-type: inline-size;
+    background: var(--sheet);
+  }
+
+  .specimen-entry {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6) var(--space-6);
+  }
+
+  @container (width >= 36rem) {
+    .specimen-entry {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: var(--space-6);
+    }
+  }
+
+  @container (width >= 60rem) {
+    .specimen-criteria {
+      columns: 2;
+      column-gap: var(--space-10);
+    }
+  }
+
+  .specimen-note {
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .specimen-note h3 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-ui);
+    color: var(--ink);
+  }
+
+  .specimen-note p {
+    max-width: 34ch;
+    margin: 0;
+  }
+
+  .specimen-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  /* Details separated by thin vertical rules, never middle dots (DESIGN.md → Review tells). */
+  .specimen-meta span + span,
+  .specimen-details span + span {
+    padding-left: var(--space-3);
+    border-left: var(--border-width) solid var(--line-strong);
+  }
+
+  .specimen-prompt,
+  .specimen-locator {
+    max-width: 46ch;
+    margin: 0;
+    font-family: var(--font-reading);
+    font-size: var(--text-lead);
+    font-optical-sizing: auto;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .specimen-locator {
+    margin-bottom: var(--space-4);
+  }
+
+  .specimen-cite {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+    margin: 0 0 var(--space-3);
+  }
+
+  .specimen-cite a {
+    font-weight: 550;
+  }
+
+  .specimen-details {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .specimen-details span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .specimen-purpose {
+    max-width: 60ch;
+    margin: 0;
+    font-family: var(--font-reading);
+    font-size: var(--text-reading);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+
+  .specimen-purpose-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    font-style: normal;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .specimen-criteria {
+    margin: 0;
+    padding-left: var(--space-5);
+    font-family: var(--font-reading);
+    font-size: var(--text-reading);
+    line-height: 1.5;
+  }
+
+  .specimen-criteria li {
+    margin-bottom: var(--space-3);
+    break-inside: avoid;
+  }
+
+  .specimen-criteria li::marker {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  @media (width < 768px) {
+    .specimen-head,
+    .specimen-entry {
+      padding: var(--space-4);
+    }
+  }
+</style>

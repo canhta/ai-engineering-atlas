@@ -171,6 +171,8 @@ interface Model {
     title: L10n;
     tagline: L10n;
     repository: string;
+    /** Ref of the route Home shows as a specimen (DESIGN.md → Home). */
+    specimen?: string;
     links?: { kind: "github" | "email" | "whatsapp" | "zalo" | "x" | "linkedin"; url: string }[];
   };
   locales: string[];

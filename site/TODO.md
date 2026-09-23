@@ -64,7 +64,7 @@ Last updated: 2026-09-23
 
 - [x] 01 Print system everywhere: paper/ink/magenta tokens in light and night-chart dark, Newsreader + IBM Plex Sans (Hubot Sans removed), plain top bar and footer, no glass, bezels, trays, pill buttons, or plate settle-in; stylelint rejects undefined tokens and blur; DESIGN.md visual system and review tells rewritten
 - [x] 02 The plate carries names: ready routes as named tiles, mapped competencies as circle marks, italic region labels with "N ready of M"; region placement from the pure, tested `src/lib/plate-layout.ts` (rows fill, no stretched last row); prerequisite lines on hover and focus only; the unused progress mode removed
-- [ ] 03 Home with the specimen
+- [x] 03 Home shows the method: title, promise, start action, the plate, then a server-rendered specimen of the route `site.specimen` names (first diagnostic task, first source with its exact locator and why, exit evidence, margin notes); next steps lead once there is evidence; the four-step row and ready-routes list removed. New vi strings await owner review
 - [x] 04 Route page as a chapter: section label, details line (`detailsOf()` in `atlas.ts`, also in the Atlas drawer) instead of chips, numbered contents rail, sources as a bibliography with the locator first, field log in a sticky ruled margin column; project pages share it, lab workbenches unchanged
 - [ ] 05 Region locator plate at the top of the route's margin column
 - [ ] After 03: drop `chips` and `sources` from `ItemDetail` and the `drawer.sources` strings once Home's ready rows are gone (they are their only users)
@@ -115,7 +115,7 @@ roadmap.sh gives every collection an index, a maintenance signal, and a shareabl
 - [ ] Path as a screen: an ordered sequence of routes with the learner's state against each, the way a role roadmap reads. `paths/applied-ai-engineer.md` is prose today, so this is a curriculum change first (structured path list) and needs an RFC
 - [x] Library `/{lang}/sources/`: every source we route through, searchable and filterable by type, each row linking to the public resource and to the routes that cite it with their locators
 - [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
-- [ ] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back). Home carries four steps; the model deserves a page
+- [ ] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back). Home shows one route as a specimen; the model deserves a page
 - [ ] Public profile `/{lang}/u/<handle>/`: opt-in, shareable, the prerequisite for any ranking. Needs Phase 2 accounts
 - [ ] Search across everything (routes, labs, projects, sources), not just the Atlas list
 

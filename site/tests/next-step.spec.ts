@@ -60,6 +60,10 @@ test("an imported progress.yaml: Home leads with the due check, Progress leaves 
   await expect(home.first().getByRole("link")).toHaveAttribute("href", "/en/routes/ai.evaluation/#diagnostic");
   await expect(home.nth(1).getByRole("link")).toHaveAttribute("href", "/en/routes/ai.product-framing/");
   await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
+  // The next steps lead: they end above the plate.
+  const nextBox = (await nextList(page).boundingBox())!;
+  const plateBox = (await page.locator(".plate").boundingBox())!;
+  expect(nextBox.y + nextBox.height).toBeLessThan(plateBox.y);
 
   await open(page, "/en/routes/ai.model-selection/");
   await expect(page.locator("aside.field-log .log-advice")).toHaveText(
@@ -81,4 +85,8 @@ test("@mobile the next list reads as a single column on Home and Progress", asyn
   await expect(first).toContainText("Đến hạn ôn ngày 01/01/2026");
   const box = await first.boundingBox();
   expect(box && box.x + box.width).toBeLessThanOrEqual(390);
+  // On a phone too, the next steps come before the plate, and the start action stays.
+  const plateBox = (await page.locator(".plate").boundingBox())!;
+  expect(box!.y).toBeLessThan(plateBox.y);
+  await expect(page.getByRole("link", { name: "Tìm điểm bắt đầu" })).toBeVisible();
 });

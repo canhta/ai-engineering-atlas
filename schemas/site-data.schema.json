@@ -25,6 +25,11 @@
           "format": "uri",
           "minLength": 1
         },
+        "specimen": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Ref of the tracked item with a page that Home shows as a specimen: its first diagnostic task, first source, and last step list."
+        },
         "links": {
           "type": "array",
           "description": "Owner contact and profile links, rendered as icons in the frame.",

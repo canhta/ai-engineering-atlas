@@ -194,6 +194,73 @@ test("home tiles lead to the atlas drawer", async ({ page }) => {
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
 });
 
+// ---------------------------------------------------------------- Home specimen
+
+// The route the content model names as the specimen, and the passages it must show, read from its blocks.
+type SpecimenBlock = {
+  type: string;
+  step?: boolean;
+  tasks?: { en: string }[];
+  rows?: { locator: { en: string } }[];
+  items?: { en: string }[];
+};
+const specimenModel = model as unknown as {
+  site: { specimen: string };
+  items: Record<string, { id: string; title: { en: string }; page?: { blocks: SpecimenBlock[] } }[]>;
+};
+const specimenItem = specimenModel.items[tracked.id].find((i) => i.id === specimenModel.site.specimen)!;
+const specimenBlocks = specimenItem.page!.blocks;
+const SPECIMEN = {
+  href: `/en/routes/${specimenItem.id}/`,
+  title: specimenItem.title.en,
+  task: specimenBlocks.find((b) => b.type === "diagnostic")!.tasks![0].en,
+  locator: specimenBlocks.find((b) => b.type === "sources")!.rows![0].locator.en,
+  criteria: specimenBlocks
+    .filter((b) => b.type === "list" && b.step)
+    .at(-1)!
+    .items!.map((i) => i.en),
+};
+const specimen = (page: Page) => page.getByRole("region", { name: SPECIMEN.title });
+
+test("Home without progress: title, start action, plate, then the specimen of a real route", async ({ page }) => {
+  await open(page, "/en/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Find your starting point" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Next for you" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "How the atlas works" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Ready routes by domain" })).toHaveCount(0);
+
+  const inset = specimen(page);
+  await expect(inset.getByText(SPECIMEN.task, { exact: true })).toBeVisible();
+  await expect(inset.getByText(SPECIMEN.locator, { exact: true })).toBeVisible();
+  await expect(inset.getByRole("listitem")).toHaveText(SPECIMEN.criteria);
+  await expect(inset.getByRole("link", { name: SPECIMEN.title })).toHaveAttribute("href", SPECIMEN.href);
+
+  // The plate comes first, the specimen fills the page width under it (no empty right third).
+  const plateBox = (await plate(page).boundingBox())!;
+  const insetBox = (await inset.boundingBox())!;
+  expect(insetBox.y).toBeGreaterThan(plateBox.y + plateBox.height);
+  expect(Math.abs(insetBox.width - plateBox.width)).toBeLessThanOrEqual(1);
+  const source = (await inset.getByText(SPECIMEN.locator, { exact: true }).boundingBox())!;
+  expect(source.x).toBeGreaterThan(insetBox.x + insetBox.width / 3);
+
+  // The route page shows the same locator in its sources block, and the specimen leads there.
+  await page.getByRole("link", { name: "See a route up close" }).click();
+  await expect(page).toHaveURL(/#specimen$/);
+  await inset.getByRole("link", { name: "Open the full route" }).click();
+  await expect(page).toHaveURL(SPECIMEN.href);
+  await expect(page.getByRole("heading", { level: 1, name: SPECIMEN.title })).toBeVisible();
+  await expect(page.getByText(SPECIMEN.locator, { exact: true }).first()).toBeAttached();
+});
+
+test("@mobile the specimen reads in one column without horizontal scroll", async ({ page }) => {
+  await open(page, "/en/");
+  await expect(specimen(page).getByText(SPECIMEN.locator, { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  const task = (await specimen(page).getByText(SPECIMEN.task, { exact: true }).boundingBox())!;
+  expect(task.x + task.width).toBeLessThanOrEqual(390);
+});
+
 // ---------------------------------------------------------------- The plate carries names
 
 const plate = (page: Page) => page.locator(".plate");
@@ -572,6 +639,13 @@ test("without JavaScript the plate tiles are links into the atlas", async ({ bro
   await expect(page.locator('.tile[data-ref="ai.tool-calling"]')).toHaveAttribute(
     "href",
     "/en/map/?item=ai.tool-calling",
+  );
+  // The specimen is server-rendered: its passages read and its links work before any script runs.
+  await expect(specimen(page).getByText(SPECIMEN.task, { exact: true })).toBeVisible();
+  await expect(specimen(page).getByText(SPECIMEN.locator, { exact: true })).toBeVisible();
+  await expect(specimen(page).getByRole("link", { name: "Open the full route" })).toHaveAttribute(
+    "href",
+    SPECIMEN.href,
   );
   // Progress has no tiles; its domain bars are links into the Atlas and work without JavaScript.
   await page.goto("/en/progress/");

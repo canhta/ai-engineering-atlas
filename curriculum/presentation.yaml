@@ -11,6 +11,8 @@ site:
     en: A gap-driven roadmap for software engineers learning modern AI engineering.
     vi: Lộ trình AI engineering cho kỹ sư phần mềm, học đúng phần mình còn thiếu.
   repository: https://github.com/canhta/ai-engineering-atlas
+  # The ready route Home shows as a specimen (its first diagnostic task, first source, exit evidence).
+  specimen: ai.tool-calling
   links:
     - { kind: github, url: "https://github.com/canhta" }
     - { kind: email, url: "mailto:hello@canhta.com" }

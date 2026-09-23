@@ -6,13 +6,13 @@ Spec: [../spec.md](../spec.md). Primary source: variants B (plate) and C (specim
 
 **Blocked by:** 01 (The whole site in the print system). Run after 02 to avoid conflicting edits to Home; it does not depend on 02's behaviour.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The specimen route is chosen from the content model (a ready route with a diagnostic and sources), never typed copy; its locator matches the route page's source block
-- [ ] Home without progress: title, promise, start action, plate, specimen; no four-step row, no ready-routes list
-- [ ] Home with seeded evidence: the next-step list and due reviews lead; the start action remains
-- [ ] With JavaScript off, the specimen and plate links read and work
-- [ ] No empty right third beside the specimen at 1440; readable at 390 with no horizontal scroll
-- [ ] New UI strings exist in en and vi (Vietnamese per VIETNAMESE_STYLE.md, flagged for owner review); `check:i18n` passes
-- [ ] Browser tests cover both Home states with values read from the model; DESIGN.md's Home section is rewritten in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed
+- [x] The specimen route is chosen from the content model (a ready route with a diagnostic and sources), never typed copy; its locator matches the route page's source block
+- [x] Home without progress: title, promise, start action, plate, specimen; no four-step row, no ready-routes list
+- [x] Home with seeded evidence: the next-step list and due reviews lead; the start action remains
+- [x] With JavaScript off, the specimen and plate links read and work
+- [x] No empty right third beside the specimen at 1440; readable at 390 with no horizontal scroll
+- [x] New UI strings exist in en and vi (Vietnamese per VIETNAMESE_STYLE.md, flagged for owner review); `check:i18n` passes
+- [x] Browser tests cover both Home states with values read from the model; DESIGN.md's Home section is rewritten in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed

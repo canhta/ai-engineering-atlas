@@ -581,6 +581,27 @@ def check_config(presentation: dict, vocabularies: dict):
                 )
 
 
+def check_specimen(site: dict, collections: dict, items: dict) -> None:
+    """`site.specimen` names the tracked item Home shows as a specimen (site/DESIGN.md → Home)."""
+    ref = site.get("specimen")
+    if ref is None:
+        return
+    tracked = next((name for name, config in collections.items() if (config.get("progress") or {}).get("tracks")), None)
+    item = next((item for item in items.get(tracked, []) if item["id"] == ref), None)
+    if item is None or "page" not in item:
+        errors.append(f"presentation: site.specimen '{ref}' is not a tracked item with a page")
+        return
+    blocks = item["page"]["blocks"]
+    needs = {
+        "a diagnostic with a task": any(b["type"] == "diagnostic" and b["tasks"] for b in blocks),
+        "a source": any(b["type"] == "sources" and b["rows"] for b in blocks),
+        "a step list": any(b["type"] == "list" and b.get("step") and b["items"] for b in blocks),
+    }
+    for need, met in needs.items():
+        if not met:
+            errors.append(f"presentation: site.specimen '{ref}' has no {need}")
+
+
 def collection_model(name: str, config: dict) -> dict:
     model = {"id": name, "label": config["label"]}
     if config.get("ref_prefix"):
@@ -685,6 +706,7 @@ def build():
             items[name].append(item)
         if not config.get("items_from", "").count("#"):
             items[name].sort(key=lambda item: item["id"])
+    check_specimen(presentation["site"], collections, items)
 
     return {
         "version": MODEL_VERSION,

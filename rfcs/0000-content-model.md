@@ -35,7 +35,7 @@ curriculum/*.yaml         scripts/build_site_data.py              schemas/site-d
 
 ```yaml
 version: 2
-site:        { title: L10n, tagline: L10n, repository: url, links?: [{kind, url}] }   # kind: github|email|whatsapp|zalo|x|linkedin
+site:        { title: L10n, tagline: L10n, repository: url, specimen?: ref, links?: [{kind, url}] }   # kind: github|email|whatsapp|zalo|x|linkedin; specimen: the route Home previews
 locales:     [en, vi]
 vocabularies:                   # every enumerated value the UI labels
   <name>:
@@ -99,7 +99,7 @@ A lab's `browser:` contract carries one runtime: `pyodide` (a `runner` block) or
 
 ```yaml
 version: 1
-site: { title: L10n, tagline: L10n, repository: url, links: [{kind, url}] }
+site: { title: L10n, tagline: L10n, repository: url, specimen: ref, links: [{kind, url}] }
 locales: [en, vi]
 vocabularies:
   domain: { from: "curriculum/manifest.yaml#domains", key: id, label: title }   # list: key and label fields

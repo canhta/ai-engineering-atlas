@@ -10,6 +10,7 @@
       "vi": "Lộ trình AI engineering cho kỹ sư phần mềm, học đúng phần mình còn thiếu."
     },
     "repository": "https://github.com/canhta/ai-engineering-atlas",
+    "specimen": "ai.tool-calling",
     "links": [
       {
         "kind": "github",

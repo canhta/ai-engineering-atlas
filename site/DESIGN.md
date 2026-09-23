@@ -65,24 +65,24 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
  AI Engineering Atlas                                      Newsreader, 44–76px (the one large title)
  A gap-driven roadmap for software engineers               standfirst, Newsreader, 20–24px
  learning modern AI engineering.
- Diagnose first, read the exact source, prove it with evidence.        one muted line
- [ Find your starting point ]    How the atlas works                   primary button → /map/?ready=1
- legend   ○ mapped   ▭ ready   ◧ gap   ◧ learning   ■ demonstrated or beyond
-╔═════════════════════════════════════ plate ══════════════════════════════════════╗
-║ Software eng. 0 of 8 │ Systems 0 of 9 │ Data eng. │ ML found. │ Deep learning      ║
-║ ○○○○○○○○             │ ○○○○○○○○○      │ ○○○○○○    │ ○○○○○○○○○ │ ○○○○○              ║
-║ LLM found. 1 of 11   │ AI engineering  12 ready of 26                             ║
-║ [Self-Attention]     │ [AI Product and Problem Framing] [Model Selection] […]     ║
-║ ○○○○○○○○○○           │ ○○○○○○○○○○○○○○                                             ║
-║ Agents  9 ready of 9                 │ Production AI  11 ready of 11              ║
-║ [Agent State] [Agent Memory] […]     │ [AI Caching] [Streaming] […]               ║
+ Diagnose first, read the exact source, prove it with evidence.        one muted line; with evidence the
+ [ Find your starting point ]   See a route up close                   next steps (up to 3) stand beside it
+ 41 ready routes and 74 mapped competencies                    legend
+╔═ plate (overview): regions, named ready tiles, mapped marks ═════════════════════╗
 ╚══════════════════════════════════════════════════════════════════════════════════╝
- How the atlas works    1 Diagnose   2 Read the exact source   3 Practice   4 Record evidence
- (a real sequence, so numbered; one sentence each)
- Ready routes by domain: compact rows (title, level, number of sources, your state)
+╔═ specimen: an atlas inset in the plate's frame, full width ══════════════════════╗
+║ From a ready route │ AI Engineering                                               ║
+║ Tool Calling                                              [ Open the full route ] ║
+║ Diagnose first  │ Diagnostic │ Task 1 of 4 ║ Read the exact  │ Learning route │ 1 of 5║
+║ margin note     │ the first task, serif    ║ source, note    │ locator, serif      ║
+║                 │                          ║                 │ Title  type │ host ↗ ║
+║                 │                          ║                 │ Why  italic purpose ║
+║ Record evidence │ Exit evidence: every criterion, numbered, two columns          ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with named tiles wrapping and marks in a row (no lines), then the steps as a vertical list.
+- Specimen: built by `src/lib/specimen.ts` from the route `site.specimen` names in the content model (else the first route whose page has a diagnostic task, a source, and a step list): the first task, the first source row, and the last step list, so it cannot drift from the route page. Server-rendered, no island. The margin note sits beside its entry when the entry is at least 36rem wide, above it otherwise; untranslated passages carry `lang="en"` and the marker.
+- Mobile: headline, subtitle, CTA, next steps if any, legend, the plate as stacked region blocks (named tiles wrapping, marks in a row, no lines), then the specimen in one column.
 
 ### The plate: one component, two modes
 
@@ -251,7 +251,7 @@ Every field is required. "Record evidence" appears once every field is non-empty
 
 ### States every surface handles
 
-Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home and Progress tiles, ready rows, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").
+Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home tiles and specimen, Progress bars, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").
 
 ## Visual system
 
