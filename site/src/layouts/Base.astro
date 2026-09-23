@@ -8,7 +8,7 @@ import Icon from "../components/Icon.astro";
 import DueCount from "../components/react/DueCount";
 import { languages, useTranslations, type Lang } from "../i18n";
 import { site, text } from "../lib/atlas";
-import { homeUrl, mapUrl, progressUrl, switchLang } from "../lib/urls";
+import { homeUrl, howUrl, mapUrl, progressUrl, switchLang } from "../lib/urls";
 
 interface Props {
   lang: Lang;
@@ -104,6 +104,7 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
         <p class="footer-brand">
           <strong>{siteTitle}</strong>
           <span>{t("footer.license")}</span>
+          <a href={howUrl(lang)}>{t("how.title")}</a>
           <a href={site.repository} rel="noopener">
             {t("footer.star")}
           </a>

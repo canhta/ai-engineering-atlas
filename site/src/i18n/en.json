@@ -281,5 +281,22 @@
   "library.contents": "Contents",
   "library.otherKind": "Other",
   "library.more": "and {n} more",
-  "library.noResults": "No source matches."
+  "library.noResults": "No source matches.",
+  "how.title": "How the atlas works",
+  "how.intro": "Progress here is what you have demonstrated. Each competency has a learner state, and only an evidence record you add changes it.",
+  "how.states.title": "Learner states",
+  "how.states.note": "Opening a source or reading a page leaves a state as it is. Not every competency has to reach {last}: each route's field log names its target.",
+  "how.evidence.title": "What counts as evidence",
+  "how.evidence.intro": "The evidence a route asks for depends on its capability type, which the line under the route's title names.",
+  "how.evidence.col": "Typical evidence",
+  "how.evidence.note": "Exit evidence shows a competency is {demonstrated}; {transferred}, {retained}, and {applied} each need evidence of their own.",
+  "how.steps.title": "A route's steps",
+  "how.steps.intro": "Every route sets its steps in this order and numbers them in its contents. The diagnostic comes first, so you read only what you are missing.",
+  "how.steps.some": "on some routes",
+  "how.steps.example": "Each linked step opens on {route}.",
+  "how.review.title": "Why reviews come back",
+  "how.review.delay": "You can demonstrate a competency today and fail to recall it a month later, so the atlas checks again after a delay.",
+  "how.review.when": "Reviews start once a competency is {demonstrated}. The gap before the next check grows after a successful check and shrinks after a missed one.",
+  "how.review.how": "A review is a task from the route's diagnostic, answered from memory before you reread anything. A check passed after the delay is the evidence for {retained}.",
+  "how.review.due": "Due reviews are listed on {progress}."
 }

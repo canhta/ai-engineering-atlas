@@ -1,0 +1,303 @@
+---
+// How it works (DESIGN.md → Information architecture, How it works): the learning model as a map's key. States, evidence per
+// capability type, and step titles come from the content model (src/lib/how.ts); the sentences
+// around them are UI strings drawn from docs/LEARNING_MODEL.md. Server-rendered, no island.
+import Base from "../../../layouts/Base.astro";
+import Icon from "../../../components/Icon.astro";
+import { TileGlyph, tileFill } from "../../../components/plate/TileGlyph";
+import { langPaths, useTranslations, type Lang } from "../../../i18n";
+import { langAttr, resolveRef, stateLabel, type Localized } from "../../../lib/atlas";
+import { evidenceKey, routeSteps, stateKey } from "../../../lib/how";
+import { STATES, type State } from "../../../lib/progress";
+import { specimen } from "../../../lib/specimen";
+import { progressUrl } from "../../../lib/urls";
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const sentence = (l: Localized) => ({ ...l, value: l.value.charAt(0).toLocaleUpperCase(l.lang) + l.value.slice(1) });
+const label = (s: State) => stateLabel(s, lang).value;
+
+const states = stateKey(lang);
+// States beyond demonstrated add their icon to the full glyph, as on the plate.
+const beyond = (s: string) => STATES.indexOf(s as State) > STATES.indexOf("demonstrated");
+const evidence = evidenceKey(lang);
+
+// The steps link to the Home specimen's sections, a real route, where it has them.
+const example = specimen(lang);
+const exampleSteps = new Set(
+  (example ? (resolveRef(example.ref)?.item.page?.blocks ?? []) : []).filter((b) => b.step).map((b) => b.id),
+);
+let number = 0;
+const steps = routeSteps(lang).map((step) => ({
+  ...step,
+  number: step.everywhere ? ++number : undefined,
+  href: example && exampleSteps.has(step.id) ? `${example.href}#${step.id}` : undefined,
+}));
+const [exampleBefore, exampleAfter] = t("how.steps.example").split("{route}");
+const [dueBefore, dueAfter] = t("how.review.due").split("{progress}");
+---
+
+<Base lang={lang} title={t("how.title")} description={t("how.intro")}>
+  <h1 class="page-title">{t("how.title")}</h1>
+  <p class="lead">{t("how.intro")}</p>
+
+  <div class="how">
+    <section class="how-section" aria-labelledby="how-states">
+      <h2 id="how-states">{t("how.states.title")}</h2>
+      <div class="how-body">
+        <dl class="how-key">
+          {states.map((s) => (
+            <div class="how-row">
+              <dt>
+                <TileGlyph fill={tileFill(true, s.value as State)} state={s.value as State} />
+                {beyond(s.value) && <Icon name={s.value as State} />}
+                <span lang={langAttr(s.label, lang)}>{sentence(s.label).value}</span>
+              </dt>
+              <dd lang={langAttr(s.meaning, lang)}>{s.meaning.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="how-note">{t("how.states.note", { last: states.at(-1)?.label.value ?? "" })}</p>
+      </div>
+    </section>
+
+    {evidence && (
+      <section class="how-section" aria-labelledby="how-evidence">
+        <h2 id="how-evidence">{t("how.evidence.title")}</h2>
+        <div class="how-body">
+          <p class="how-note how-intro">{t("how.evidence.intro")}</p>
+          <table class="how-table">
+            <thead>
+              <tr>
+                <th scope="col" lang={langAttr(evidence.label, lang)}>
+                  {evidence.label.value}
+                </th>
+                <th scope="col">{t("how.evidence.col")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {evidence.rows.map((row) => (
+                <tr>
+                  <th scope="row" lang={langAttr(row.label, lang)}>
+                    {sentence(row.label).value}
+                  </th>
+                  <td lang={langAttr(row.meaning, lang)}>{row.meaning.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="how-note">
+            {t("how.evidence.note", {
+              demonstrated: label("demonstrated"),
+              transferred: label("transferred"),
+              retained: label("retained"),
+              applied: label("applied"),
+            })}
+          </p>
+        </div>
+      </section>
+    )}
+
+    <section class="how-section" aria-labelledby="how-steps">
+      <h2 id="how-steps">{t("how.steps.title")}</h2>
+      <div class="how-body">
+        <p class="how-note how-intro">{t("how.steps.intro")}</p>
+        <ul class="how-contents">
+          {steps.map((step) => (
+            <li>
+              <span class="how-number tabular">{step.number}</span>
+              <span class="how-step">
+                {step.href ? (
+                  <a href={step.href} lang={langAttr(step.title, lang)}>
+                    {step.title.value}
+                  </a>
+                ) : (
+                  <span lang={langAttr(step.title, lang)}>{step.title.value}</span>
+                )}
+                {!step.everywhere && <span class="how-some">{t("how.steps.some")}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+        {example && (
+          <p class="how-note">
+            {exampleBefore}
+            <a href={example.href} lang={langAttr(example.title, lang)}>
+              {example.title.value}
+            </a>
+            {exampleAfter}
+          </p>
+        )}
+      </div>
+    </section>
+
+    <section class="how-section" aria-labelledby="how-review">
+      <h2 id="how-review">{t("how.review.title")}</h2>
+      <div class="how-body reading">
+        <p>{t("how.review.delay")}</p>
+        <p>{t("how.review.when", { demonstrated: label("demonstrated") })}</p>
+        <p>{t("how.review.how", { retained: label("retained") })}</p>
+        <p>
+          {dueBefore}
+          <a href={progressUrl(lang)}>{t("nav.progress")}</a>
+          {dueAfter}
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* A field guide's "how to use this book": the section head in the left column, the key beside it;
+     sections open on a hairline (DESIGN.md → Information architecture, How it works). */
+  .how {
+    margin-top: var(--space-10);
+  }
+
+  .how-section {
+    display: grid;
+    grid-template-columns: minmax(0, 16rem) minmax(0, 46rem);
+    gap: var(--space-3) var(--space-10);
+    padding: var(--space-8) 0 var(--space-10);
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .how-section h2 {
+    margin: 0;
+  }
+
+  @media (width < 1024px) {
+    .how-section {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .how-body > :first-child {
+    margin-top: 0;
+  }
+
+  .how-note {
+    max-width: var(--measure);
+    margin: var(--space-4) 0 0;
+    color: var(--ink-muted);
+  }
+
+  .how-intro {
+    margin: 0 0 var(--space-4);
+  }
+
+  /* The key: glyph and label, then the meaning in the reading face; hairlines between rows. */
+  .how-key {
+    margin: 0;
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .how-row {
+    display: grid;
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+    gap: var(--space-1) var(--space-6);
+    align-items: baseline;
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .how-row dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 600;
+  }
+
+  .how-row dd,
+  .how-table td {
+    margin: 0;
+    font-family: var(--font-reading);
+    font-size: var(--text-reading);
+    line-height: 1.45;
+  }
+
+  @media (width < 640px) {
+    .how-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Evidence by capability type: a ruled two-column table, an ink rule under the heads. */
+  .how-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .how-table thead th {
+    padding: 0 var(--space-6) var(--space-2) 0;
+    border-bottom: var(--border-width) solid var(--ink);
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-align: start;
+  }
+
+  .how-table tbody th,
+  .how-table td {
+    padding: var(--space-3) var(--space-6) var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
+    text-align: start;
+    vertical-align: baseline;
+  }
+
+  .how-table tbody th {
+    width: 12rem;
+    font-size: var(--text-ui);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  @media (width < 640px) {
+    .how-table tbody th {
+      width: auto;
+    }
+  }
+
+  /* The route's steps as a book's contents: the numeral in the margin, the title in the reading face. */
+  .how-contents {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .how-contents li {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: baseline;
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .how-number {
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+
+  .how-step {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    font-family: var(--font-reading);
+    font-size: var(--text-standfirst);
+    line-height: 1.3;
+  }
+
+  .how-some {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .how-body.reading p {
+    margin: 0 0 var(--space-4);
+  }
+</style>

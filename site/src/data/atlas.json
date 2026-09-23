@@ -188,12 +188,20 @@
           "en": "concept",
           "vi": "khái niệm"
         },
+        "description": {
+          "en": "Explain, distinguish, recall, calculate.",
+          "vi": "Giải thích, phân biệt, nhớ lại, tính toán."
+        },
         "order": 0
       },
       "mechanism": {
         "label": {
           "en": "mechanism",
           "vi": "cơ chế"
+        },
+        "description": {
+          "en": "Trace, visualize, implement, predict behavior.",
+          "vi": "Lần theo từng bước, minh họa, tự viết code, dự đoán hành vi."
         },
         "order": 1
       },
@@ -202,12 +210,20 @@
           "en": "engineering skill",
           "vi": "kỹ năng kỹ thuật"
         },
+        "description": {
+          "en": "Build, test, debug, modify.",
+          "vi": "Xây dựng, test, debug, sửa."
+        },
         "order": 2
       },
       "system-operation": {
         "label": {
           "en": "system operation",
           "vi": "vận hành hệ thống"
+        },
+        "description": {
+          "en": "Configure, observe, recover, automate.",
+          "vi": "Cấu hình, theo dõi, khôi phục, tự động hóa."
         },
         "order": 3
       },
@@ -216,12 +232,20 @@
           "en": "design judgment",
           "vi": "quyết định thiết kế"
         },
+        "description": {
+          "en": "Compare alternatives, reason from constraints, defend a choice.",
+          "vi": "So sánh phương án, lập luận từ ràng buộc, bảo vệ lựa chọn."
+        },
         "order": 4
       },
       "production-competency": {
         "label": {
           "en": "production competency",
           "vi": "vận hành production"
+        },
+        "description": {
+          "en": "Ship, measure, detect failure, mitigate, roll back or improve.",
+          "vi": "Đưa lên production, đo, phát hiện lỗi, giảm thiểu, rollback hoặc cải thiện."
         },
         "order": 5
       }
@@ -297,12 +321,20 @@
           "en": "unassessed",
           "vi": "chưa đánh giá"
         },
+        "description": {
+          "en": "No meaningful evidence yet.",
+          "vi": "Chưa có bằng chứng nào đáng kể."
+        },
         "order": 0
       },
       "gap": {
         "label": {
           "en": "gap",
           "vi": "còn thiếu"
+        },
+        "description": {
+          "en": "A diagnostic found the capability missing.",
+          "vi": "Bài kiểm tra đầu vào cho thấy bạn còn thiếu kỹ năng này."
         },
         "order": 1
       },
@@ -311,12 +343,20 @@
           "en": "learning",
           "vi": "đang học"
         },
+        "description": {
+          "en": "Instruction or guided practice is in progress.",
+          "vi": "Đang đọc tài liệu hoặc thực hành có hướng dẫn."
+        },
         "order": 2
       },
       "demonstrated": {
         "label": {
           "en": "demonstrated",
           "vi": "đã làm được"
+        },
+        "description": {
+          "en": "You produced the exit evidence.",
+          "vi": "Bạn đã làm ra bằng chứng hoàn thành."
         },
         "order": 3
       },
@@ -325,6 +365,10 @@
           "en": "transferred",
           "vi": "vận dụng được"
         },
+        "description": {
+          "en": "You used the capability on a sufficiently different task.",
+          "vi": "Bạn đã dùng kỹ năng cho một bài toán đủ khác."
+        },
         "order": 4
       },
       "retained": {
@@ -332,12 +376,20 @@
           "en": "retained",
           "vi": "nhớ lâu"
         },
+        "description": {
+          "en": "You recalled it successfully after a delay.",
+          "vi": "Sau một thời gian, bạn vẫn làm lại được."
+        },
         "order": 5
       },
       "applied": {
         "label": {
           "en": "applied",
           "vi": "dùng trong dự án"
+        },
+        "description": {
+          "en": "You used it in an integrated or real system.",
+          "vi": "Bạn đã dùng kỹ năng trong một hệ thống thật hoặc tích hợp."
         },
         "order": 6
       }

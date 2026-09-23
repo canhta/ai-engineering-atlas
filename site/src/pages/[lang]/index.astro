@@ -10,7 +10,7 @@ import { langPaths, useTranslations, type Lang } from "../../i18n";
 import { langAttr, site, stateLabels, text } from "../../lib/atlas";
 import { specimen } from "../../lib/specimen";
 import { nextGraph, nextLinks, plateRegions } from "../../lib/summaries";
-import { mapUrl } from "../../lib/urls";
+import { howUrl, mapUrl } from "../../lib/urls";
 
 export const getStaticPaths = langPaths;
 
@@ -39,6 +39,7 @@ const route = specimen(lang);
           {t("home.start")}
         </a>
         {route && <a href="#specimen">{t("home.jump")}</a>}
+        <a href={howUrl(lang)}>{t("how.title")}</a>
       </div>
     </section>
     <NextSteps client:load lang={lang} graph={nextGraph()} links={nextLinks(lang)} limit={3} onlyWithEvidence />

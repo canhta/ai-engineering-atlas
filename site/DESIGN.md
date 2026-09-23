@@ -1,8 +1,6 @@
 # Web Atlas Design
 
-The design and layout source of truth for everything under `site/`, for agents and humans. Evidence: [UI/UX research and competitor teardown](../rfcs/0000-ui-ux-research.md). Scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Data: [content model RFC](../rfcs/0000-content-model.md).
-
-Token values live in `site/src/styles/tokens.css`; this file names roles and intent. If they disagree, fix one in the same change.
+The design and layout source of truth for everything under `site/`, for agents and humans. Evidence: [UI/UX research and competitor teardown](../rfcs/0000-ui-ux-research.md). Scope: [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Data: [content model RFC](../rfcs/0000-content-model.md). Token values live in `site/src/styles/tokens.css`; this file names roles and intent. If they disagree, fix one in the same change.
 
 ## Direction: printed atlas
 
@@ -40,9 +38,10 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/sources/             Library: every source the routes cite, searchable
 /{lang}/<collection>/<id>/   Other collection items that have blocks (projects, labs)
 /{lang}/progress/            Logbook: evidence log, next steps, review queue, your data
+/{lang}/how/                 How it works: the learning model as a key, linked from Home's hero and the footer
 ```
 
-Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title. **How it works** reads like a field guide's "how to use this book" (`src/lib/how.ts`, no island): section heads in a left column; the learner states as a key (glyph, label, meaning from the state vocabulary's `description`); a ruled two-column table of evidence per capability type (the other described vocabulary); the route's `step` blocks as a book's contents, numbered like the rail (a step only some routes have is unnumbered, "on some routes") and linking to the specimen route; a short passage on delayed review. No numbered-step row. **Collection indexes** are a printed catalogue: a full-width ruled table (ink rule under the column heads, hairlines between rows), one row per item, built generically in `[collection]/index.astro` from the reader: the title in Newsreader (a link when the item has a page, plain otherwise); what it asks, `passageOf()` (the first passage of its first text block; in Markdown the preamble before the first heading is skipped, and a sentence ending in a colon takes its list); how it runs, `benchOf()` (`runner`: in the browser with tests, `form`: as a form, neither: README only; the column shows only when some item has one); and the routes it is practice for (tracked items pointing at it) or, when none point into the collection, the routes it points at (a project's), set as the prerequisite line with glyphs filled by the learner's state after hydration. A column shows only when some item fills it. Below 768 rows stack as entries with inline labels.
 
 ## Global frame
 
@@ -66,7 +65,7 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
  A gap-driven roadmap for software engineers               standfirst, Newsreader, 20–24px
  learning modern AI engineering.
  Diagnose first, read the exact source, prove it with evidence.        one muted line; with evidence the
- [ Find your starting point ]   See a route up close                   next steps (up to 3) stand beside it
+ [ Find your starting point ]   See a route up close   How the atlas works    next steps (up to 3) beside it
  41 ready routes and 74 mapped competencies                    legend
 ╔═ plate (overview): regions, named ready tiles, mapped marks ═════════════════════╗
 ╚══════════════════════════════════════════════════════════════════════════════════╝

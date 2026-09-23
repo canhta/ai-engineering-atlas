@@ -129,7 +129,7 @@ roadmap.sh gives every collection an index, a maintenance signal, and a shareabl
 - [ ] Path as a screen: an ordered sequence of routes with the learner's state against each, the way a role roadmap reads. `paths/applied-ai-engineer.md` is prose today, so this is a curriculum change first (structured path list) and needs an RFC
 - [x] Library `/{lang}/sources/`: every source we route through, searchable and filterable by type, each row linking to the public resource and to the routes that cite it with their locators
 - [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
-- [ ] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back). Home shows one route as a specimen; the model deserves a page
+- [x] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back), linked from Home's hero and the footer (`tests/how.spec.ts`). New `vi` keys for owner review: `how.title`, `how.intro`, `how.states.title`, `how.states.note`, `how.evidence.title`, `how.evidence.intro`, `how.evidence.col`, `how.evidence.note`, `how.steps.title`, `how.steps.intro`, `how.steps.some`, `how.steps.example`, `how.review.title`, `how.review.delay`, `how.review.when`, `how.review.how`, `how.review.due`; and the new `description` (en, vi) of each `state` and `competency_type` value in `curriculum/presentation.yaml`
 - [ ] Public profile `/{lang}/u/<handle>/`: opt-in, shareable, the prerequisite for any ranking. Needs Phase 2 accounts
 - [ ] Search across everything (routes, labs, projects, sources), not just the Atlas list
 

@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Every learner state and every `step` block title from the model appears, in order
-- [ ] Evidence per capability type follows the assessment rules in AGENTS.md / LEARNING_MODEL.md, without inventing new rules
-- [ ] Readable at 390 and 1440, en and vi; no marketing language; no generic numbered-step row (the review tells)
-- [ ] Browser test from the model; DESIGN.md information architecture and a short surface note within budget; site/TODO.md item ticked with the new vi keys listed
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] Every learner state and every `step` block title from the model appears, in order
+- [x] Evidence per capability type follows the assessment rules in AGENTS.md / LEARNING_MODEL.md, without inventing new rules
+- [x] Readable at 390 and 1440, en and vi; no marketing language; no generic numbered-step row (the review tells)
+- [x] Browser test from the model; DESIGN.md information architecture and a short surface note within budget; site/TODO.md item ticked with the new vi keys listed
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

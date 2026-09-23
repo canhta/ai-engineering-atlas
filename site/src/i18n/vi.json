@@ -281,5 +281,22 @@
   "library.contents": "Mục lục",
   "library.otherKind": "Khác",
   "library.more": "và {n} mục khác",
-  "library.noResults": "Không có tài liệu nào khớp."
+  "library.noResults": "Không có tài liệu nào khớp.",
+  "how.title": "Cách atlas hoạt động",
+  "how.intro": "Tiến độ ở đây là những gì bạn đã chứng minh. Mỗi kỹ năng có một trạng thái. Chỉ bằng chứng bạn ghi lại mới đổi được trạng thái đó.",
+  "how.states.title": "Trạng thái học",
+  "how.states.note": "Mở tài liệu hay đọc trang không làm đổi trạng thái. Không phải kỹ năng nào cũng cần tới mức {last}: nhật ký học của từng lộ trình ghi rõ mục tiêu.",
+  "how.evidence.title": "Thế nào là bằng chứng",
+  "how.evidence.intro": "Bằng chứng mỗi lộ trình yêu cầu tùy vào loại kỹ năng, ghi ở dòng ngay dưới tên lộ trình.",
+  "how.evidence.col": "Bằng chứng thường gặp",
+  "how.evidence.note": "Bằng chứng hoàn thành cho thấy kỹ năng ở mức {demonstrated}; {transferred}, {retained} và {applied} đều cần bằng chứng riêng.",
+  "how.steps.title": "Các bước của một lộ trình",
+  "how.steps.intro": "Lộ trình nào cũng xếp các bước theo thứ tự này và đánh số trong mục lục. Kiểm tra đầu vào đứng đầu để bạn chỉ đọc phần mình còn thiếu.",
+  "how.steps.some": "chỉ có ở một số lộ trình",
+  "how.steps.example": "Mỗi bước có link mở trên lộ trình {route}.",
+  "how.review.title": "Vì sao cần ôn lại",
+  "how.review.delay": "Hôm nay làm được chưa chắc một tháng sau còn nhớ, nên atlas kiểm tra lại sau một thời gian.",
+  "how.review.when": "Lịch ôn bắt đầu khi kỹ năng ở mức {demonstrated}. Nếu làm đúng, lần kiểm tra sau sẽ xa hơn; nếu chưa đạt, lần sau sẽ gần hơn.",
+  "how.review.how": "Mỗi lần ôn là một câu trong bài kiểm tra đầu vào của lộ trình, trả lời theo trí nhớ trước khi đọc lại tài liệu. Làm đúng sau khoảng thời gian đó là bằng chứng cho mức {retained}.",
+  "how.review.due": "Các lần ôn đến hạn nằm ở trang {progress}."
 }
