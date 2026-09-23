@@ -9,6 +9,7 @@ import { type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
 import type { ItemDetail } from "../../lib/summaries";
 import { TileGlyph, tileFill } from "../plate/TileGlyph";
+import DetailsLine from "./DetailsLine";
 import { Icon } from "./Icon";
 import { StateBadge } from "./StateBadge";
 
@@ -69,10 +70,8 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
   return (
     <div className="drawer-body">
       <div className="drawer-head">
-        <p className="drawer-path">
+        <p className="section-label">
           {detail.groupLabel && <span lang={langOf(detail.groupLabel, lang)}>{detail.groupLabel.value}</span>}
-          <span aria-hidden="true"> / </span>
-          <span lang={langOf(detail.title, lang)}>{detail.title.value}</span>
         </p>
         <Button className="button-quiet drawer-close" onPress={onClose}>
           {t("nav.close")}
@@ -82,21 +81,16 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
       <h2 id="drawer-title" className="drawer-title" lang={langOf(detail.title, lang)}>
         {detail.title.value}
       </h2>
-      <ul className="chips drawer-chips">
-        <li className={`chip ${detail.href ? "chip-ready" : "chip-mapped"}`}>
-          <TileGlyph fill={detail.href ? "ready" : "mapped"} />
-          {detail.maturity}
-        </li>
-        {detail.chips.map((chip, i) => (
-          <li className="chip" key={i} lang={langOf(chip.label, lang)}>
-            {chip.code && <code>{chip.code}</code>}
-            {chip.label.value}
-          </li>
-        ))}
-        <li className="chip chip-id">
-          <code>{detail.ref}</code>
-        </li>
-      </ul>
+      <DetailsLine
+        lang={lang}
+        details={detail.details}
+        lead={
+          <span className="details-maturity">
+            <TileGlyph fill={detail.href ? "ready" : "mapped"} />
+            {detail.maturity}
+          </span>
+        }
+      />
 
       {!detail.href ? (
         <>
@@ -164,13 +158,6 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
               </ul>
             </section>
           )}
-
-          <ul className="drawer-counts tabular">
-            {detail.sources > 0 && (
-              <li>{detail.sources === 1 ? t("drawer.sourceOne") : t("drawer.sources", { count: detail.sources })}</li>
-            )}
-            {detail.tasks > 0 && <li>{t("drawer.tasks", { count: detail.tasks })}</li>}
-          </ul>
         </>
       )}
 

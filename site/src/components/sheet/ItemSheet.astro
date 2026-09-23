@@ -1,21 +1,23 @@
 ---
-// Item sheet (DESIGN.md → Route sheet), rendered generically from an item's blocks: header,
-// prerequisite line, then rail | reading column | field log. Items of collections that do not
-// track progress get the same sheet without the field log.
+// Item sheet (DESIGN.md → Route sheet), rendered generically from an item's blocks, set like a
+// book chapter: section label, title, details line, lead, prerequisite line, then contents rail |
+// reading column | margin column with the field log. Items of collections that do not track
+// progress get the same sheet without the margin column; a runner or form makes it a workbench.
 import Base from "../../layouts/Base.astro";
-import Breadcrumb, { type Crumb } from "../Breadcrumb.astro";
 import Icon from "../Icon.astro";
 import Block from "../blocks/Block.astro";
+import DetailsLine from "../react/DetailsLine";
 import FieldLog from "../react/FieldLog";
 import PrereqLine, { type PrereqEntry } from "../react/PrereqLine";
 import StepRail, { type RailEntry } from "../react/StepRail";
 import { useTranslations, type Lang } from "../../i18n";
 import {
   bridgeAnchor,
+  detailsOf,
   groupOf,
-  headerChips,
   itemUrl,
   langAttr,
+  pageSegment,
   repoUrl,
   resolveRef,
   stateLabels,
@@ -49,20 +51,12 @@ const subtitle = subtitleBlock?.type === "text" ? text(subtitleBlock.body, lang)
 const blocks = page.blocks.filter((b) => b !== subtitleBlock);
 const untranslated = lang !== "en" && (title.lang !== lang || (subtitle && subtitle.lang !== lang));
 
+// Section label above the title: the item's group (its region in the Atlas), or its collection.
 const group = groupOf(c, item, lang);
-const crumbs: Crumb[] = [
-  { label: t("nav.atlas"), href: mapUrl(lang) },
-  group
-    ? {
-        label: group.label.value,
-        href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}`,
-        lang: langAttr(group.label, lang),
-      }
-    : { label: text(c.label, lang).value, lang: langAttr(text(c.label, lang), lang) },
-  { label: title.value, lang: langAttr(title, lang) },
-];
-// Short vocabulary codes (such as levels) show beside their label in the chip.
-const chips = headerChips(c, item, lang);
+const section = group
+  ? { label: group.label, href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}` }
+  : { label: text(c.label, lang), href: c.page_when ? mapUrl(lang) : `/${lang}/${pageSegment(c)}/` };
+const details = detailsOf(c, item, lang);
 
 // Learner progress: only for collections that track it.
 const declaredTarget = targetOf(c, item);
@@ -121,12 +115,17 @@ const railEntries: RailEntry[] = blocks.map((b) => {
 ---
 
 <Base lang={lang} title={title.value} description={subtitle?.value} section="atlas">
-  <article class:list={["sheet", { tracked: Boolean(target) }]}>
+  <article class:list={["sheet", { tracked: Boolean(target), workbench: Boolean(bench) }]}>
     <header class="sheet-head">
-      <Breadcrumb lang={lang} crumbs={crumbs} />
+      <p class="section-label">
+        <a href={section.href} lang={langAttr(section.label, lang)}>
+          {section.label.value}
+        </a>
+      </p>
       <h1 class="page-title" lang={langAttr(title, lang)}>
         {title.value}
       </h1>
+      <DetailsLine lang={lang} details={details} />
       {subtitle && (
         <p class="lead" lang={langAttr(subtitle, lang)}>
           {subtitle.value}
@@ -137,32 +136,20 @@ const railEntries: RailEntry[] = blocks.map((b) => {
           {t("translation.missing")}
         </p>
       )}
-      <div class="sheet-meta">
-        {chips.length > 0 && (
-          <ul class="chips" aria-label={t("sheet.facts")}>
-            {chips.map((chip) => (
-              <li class="chip" lang={langAttr(chip.label, lang)} title={text(c.fields[chip.field]?.label, lang).value}>
-                {chip.value.length <= 3 && chip.value !== chip.label.value && <code>{chip.value}</code>}
-                {chip.label.value}
-              </li>
-            ))}
-          </ul>
-        )}
-        <div class="sheet-actions">
-          <a class="button-quiet" href={repoUrl(page.source_path)} rel="noopener noreferrer">
-            {t("sheet.contract")}
-            <Icon name="external" />
-            <span class="visually-hidden">({t("link.external")})</span>
-          </a>
-          <button class="button-quiet" type="button" data-copy-link data-copied={t("sheet.copied")}>
-            {t("sheet.copy")}
-            <Icon name="copyLink" />
-          </button>
-          <span class="live-message small" role="status" data-copy-result></span>
-        </div>
-      </div>
       {prereqs.length > 0 && <PrereqLine client:idle lang={lang} entries={prereqs} />}
       {practisedBy.length > 0 && <PrereqLine client:idle lang={lang} entries={practisedBy} lead={t("lab.practises")} />}
+      <div class="sheet-actions">
+        <a class="button-quiet" href={repoUrl(page.source_path)} rel="noopener noreferrer">
+          {t("sheet.contract")}
+          <Icon name="external" />
+          <span class="visually-hidden">({t("link.external")})</span>
+        </a>
+        <button class="button-quiet" type="button" data-copy-link data-copied={t("sheet.copied")}>
+          {t("sheet.copy")}
+          <Icon name="copyLink" />
+        </button>
+        <span class="live-message small" role="status" data-copy-result></span>
+      </div>
       {bench && (
         <a class="button-quiet bench-jump" href={`#${bench.id}`}>
           <Icon name="code" />
@@ -237,15 +224,18 @@ const railEntries: RailEntry[] = blocks.map((b) => {
           ))}
         </div>
         {target && (
-          <FieldLog
-            client:load
-            lang={lang}
-            itemRef={ref}
-            target={target}
-            stateLabels={stateLabels(lang)}
-            graph={graph}
-            links={adviceLinks}
-          />
+          <div class="sheet-margin">
+            {/* Room at the top of the margin column for the region locator plate (DESIGN.md → Route sheet). */}
+            <FieldLog
+              client:load
+              lang={lang}
+              itemRef={ref}
+              target={target}
+              stateLabels={stateLabels(lang)}
+              graph={graph}
+              links={adviceLinks}
+            />
+          </div>
         )}
       </div>
     )}
@@ -267,17 +257,28 @@ const railEntries: RailEntry[] = blocks.map((b) => {
 </script>
 
 <style>
+  /* Header, set like a chapter opening: section label, title, details line, lead. */
   .sheet-head {
-    max-width: 60rem;
+    max-width: var(--reading-width);
     margin-bottom: var(--space-12);
   }
 
+  .sheet-head .section-label {
+    margin-bottom: var(--space-2);
+  }
+
   .sheet-head .page-title {
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-3);
+  }
+
+  .sheet-head :global(.details-line) {
+    margin-bottom: var(--space-6);
   }
 
   .sheet-head .lead {
-    margin-bottom: var(--space-6);
+    max-width: var(--measure);
+    margin: 0 0 var(--space-5);
+    color: var(--ink);
   }
 
   .untranslated {
@@ -289,38 +290,50 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     color: var(--ink-muted);
   }
 
-  .sheet-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3) var(--space-6);
-    margin-bottom: var(--space-5);
-  }
-
   .sheet-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-2);
+    margin-top: var(--space-2);
+    margin-left: calc(-1 * var(--space-3));
   }
 
+  /* Contents rail | reading column | margin column. The header lines up with the reading column. */
   .sheet-grid {
     display: grid;
-    grid-template-columns: var(--rail-width) minmax(0, 1fr) var(--log-width);
-    grid-template-areas: "rail content log";
-    gap: var(--space-8);
+    grid-template-columns: var(--rail-width) minmax(0, var(--reading-width)) var(--log-width);
+    grid-template-areas: "rail content margin";
+    justify-content: space-between;
+    column-gap: var(--space-10);
     align-items: start;
   }
 
   .sheet:not(.tracked) .sheet-grid {
-    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    grid-template-columns: var(--rail-width) minmax(0, var(--reading-width));
     grid-template-areas: "rail content";
+    justify-content: start;
+  }
+
+  .sheet:not(.workbench) .sheet-head {
+    margin-left: calc(var(--rail-width) + var(--space-10));
   }
 
   .sheet-content {
     grid-area: content;
     min-width: 0;
+  }
+
+  /* The margin column: sticky beside the reading column, behind a hairline; it never overlaps it. */
+  .sheet-margin {
+    grid-area: margin;
+    position: sticky;
+    top: calc(var(--bar-offset) + var(--space-6));
+    max-height: calc(100dvh - var(--bar-offset) - var(--space-8));
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 0 var(--space-1) var(--space-4) var(--space-6);
+    border-left: var(--border-width) solid var(--line);
   }
 
   .block {
@@ -338,6 +351,16 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     align-items: baseline;
     gap: var(--space-3);
     margin-bottom: var(--space-5);
+  }
+
+  /* Step numbers read like section numbers in a book: a quiet numeral before the heading. */
+  .block-step {
+    flex: none;
+    min-width: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-ui);
+    font-weight: 600;
+    color: var(--ink-muted);
   }
 
   /* Workbench pages (DESIGN.md → Labs): brief | bench, the bench sticky under the nav. */
@@ -374,26 +397,28 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     display: none;
   }
 
-  /* Step numbers read like section numbers in a book: a quiet numeral before the heading. */
-  .block-step {
-    flex: none;
-    min-width: 1.25rem;
-    font-family: var(--font-sans);
-    font-size: var(--text-ui);
-    font-weight: 600;
-    color: var(--ink-muted);
-  }
-
   @media (width < 1024px) {
     .sheet-grid,
     .sheet:not(.tracked) .sheet-grid {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "rail" "log" "content";
-      gap: var(--space-6);
+      grid-template-areas: "rail" "margin" "content";
+      row-gap: var(--space-6);
     }
 
     .sheet:not(.tracked) .sheet-grid {
       grid-template-areas: "rail" "content";
+    }
+
+    .sheet:not(.workbench) .sheet-head {
+      margin-left: 0;
+    }
+
+    .sheet-margin {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 0;
+      border-left: 0;
     }
 
     .bench-grid {
@@ -415,8 +440,9 @@ const railEntries: RailEntry[] = blocks.map((b) => {
   }
 
   @media (width < 768px) {
+    /* The field log leaves the column for the bottom bar (FieldLog); the margin column stays empty. */
     .sheet-grid {
-      grid-template-areas: "rail" "content";
+      grid-template-areas: "rail" "content" "margin";
     }
 
     .sheet.tracked {
@@ -425,11 +451,6 @@ const railEntries: RailEntry[] = blocks.map((b) => {
 
     .sheet-head {
       margin-bottom: var(--space-8);
-    }
-
-    .sheet-meta {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 </style>

@@ -20,7 +20,7 @@ import { TARGET_STATES, type TargetState } from "../../lib/progress";
 import DecisionForm from "../react/DecisionForm";
 import Diagnostic, { type NextLink } from "../react/Diagnostic";
 import LabRunner, { type LabCompetency } from "../react/LabRunner";
-import SourceTable from "../react/SourceTable";
+import Bibliography from "../react/Bibliography";
 import DataBlock from "./DataBlock.astro";
 import ListBlock from "./ListBlock.astro";
 import PracticeBlock from "./PracticeBlock.astro";
@@ -43,7 +43,7 @@ interface Props {
 const { block, lang, itemRef, target, after, headingId, sourcePath } = Astro.props;
 const known = (BLOCK_TYPES as readonly string[]).includes(block.type);
 const link = (b: Block | undefined): NextLink | undefined => (b ? { id: b.id, title: text(b.title, lang) } : undefined);
-const sourceRows =
+const sourceEntries =
   block.type === "sources"
     ? block.rows.map((row) => ({
         ...resolveResource(row.resource),
@@ -70,7 +70,7 @@ const competencies: LabCompetency[] =
       })
     : [];
 // A form block's fields carry curriculum text (L10n); resolve them to the page language server-side,
-// same as sourceRows/tasks above, so the island receives plain localized strings only.
+// same as sourceEntries/tasks above, so the island receives plain localized strings only.
 const formFields: ResolvedFormField[] =
   block.type === "form"
     ? block.fields.map((f) => ({
@@ -114,7 +114,7 @@ const formTitle = block.type === "form" ? text(resolveRef(itemRef)?.item.title, 
 {block.type === "list" && <ListBlock block={block} lang={lang} />}
 {block.type === "prerequisites" && <PrerequisitesBlock block={block} lang={lang} />}
 {block.type === "practice" && <PracticeBlock block={block} lang={lang} />}
-{block.type === "sources" && <SourceTable client:load lang={lang} labelledBy={headingId} rows={sourceRows} />}
+{block.type === "sources" && <Bibliography client:load lang={lang} labelledBy={headingId} entries={sourceEntries} />}
 {block.type === "diagnostic" &&
   (target ? (
     <Diagnostic

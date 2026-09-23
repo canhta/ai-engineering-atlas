@@ -290,6 +290,37 @@ export function headerChips(c: Collection, item: Item, lang: Lang): FieldChip[] 
     .flatMap(([name]) => fieldChips(c, item, name, lang));
 }
 
+/** What the details line under a page title says (DESIGN.md → Route sheet). */
+export interface Details {
+  /** One entry per header field (see headerChips), its labelled values joined by commas. */
+  facts: Localized[];
+  /** Rows across the item's sources blocks. */
+  sources: number;
+  /** Tasks in the item's diagnostic block. */
+  tasks: number;
+}
+
+export function detailsOf(c: Collection, item: Item, lang: Lang): Details {
+  const byField = new Map<string, FieldChip[]>();
+  for (const chip of item.page ? headerChips(c, item, lang) : []) {
+    byField.set(chip.field, [...(byField.get(chip.field) ?? []), chip]);
+  }
+  // A short vocabulary code (a level such as "L3") leads its label: "L3 deep engineering competence".
+  const labelled = (chip: FieldChip) =>
+    chip.value.length <= 3 && chip.value !== chip.label.value ? `${chip.value} ${chip.label.value}` : chip.label.value;
+  const facts = [...byField.values()].map((chips) => ({
+    value: chips.map(labelled).join(", "),
+    lang: chips.every((chip) => chip.label.lang === lang) ? lang : ("en" as Lang),
+  }));
+  const blocks = item.page?.blocks ?? [];
+  const diagnostic = blocks.find((b) => b.type === "diagnostic");
+  return {
+    facts,
+    sources: blocks.reduce((n, b) => n + (b.type === "sources" ? b.rows.length : 0), 0),
+    tasks: diagnostic?.type === "diagnostic" ? diagnostic.tasks.length : 0,
+  };
+}
+
 export function groupOf(c: Collection, item: Item, lang: Lang) {
   if (!c.group_by) return undefined;
   const value = listValue(item.fields[c.group_by])[0];

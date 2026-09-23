@@ -159,11 +159,18 @@ describe("block renderer", () => {
     expect(html).not.toContain(">Pass condition<");
   });
 
-  test("sources show the resource, its kind, the exact locator, and why", async () => {
-    const html = await render("sources");
-    expect(html).toContain("Exact section");
-    expect(html).toContain("Reason");
-    expect(html).toContain("aws.amazon.com");
+  test("sources read as a bibliography: the exact locator first, then the resource, then the purpose", async () => {
+    const page = await render("sources");
+    // The island's serialized props come first; read the server-rendered markup.
+    const start = page.search(/<ol[^>]*class="bibliography"/);
+    expect(start).toBeGreaterThan(-1);
+    const html = page.slice(start);
+    const locator = html.indexOf("Exact section");
+    const resource = html.indexOf("aws.amazon.com");
+    const purpose = html.indexOf("Reason");
+    expect(locator).toBeGreaterThan(-1);
+    expect(resource).toBeGreaterThan(locator);
+    expect(purpose).toBeGreaterThan(resource);
   });
 
   test("practice links repository paths and resources", async () => {

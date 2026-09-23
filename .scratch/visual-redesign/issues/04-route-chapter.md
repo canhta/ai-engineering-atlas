@@ -6,13 +6,13 @@ Spec: [../spec.md](../spec.md). Primary source: variant C on `prototype/visual-d
 
 **Blocked by:** 01 (The whole site in the print system).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The details line is built from the collection's list fields and block counts through the content model (no curriculum field names in site code); it uses thin rules or commas, never middle dots
-- [ ] The sources block renders as a bibliography with the locator first for every route; `blocks.vitest.ts` still renders every block type
-- [ ] The contents rail numbers `step` blocks from the presentation config and shows local status; scrollspy still marks the current section
-- [ ] The field log sits in the sticky margin column on desktop and never covers focused content; Record evidence works as before
-- [ ] The drawer shows the details line instead of tags and still opens the route and diagnostic
-- [ ] Untranslated passages on `/vi/` keep `lang="en"` and the "not yet translated" marker
-- [ ] Browser tests assert the details line counts and each source's locator from the model; DESIGN.md's route sheet section is rewritten in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed
+- [x] The details line is built from the collection's list fields and block counts through the content model (no curriculum field names in site code); it uses thin rules or commas, never middle dots
+- [x] The sources block renders as a bibliography with the locator first for every route; `blocks.vitest.ts` still renders every block type
+- [x] The contents rail numbers `step` blocks from the presentation config and shows local status; scrollspy still marks the current section
+- [x] The field log sits in the sticky margin column on desktop and never covers focused content; Record evidence works as before
+- [x] The drawer shows the details line instead of tags and still opens the route and diagnostic
+- [x] Untranslated passages on `/vi/` keep `lang="en"` and the "not yet translated" marker
+- [x] Browser tests assert the details line counts and each source's locator from the model; DESIGN.md's route sheet section is rewritten in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, and `capture.mjs` pass; screenshots reviewed

@@ -14,8 +14,8 @@ Proven patterns, reused rather than invented:
 | ---------------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------- |
 | One tile per skill, filled by state, legend above the grid                               | Khan Academy course grid         | Plate tiles, legend, Progress                   |
 | Node opens a side drawer over the dimmed map                                             | roadmap.sh                       | Map drawer (without Learning/Done/Skip toggles) |
-| Tabs with underline, breadcrumb, large title, larger one-line subtitle, page-actions row | Stripe docs                      | Global nav, route header                        |
-| Left course rail with the current section marked                                         | Stripe docs, Hugging Face course | Route waypoint rail                             |
+| Tabs with underline, breadcrumb, large title, larger one-line subtitle, page-actions row | Stripe docs                      | Global nav, index page headers                  |
+| Left course rail with the current section marked                                         | Stripe docs, Hugging Face course | Route contents rail                             |
 | "Not feeling ready? …" prerequisite line                                                 | Khan Academy, master.dev         | Route prerequisite line                         |
 | Labelled AI actions inside the item panel                                                | roadmap.sh node panel            | Phase 2 tutor actions                           |
 
@@ -42,7 +42,7 @@ Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link 
 /{lang}/progress/            Field log: your states, review queue, your data
 ```
 
-Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Deep pages show a breadcrumb.
+Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count), language switch. Phase 2 adds sign-in. Index pages show a breadcrumb; item pages a section label above the title.
 
 ## Global frame
 
@@ -113,20 +113,20 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with
  [ Search… ]  Level ▾  Your state ▾  Project ▾  [ ] Ready routes only   Showing 19 of 116   Clear
  legend
  ╭──────────── plate (explore) ──────────────╮ ╭─ drawer, 40%, over the dimmed plate ─╮
- │                                            │ │ AI engineering / Tool calling      ✕ │
+ │                                            │ │ AI engineering                     ✕ │
  │   the selected tile has a magenta ring     │ │ Tool Calling                         │
- │                                            │ │ (ready) (L3 deep engineering) (...)  │
+ │                                            │ │ □ ready │ L3 deep … │ 5 sources │ …  │
  │                                            │ │ Your state  ◧ gap     Target applied │
  │                                            │ │ Why, three lines, "More" expands     │
  │                                            │ │ Needs  ■ AI evaluation               │
  │                                            │ │        ⬚ API design (bridge inside)  │
- │                                            │ │ 5 sources   Diagnostic, 4 tasks      │
  │                                            │ │ Lab: evaluation harness              │
  │                                            │ │ ( Open route (↗) )  Start diagnostic │
  ╰────────────────────────────────────────────╯ ╰──────────────────────────────────────╯
 ```
 
 - List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
+- Drawer head: the domain as a section label, the title, then the route page's details line led by the item's maturity and its glyph (no tags, no ID).
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
 - Filters: the collection's facets, except the page condition field, which is the "Ready routes only" toggle (`?ready=1`); your state; one facet per related collection (projects).
 - URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
@@ -135,30 +135,38 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region blocks with
 
 ### Route sheet
 
+The route page reads like a book chapter. Route, project, and lab pages share it (`ItemSheet.astro`); a page with a `runner` or `form` block is a workbench instead (see Labs).
+
 ```text
- Atlas / AI engineering / Tool calling                                      breadcrumb
- Tool Calling                                                               page title, Newsreader 32–40px
- Tool-enabled AI systems cross a boundary from model suggestions …          first text block as a lead, 20px (18px mobile), ink-muted, ≤ 60ch
- (L3 deep engineering) (engineering skill) (system operation)    View contract ↗   Copy link
- Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
-┌ rail 220 ──────────┬ content, reading column ≤ 68ch ─────────┬ field log 320, sticky ──┐
-│ Outcomes           │ blocks in content order                 │ ┌─ ink rule, hairline ─╮ │
-│ 1 Diagnostic    ◧  │                                         │ │ Your state   ◧ gap   │ │
-│ 2 Learning route   │ diagnostic: one task per card,          │ │ Target       applied │ │
-│   2 of 5 opened    │ "Task 2 of 4", answer, Next; after the  │ │ Next review  —       │ │
-│ 3 Practice         │ last task: pass condition, self-assess, │ │ Next: work through   │ │
-│ 4 Exit evidence    │ Record result                           │ │ the learning route.  │ │
-│ 5 Transfer         │                                         │ │ ( Record evidence (+))│ │
-│ current section    │ sources: table (source with kind tag,   │ │ Evidence (2) ▾       │ │
-│ marked (scrollspy) │ exact locator, why, opened)             │ ╰──────────────────────╯ │
-└────────────────────┴─────────────────────────────────────────┴──────────────────────────┘
+                      AI engineering                                     section label: the item's group, linking to its Atlas region
+                      Tool Calling                                       page title, Newsreader 32–40px
+                      L3 deep engineering competence │ engineering skill, system operation │ 5 sources │ 4 diagnostic tasks
+                      Tool-enabled AI systems cross a boundary …         first text block as the lead, ink, ≤ 68ch
+                      Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
+                      View contract ↗   Copy link
+┌ rail 176 ──────────┬ reading column ≤ 736 ─────────────────────────┬ margin 288, sticky ─┐
+│ On this page       │ blocks in content order, hairlines between   │ │ (region locator    │
+│ ━━━━━━━━━━━━━━━━━━ │                                              │ │  plate, later)     │
+│   Prerequisites    │ 1 Diagnostic: one task at a time, "Task 2 of │ │ ━━ ink rule ━━━━━━ │
+│ 1 Diagnostic       │   4", answer, Next; then the pass condition, │ │ Field log          │
+│ 2 Learning route   │   self-assess, Record result                 │ │ Your state  ◧ gap  │
+│   2 of 5 opened    │                                              │ │ Target    applied  │
+│ 3 Practice         │ 2 Learning route                             │ │ Next review   —    │
+│ 4 Exit evidence    │ 1  Sections "Reducing client complexity …"   │ │ Next: …            │
+│ 5 Transfer         │    Making retries safe ↗  article, aws.…     │ │ [ Record evidence ]│
+│ current: magenta   │    Why  Make timeout/retry behavior safe …   │ │ Evidence (2) ▾     │
+│ numeral, underline │    ☐ Opened                                  │ │                    │
+└────────────────────┴──────────────────────────────────────────────┴─┴────────────────────┘
 ```
 
-- Rail: every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded).
-- Sources: the exact-locator column is the differentiator and stays prominent. The kind tag comes from the resource `type`.
+- Header: section label (the `group_by` value's label, or the collection's label linking to its index), title, details line, lead, the untranslated marker when it applies, the prerequisite line, then View contract and Copy link as quiet actions. On desktop the header lines up with the reading column.
+- Details line: the header fields (vocabulary fields other than the grouping, the page condition, and the progress target, which show elsewhere) with a short code before its label ("L3 deep engineering competence"), then the number of sources (rows across the item's sources blocks) and diagnostic tasks, from `detailsOf()` in `atlas.ts`. Items are separated by thin `line-strong` rules on wide screens (a wrapped row never starts with one) and read as a comma list on a phone; never middle dots or tags. The Atlas drawer uses the same component.
+- Contents rail: "On this page" over an ink rule, then every block with a title, in order. Blocks marked `step: true` in the presentation config are numbered; others are listed without numbers. Each step shows its local status (answered, n of m opened, evidence recorded). A scrollspy marks the current section: its numeral turns magenta and its title gets a magenta underline. Anchors point at the sections on this page.
+- Sources are a bibliography: numbered entries on hairlines; the exact locator first in Newsreader 20px (the differentiator); then the source title linking out with the external icon, its resource `type` and host in one muted line; then "Why" and the purpose in muted Newsreader; then the personal "Opened" mark. Opened marks never change a state.
+- Margin column: sticky beside the reading column behind a `line` hairline, scrolling inside itself when the evidence form is open, so it never covers what the learner reads. The field log starts with an ink rule; the region locator plate goes above it. Collections that do not track progress have no margin column.
 - Exit evidence is a list of criteria without checkboxes; criteria are met by recording evidence.
-- Tablet: the rail becomes a "2 of 5, Learning route ▾" bar above the content; the field log sits at the top of the content.
-- Mobile: breadcrumb, title, subtitle, chips; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet. Tables become stacked rows with inline labels.
+- Tablet (768–1023): one column; the rail becomes a "Step 2 of 5, Learning route ▾" bar above the content and the field log sits at the top of the content.
+- Mobile: section label, title, details line as a comma list, lead; a sticky top bar "Step 2 of 5, Learning route ▾"; a sticky bottom bar "◧ gap, Record evidence" opening the field log as a sheet.
 
 ### Progress
 
@@ -201,10 +209,10 @@ this page is the index of that promise: what to open, and which part of it each 
 Every lab has a page that renders its README (a Markdown `text` block). A lab with a browser contract also has a `runner` block, and the page becomes a workbench: brief beside bench, no rail.
 
 ```text
- Atlas / Labs / Evaluation Harness Lab                                       breadcrumb
+ Labs                                                                        section label
  Evaluation Harness Lab                                                      page title
- View contract ↗   Copy link
  Practice for ◧ AI Evaluation and Experimentation            tracked items pointing at the lab
+ View contract ↗   Copy link
 ┌ brief, 5 fr, reading column ─────────┬ bench, 7 fr, sticky under the nav, scrolls inside ─┐
 │ Lab brief                            │ Run the tests                                       │
 │ README: tasks, transfer, evidence;   │ ━━ ink rule, no tray ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
@@ -277,7 +285,7 @@ Dark mode is a night chart: the same roles on a warm near-black sheet, light ink
 | Section heads (h2), standfirst, lead, reading | Newsreader                        | h2 26px; reading 18px, line-height 1.65, ≤ 68ch       |
 | Plate region labels                           | Newsreader italic                 | 18px, like labels on a map                            |
 | UI, h3 and below                              | IBM Plex Sans (variable), 400–600 | 15–16px, tabular numbers for counts                   |
-| Code and IDs                                  | JetBrains Mono                    | code, and IDs in the drawer and route chips only      |
+| Code and IDs                                  | JetBrains Mono                    | code, file names, and IDs                             |
 
 Every family ships the `vietnamese` subset. Render test: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`. Labels are sentence case, never tracked capitals. No wide or condensed display cuts.
 
@@ -285,7 +293,7 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 - Nothing is a tray or a card by default. Sections are separated by hairlines (`line`); a heavier ink rule marks the start of a working surface (the field log, the lab bench, the diagnostic, the top bar and footer).
 - The plate sits in a printed frame: an outer 1.5px ink rule, 3px of sheet, an inner ink hairline.
-- Radii are 2–4px: `radius-mark` (tiles, glyphs, chips), `radius-control` (buttons, inputs), `radius-float` (drawer edge, sheets, tooltips). Circles only for mapped marks, radios, and rail step numbers.
+- Radii are 2–4px: `radius-mark` (tiles, glyphs, chips), `radius-control` (buttons, inputs), `radius-float` (drawer edge, sheets, tooltips). Circles only for mapped marks and radios.
 - Buttons are rectangles: one magenta primary per view (`button button-primary`), outlined ink secondaries (`button`), and quiet text buttons (`button-quiet`). A button carries a text label; an icon only where it names a tool action (run, stop, export, import), never inside its own circle.
 - Shadows only on floating layers: the drawer, sheets, and the rail's menu. Nothing blurs what lies under it.
 
@@ -316,19 +324,19 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ## Review tells
 
-| Tell                                                                   | Replace with                                                                                    |
-| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Glass: a blurred, translucent nav or panel                             | A plain bar on `ground` with an ink hairline                                                    |
-| Double bezels, trays, or a card around every section                   | Hairline rules between sections; an ink rule where a working surface starts                     |
-| Pill buttons, or a trailing icon in its own circle ("pill-in-pill")    | A rectangular button with a text label, 2–4px radius                                            |
-| Large radii (8px and up) on panels, inputs, or the drawer              | `radius-mark`, `radius-control`, `radius-float`                                                 |
-| Wide or display sans faces, 72px titles on every page                  | Newsreader page titles at 32–40px; only Home is large                                           |
-| Teal or coloured links, magenta used for decoration or numerals        | Ink links with an underline; magenta only for the route mark                                    |
-| Identical card grid with one radius and shadow everywhere              | Plate tiles and hairline rows                                                                   |
-| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips (a details line after the route redesign), sentence case, monospace only for code and IDs |
-| Marketing headline, percent rings, streaks, XP, "N of M complete"      | Ready and mapped counts, evidence states, due reviews                                           |
-| Learning/Done/Skip toggles on items                                    | Record evidence in the field log                                                                |
-| Floating "Ask anything" input, sparkles                                | Labelled AI actions inside the drawer or a block (Phase 2)                                      |
-| `→` appended to links                                                  | A plain underlined link                                                                         |
-| Entrance animations, scroll-triggered fade-ins, press scaling          | Nothing: the page is there at once                                                              |
-| Colour-only status                                                     | Shape, label, and colour                                                                        |
+| Tell                                                                   | Replace with                                                                             |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Glass: a blurred, translucent nav or panel                             | A plain bar on `ground` with an ink hairline                                             |
+| Double bezels, trays, or a card around every section                   | Hairline rules between sections; an ink rule where a working surface starts              |
+| Pill buttons, or a trailing icon in its own circle ("pill-in-pill")    | A rectangular button with a text label, 2–4px radius                                     |
+| Large radii (8px and up) on panels, inputs, or the drawer              | `radius-mark`, `radius-control`, `radius-float`                                          |
+| Wide or display sans faces, 72px titles on every page                  | Newsreader page titles at 32–40px; only Home is large                                    |
+| Teal or coloured links, magenta used for decoration or numerals        | Ink links with an underline; magenta only for the route mark                             |
+| Identical card grid with one radius and shadow everywhere              | Plate tiles and hairline rows                                                            |
+| Meta joined with middle dots, monospace micro-labels, tracked capitals | A details line with thin rules or commas, sentence case, monospace only for code and IDs |
+| Marketing headline, percent rings, streaks, XP, "N of M complete"      | Ready and mapped counts, evidence states, due reviews                                    |
+| Learning/Done/Skip toggles on items                                    | Record evidence in the field log                                                         |
+| Floating "Ask anything" input, sparkles                                | Labelled AI actions inside the drawer or a block (Phase 2)                               |
+| `→` appended to links                                                  | A plain underlined link                                                                  |
+| Entrance animations, scroll-triggered fade-ins, press scaling          | Nothing: the page is there at once                                                       |
+| Colour-only status                                                     | Shape, label, and colour                                                                 |

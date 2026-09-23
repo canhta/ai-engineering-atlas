@@ -73,8 +73,9 @@
   /* Layout */
   --page-max: calc(80rem + 2 * var(--gutter)); /* 1280 content + gutters */
   --gutter: 1.5rem;
-  --rail-width: 13.75rem;
-  --log-width: 20rem;
+  --rail-width: 11rem; /* route page: contents rail */
+  --reading-width: 46rem; /* route page: reading column */
+  --log-width: 18rem; /* route page: margin column */
   --nav-height: 3.25rem; /* the top bar */
   --bar-offset: var(--nav-height); /* where sticky layers start: under the top bar while it sticks */
   --target-min: 1.5rem;
@@ -89,6 +90,13 @@
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
   --duration-control: 160ms;
   --duration-sheet: 320ms;
+}
+
+@media (width < 1200px) {
+  :root {
+    --rail-width: 10rem;
+    --log-width: 16rem;
+  }
 }
 
 @media (width < 768px) {

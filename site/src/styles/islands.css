@@ -411,14 +411,23 @@
   transform: rotate(180deg);
 }
 
-/* ---------------------------------------------------------------- Route sheet: rail */
+/* ---------------------------------------------------------------- Route sheet: contents rail */
 
+/* A book's contents: numbered steps, unnumbered sections, the current one marked in magenta. */
 .rail {
   grid-area: rail;
   position: sticky;
   top: calc(var(--bar-offset) + var(--space-6));
   max-height: calc(100dvh - var(--bar-offset) - var(--space-8));
   overflow: auto;
+}
+
+.rail-head {
+  margin: 0 0 var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--ink);
+  font-size: var(--text-small);
+  font-weight: 600;
 }
 
 .rail-bar {
@@ -433,16 +442,15 @@
 
 .rail-list a {
   display: grid;
-  grid-template-columns: 1.75rem 1fr;
-  gap: var(--space-2);
-  align-items: start;
-  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
-  border-left: 2px solid var(--line);
+  grid-template-columns: 1.25rem 1fr;
+  gap: var(--space-1);
+  align-items: baseline;
+  padding: var(--space-1) 0;
   color: var(--ink-muted);
+  font-size: var(--text-ui);
+  line-height: 1.35;
   text-decoration: none;
-  transition:
-    color var(--duration-control) var(--ease),
-    border-color var(--duration-control) var(--ease);
+  transition: color var(--duration-control) var(--ease);
 }
 
 .rail-list a:hover {
@@ -450,36 +458,33 @@
 }
 
 .rail-list a[aria-current] {
-  border-left-color: var(--route);
   color: var(--ink);
 }
 
 .rail-num {
-  display: inline-grid;
-  place-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
   font-size: var(--text-small);
   font-weight: 600;
 }
 
-.is-step .rail-num {
-  border: 1.5px solid var(--line-strong);
-  border-radius: 50%;
-}
-
 .rail-list a[aria-current] .rail-num {
-  border-color: var(--route);
   color: var(--route);
 }
 
 .rail-text {
   display: grid;
-  gap: 2px;
-  padding-top: 2px;
+  gap: 1px;
 }
 
 .rail-title {
+  text-decoration: underline 2px transparent;
+  text-underline-offset: 0.3em;
+}
+
+.rail-list a[aria-current] .rail-title {
+  text-decoration-color: var(--route);
+}
+
+.is-step .rail-title {
   font-weight: 550;
 }
 
@@ -490,6 +495,10 @@
 }
 
 @media (width < 1024px) {
+  .rail-head {
+    display: none;
+  }
+
   .rail {
     z-index: 15;
     top: calc(var(--bar-offset) + var(--space-2));
@@ -546,19 +555,19 @@
   .rail[data-open] .rail-list {
     display: block;
   }
+
+  .rail-list a {
+    min-height: 2.75rem;
+    padding: var(--space-2);
+  }
 }
 
 /* ---------------------------------------------------------------- Route sheet: field log */
 
+/* The field log sits in the sheet's margin column (ItemSheet), which is sticky and ruled. */
 .field-log {
-  grid-area: log;
-  position: sticky;
-  top: calc(var(--bar-offset) + var(--space-6));
-  max-height: calc(100dvh - var(--bar-offset) - var(--space-8));
-  overflow: auto;
-  padding: var(--space-4) 0 0 var(--space-6);
+  padding-top: var(--space-4);
   border-top: var(--border-width) solid var(--ink);
-  border-left: var(--border-width) solid var(--line);
 }
 
 .log-title {
@@ -657,19 +666,6 @@
 
 .log-bar {
   display: none;
-}
-
-@media (width < 1024px) {
-  .field-log {
-    position: static;
-    max-height: none;
-    overflow: visible;
-  }
-
-  .field-log {
-    padding: var(--space-4) 0 0;
-    border-left: 0;
-  }
 }
 
 @media (width < 768px) {
@@ -869,103 +865,105 @@
   white-space: pre-wrap;
 }
 
-/* ---------------------------------------------------------------- Sources */
+/* ---------------------------------------------------------------- Sources: bibliography */
 
-/* The table uses the full content column (between rail and field log), not the reading measure. */
-.sources {
-  width: 100%;
+/* Numbered entries on hairlines: the exact locator leads in the reading face, then the source
+   with its type and host, then its purpose, then the personal "Opened" mark (DESIGN.md → Route sheet). */
+.bibliography {
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+  border-bottom: var(--border-width) solid var(--line);
 }
 
-.sources-table th:nth-child(1) {
-  width: 26%;
+.bib-entry {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  column-gap: var(--space-3);
+  padding: var(--space-5) 0;
+  border-top: var(--border-width) solid var(--line);
 }
 
-.sources-table th:nth-child(3) {
-  width: 28%;
+.bib-entry > :not(.bib-num) {
+  grid-column: 2;
+  margin: 0;
 }
 
-.sources-table th:nth-child(4) {
-  width: 4.75rem;
-}
-
-.sources-table td {
-  padding: var(--space-4) var(--space-3);
-}
-
-.sources-cell > * + * {
-  margin-top: var(--space-2);
-}
-
-.sources-link {
-  display: block;
-}
-
-.sources-link {
+.bib-num {
+  grid-row: 1;
+  grid-column: 1;
+  padding-top: 0.3em;
+  font-size: var(--text-small);
   font-weight: 600;
+  color: var(--ink-muted);
 }
 
-.sources-meta {
+.bib-locator {
+  font-family: var(--font-reading);
+  font-size: 1.25rem;
+  font-optical-sizing: auto;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.bib-entry .bib-cite {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-2);
+  font-size: var(--text-ui);
 }
 
-.sources-host {
+.bib-title {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-1);
+  font-weight: 550;
+}
+
+.bib-title .icon {
+  align-self: center;
+}
+
+.bib-meta {
   font-size: var(--text-small);
   color: var(--ink-muted);
 }
 
-.locator-cell {
+.bib-entry .bib-purpose {
+  max-width: var(--measure);
+  margin-top: var(--space-2);
   font-family: var(--font-reading);
   font-size: 1.0625rem;
   line-height: 1.5;
-  color: var(--ink);
-}
-
-.purpose-cell {
   color: var(--ink-muted);
 }
 
-.checkbox-text {
-  display: none;
+.bib-purpose-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.bib-entry .bib-opened {
+  margin-top: var(--space-3);
+}
+
+.bib-opened .checkbox {
+  font-size: var(--text-small);
+  color: var(--ink-muted);
 }
 
 @media (width < 768px) {
-  .sources-table thead {
-    display: none;
+  .bib-entry {
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    column-gap: var(--space-2);
   }
 
-  .sources-table tr,
-  .sources-table td {
-    display: block;
-  }
-
-  .sources-table tr {
-    padding: var(--space-4) 0;
-    border-bottom: var(--border-width) solid var(--line);
-  }
-
-  .sources-table td {
-    padding: 0 0 var(--space-3);
-    border: 0;
-  }
-
-  .sources-table td[data-label]::before {
-    content: attr(data-label);
-    display: block;
-    margin-bottom: var(--space-1);
-    font-family: var(--font-sans);
-    font-size: var(--text-small);
-    font-weight: 550;
-    color: var(--ink-muted);
-  }
-
-  .checkbox-text {
-    display: inline;
+  .bib-locator {
+    font-size: 1.125rem;
   }
 }
 
@@ -1527,43 +1525,22 @@
   gap: var(--space-3);
 }
 
-.drawer-path {
-  margin: 0;
-  font-size: var(--text-small);
-  color: var(--ink-muted);
-}
-
 .drawer-title {
-  margin: var(--space-4) 0 var(--space-4);
+  margin: var(--space-3) 0 var(--space-3);
   font-size: var(--text-title);
   line-height: var(--leading-title);
   letter-spacing: -0.015em;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.chips code {
-  font-size: var(--text-small);
-}
-
-.drawer-chips {
+.drawer-body > .details-line {
   margin-bottom: var(--space-5);
 }
 
-.chip-mapped {
-  border-style: dashed;
-  color: var(--ink-muted);
-}
-
-.chip-id {
-  color: var(--ink-muted);
+/* The item's maturity leads the drawer's details line, with its plate glyph. */
+.details-maturity {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .drawer-facts {
@@ -1631,16 +1608,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-1) var(--space-2);
-}
-
-.drawer-counts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-6);
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  list-style: none;
-  font-weight: 550;
 }
 
 .drawer-related {

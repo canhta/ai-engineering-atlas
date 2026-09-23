@@ -64,7 +64,10 @@ Last updated: 2026-09-23
 
 - [x] 01 Print system everywhere: paper/ink/magenta tokens in light and night-chart dark, Newsreader + IBM Plex Sans (Hubot Sans removed), plain top bar and footer, no glass, bezels, trays, pill buttons, or plate settle-in; stylelint rejects undefined tokens and blur; DESIGN.md visual system and review tells rewritten
 - [x] 02 The plate carries names: ready routes as named tiles, mapped competencies as circle marks, italic region labels with "N ready of M"; region placement from the pure, tested `src/lib/plate-layout.ts` (rows fill, no stretched last row); prerequisite lines on hover and focus only; the unused progress mode removed
-- [ ] 03–05 Home with the specimen, route page (details line, bibliography, margin column)
+- [ ] 03 Home with the specimen
+- [x] 04 Route page as a chapter: section label, details line (`detailsOf()` in `atlas.ts`, also in the Atlas drawer) instead of chips, numbered contents rail, sources as a bibliography with the locator first, field log in a sticky ruled margin column; project pages share it, lab workbenches unchanged
+- [ ] 05 Region locator plate at the top of the route's margin column
+- [ ] After 03: drop `chips` and `sources` from `ItemDetail` and the `drawer.sources` strings once Home's ready rows are gone (they are their only users)
 - [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
 
 ### Phase 1 follow-ups

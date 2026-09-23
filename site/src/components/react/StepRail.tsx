@@ -1,5 +1,5 @@
-// Waypoint rail (DESIGN.md → Route sheet): every titled block in order; `step` blocks are
-// numbered and show their local status. The current section is marked by a scrollspy.
+// Contents rail (DESIGN.md → Route sheet): every titled block in order, like a book's contents;
+// `step` blocks are numbered and show their local status. The current section is marked by a scrollspy.
 // Below 1024px the rail collapses into a sticky "Step n of N, <title>" bar with a menu.
 import { useEffect, useRef, useState } from "react";
 import { type Lang, useTranslations } from "../../i18n";
@@ -86,7 +86,10 @@ export default function StepRail({ lang, itemRef, entries }: Props) {
   const barLabel = active?.step ? t("rail.stepOf", { n: active.step, total: steps }) : undefined;
 
   return (
-    <nav className="rail" aria-label={t("rail.label")} data-open={menuOpen || undefined}>
+    <nav className="rail" aria-labelledby="rail-head" data-open={menuOpen || undefined}>
+      <p className="rail-head" id="rail-head">
+        {t("rail.label")}
+      </p>
       <button
         ref={barRef}
         type="button"

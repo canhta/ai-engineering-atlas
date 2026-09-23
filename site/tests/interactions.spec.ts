@@ -6,14 +6,33 @@ const ROUTE_REF = "ai.tool-calling";
 
 // Counts come from the content model, never typed in: the curriculum grows, and a test that
 // pins "19 of 116" fails on the next route promotion rather than on a real regression.
+type L10n = { en: string; vi?: string };
 type Model = {
-  collections: { id: string; group_by?: string; page_when?: unknown; progress?: { tracks?: boolean } }[];
+  collections: {
+    id: string;
+    label: L10n;
+    group_by?: string;
+    page_when?: unknown;
+    progress?: { tracks?: boolean };
+    fields: Record<string, { vocabulary?: string }>;
+  }[];
+  vocabularies: Record<string, Record<string, { label: L10n }>>;
   items: Record<
     string,
     {
       id: string;
+      title: L10n;
       fields: Record<string, unknown>;
-      page?: { blocks: { id: string; type: string; tasks?: unknown[]; rows?: unknown[] }[] };
+      page?: {
+        blocks: {
+          id: string;
+          type: string;
+          title: L10n;
+          step?: boolean;
+          tasks?: unknown[];
+          rows?: { resource: string; locator: L10n }[];
+        }[];
+      };
     }[]
   >;
 };
@@ -30,6 +49,13 @@ const REGION_READY = trackedItems.filter(
 ).length;
 const TASKS = (routeBlocks.find((b) => b.type === "diagnostic")?.tasks ?? []).length;
 const SOURCES = (routeBlocks.find((b) => b.id === "sources")?.rows ?? []).length;
+/** Every sources block of the route, and the rows across them: the details line's source count. */
+const SOURCE_BLOCKS = routeBlocks.filter((b) => b.type === "sources");
+const ALL_SOURCES = SOURCE_BLOCKS.reduce((n, b) => n + (b.rows ?? []).length, 0);
+const STEP_BLOCKS = routeBlocks.filter((b) => b.step);
+const groupField = tracked.group_by!;
+const GROUP_LABEL =
+  model.vocabularies[tracked.fields[groupField].vocabulary!][String(routeItem.fields[groupField])].label;
 
 /** Wait until every island on the page has hydrated (Astro removes the `ssr` attribute). */
 async function hydrated(page: Page) {
@@ -115,6 +141,15 @@ test("a tile opens the drawer; Esc closes it and returns focus to the tile", asy
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
   await expect(page).toHaveURL(/item=ai\.tool-calling/);
   await expect(drawer(page).getByRole("link", { name: "Open route" })).toHaveAttribute("href", ROUTE);
+  // The details line replaces tags: counts from the model, never joined by middle dots.
+  const details = drawer(page).getByRole("list", { name: "Details" });
+  await expect(details).toContainText(`${ALL_SOURCES} sources`);
+  await expect(details).toContainText(`${TASKS} diagnostic tasks`);
+  await expect(details).not.toContainText("·");
+  await expect(drawer(page).getByRole("link", { name: "Start diagnostic" })).toHaveAttribute(
+    "href",
+    `${ROUTE}#${routeBlocks.find((b) => b.type === "diagnostic")!.id}`,
+  );
   // Focus moves into the drawer (DESIGN.md → Accessibility baseline) before Esc can close it.
   await expect.poll(() => page.evaluate(() => Boolean(document.activeElement?.closest("[role=dialog]")))).toBe(true);
   await page.keyboard.press("Escape");
@@ -229,6 +264,82 @@ test("@mobile the plate stacks into readable region blocks without horizontal sc
 
 // ---------------------------------------------------------------- Route sheet
 
+test("the route page reads like a chapter: section label, title, details line, bibliography", async ({ page }) => {
+  await open(page, ROUTE);
+  const main = page.getByRole("main");
+  await expect(main.getByRole("link", { name: GROUP_LABEL.en, exact: true }).first()).toHaveAttribute(
+    "href",
+    /\/en\/map\/\?group=/,
+  );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(routeItem.title.en);
+
+  const details = main.getByRole("list", { name: "Details" });
+  await expect(details).toContainText(`${ALL_SOURCES} sources`);
+  await expect(details).toContainText(`${TASKS} diagnostic tasks`);
+  await expect(details).not.toContainText("·");
+
+  // Every sources block is a bibliography: one entry per row, the exact locator first.
+  for (const block of SOURCE_BLOCKS) {
+    const entries = main.getByRole("list", { name: block.title.en, exact: true }).getByRole("listitem");
+    await expect(entries).toHaveCount(block.rows!.length);
+    for (const [i, row] of block.rows!.entries()) {
+      await expect(entries.nth(i).locator("p").first()).toContainText(row.locator.en);
+    }
+  }
+});
+
+test("the contents rail numbers the steps and marks the current section", async ({ page }) => {
+  await open(page, ROUTE);
+  for (const [i, block] of STEP_BLOCKS.entries()) {
+    const link = rail(page).locator(`a[href="#${block.id}"]`);
+    await expect(link).toContainText(`${i + 1}`);
+    await expect(link).toContainText(block.title.en);
+  }
+  const sources = SOURCE_BLOCKS[0];
+  await rail(page).locator(`a[href="#${sources.id}"]`).click();
+  await expect(rail(page).locator(`a[href="#${sources.id}"]`)).toHaveAttribute("aria-current", "location");
+});
+
+test("every in-page anchor on the route page points at one element on it", async ({ page }) => {
+  await open(page, ROUTE);
+  const targets = await page.locator('main a[href^="#"]').evaluateAll((links) =>
+    links.map((a) => {
+      const id = decodeURIComponent(a.getAttribute("href")!.slice(1));
+      return { id, found: document.querySelectorAll(`[id="${CSS.escape(id)}"]`).length };
+    }),
+  );
+  expect(targets.length).toBeGreaterThan(0);
+  for (const target of targets) expect(target, target.id).toEqual({ id: target.id, found: 1 });
+});
+
+test("the field log stays in the margin column beside the reading column while scrolling", async ({ page }) => {
+  await open(page, ROUTE);
+  await page.locator(`#${STEP_BLOCKS.at(-1)!.id}`).scrollIntoViewIfNeeded();
+  const record = fieldLog(page).getByRole("button", { name: "Record evidence" });
+  await expect(record).toBeInViewport();
+  const [log, reading] = await Promise.all([
+    fieldLog(page).boundingBox(),
+    page.locator(`#${STEP_BLOCKS.at(-1)!.id}`).boundingBox(),
+  ]);
+  expect(log!.x).toBeGreaterThanOrEqual(reading!.x + reading!.width);
+});
+
+test("an item of another collection shares the sheet: section label, contents rail, no field log", async ({ page }) => {
+  // A page without a runner or form block (those are workbenches, covered in labs.spec.ts).
+  const reading = (i: Model["items"][string][number]) =>
+    i.page?.blocks.every((b) => b.type !== "runner" && b.type !== "form");
+  const other = model.collections.find((c) => c.id !== tracked.id && model.items[c.id]?.some(reading))!;
+  const item = model.items[other.id].find(reading)!;
+  await open(page, `/en/${other.id}/${item.id}/`);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(item.title.en);
+  await expect(page.getByRole("main").getByRole("link", { name: other.label.en, exact: true })).toHaveAttribute(
+    "href",
+    `/en/${other.id}/`,
+  );
+  await expect(rail(page)).toBeVisible();
+  await expect(fieldLog(page)).toHaveCount(0);
+});
+
 test("diagnostic: one task per card, then the pass condition, record a gap", async ({ page }) => {
   await open(page, ROUTE);
   await expect(page.getByText(`Task 1 of ${TASKS}`)).toBeVisible();
@@ -330,7 +441,7 @@ competencies:
 test("opening a source is a personal mark and leaves the state unchanged", async ({ page }) => {
   await open(page, ROUTE);
   const opened = page.getByRole("checkbox", { name: /^Opened / }).first();
-  await page.locator(".sources-table .checkbox").first().click();
+  await page.locator(".bibliography .checkbox").first().click();
   await expect(opened).toBeChecked();
   await expect(rail(page).getByText(`1 of ${SOURCES} opened`)).toBeVisible();
   await page.reload();
@@ -394,6 +505,7 @@ test("Vietnamese pages render the same interactions and mark untranslated text",
   await expect(page.getByRole("button", { name: "Câu tiếp" })).toBeDisabled();
   await expect(page.locator("h1")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("note")).toHaveText("chưa dịch / not yet translated");
+  await expect(page.getByRole("list", { name: "Thông tin" })).toContainText(`${TASKS} câu kiểm tra đầu vào`);
 });
 
 test("the root page opens the remembered language", async ({ page }) => {

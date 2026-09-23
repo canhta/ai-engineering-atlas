@@ -4,6 +4,8 @@ import type { Lang } from "../i18n";
 import {
   trackedCollection as c,
   collections,
+  type Details,
+  detailsOf,
   fieldChips,
   groupsOf,
   hasPage,
@@ -57,11 +59,14 @@ export interface ItemDetail {
   groupLabel?: Localized;
   href?: string;
   maturity: string;
+  /** Header field values with short codes, for Home's ready rows. */
   chips: { code?: string; label: Localized }[];
+  /** The details line, as on the item's page. */
+  details: Details;
   lead?: Localized;
   needs: { ref: string; title: Localized; href?: string; bridged: boolean }[];
+  /** Source count, for Home's ready rows. */
   sources: number;
-  tasks: number;
   diagnosticAnchor?: string;
   related: { label: Localized; items: { title: Localized; href?: string }[] }[];
   target?: string;
@@ -160,6 +165,7 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
             label: chip.label,
           }))
         : [],
+      details: detailsOf(c, item, lang),
       lead: lead?.type === "text" ? text(lead.body, lang) : undefined,
       needs: relationsTo("prerequisite", ref).map((r) => ({
         ref: r.from,
@@ -168,7 +174,6 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
         bridged: bridged.has(r.from),
       })),
       sources: blocks.reduce((n, b) => n + (b.type === "sources" ? b.rows.length : 0), 0),
-      tasks: diagnostic?.type === "diagnostic" ? diagnostic.tasks.length : 0,
       diagnosticAnchor: diagnostic?.id,
       related: [...byCollection.values()],
       target: page ? targetOf(c, item) : undefined,
