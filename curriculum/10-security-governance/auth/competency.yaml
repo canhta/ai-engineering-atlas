@@ -18,7 +18,7 @@ curriculum_evidence:
   - standard.openid-connect-core
   - guide.nist-sp800-63b-4
   - guide.owasp-authorization
-prerequisites:
+prerequisites: []
 
 outcomes:
   - "Distinguish identity proofing, authentication, federation, session management, authorization, and tenant isolation instead of collapsing them into login."
