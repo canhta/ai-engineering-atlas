@@ -4,9 +4,9 @@ The design and layout source of truth for everything under `site/`, for agents a
 
 Token values live in `site/src/styles/tokens.css`; this file names roles and intent. If they disagree, fix one in the same change.
 
-## Direction: survey plate
+## Direction: printed atlas
 
-The atlas is a map, so the map is the design. One element carries the identity: **the plate**, a region map with one tile per competency, grouped by domain, drawn in the language of a survey chart (mineral ground, ink, magenta route marks). Everything around the plate stays quiet.
+The atlas is a map, so the map is the design, set like a printed atlas with a tool's density ([ADR 0001](../docs/adr/0001-editorial-print-direction.md)). One element carries the identity: **the plate**, a region map with one tile per competency, grouped by domain, inside a printed plate frame (paper, ink, magenta as the one route mark). Everything around the plate stays quiet: hairline rules, small radii, no decoration.
 
 Proven patterns, reused rather than invented:
 
@@ -19,7 +19,7 @@ Proven patterns, reused rather than invented:
 | "Not feeling ready? …" prerequisite line                                                 | Khan Academy, master.dev         | Route prerequisite line                         |
 | Labelled AI actions inside the item panel                                                | roadmap.sh node panel            | Phase 2 tutor actions                           |
 
-Footer: site name and licence on the left, a "Star on GitHub" pill in the middle, and the owner's links as icon buttons on the right (`site.links` in the content model: GitHub, email, WhatsApp, Zalo, X, LinkedIn). Each icon carries a visually hidden name. The nav keeps a repository icon on desktop; below 640px it moves into the menu overlay, where the pill has no room.
+Footer: an ink rule above; site name, licence, and a "Star on GitHub" text link on the left, and the owner's links as icons on the right (`site.links` in the content model: GitHub, email, WhatsApp, Zalo, X, LinkedIn). Each icon carries a visually hidden name. The top bar keeps a repository icon from 768px up; on a phone the footer carries it.
 
 ## Principles
 
@@ -47,24 +47,26 @@ Global nav: wordmark (home), **Atlas**, **Progress** (with the due-review count)
 ## Global frame
 
 ```text
-desktop ≥ 1024                                                  mobile < 768
-   ╭─ Atlas wordmark   Atlas   Progress ³    English  Tiếng Việt ─╮     ╭ wordmark        Menu ╮
-   ╰───────────────────────────────────────────────────────────────╯     ╰──────────────────────╯
- floating pill 16px from the top, centred, max 1120; the only          full width minus 16px; Menu
- glass blur on the site; active tab underlined                          opens a full-screen overlay
- content: 12-column grid, max 1280, 24px gutters, left aligned          one column, 16px gutters
+desktop ≥ 768                                                         mobile < 768
+ AI Engineering Atlas   Atlas   Progress ³        English  Tiếng Việt │ ⌂    AI Engineering Atlas
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    Atlas  Progress   English  Tiếng Việt
+ full width, ink hairline under it, sticky, never blurred; the current      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ tab stands on the hairline with a 3px magenta rule                          two rows, scrolls away with the page
+ content: max 1280, 24px gutters, left aligned                               one column, 16px gutters
 ```
+
+The bar never covers focused content: it is `--nav-height` tall, `scroll-padding-top` clears it, and sticky layers below it start at `--bar-offset` (0 on a phone, where the bar scrolls away).
 
 ## Surfaces
 
 ### Home
 
 ```text
- AI Engineering Atlas                                      display, wide width, 56–72px
- A gap-driven roadmap for software engineers               subtitle, 22–26px
+ AI Engineering Atlas                                      Newsreader, 44–76px (the one large title)
+ A gap-driven roadmap for software engineers               standfirst, Newsreader, 20–24px
  learning modern AI engineering.
  Diagnose first, read the exact source, prove it with evidence.        one muted line
- ( Find your starting point  (↗) )    How the atlas works              pill CTA → /map/?ready=1
+ [ Find your starting point ]    How the atlas works                   primary button → /map/?ready=1
  legend   ⬚ mapped   □ ready   ◧ gap   ◧ learning   ■ demonstrated or beyond
 ╭───────────────────────────────────── plate ──────────────────────────────────────╮
 │ Software engineering    Systems             Data engineering    ML foundations   │
@@ -83,7 +85,7 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 
 ### The plate: one component, three modes
 
-- Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in the wide display width, sentence case, with "N ready of M".
+- Regions: one per `group_by` value in vocabulary order; 4 × 3 on desktop, 2 columns on tablet, 1 on mobile. Region label in italic Newsreader like a map label, with "N ready of M" in Plex Sans.
 - Tiles: one per item, in content order. Every state has its own fill or icon and its own hue; colour is never the only cue:
 
   | State                          | Tile                            | Hue token                                                                        |
@@ -132,12 +134,12 @@ Mobile: headline, subtitle, CTA, legend, the plate as stacked region rows with w
 
 ```text
  Atlas / AI engineering / Tool calling                                      breadcrumb
- Tool Calling                                                               display
+ Tool Calling                                                               page title, Newsreader 32–40px
  Tool-enabled AI systems cross a boundary from model suggestions …          first text block as a lead, 20px (18px mobile), ink-muted, ≤ 60ch
  (L3 deep engineering) (engineering skill) (system operation)    View contract ↗   Copy link
  Not feeling ready? Needs ■ AI evaluation and ⬚ API design (bridge on the route page)
 ┌ rail 220 ──────────┬ content, reading column ≤ 68ch ─────────┬ field log 320, sticky ──┐
-│ Outcomes           │ blocks in content order                 │ ╭─ double bezel ───────╮ │
+│ Outcomes           │ blocks in content order                 │ ┌─ ink rule, hairline ─╮ │
 │ 1 Diagnostic    ◧  │                                         │ │ Your state   ◧ gap   │ │
 │ 2 Learning route   │ diagnostic: one task per card,          │ │ Target       applied │ │
 │   2 of 5 opened    │ "Task 2 of 4", answer, Next; after the  │ │ Next review  —       │ │
@@ -197,12 +199,12 @@ Every lab has a page that renders its README (a Markdown `text` block). A lab wi
 
 ```text
  Atlas / Labs / Evaluation Harness Lab                                       breadcrumb
- Evaluation Harness Lab                                                      display
+ Evaluation Harness Lab                                                      page title
  View contract ↗   Copy link
  Practice for ◧ AI Evaluation and Experimentation            tracked items pointing at the lab
 ┌ brief, 5 fr, reading column ─────────┬ bench, 7 fr, sticky under the nav, scrolls inside ─┐
 │ Lab brief                            │ Run the tests                                       │
-│ README: tasks, transfer, evidence;   │ ╭─ double bezel ──────────────────────────────────╮ │
+│ README: tasks, transfer, evidence;   │ ━━ ink rule, no tray ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
 │ headings one level down; relative    │ │ starter.py your code │ tests.py │ cases.jsonl    │ │
 │ links go to atlas pages or the repo  │ │ editor (CodeMirror, 18–32rem)                    │ │
 │                                      │ │ Tab indents; Esc then Tab leaves. Draft saved.   │ │
@@ -218,7 +220,7 @@ Every lab has a page that renders its README (a Markdown `text` block). A lab wi
 ```
 
 - Tabs: the editable file first (marked "your code"), then the run file, then fixtures, read only. The reference appears as a last tab only after the learner opens it.
-- Editor: JetBrains Mono without ligatures (code must look as typed), syntax colours from the `code-*` tokens, `lang="en"`, the bezel core as background. Before hydration the files show as plain `pre`.
+- Editor: JetBrains Mono without ligatures (code must look as typed), syntax colours from the `code-*` tokens, `lang="en"`, the `sheet` as background. Before hydration the files show as plain `pre`.
 - Results panel, one `role="status"` line with icon, label, and time; colour is never the only cue:
 
   | State                    | Line                                                  | Detail                                                                                                                              |
@@ -244,46 +246,53 @@ Before hydration (controls disabled, no learner state drawn); empty; filtered to
 
 ## Visual system
 
+The editorial print system (ADR 0001): paper and ink, one accent, hairlines instead of containers, type sized to the content.
+
 ### Colour roles
 
-| Role                                                                                                             | Use                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `ground`                                                                                                         | page background: pale mineral grey-green (light), night chart (dark)                                       |
-| `sheet`                                                                                                          | raised surfaces: plate core, drawer, field log core                                                        |
-| `ink`, `ink-muted`                                                                                               | text; muted for secondary text                                                                             |
-| `line`                                                                                                           | hairlines and contour strokes: translucent ink, not flat grey                                              |
-| `route`                                                                                                          | magenta: selection ring, highlighted prerequisite lines, primary action (ready tiles use an `ink` outline) |
-| `water`                                                                                                          | teal: links                                                                                                |
-| `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied`      | one hue per learner state (see The plate); always with shape and label                                     |
-| `code-keyword`, `code-string`, `code-number`, `code-definition`, `code-comment`, `code-selection`, `code-gutter` | lab editor syntax and chrome only (see Labs)                                                               |
+| Role                                                                                                             | Use                                                                                                                                                                   |
+| ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ground`                                                                                                         | page background: warm paper (light), night chart (dark)                                                                                                               |
+| `sheet`                                                                                                          | the plate's ground, the drawer, sheets, inputs, code                                                                                                                  |
+| `ink`, `ink-muted`                                                                                               | text; muted for secondary text. Links are `ink` with a `line-strong` underline                                                                                        |
+| `line`                                                                                                           | hairlines between rows and sections                                                                                                                                   |
+| `line-strong`                                                                                                    | meaningful strokes at 3:1: mapped marks, input and secondary-button outlines, link underlines                                                                         |
+| `wash`                                                                                                           | hover and pressed fill on quiet controls (ink at a few percent)                                                                                                       |
+| `route`                                                                                                          | magenta, the one route mark: the primary action, selection (ring, current tab, current step), prerequisite lines, link hover. Not for counts, numerals, or decoration |
+| `state-gap`, `state-learning`, `state-demonstrated`, `state-transferred`, `state-retained`, `state-applied`      | one hue per learner state (see The plate); always with shape and label; unchanged by the redesign                                                                     |
+| `code-keyword`, `code-string`, `code-number`, `code-definition`, `code-comment`, `code-selection`, `code-gutter` | lab editor syntax and chrome only (see Labs)                                                                                                                          |
+| `scrim`, `shadow-float`                                                                                          | the dimmed page and the shadow under floating layers only                                                                                                             |
 
-`pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
+Dark mode is a night chart: the same roles on a warm near-black sheet, light ink, a lighter magenta. `pnpm run check:contrast` verifies every text and meaningful-line pair in both themes; add a pair when you add a role.
 
 ### Type
 
-| Role         | Family                               | Setting                                          |
-| ------------ | ------------------------------------ | ------------------------------------------------ |
-| Display      | Hubot Sans, wide (wdth 118–125), 700 | 40–72px, leading 1.05                            |
-| UI           | Hubot Sans, normal width, 400–600    | 15–16px, tabular numbers for counts              |
-| Reading      | Newsreader (optical sizes)           | 18px, line-height 1.65, ≤ 68ch                   |
-| Code and IDs | JetBrains Mono                       | code, and IDs in the drawer and route chips only |
+| Role                                          | Family                            | Setting                                               |
+| --------------------------------------------- | --------------------------------- | ----------------------------------------------------- |
+| Home title                                    | Newsreader (optical sizes), 500   | `text-home`, 44–76px, leading 1, the only large title |
+| Page title                                    | Newsreader, 500                   | `text-title`, 32–40px; the drawer title too           |
+| Section heads (h2), standfirst, lead, reading | Newsreader                        | h2 26px; reading 18px, line-height 1.65, ≤ 68ch       |
+| Plate region labels                           | Newsreader italic                 | 18px, like labels on a map                            |
+| UI, h3 and below                              | IBM Plex Sans (variable), 400–600 | 15–16px, tabular numbers for counts                   |
+| Code and IDs                                  | JetBrains Mono                    | code, and IDs in the drawer and route chips only      |
 
-Every family ships the `vietnamese` subset. Render test: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`. Labels are sentence case, never tracked capitals.
+Every family ships the `vietnamese` subset. Render test: `Ở đây, người học chứng minh kỹ năng; Ưu tiên, ngữ cảnh, Đầu ra`. Labels are sentence case, never tracked capitals. No wide or condensed display cuts.
 
 ### Shape and depth
 
-- Double bezel (outer tray and inner core with concentric radii) only for the plate, the drawer, the field log, and the lab bench. Everything else sits flat on the ground.
-- Radii: tray 28, core 22; cards and inputs 12; chips and buttons are pills.
-- Hairlines use `line`. Shadows are soft and ambient and only on floating layers: nav, drawer, sheets, tooltips.
-- Primary action: a pill whose trailing icon sits in its own circle; pressing scales it to 0.98 and nudges the icon circle.
+- Nothing is a tray or a card by default. Sections are separated by hairlines (`line`); a heavier ink rule marks the start of a working surface (the field log, the lab bench, the diagnostic, the top bar and footer).
+- The plate sits in a printed frame: an outer 1.5px ink rule, 3px of sheet, an inner ink hairline.
+- Radii are 2–4px: `radius-mark` (tiles, glyphs, chips), `radius-control` (buttons, inputs), `radius-float` (drawer edge, sheets, tooltips). Circles only for mapped marks, radios, and rail step numbers.
+- Buttons are rectangles: one magenta primary per view (`button button-primary`), outlined ink secondaries (`button`), and quiet text buttons (`button-quiet`). A button carries a text label; an icon only where it names a tool action (run, stop, export, import), never inside its own circle.
+- Shadows only on floating layers: the drawer, sheets, and the rail's menu. Nothing blurs what lies under it.
 
 ### Motion
 
-- Easing `cubic-bezier(0.32, 0.72, 0, 1)`; 180ms for controls, 450ms for the drawer and sheets.
-- One orchestrated moment: on every Home load, plate regions settle in order (CSS only, 700ms total at most, no session script). Sections do not fade in on scroll.
-- Other motion answers an action: the drawer slides, disclosures open, the selection ring grows.
-- `prefers-reduced-motion`: every transition is instant and the plate appears at once.
-- Animate only `transform` and `opacity`. Blur only on the floating nav and overlays.
+- Easing `cubic-bezier(0.32, 0.72, 0, 1)`; `duration-control` (160ms) for control feedback, `duration-sheet` (320ms) for the drawer and sheets sliding in.
+- There is no entrance animation: the Home plate appears at once, and sections do not fade in on scroll.
+- Other motion answers an action: the drawer and sheets slide, disclosures open, colours change on hover.
+- `prefers-reduced-motion`: every transition is instant.
+- Animate only `transform`, `opacity`, and colour.
 
 ### Icons
 
@@ -304,13 +313,19 @@ Every family ships the `vietnamese` subset. Render test: `Ở đây, người h�
 
 ## Review tells
 
-| Tell                                                                   | Replace with                                               |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------- |
-| Identical card grid with one radius and shadow everywhere              | Plate tiles, rows, and the four double-bezel surfaces only |
-| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips, sentence case, monospace only for code and IDs      |
-| Marketing headline, percent rings, streaks, XP, "N of M complete"      | Ready and mapped counts, evidence states, due reviews      |
-| Learning/Done/Skip toggles on items                                    | Record evidence in the field log                           |
-| Floating "Ask anything" input, sparkles                                | Labelled AI actions inside the drawer or a block (Phase 2) |
-| `→` appended to links                                                  | A trailing icon inside the primary pill only               |
-| Scroll-triggered fade-ins on every section                             | The single plate reveal                                    |
-| Colour-only status                                                     | Shape, label, and colour                                   |
+| Tell                                                                   | Replace with                                                                                    |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Glass: a blurred, translucent nav or panel                             | A plain bar on `ground` with an ink hairline                                                    |
+| Double bezels, trays, or a card around every section                   | Hairline rules between sections; an ink rule where a working surface starts                     |
+| Pill buttons, or a trailing icon in its own circle ("pill-in-pill")    | A rectangular button with a text label, 2–4px radius                                            |
+| Large radii (8px and up) on panels, inputs, or the drawer              | `radius-mark`, `radius-control`, `radius-float`                                                 |
+| Wide or display sans faces, 72px titles on every page                  | Newsreader page titles at 32–40px; only Home is large                                           |
+| Teal or coloured links, magenta used for decoration or numerals        | Ink links with an underline; magenta only for the route mark                                    |
+| Identical card grid with one radius and shadow everywhere              | Plate tiles and hairline rows                                                                   |
+| Meta joined with middle dots, monospace micro-labels, tracked capitals | Chips (a details line after the route redesign), sentence case, monospace only for code and IDs |
+| Marketing headline, percent rings, streaks, XP, "N of M complete"      | Ready and mapped counts, evidence states, due reviews                                           |
+| Learning/Done/Skip toggles on items                                    | Record evidence in the field log                                                                |
+| Floating "Ask anything" input, sparkles                                | Labelled AI actions inside the drawer or a block (Phase 2)                                      |
+| `→` appended to links                                                  | A plain underlined link                                                                         |
+| Entrance animations, scroll-triggered fade-ins, press scaling          | Nothing: the page is there at once                                                              |
+| Colour-only status                                                     | Shape, label, and colour                                                                        |

@@ -89,13 +89,14 @@ export default defineConfig({
       styleDirective: { resources: ["'self'", "'unsafe-inline'"] },
     },
   },
-  // DESIGN.md → Type. Variable families: Hubot Sans (wght + wdth), Newsreader (wght + opsz).
+  // DESIGN.md → Type. Variable families: IBM Plex Sans (wght), Newsreader (wght + opsz, with
+  // italic for the plate's region labels), JetBrains Mono (wght).
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: "Hubot Sans",
+      name: "IBM Plex Sans",
       cssVariable: "--font-sans",
-      weights: ["200 900"],
+      weights: ["100 700"],
       styles: ["normal"],
       subsets,
       fallbacks: ["system-ui", "sans-serif"],
@@ -105,7 +106,7 @@ export default defineConfig({
       name: "Newsreader",
       cssVariable: "--font-reading",
       weights: ["200 800"],
-      styles: ["normal"],
+      styles: ["normal", "italic"],
       subsets,
       fallbacks: ["Georgia", "serif"],
     },

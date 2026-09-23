@@ -1,11 +1,9 @@
 {
   "nav.label": "Điều hướng chính",
   "nav.skip": "Bỏ qua, tới nội dung",
-  "nav.home": "Trang chủ",
   "nav.atlas": "Atlas",
   "nav.progress": "Tiến độ",
   "nav.due": "{count} bài cần ôn",
-  "nav.menu": "Menu",
   "nav.close": "Đóng",
   "nav.breadcrumb": "Vị trí trang",
   "lang.label": "Ngôn ngữ",

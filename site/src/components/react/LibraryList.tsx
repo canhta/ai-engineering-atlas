@@ -70,7 +70,7 @@ export default function LibraryList({ lang, entries, kindLabels }: Props) {
         <div className="empty">
           <p>{t("library.noResults")}</p>
           <Button
-            className="pill"
+            className="button"
             onPress={() => {
               setQuery("");
               setKind("");

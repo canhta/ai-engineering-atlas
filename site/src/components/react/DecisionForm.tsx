@@ -65,40 +65,36 @@ export default function DecisionForm(props: Props) {
 
   return (
     <div className="lab-bench">
-      <div className="bezel">
-        <div className="bezel-core lab-core form-core">
-          <div className="form-fields">
-            {fields.map((field) => (
-              <FieldInput
-                key={field.id}
-                lang={lang}
-                field={field}
-                value={answers[field.id]}
-                onChange={(value) => update(field.id, value)}
-                disabled={!mounted}
-              />
-            ))}
-          </div>
-          <p className="lab-help small muted">{t("form.draftNote")}</p>
-          <div className="lab-toolbar">
-            <Button className="pill" isDisabled={!mounted} onPress={exportMarkdown}>
-              {t("form.export")}
-              <span className="pill-icon">
-                <Icon name="exportFile" />
-              </span>
-            </Button>
-          </div>
-          {complete && competencies.length > 0 && (
-            <FormEvidence
+      <div className="lab-core form-core">
+        <div className="form-fields">
+          {fields.map((field) => (
+            <FieldInput
+              key={field.id}
               lang={lang}
-              fields={fields}
-              answers={answers}
-              competencies={competencies}
-              stateLabels={stateLabels}
+              field={field}
+              value={answers[field.id]}
+              onChange={(value) => update(field.id, value)}
+              disabled={!mounted}
             />
-          )}
-          <StorageNote lang={lang} />
+          ))}
         </div>
+        <p className="lab-help small muted">{t("form.draftNote")}</p>
+        <div className="lab-toolbar">
+          <Button className="button" isDisabled={!mounted} onPress={exportMarkdown}>
+            {t("form.export")}
+            <Icon name="exportFile" />
+          </Button>
+        </div>
+        {complete && competencies.length > 0 && (
+          <FormEvidence
+            lang={lang}
+            fields={fields}
+            answers={answers}
+            competencies={competencies}
+            stateLabels={stateLabels}
+          />
+        )}
+        <StorageNote lang={lang} />
       </div>
     </div>
   );
@@ -315,11 +311,8 @@ function FormEvidence(props: {
   return (
     <section className="lab-evidence">
       {!open && (
-        <Button className="pill pill-primary" isDisabled={!progress} onPress={openPanel}>
+        <Button className="button button-primary" isDisabled={!progress} onPress={openPanel}>
           {t("log.record")}
-          <span className="pill-icon">
-            <Icon name="add" />
-          </span>
         </Button>
       )}
       <p role="status" className="live-message">
@@ -364,7 +357,7 @@ function FormEvidence(props: {
           </label>
           <p className="small muted">{t("form.evidence.method")}</p>
           <div className="form-actions">
-            <button type="submit" className="pill pill-primary">
+            <button type="submit" className="button button-primary">
               {t("evidence.save")}
             </button>
             <button type="button" className="button-quiet" onClick={() => setOpen(false)}>

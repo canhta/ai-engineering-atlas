@@ -113,11 +113,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           {progress && entries.length === 0 ? (
             <div className="empty">
               <p>{t("progress.empty")}</p>
-              <a className="pill pill-primary" href={`${atlasUrl}?ready=1`}>
+              <a className="button button-primary" href={`${atlasUrl}?ready=1`}>
                 {t("home.start")}
-                <span className="pill-icon">
-                  <Icon name="forward" />
-                </span>
               </a>
             </div>
           ) : (
@@ -185,11 +182,8 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
                           {t("progress.dueOn", { date: when ? formatDate(when, lang) : "" })}
                         </time>
                         {detail?.href && (
-                          <a className="pill pill-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
+                          <a className="button button-primary" href={`${detail.href}#${detail.diagnosticAnchor ?? ""}`}>
                             {t("progress.startReview")}
-                            <span className="pill-icon">
-                              <Icon name="forward" />
-                            </span>
                           </a>
                         )}
                       </li>
@@ -207,12 +201,12 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
 
       <h2>{t("progress.data")}</h2>
       <div className="actions">
-        <Button className="pill" isDisabled={!progress} onPress={exportFile}>
+        <Button className="button" isDisabled={!progress} onPress={exportFile}>
           <Icon name="exportFile" />
           {t("progress.export")}
         </Button>
         <FileTrigger acceptedFileTypes={[".yaml", ".yml", "application/yaml", "text/yaml"]} onSelect={importFile}>
-          <Button className="pill" isDisabled={!progress}>
+          <Button className="button" isDisabled={!progress}>
             <Icon name="importFile" />
             {t("progress.import")}
           </Button>
@@ -228,7 +222,7 @@ export default function ProgressView({ lang, atlasUrl, regions, details, stateLa
           </p>
           <div className="actions">
             <Button
-              className="pill pill-primary"
+              className="button button-primary"
               onPress={() => {
                 // Decision-lab drafts get their own storage entry (guarded like other lab drafts);
                 // the main progress record keeps only evidence and state.

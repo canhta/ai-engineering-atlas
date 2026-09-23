@@ -400,14 +400,13 @@ test("without JavaScript the plate tiles are links into the atlas", async ({ bro
   await context.close();
 });
 
-test("with reduced motion the Home plate appears at once", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("the Home plate appears at once, without an entrance animation", async ({ page }) => {
   await open(page, "/en/");
-  const timing = await page
+  const regions = await page
     .locator(".plate-region")
-    .last()
-    .evaluate((el) => [getComputedStyle(el).animationDuration, getComputedStyle(el).animationDelay]);
-  expect(timing).toEqual(["0s", "0s"]);
+    .evaluateAll((els) => els.map((el) => [getComputedStyle(el).animationName, getComputedStyle(el).opacity]));
+  expect(regions.length).toBeGreaterThan(0);
+  for (const region of regions) expect(region).toEqual(["none", "1"]);
 });
 
 test("the seven states have distinct glyphs or colours in the progress legend", async ({ page }) => {
@@ -528,8 +527,20 @@ test("the library lists every source, searchable, linking out and back to the ro
   await expect(page.getByRole("status")).toContainText(`${papers} of ${sources} sources`);
 });
 
-test("the floating nav blurs the content scrolling under it", async ({ page }) => {
+test("the top bar never blurs or covers the focused element", async ({ page }) => {
   await open(page, ROUTE);
-  // The build once kept only the -webkit- declaration, which Chromium ignores.
-  await expect(page.locator(".nav")).not.toHaveCSS("backdrop-filter", "none");
+  const bar = page.getByRole("banner");
+  await expect(bar).toHaveCSS("backdrop-filter", "none");
+  // Scroll down, then move focus backwards through the page: every focused element lands below the bar.
+  await page.locator("#sources").scrollIntoViewIfNeeded();
+  const links = page.locator("main a[href]:visible");
+  const total = await links.count();
+  for (const i of [total - 1, Math.floor(total / 2), 3]) {
+    await links.nth(i).focus();
+    const [barBottom, top] = await Promise.all([
+      bar.evaluate((el) => el.getBoundingClientRect().bottom),
+      links.nth(i).evaluate((el) => el.getBoundingClientRect().top),
+    ]);
+    expect(top).toBeGreaterThanOrEqual(barBottom);
+  }
 });

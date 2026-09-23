@@ -124,7 +124,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
   <article class:list={["sheet", { tracked: Boolean(target) }]}>
     <header class="sheet-head">
       <Breadcrumb lang={lang} crumbs={crumbs} />
-      <h1 class="display" lang={langAttr(title, lang)}>
+      <h1 class="page-title" lang={langAttr(title, lang)}>
         {title.value}
       </h1>
       {subtitle && (
@@ -272,7 +272,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     margin-bottom: var(--space-12);
   }
 
-  .sheet-head .display {
+  .sheet-head .page-title {
     margin-bottom: var(--space-5);
   }
 
@@ -285,7 +285,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     margin: 0 0 var(--space-5);
     padding: var(--space-1) var(--space-3);
     border: var(--border-width) dashed var(--line-strong);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-mark);
     color: var(--ink-muted);
   }
 
@@ -359,8 +359,8 @@ const railEntries: RailEntry[] = blocks.map((b) => {
 
   .bench {
     position: sticky;
-    top: calc(var(--nav-offset) + var(--nav-height) + var(--space-4));
-    max-height: calc(100vh - var(--nav-offset) - var(--nav-height) - var(--space-8));
+    top: calc(var(--bar-offset) + var(--space-4));
+    max-height: calc(100vh - var(--bar-offset) - var(--space-8));
     overflow-y: auto;
     overscroll-behavior: contain;
   }
@@ -374,19 +374,14 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     display: none;
   }
 
+  /* Step numbers read like section numbers in a book: a quiet numeral before the heading. */
   .block-step {
-    display: inline-grid;
-    place-items: center;
     flex: none;
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 1.5px solid var(--route);
-    border-radius: 50%;
-    font-size: var(--text-small);
+    min-width: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-ui);
     font-weight: 600;
-    font-variation-settings: "wdth" 100;
-    color: var(--route);
-    transform: translateY(-0.15em);
+    color: var(--ink-muted);
   }
 
   @media (width < 1024px) {
@@ -410,7 +405,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
       position: static;
       max-height: none;
       overflow: visible;
-      scroll-margin-top: calc(var(--nav-offset) + var(--nav-height));
+      scroll-margin-top: var(--bar-offset);
     }
 
     .bench-jump {

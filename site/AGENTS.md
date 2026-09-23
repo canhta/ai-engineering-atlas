@@ -28,7 +28,7 @@ Two workflows: **CI** (`ci.yml`) runs on every push and decides whether a commit
 
 - **Any site work** → check [TODO.md](TODO.md) for status and open decisions; mark items done, or add new ones, in the same change.
 
-- **UI, styles, layout, copy, or i18n strings** → read [DESIGN.md](DESIGN.md) first. It is the design source of truth; token values live in [src/styles/tokens.css](src/styles/tokens.css), and `stylelint.config.mjs` rejects literal colours and gradients, and accepts fonts, radii, shadows, blur, durations, and easing only as tokens.
+- **UI, styles, layout, copy, or i18n strings** → read [DESIGN.md](DESIGN.md) first. It is the design source of truth; token values live in [src/styles/tokens.css](src/styles/tokens.css), and `stylelint.config.mjs` rejects literal colours, gradients, and blur, accepts fonts, radii, shadows, durations, and easing only as tokens, and rejects any `var(--…)` that `tokens.css` (or the Astro font config) does not define (`scripts/stylelint-known-tokens.mjs`).
 - **Anything the site shows about a competency** → change the curriculum YAML at the repository root, then regenerate the data. The site renders contracts; it does not own curriculum content.
 
 ## Data contract

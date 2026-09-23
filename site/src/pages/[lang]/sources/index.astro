@@ -27,7 +27,7 @@ const kindLabels = Object.fromEntries(
 
 <Base lang={lang} title={t("library.title")} description={t("library.intro")}>
   <Breadcrumb lang={lang} crumbs={[{ label: t("nav.atlas"), href: mapUrl(lang) }, { label: t("library.title") }]} />
-  <h1 class="display">{t("library.title")}</h1>
+  <h1 class="page-title">{t("library.title")}</h1>
   <p class="lead">{t("library.intro")}</p>
 
   <LibraryList client:load lang={lang} entries={entries} kindLabels={kindLabels} />

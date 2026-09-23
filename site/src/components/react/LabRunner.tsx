@@ -121,119 +121,115 @@ export default function LabRunner(props: Props) {
 
   return (
     <div className="lab-bench">
-      <div className="bezel">
-        <div className="bezel-core lab-core">
-          <Tabs selectedKey={tab} onSelectionChange={setTab} className="lab-tabs">
-            <TabList aria-label={t("lab.files")} className="lab-tablist">
-              {tabs.map((file) => (
-                <Tab key={file} id={file} className="lab-tab">
-                  <code>{file}</code>
-                  {file === editable && <span className="lab-tab-mark">{t("lab.yours")}</span>}
-                  {file === reference && <span className="lab-tab-mark">{t("lab.reference")}</span>}
-                </Tab>
-              ))}
-            </TabList>
+      <div className="lab-core">
+        <Tabs selectedKey={tab} onSelectionChange={setTab} className="lab-tabs">
+          <TabList aria-label={t("lab.files")} className="lab-tablist">
             {tabs.map((file) => (
-              <TabPanel key={file} id={file} className="lab-panel">
-                {mounted ? (
-                  <CodeEditor
-                    value={file === editable ? code : files[file]}
-                    onChange={file === editable ? edit : undefined}
-                    readOnly={file !== editable}
-                    label={t(file === editable ? "lab.fileEditable" : "lab.fileReadOnly", { file })}
-                    describedBy={file === editable ? helpId : undefined}
-                    focusLine={tab === file ? focusLine : undefined}
-                  />
-                ) : (
-                  <pre className="code-fallback" lang="en">
-                    <code>{file === editable ? code : files[file]}</code>
-                  </pre>
-                )}
-              </TabPanel>
+              <Tab key={file} id={file} className="lab-tab">
+                <code>{file}</code>
+                {file === editable && <span className="lab-tab-mark">{t("lab.yours")}</span>}
+                {file === reference && <span className="lab-tab-mark">{t("lab.reference")}</span>}
+              </Tab>
             ))}
-          </Tabs>
-          <p id={helpId} className="lab-help small muted">
-            {t("lab.editorHelp")} {t("lab.draftNote")}
-          </p>
+          </TabList>
+          {tabs.map((file) => (
+            <TabPanel key={file} id={file} className="lab-panel">
+              {mounted ? (
+                <CodeEditor
+                  value={file === editable ? code : files[file]}
+                  onChange={file === editable ? edit : undefined}
+                  readOnly={file !== editable}
+                  label={t(file === editable ? "lab.fileEditable" : "lab.fileReadOnly", { file })}
+                  describedBy={file === editable ? helpId : undefined}
+                  focusLine={tab === file ? focusLine : undefined}
+                />
+              ) : (
+                <pre className="code-fallback" lang="en">
+                  <code>{file === editable ? code : files[file]}</code>
+                </pre>
+              )}
+            </TabPanel>
+          ))}
+        </Tabs>
+        <p id={helpId} className="lab-help small muted">
+          {t("lab.editorHelp")} {t("lab.draftNote")}
+        </p>
 
-          <div className="lab-toolbar">
-            <Button className="pill pill-primary" isDisabled={!mounted || phase !== "idle"} onPress={runTests}>
-              {t("lab.run")}
-              <span className="pill-icon">
-                <Icon name="run" />
-              </span>
-            </Button>
-            <Button className="pill" isDisabled={phase !== "running"} onPress={() => session.current?.stop()}>
-              <Icon name="stop" />
-              {t("lab.stop")}
-            </Button>
-            <Button
-              className="button-quiet lab-reset"
-              isDisabled={!mounted || phase !== "idle" || code === starter}
-              onPress={() => setConfirm("reset")}
-            >
-              <Icon name="reset" />
-              {t("lab.reset")}
-            </Button>
-          </div>
-          {confirm === "reset" && (
+        <div className="lab-toolbar">
+          <Button className="button button-primary" isDisabled={!mounted || phase !== "idle"} onPress={runTests}>
+            {t("lab.run")}
+            <Icon name="run" />
+          </Button>
+          <Button className="button" isDisabled={phase !== "running"} onPress={() => session.current?.stop()}>
+            <Icon name="stop" />
+            {t("lab.stop")}
+          </Button>
+          <Button
+            className="button-quiet lab-reset"
+            isDisabled={!mounted || phase !== "idle" || code === starter}
+            onPress={() => setConfirm("reset")}
+          >
+            <Icon name="reset" />
+            {t("lab.reset")}
+          </Button>
+        </div>
+        {confirm === "reset" && (
+          <Confirm
+            message={t("lab.resetConfirm")}
+            action={t("lab.resetDo")}
+            cancel={t("lab.cancel")}
+            onConfirm={() => {
+              window.clearTimeout(saveTimer.current);
+              setCode(starter);
+              saveStored(null);
+              setTab(editable);
+              setConfirm(null);
+            }}
+            onCancel={() => setConfirm(null)}
+          />
+        )}
+
+        <section className="lab-results" aria-labelledby={verdictId}>
+          <h3 id={verdictId} className="visually-hidden">
+            {t("lab.results")}
+          </h3>
+          <Results
+            lang={lang}
+            phase={phase}
+            outcome={outcome}
+            loadError={loadError}
+            run={run}
+            editable={editable}
+            onShowLine={showLine}
+          />
+        </section>
+
+        {outcome?.verdict === "pass" && props.competencies.length > 0 && (
+          <EvidenceForm {...props} outcome={outcome} referenceOpened={Boolean(referenceOpened)} />
+        )}
+
+        <section className="lab-reference">
+          {referenceOpened ? (
+            <p className="small muted">{t("lab.referenceOpened")}</p>
+          ) : confirm === "reference" ? (
             <Confirm
-              message={t("lab.resetConfirm")}
-              action={t("lab.resetDo")}
+              message={t("lab.referenceConfirm")}
+              action={t("lab.referenceDo")}
               cancel={t("lab.cancel")}
               onConfirm={() => {
-                window.clearTimeout(saveTimer.current);
-                setCode(starter);
-                saveStored(null);
-                setTab(editable);
+                openReference();
+                setTab(reference);
                 setConfirm(null);
               }}
               onCancel={() => setConfirm(null)}
             />
+          ) : (
+            <Button className="button-quiet" isDisabled={!mounted} onPress={() => setConfirm("reference")}>
+              <Icon name="reveal" />
+              {t("lab.referenceShow")}
+            </Button>
           )}
-
-          <section className="lab-results" aria-labelledby={verdictId}>
-            <h3 id={verdictId} className="visually-hidden">
-              {t("lab.results")}
-            </h3>
-            <Results
-              lang={lang}
-              phase={phase}
-              outcome={outcome}
-              loadError={loadError}
-              run={run}
-              editable={editable}
-              onShowLine={showLine}
-            />
-          </section>
-
-          {outcome?.verdict === "pass" && props.competencies.length > 0 && (
-            <EvidenceForm {...props} outcome={outcome} referenceOpened={Boolean(referenceOpened)} />
-          )}
-
-          <section className="lab-reference">
-            {referenceOpened ? (
-              <p className="small muted">{t("lab.referenceOpened")}</p>
-            ) : confirm === "reference" ? (
-              <Confirm
-                message={t("lab.referenceConfirm")}
-                action={t("lab.referenceDo")}
-                cancel={t("lab.cancel")}
-                onConfirm={() => {
-                  openReference();
-                  setTab(reference);
-                  setConfirm(null);
-                }}
-                onCancel={() => setConfirm(null)}
-              />
-            ) : (
-              <Button className="button-quiet" isDisabled={!mounted} onPress={() => setConfirm("reference")}>
-                <Icon name="reveal" />
-                {t("lab.referenceShow")}
-              </Button>
-            )}
-          </section>
-        </div>
+        </section>
       </div>
     </div>
   );
@@ -252,7 +248,7 @@ function Confirm(props: {
     <div className="lab-confirm" role="group" aria-label={props.message}>
       <p>{props.message}</p>
       <div className="form-actions">
-        <button ref={first} type="button" className="pill" onClick={props.onConfirm}>
+        <button ref={first} type="button" className="button" onClick={props.onConfirm}>
           {props.action}
         </button>
         <button type="button" className="button-quiet" onClick={props.onCancel}>
@@ -400,11 +396,8 @@ function EvidenceForm(props: Props & { outcome: Finished; referenceOpened: boole
   return (
     <section className="lab-evidence">
       {!open && (
-        <Button className="pill pill-primary" isDisabled={!progress} onPress={() => setOpen(true)}>
+        <Button className="button button-primary" isDisabled={!progress} onPress={() => setOpen(true)}>
           {t("log.record")}
-          <span className="pill-icon">
-            <Icon name="add" />
-          </span>
         </Button>
       )}
       <p role="status" className="live-message">
@@ -449,7 +442,7 @@ function EvidenceForm(props: Props & { outcome: Finished; referenceOpened: boole
           </label>
           <p className="small muted">{t("lab.evidence.method", { independence: t(`independence.${independence}`) })}</p>
           <div className="form-actions">
-            <button type="submit" className="pill pill-primary">
+            <button type="submit" className="button button-primary">
               {t("evidence.save")}
             </button>
             <button type="button" className="button-quiet" onClick={() => setOpen(false)}>

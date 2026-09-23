@@ -1,26 +1,25 @@
 /*
- * Design tokens: the only file allowed to hold literal colours, shadows, blur,
- * radii, durations, and easing. Roles and intent: site/DESIGN.md ("Visual system").
- * Components use these role names only. scripts/check-contrast.mjs verifies the
- * text and meaningful-line pairs in both themes.
+ * Design tokens: the only file allowed to hold literal colours, shadows, radii, durations,
+ * and easing. Roles and intent: site/DESIGN.md ("Visual system"). Components use these role
+ * names only; stylelint rejects a var(--…) that is not defined here (fonts come from the
+ * Astro font config). scripts/check-contrast.mjs verifies the text and meaningful-line pairs
+ * in both themes.
  */
 
 :root {
   color-scheme: light dark;
 
-  /* Colour roles: survey plate, light (mineral ground, ink, magenta route marks) */
-  --ground: #e7ebe5;
-  --sheet: #f6f8f4;
-  --tray: #1520190d; /* outer bezel tray: ink at 5% */
-  --ink: #152019;
-  --ink-muted: #4e5b53;
-  --line: #15201929; /* hairlines: ink at 16% */
-  --line-strong: #6b776f; /* meaningful strokes: tile outlines, inputs (3:1) */
-  --route: #a3145a;
-  --route-press: #86104a;
+  /* Colour roles: printed atlas, light (paper, ink, magenta as the one route mark) */
+  --ground: #f3efe6;
+  --sheet: #f9f6ef;
+  --wash: #1c1a160d; /* hover and pressed fill on quiet controls: ink at 5% */
+  --ink: #1c1a16;
+  --ink-muted: #5d584e;
+  --line: #1c1a162e; /* hairlines: ink at 18% */
+  --line-strong: #7a7468; /* meaningful strokes: mapped marks, inputs, button outlines (3:1) */
+  --route: #b4105e;
+  --route-press: #900b4a;
   --on-route: #ffffff;
-  --route-soft: #ffffff2e; /* icon circle inside the primary pill */
-  --water: #1b6770;
   /* Learner states: one hue each, always with tile shape and label (DESIGN.md → Colour roles). */
   --state-gap: #8c5910;
   --state-learning: #2d5f9e;
@@ -36,26 +35,24 @@
   --code-definition: #1b6770;
   --code-comment: var(--ink-muted);
   --code-selection: #1b677033;
-  --code-gutter: #15201908;
-  --glass: #f6f8f4c7; /* floating nav surface under the blur */
-  --scrim: #15201966; /* dims content under sheets and overlays */
+  --code-gutter: #1c1a1608;
+  --scrim: #1c1a1659; /* dims the page under the drawer and sheets */
 
-  --shadow-float: 0 18px 48px -20px #1520194d, 0 2px 8px -2px #1520191f;
-  --blur-glass: blur(18px) saturate(1.4);
+  /* Depth: floating layers only (drawer, sheets, tooltips) */
+  --shadow-float: 0 16px 40px -18px #1c1a1659, 0 1px 3px #1c1a161f;
 
   /* Type */
-  --wdth-display: 122;
-  --text-display: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
-  --text-display-s: clamp(2rem, 1.5rem + 1.8vw, 2.75rem);
-  --text-subtitle: clamp(1.25rem, 1.15rem + 0.35vw, 1.375rem);
+  --text-home: clamp(2.75rem, 1.4rem + 4vw, 4.75rem); /* Home title only */
+  --text-title: clamp(2rem, 1.7rem + 1vw, 2.5rem); /* every other page title, the drawer title */
+  --text-standfirst: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
   --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-  --text-h2: 1.5rem;
-  --text-h3: 1.125rem;
+  --text-h2: 1.625rem;
+  --text-h3: 1.0625rem;
   --text-reading: 1.125rem;
   --text-ui: 0.9375rem;
   --text-small: 0.8125rem;
-  --leading-display: 1.05;
-  --leading-heading: 1.2;
+  --leading-title: 1.08;
+  --leading-heading: 1.25;
   --leading-reading: 1.65;
   --leading-ui: 1.5;
   --measure: 68ch;
@@ -75,46 +72,45 @@
 
   /* Layout */
   --page-max: calc(80rem + 2 * var(--gutter)); /* 1280 content + gutters */
-  --nav-max: 70rem;
   --gutter: 1.5rem;
   --rail-width: 13.75rem;
   --log-width: 20rem;
-  --nav-offset: 1rem;
-  --nav-height: 3.5rem;
+  --nav-height: 3.25rem; /* the top bar */
+  --bar-offset: var(--nav-height); /* where sticky layers start: under the top bar while it sticks */
   --target-min: 1.5rem;
   --border-width: 1px;
 
-  /* Shape: double bezel (tray 28, core 22), cards and inputs 12, pills */
-  --radius-tray: 28px;
-  --radius-core: 22px;
-  --radius-card: 12px;
-  --radius-small: 4px;
-  --radius-pill: 999px;
-  --bezel: 6px;
+  /* Shape: small radii only (DESIGN.md → Shape and depth) */
+  --radius-mark: 2px; /* tiles, glyphs, chips */
+  --radius-control: 3px; /* buttons, inputs, panels */
+  --radius-float: 4px; /* drawer, sheets, tooltips */
 
-  /* Motion */
+  /* Motion: control feedback and drawer/sheet slides only */
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
-  --duration-control: 180ms;
-  --duration-sheet: 450ms;
-  --duration-reveal: 300ms; /* per region; 12 regions stagger 36ms: under 700ms in total */
-  --press-scale: 0.98;
+  --duration-control: 160ms;
+  --duration-sheet: 320ms;
+}
+
+@media (width < 768px) {
+  :root {
+    --gutter: 1rem;
+    --bar-offset: 0px; /* the top bar scrolls away on a phone */
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Night chart */
-    --ground: #0e1512;
-    --sheet: #151e1a;
-    --tray: #e3e9e40d;
-    --ink: #e3e9e4;
-    --ink-muted: #a7b3ab;
-    --line: #e3e9e429;
-    --line-strong: #7f8c84;
-    --route: #f2579e;
-    --route-press: #f47cb2;
-    --on-route: #0e1512;
-    --route-soft: #0e151229;
-    --water: #5db5bf;
+    /* Night chart: the same roles on a dark sheet */
+    --ground: #15140f;
+    --sheet: #1c1b16;
+    --wash: #ede7d914;
+    --ink: #ede7d9;
+    --ink-muted: #b0a896;
+    --line: #ede7d92e;
+    --line-strong: #8a8373;
+    --route: #f2639f;
+    --route-press: #f589b7;
+    --on-route: #15140f;
     --state-gap: #e8b04a;
     --state-learning: #8cb6f2;
     --state-demonstrated: #62c98c;
@@ -125,11 +121,10 @@
     --code-string: #7fd19c;
     --code-number: #e8b04a;
     --code-definition: #6cc3cc;
-    --code-selection: #5db5bf40;
-    --code-gutter: #e3e9e408;
-    --glass: #151e1ac7;
+    --code-selection: #6cc3cc40;
+    --code-gutter: #ede7d908;
     --scrim: #000000a3;
 
-    --shadow-float: 0 18px 48px -18px #000000b3, 0 2px 8px -2px #00000066;
+    --shadow-float: 0 16px 40px -16px #000000b3, 0 1px 3px #00000066;
   }
 }

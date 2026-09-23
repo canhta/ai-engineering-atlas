@@ -65,7 +65,6 @@ export const icons = {
   back: ArrowLeftIcon,
   search: MagnifyingGlassIcon,
   close: XIcon,
-  menu: ListIcon,
   expand: CaretDownIcon,
   listView: ListIcon,
   plateView: GridFourIcon,

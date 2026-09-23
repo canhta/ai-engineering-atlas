@@ -43,9 +43,9 @@ const groups = block.groups.map((g) => ({
             {(i.refTitle || i.path || i.resource) && (
               <div class="practice-links">
                 {i.refTitle && i.page && (
-                  <a class="pill" href={i.page}>
+                  <a class="button" href={i.page}>
                     <span lang={langAttr(i.refCollection!, lang)}>{i.refCollection!.value}</span>
-                    <span class="pill-strong" lang={langAttr(i.refTitle, lang)}>
+                    <span class="button-strong" lang={langAttr(i.refTitle, lang)}>
                       {i.refTitle.value}
                     </span>
                     <Icon name="forward" />
@@ -136,7 +136,7 @@ const groups = block.groups.map((g) => ({
     max-width: var(--measure);
   }
 
-  .pill-strong {
+  .button-strong {
     font-weight: 600;
   }
 </style>

@@ -1,5 +1,5 @@
 ---
-// Global frame (DESIGN.md → Global frame): floating pill nav, full-screen menu on mobile, footer.
+// Global frame (DESIGN.md → Global frame): a plain top bar with a hairline under it, and the footer.
 import { Font } from "astro:assets";
 import "../styles/tokens.css";
 import "../styles/base.css";
@@ -58,94 +58,42 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
     <a class="skip-link" href="#main">
       {t("nav.skip")}
     </a>
-    <header class="nav-wrap">
-      <nav class="nav" aria-label={t("nav.label")}>
+    <header class="topbar">
+      <nav class="topbar-inner" aria-label={t("nav.label")}>
         <a class="wordmark" href={homeUrl(lang)}>
           {siteTitle}
         </a>
-        <ul class="nav-tabs">
+        <ul class="topbar-tabs">
           {tabs.map((tab) => (
             <li>
-              <a class="nav-tab" href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
+              <a class="topbar-tab" href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
                 {tab.label}
                 {tab.id === "progress" && <DueCount client:idle lang={lang} />}
               </a>
             </li>
           ))}
         </ul>
-        <ul class="nav-langs" aria-label={t("lang.label")}>
+        <ul class="topbar-langs" aria-label={t("lang.label")}>
           {langs.map(([l, name]) => (
             <li>
               {l === lang ? (
-                <span class="nav-lang" aria-current="true" lang={l}>
+                <span class="topbar-lang" aria-current="true" lang={l}>
                   {name}
                 </span>
               ) : (
-                <a class="nav-lang" href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
+                <a class="topbar-lang" href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
                   {name}
                 </a>
               )}
             </li>
           ))}
         </ul>
-        <a class="nav-repo" href={site.repository} rel="noopener">
+        <a class="topbar-repo" href={site.repository} rel="noopener">
           <Icon name="github" size={20} />
           <span class="visually-hidden">{t("footer.repository")}</span>
         </a>
-        <button class="menu-button" type="button" aria-haspopup="dialog" aria-controls="site-menu" data-menu-open>
-          {t("nav.menu")}
-          <Icon name="menu" />
-        </button>
       </nav>
     </header>
-
-    <dialog class="menu" id="site-menu" aria-label={t("nav.label")}>
-      <div class="menu-head">
-        <a class="wordmark" href={homeUrl(lang)}>
-          {siteTitle}
-        </a>
-        <button class="menu-button menu-close" type="button" data-menu-close>
-          {t("nav.close")}
-          <Icon name="close" />
-        </button>
-      </div>
-      <ul class="menu-links">
-        <li style="--i: 0">
-          <a href={homeUrl(lang)} aria-current={path === homeUrl(lang) ? "page" : undefined}>
-            {t("nav.home")}
-          </a>
-        </li>
-        {tabs.map((tab, i) => (
-          <li style={`--i: ${i + 1}`}>
-            <a href={tab.href} aria-current={section === tab.id ? "page" : undefined}>
-              {tab.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <ul class="menu-links menu-repo" style={`--i: ${tabs.length + 1}`}>
-        <li>
-          <a href={site.repository} rel="noopener">
-            {t("footer.repository")}
-          </a>
-        </li>
-      </ul>
-      <ul class="menu-langs" aria-label={t("lang.label")} style={`--i: ${tabs.length + 2}`}>
-        {langs.map(([l, name]) => (
-          <li>
-            {l === lang ? (
-              <span aria-current="true" lang={l}>
-                {name}
-              </span>
-            ) : (
-              <a href={switchLang(path, l)} hreflang={l} lang={l} data-lang-choice={l}>
-                {name}
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    </dialog>
 
     <main id="main" class="page">
       <slot />
@@ -153,13 +101,13 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
 
     <footer class="footer">
       <div class="footer-inner">
-        <div class="footer-brand">
-          <p class="footer-title">{siteTitle}</p>
-          <p class="footer-license">{t("footer.license")}</p>
-        </div>
-        <a class="pill footer-star" href={site.repository} rel="noopener">
-          {t("footer.star")}
-        </a>
+        <p class="footer-brand">
+          <strong>{siteTitle}</strong>
+          <span>{t("footer.license")}</span>
+          <a href={site.repository} rel="noopener">
+            {t("footer.star")}
+          </a>
+        </p>
         <ul class="footer-links" aria-label={t("footer.contact")}>
           {ownerLinks.map((link) => (
             <li>
@@ -175,16 +123,6 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
     </footer>
 
     <script>
-      // Menu overlay: a modal <dialog> makes the page inert (focus stays inside) and closes on Esc.
-      const menu = document.querySelector<HTMLDialogElement>("#site-menu");
-      const opener = document.querySelector<HTMLButtonElement>("[data-menu-open]");
-      opener?.addEventListener("click", () => menu?.showModal());
-      document.querySelector("[data-menu-close]")?.addEventListener("click", () => menu?.close());
-      menu?.addEventListener("close", () => opener?.focus());
-      menu?.addEventListener("click", (event) => {
-        if (event.target === menu) menu.close();
-      });
-
       // Remember the language the learner reads in; `/` uses it (src/pages/index.astro).
       const remember = (lang: string) => {
         try {
@@ -208,229 +146,137 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
     top: calc(-1 * var(--space-16));
     z-index: 30;
     padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-pill);
+    border: var(--border-width) solid var(--ink);
+    border-radius: var(--radius-control);
     background: var(--sheet);
     color: var(--ink);
   }
 
   .skip-link:focus {
-    top: var(--space-4);
+    top: var(--space-2);
   }
 
-  .nav-wrap {
+  /* The top bar: full width, an ink hairline under it, never blurred. It sticks on wider
+     screens (scroll-padding in base.css keeps focused content below it) and scrolls away on a
+     phone, where the route's step bar and field-log bar need the room. */
+  .topbar {
     position: sticky;
-    top: var(--nav-offset);
+    top: 0;
     z-index: 20;
-    padding: 0 var(--space-4);
-    margin-top: var(--nav-offset);
+    border-bottom: var(--border-width) solid var(--ink);
+    background: var(--ground);
   }
 
-  .nav {
+  .topbar-inner {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
-    max-width: var(--nav-max);
+    gap: var(--space-8);
+    max-width: var(--page-max);
     min-height: var(--nav-height);
     margin: 0 auto;
-    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
-    border: var(--border-width) solid var(--line);
-    border-radius: var(--radius-pill);
-    background: var(--glass);
-    backdrop-filter: var(--blur-glass);
-    box-shadow: var(--shadow-float);
+    padding: 0 var(--gutter);
   }
 
   .wordmark {
-    font-weight: 700;
-    font-variation-settings: "wdth" var(--wdth-display);
-    font-size: 1.0625rem;
+    font-family: var(--font-reading);
+    font-size: 1.25rem;
+    font-weight: 600;
     letter-spacing: -0.01em;
     color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
   }
 
-  .nav ul {
+  .topbar ul {
     display: flex;
     align-items: center;
-    gap: var(--space-1);
+    gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .nav-tabs {
+  .topbar-tabs {
     flex: 1;
   }
 
-  .nav-tab,
-  .nav-lang {
+  .topbar-tab,
+  .topbar-lang {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
-    min-height: 2.5rem;
-    padding: 0 var(--space-3);
-    border-radius: var(--radius-pill);
-    color: var(--ink-muted);
+    gap: var(--space-2);
+    min-height: var(--nav-height);
+    color: var(--ink);
     text-decoration: none;
-    transition: color var(--duration-control) var(--ease);
   }
 
-  .nav-tab:hover,
-  .nav-lang:is(a):hover {
-    color: var(--ink);
-  }
-
-  .nav-tab[aria-current="page"] {
-    color: var(--ink);
+  .topbar-tab:hover,
+  .topbar-lang:is(a):hover {
     text-decoration: underline;
-    text-decoration-color: var(--route);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.5em;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
   }
 
-  .nav-lang[aria-current] {
-    color: var(--ink);
+  /* The current section: a magenta rule standing on the bar's hairline. */
+  .topbar-tab[aria-current="page"] {
+    padding-top: 3px;
+    border-bottom: 3px solid var(--route);
+  }
+
+  .topbar-tab[aria-current="page"]:hover {
+    text-decoration: none;
+  }
+
+  .topbar-langs {
+    font-size: var(--text-small);
+  }
+
+  .topbar-lang:is(a) {
+    color: var(--ink-muted);
+  }
+
+  .topbar-lang[aria-current] {
     font-weight: 600;
   }
 
-  .menu-button {
-    display: none;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: 2.5rem;
-    margin-left: auto;
-    padding: 0 var(--space-4);
-    border: var(--border-width) solid var(--line);
-    border-radius: var(--radius-pill);
-    background: var(--sheet);
+  .topbar-repo {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding-inline-start: var(--space-4);
+    border-left: var(--border-width) solid var(--line);
+    color: var(--ink-muted);
+  }
+
+  .topbar-repo:hover {
     color: var(--ink);
-    font: inherit;
-    cursor: pointer;
   }
 
   @media (width < 768px) {
-    .nav-wrap {
-      padding: 0 var(--space-2);
+    .topbar {
+      position: static;
     }
 
-    .nav {
-      padding-left: var(--space-5);
+    .topbar-inner {
+      flex-wrap: wrap;
+      gap: 0 var(--space-5);
+      padding-top: var(--space-2);
     }
 
-    .nav-tabs,
-    .nav-langs {
-      display: none !important;
+    .wordmark {
+      flex: 1 0 100%;
+      font-size: 1.125rem;
     }
 
-    .menu-button {
-      display: inline-flex;
+    .topbar-tab,
+    .topbar-lang {
+      min-height: 2.5rem;
     }
-  }
 
-  .menu {
-    width: 100%;
-    max-width: none;
-    height: 100%;
-    max-height: none;
-    margin: 0;
-    padding: var(--space-4) var(--space-6);
-    border: 0;
-    background: var(--ground);
-    color: var(--ink);
-  }
-
-  .menu[open] {
-    animation: menu-in var(--duration-sheet) var(--ease);
-  }
-
-  @keyframes menu-in {
-    from {
-      opacity: 0;
+    .topbar-repo {
+      display: none;
     }
-  }
-
-  .menu::backdrop {
-    background: var(--scrim);
-  }
-
-  .menu-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: var(--nav-height);
-  }
-
-  .menu-close {
-    display: inline-flex;
-  }
-
-  .menu-links {
-    margin: var(--space-12) 0 var(--space-8);
-    padding: 0;
-    list-style: none;
-  }
-
-  .menu-links li,
-  .menu-langs {
-    opacity: 0;
-    transform: translateY(var(--space-8));
-    transition:
-      opacity var(--duration-sheet) var(--ease),
-      transform var(--duration-sheet) var(--ease);
-    transition-delay: calc(var(--i) * 60ms);
-  }
-
-  .menu[open] .menu-links li,
-  .menu[open] .menu-langs {
-    opacity: 1;
-    transform: none;
-  }
-
-  @starting-style {
-    .menu[open] .menu-links li,
-    .menu[open] .menu-langs {
-      opacity: 0;
-      transform: translateY(var(--space-8));
-    }
-  }
-
-  .menu-links a {
-    display: block;
-    padding: var(--space-2) 0;
-    font-size: var(--text-display-s);
-    font-weight: 700;
-    font-variation-settings: "wdth" var(--wdth-display);
-    line-height: var(--leading-display);
-    color: var(--ink);
-    text-decoration: none;
-  }
-
-  .menu-links a[aria-current="page"] {
-    text-decoration: underline;
-    text-decoration-color: var(--route);
-    text-decoration-thickness: 3px;
-    text-underline-offset: 0.2em;
-  }
-
-  .menu-langs {
-    display: flex;
-    gap: var(--space-6);
-    margin: 0;
-    padding: var(--space-6) 0 0;
-    border-top: var(--border-width) solid var(--line);
-    list-style: none;
-  }
-
-  .menu-langs a,
-  .menu-langs span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-  }
-
-  .menu-langs [aria-current] {
-    font-weight: 600;
   }
 
   .page {
@@ -441,12 +287,12 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
 
   @media (width < 768px) {
     .page {
-      padding: var(--space-8) var(--space-4) var(--space-16);
+      padding: var(--space-8) var(--gutter) var(--space-16);
     }
   }
 
   .footer {
-    border-top: var(--border-width) solid var(--line);
+    border-top: var(--border-width) solid var(--ink);
     color: var(--ink-muted);
     font-size: var(--text-small);
   }
@@ -456,74 +302,58 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-6);
+    gap: var(--space-3) var(--space-8);
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: var(--space-8) var(--gutter) var(--space-12);
+    padding: var(--space-6) var(--gutter) var(--space-12);
   }
 
-  .footer-title {
+  .footer-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-5);
     margin: 0;
+  }
+
+  .footer-brand strong {
     font-weight: 600;
     color: var(--ink);
   }
 
-  .footer-license {
-    margin: 0;
+  .footer-brand a {
+    color: var(--ink);
   }
 
-  .footer ul {
+  .footer-links {
     display: flex;
-    gap: var(--space-6);
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  /* Star first, then the owner's links: one row that wraps to its own line on a phone. */
-  .footer-star {
-    font-size: var(--text-small);
-    padding-block: var(--space-2);
-  }
-
-  .footer-links {
-    gap: var(--space-3);
-    margin-inline-start: auto;
-  }
-
-  .footer-links a,
-  .nav-repo {
+  .footer-links a {
     display: grid;
     place-items: center;
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: var(--radius-pill);
     color: var(--ink-muted);
-    transition:
-      color var(--duration-control) var(--ease),
-      background-color var(--duration-control) var(--ease);
+    transition: color var(--duration-control) var(--ease);
   }
 
-  .footer-links a:hover,
-  .nav-repo:hover {
+  .footer-links a:hover {
     color: var(--ink);
-    background: var(--tray);
-  }
-
-  /* The pill nav has no room for the repository icon on a phone; the menu overlay carries it. */
-  @media (width < 640px) {
-    .nav-repo {
-      display: none;
-    }
   }
 
   @media (width < 640px) {
     .footer-inner {
-      justify-content: flex-start;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .footer-links {
-      margin-inline-start: 0;
+      margin-inline-start: calc(-1 * var(--space-2));
     }
   }
 </style>

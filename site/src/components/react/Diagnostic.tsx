@@ -124,14 +124,15 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
               </Button>
             )}
             {last ? (
-              <Button className="pill pill-primary" isDisabled={!hydrated || !complete} onPress={() => go("compare")}>
+              <Button
+                className="button button-primary"
+                isDisabled={!hydrated || !complete}
+                onPress={() => go("compare")}
+              >
                 {t("diag.compare")}
-                <span className="pill-icon">
-                  <Icon name="forward" />
-                </span>
               </Button>
             ) : (
-              <Button className="pill" isDisabled={!hydrated || !answers[i].trim()} onPress={() => go(i + 1)}>
+              <Button className="button" isDisabled={!hydrated || !answers[i].trim()} onPress={() => go(i + 1)}>
                 {t("diag.next")}
                 <Icon name="forward" />
               </Button>
@@ -197,11 +198,8 @@ export default function Diagnostic({ lang, itemRef, target, tasks, passCondition
             {t("diag.edit")}
           </Button>
           {recorded === null && (
-            <Button className="pill pill-primary" isDisabled={!result} onPress={record}>
+            <Button className="button button-primary" isDisabled={!result} onPress={record}>
               {t("diag.record")}
-              <span className="pill-icon">
-                <Icon name="add" />
-              </span>
             </Button>
           )}
         </div>

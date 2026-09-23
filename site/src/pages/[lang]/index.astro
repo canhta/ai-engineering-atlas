@@ -2,7 +2,6 @@
 // Home (DESIGN.md → Home): headline, the plate in overview mode, how the atlas works, and the
 // ready routes by group.
 import Base from "../../layouts/Base.astro";
-import Icon from "../../components/Icon.astro";
 import Plate from "../../components/plate/Plate";
 import PlateLegend from "../../components/plate/PlateLegend";
 import ReadyRows, { type ReadyGroup } from "../../components/react/ReadyRows";
@@ -43,19 +42,16 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
 <Base lang={lang}>
   <div class="hero-row">
     <section class="hero" aria-labelledby="home-title">
-      <h1 id="home-title" class="display home-title" lang={langAttr(title, lang)}>
+      <h1 id="home-title" class="home-title" lang={langAttr(title, lang)}>
         {title.value}
       </h1>
-      <p class="subtitle home-subtitle" lang={langAttr(tagline, lang)}>
+      <p class="home-subtitle" lang={langAttr(tagline, lang)}>
         {tagline.value}
       </p>
       <p class="muted">{t("home.method")}</p>
       <div class="hero-actions">
-        <a class="pill pill-primary" href={`${mapUrl(lang)}?ready=1`}>
+        <a class="button button-primary" href={`${mapUrl(lang)}?ready=1`}>
           {t("home.start")}
-          <span class="pill-icon">
-            <Icon name="forward" />
-          </span>
         </a>
         <a class="button-quiet" href="#how">
           {t("home.how")}
@@ -81,7 +77,6 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
       stateLabels={stateLabels(lang)}
       atlasUrl={mapUrl(lang)}
       regionHeading="h3"
-      reveal
     />
   </section>
 
@@ -127,15 +122,20 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
     }
   }
 
+  /* The one large title on the site (DESIGN.md → Type). */
   .home-title {
-    font-size: clamp(2.75rem, 1.6rem + 4.2vw, 4.5rem);
+    margin: 0 0 var(--space-5);
+    font-size: var(--text-home);
+    line-height: 1;
+    letter-spacing: -0.025em;
   }
 
   .home-subtitle {
-    max-width: 30ch;
-    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
-    line-height: 1.3;
+    max-width: 34ch;
     margin-bottom: var(--space-3);
+    font-family: var(--font-reading);
+    font-size: var(--text-standfirst);
+    line-height: 1.35;
   }
 
   .hero-actions {
@@ -187,7 +187,7 @@ const steps = ["diagnose", "read", "practice", "record"] as const;
   .how-num {
     font-size: var(--text-small);
     font-weight: 600;
-    color: var(--route);
+    color: var(--ink-muted);
   }
 
   @media (width < 1024px) {

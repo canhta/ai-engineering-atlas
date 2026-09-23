@@ -13,13 +13,12 @@ const themes = { light, dark: { ...light, ...parse(darkMatch?.[1] ?? "") } };
 
 // [foreground, background, minimum ratio, why]
 const PAIRS = [
-  ["--ink", "--ground", 4.5, "body text"],
-  ["--ink", "--sheet", 4.5, "text on raised surfaces"],
+  ["--ink", "--ground", 4.5, "body text and links (ink with an underline)"],
+  ["--ink", "--sheet", 4.5, "text and links on raised surfaces"],
   ["--ink-muted", "--ground", 4.5, "secondary text"],
   ["--ink-muted", "--sheet", 4.5, "secondary text on raised surfaces"],
-  ["--water", "--ground", 4.5, "links"],
-  ["--water", "--sheet", 4.5, "links on raised surfaces"],
-  ["--route", "--ground", 4.5, "route-coloured labels"],
+  ["--sheet", "--ink", 4.5, "tooltip and selected-toggle text on ink"],
+  ["--route", "--ground", 4.5, "route-coloured labels, link hover and focus"],
   ["--route", "--sheet", 4.5, "route-coloured labels on raised surfaces"],
   ["--on-route", "--route", 4.5, "primary action label"],
   ["--on-route", "--route-press", 4.5, "primary action label, pressed"],
@@ -40,8 +39,10 @@ const PAIRS = [
   ["--code-number", "--sheet", 4.5, "editor numbers"],
   ["--code-definition", "--sheet", 4.5, "editor definitions"],
   ["--code-comment", "--sheet", 4.5, "editor comments"],
-  ["--line-strong", "--ground", 3, "tile outlines and input borders (1.4.11)"],
-  ["--line-strong", "--sheet", 3, "tile outlines and input borders on raised surfaces (1.4.11)"],
+  ["--line-strong", "--ground", 3, "mapped marks, input and button outlines (1.4.11)"],
+  ["--line-strong", "--sheet", 3, "mapped marks, input and button outlines on raised surfaces (1.4.11)"],
+  ["--ink", "--ground", 3, "ready tile outlines and plate frame rules (1.4.11)"],
+  ["--route", "--sheet", 3, "prerequisite lines and the selection ring (1.4.11)"],
   ["--focus", "--ground", 3, "focus ring (1.4.11)"],
   ["--focus", "--sheet", 3, "focus ring on raised surfaces (1.4.11)"],
 ];

@@ -200,11 +200,8 @@ function DrawerBody({ lang, detail, details, stateLabels, contributeUrl, onClose
 
       {detail.href && (
         <div className="drawer-actions">
-          <a className="pill pill-primary" href={detail.href}>
+          <a className="button button-primary" href={detail.href}>
             {t("drawer.open")}
-            <span className="pill-icon">
-              <Icon name="forward" />
-            </span>
           </a>
           {detail.diagnosticAnchor && (
             <a className="button-quiet" href={`${detail.href}#${detail.diagnosticAnchor}`}>

@@ -1,11 +1,13 @@
-// Design rules from site/DESIGN.md that code can enforce. Colours, fonts, radii,
-// shadows, blur, durations, and easing come from tokens.css; gradients are not part
-// of the design language. A justified exception uses a stylelint-disable comment
-// that names the DESIGN.md rule it follows.
+// Design rules from site/DESIGN.md that code can enforce. Colours, fonts, radii, shadows,
+// durations, and easing come from tokens.css, and every var(--…) must name a defined token
+// (scripts/stylelint-known-tokens.mjs). Gradients, blur, and text shadows are not part of the
+// design language. A justified exception uses a stylelint-disable comment that names the
+// DESIGN.md rule it follows.
 const token = (name) => `/^var\\(--${name}[\\w-]*\\)$/`;
 
 export default {
   ignoreFiles: ["dist/**", "node_modules/**"],
+  plugins: ["./scripts/stylelint-known-tokens.mjs"],
   overrides: [
     { files: ["**/*.astro"], customSyntax: "postcss-html" },
     {
@@ -14,6 +16,7 @@ export default {
     },
   ],
   rules: {
+    "atlas/known-tokens": true,
     "color-no-hex": true,
     "color-named": "never",
     "function-disallowed-list": [
@@ -32,14 +35,14 @@ export default {
       "lch",
       "color-mix",
     ],
-    "property-disallowed-list": ["text-shadow", "filter"],
+    // No glass: nothing blurs what lies under it (DESIGN.md → Shape and depth).
+    "property-disallowed-list": ["text-shadow", "filter", "backdrop-filter", "-webkit-backdrop-filter"],
     "declaration-property-value-allowed-list": {
-      "font-family": ["/^var\\(--font-/", "inherit"],
-      // One to four radius tokens (or 0), or 50% for circles.
-      "border-radius": ["/^((var\\(--radius[\\w-]*\\)|0)\\s*){1,4}$/", "50%"],
-      "box-shadow": [token("shadow"), "none"],
-      "backdrop-filter": [token("blur"), "none"],
-      "-webkit-backdrop-filter": [token("blur"), "none"],
+      "font-family": ["/^var\\(--font-(sans|reading|mono)\\)$/", "inherit"],
+      // Radii are 2–4 px (mark, control, float) or 0, and 50% for circles (mapped marks, radios).
+      "border-radius": ["/^((var\\(--radius-(mark|control|float)\\)|0)\\s*){1,4}$/", "50%"],
+      // Shadows only on floating layers.
+      "box-shadow": ["var(--shadow-float)", "none"],
       "transition-duration": [token("duration"), "0s"],
       "transition-timing-function": [token("ease")],
       "animation-duration": [token("duration"), "0s"],

@@ -1,11 +1,9 @@
 {
   "nav.label": "Main",
   "nav.skip": "Skip to content",
-  "nav.home": "Home",
   "nav.atlas": "Atlas",
   "nav.progress": "Progress",
   "nav.due": "{count} reviews due",
-  "nav.menu": "Menu",
   "nav.close": "Close",
   "nav.breadcrumb": "Breadcrumb",
   "lang.label": "Language",

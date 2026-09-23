@@ -227,7 +227,7 @@ export default function AtlasExplorer(props: Props) {
     <div className="atlas">
       <div className="atlas-head">
         <div>
-          <h1 className="display">{title}</h1>
+          <h1 className="page-title">{title}</h1>
           <p className="lead">{intro}</p>
         </div>
         <fieldset className="view-toggle">
@@ -272,7 +272,7 @@ export default function AtlasExplorer(props: Props) {
           </div>
         </SearchField>
         <div className="filter-controls">{controls}</div>
-        <Button className="pill filter-open" isDisabled={!hydrated} onPress={() => setFiltersOpen(true)}>
+        <Button className="button filter-open" isDisabled={!hydrated} onPress={() => setFiltersOpen(true)}>
           {t("map.filters", { count: activeFilters - (query.trim() ? 1 : 0) })}
         </Button>
       </search>
@@ -293,7 +293,7 @@ export default function AtlasExplorer(props: Props) {
       {shown === 0 && (
         <div className="empty">
           <p>{t("map.noResults")}</p>
-          <Button className="pill" onPress={clear}>
+          <Button className="button" onPress={clear}>
             {t("map.clear")}
           </Button>
         </div>

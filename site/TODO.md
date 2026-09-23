@@ -2,7 +2,7 @@
 
 Tracks delivery of the [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Mark an item done in the same change that finishes it, and add new work here before starting it.
 
-Last updated: 2026-09-22
+Last updated: 2026-09-23
 
 ## Done
 
@@ -59,6 +59,12 @@ Last updated: 2026-09-22
 - [x] Milestone 3: seven distinguishable learner states (fill and hue per state), one bridge wording, capture at 390/1440 over home, atlas, drawer, progress, and route, and tests for the states surfaces must handle (unknown `?item=`, empty review queue, import errors, storage blocked, JavaScript off, reduced motion)
 - [ ] Owner review of the live survey-plate redesign and the Vietnamese wording
 - [x] Before-hydration pass: controls are disabled until hydration. The Atlas drawer stays a JavaScript surface; Home, Progress, ready rows, and route pages work without it (DESIGN.md → states)
+
+### Editorial print redesign ([ADR 0001](../docs/adr/0001-editorial-print-direction.md), tickets in `.scratch/visual-redesign/issues/`)
+
+- [x] 01 Print system everywhere: paper/ink/magenta tokens in light and night-chart dark, Newsreader + IBM Plex Sans (Hubot Sans removed), plain top bar and footer, no glass, bezels, trays, pill buttons, or plate settle-in; stylelint rejects undefined tokens and blur; DESIGN.md visual system and review tells rewritten
+- [ ] 02–05 Plate layout, Home with the specimen, route page (details line, bibliography, margin column)
+- [ ] 06 Review and close-out; owner review of the redesign and its Vietnamese strings
 
 ### Phase 1 follow-ups
 

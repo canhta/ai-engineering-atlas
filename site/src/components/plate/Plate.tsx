@@ -4,16 +4,7 @@
 // Modes: overview (Home: tiles link to the Atlas drawer), explore (Atlas: filters dim, select opens
 // the drawer), progress (Progress: tiles link to the Atlas drawer, mapped tiles recede).
 // This folder is the only place allowed to emit SVG, and only from data.
-import {
-  type CSSProperties,
-  type KeyboardEvent,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { type KeyboardEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { type Lang, useTranslations } from "../../i18n";
 import { type State, stateOf } from "../../lib/progress";
 import { useProgress } from "../../lib/progress-store";
@@ -36,8 +27,6 @@ interface Props {
   onSelect?: (ref: string) => void;
   /** Region to bring into view on load (`?group=`). */
   focusGroup?: string | null;
-  /** The single orchestrated reveal (Home). */
-  reveal?: boolean;
   /** Heading level of region labels under the page outline. */
   regionHeading?: "h2" | "h3";
 }
@@ -60,7 +49,6 @@ export default function Plate({
   selected = null,
   onSelect,
   focusGroup,
-  reveal,
   regionHeading = "h2",
 }: Props) {
   const t = useTranslations(lang);
@@ -167,9 +155,9 @@ export default function Plate({
   const needed = new Set(active ? (byRef.get(active)?.needs ?? []) : []);
 
   return (
-    <div className={`plate plate-${mode}${reveal ? " plate-reveal" : ""}`}>
+    <div className={`plate plate-${mode}`}>
       <div className="plate-core" ref={core}>
-        {regions.map((region, r) => {
+        {regions.map((region) => {
           const ready = region.tiles.filter((tile) => tile.href).length;
           const stop = tabStop[region.value] ?? region.tiles[0]?.ref;
           return (
@@ -178,7 +166,6 @@ export default function Plate({
               id={`region-${region.value}`}
               className={`plate-region${focusGroup === region.value ? " is-focus" : ""}`}
               aria-labelledby={`region-${region.value}-label`}
-              style={{ "--r": r } as CSSProperties}
             >
               <RegionHeading className="plate-region-label" id={`region-${region.value}-label`}>
                 <span lang={langOf(region.label, lang)}>{region.label.value}</span>

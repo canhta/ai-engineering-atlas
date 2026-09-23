@@ -1,5 +1,5 @@
 // Field log (DESIGN.md → Route sheet): the learner's state for one item and the only place a
-// state changes, by recording evidence. Desktop: a sticky double-bezel panel. Mobile: a bottom
+// state changes, by recording evidence. Desktop: a sticky, hairline-ruled margin column. Mobile: a bottom
 // bar opening the same panel as a sheet (focus trapped, Esc closes, focus returns).
 import { type SubmitEvent, useState } from "react";
 import { Button, Dialog, Disclosure, DisclosurePanel, Heading, Modal, ModalOverlay } from "react-aria-components";
@@ -46,11 +46,7 @@ export default function FieldLog(props: Props) {
   return (
     <>
       <aside className="field-log" aria-labelledby="log-title">
-        <div className="bezel">
-          <div className="bezel-core">
-            <LogPanel {...props} idPrefix="log" />
-          </div>
-        </div>
+        <LogPanel {...props} idPrefix="log" />
       </aside>
 
       <div className="log-bar">
@@ -63,11 +59,8 @@ export default function FieldLog(props: Props) {
           {progress ? <StateBadge state={state} label={props.stateLabels[state]} /> : <span className="muted">…</span>}
           <Icon name="expand" />
         </Button>
-        <Button className="pill pill-primary" isDisabled={!progress} onPress={() => setSheet("form")}>
+        <Button className="button button-primary" isDisabled={!progress} onPress={() => setSheet("form")}>
           {t("log.record")}
-          <span className="pill-icon">
-            <Icon name="add" />
-          </span>
         </Button>
       </div>
 
@@ -166,11 +159,8 @@ function LogPanel({
       )}
 
       {!formOpen && (
-        <Button className="pill pill-primary log-record" isDisabled={!progress} onPress={() => setFormOpen(true)}>
+        <Button className="button button-primary log-record" isDisabled={!progress} onPress={() => setFormOpen(true)}>
           {t("log.record")}
-          <span className="pill-icon">
-            <Icon name="add" />
-          </span>
         </Button>
       )}
       <p role="status" className="live-message">
@@ -232,7 +222,7 @@ function LogPanel({
             <textarea name="note" rows={3} required />
           </label>
           <div className="form-actions">
-            <button type="submit" className="pill pill-primary">
+            <button type="submit" className="button button-primary">
               {t("evidence.save")}
             </button>
             <button type="button" className="button-quiet" onClick={() => setFormOpen(false)}>

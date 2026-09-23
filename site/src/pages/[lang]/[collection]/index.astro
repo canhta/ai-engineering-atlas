@@ -49,7 +49,7 @@ const withPage = rows.filter((row) => row.url).length;
 
 <Base lang={lang} title={label.value} description={t("collection.intro", { label: label.value })}>
   <Breadcrumb lang={lang} crumbs={[{ label: t("nav.atlas"), href: mapUrl(lang) }, { label: label.value }]} />
-  <h1 class="display" lang={label.lang === lang ? undefined : label.lang}>
+  <h1 class="page-title" lang={label.lang === lang ? undefined : label.lang}>
     {label.value}
   </h1>
   <p class="lead">
