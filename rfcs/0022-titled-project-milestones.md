@@ -1,11 +1,11 @@
-# RFC 0021 — Titled project milestones
+# RFC 0022 — Titled project milestones
 
 - Status: Draft
 - Author: Canh Ta
 - Created: 2026-09-24
 - Extends: [content model RFC](0000-content-model.md)
 
-Number note: 0020 is left for the structured paths RFC being drafted in parallel. Whichever merges second may need renumbering.
+Number note: renumbered on merge; 0020 is structured learning paths and 0021 dated curriculum changes.
 
 ## Summary
 
