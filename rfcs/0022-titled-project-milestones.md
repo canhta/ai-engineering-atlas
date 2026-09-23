@@ -1,4 +1,4 @@
-# RFC 0022 — Titled project milestones
+# RFC: Titled Project Milestones
 
 - Status: Draft
 - Author: Canh Ta
