@@ -73,7 +73,8 @@ Last updated: 2026-09-23
 
 #### Follow-ups from the redesign review (each surface gets its own spec, like 03–05)
 
-- [ ] Restructure Atlas: filters are a row of generic form selects over the plate, and the page opens with the same plate as Home, so it does not yet answer "what is there" differently; the drawer is the only surface with item detail
+- [x] Restructure Atlas, filters: a ruled key above the plate (search, one React Aria menu button per facet naming its choice, the ready toggle, the live count, Clear), no native selects; the mobile sheet uses the same buttons (DESIGN.md → Atlas)
+- [ ] Restructure Atlas, opening: the page opens with the same plate as Home, so it does not yet answer "what is there" differently; the drawer is the only surface with item detail
 - [ ] Restructure Progress: a generic dashboard (legend, bars, table, side column) whose table repeats the region bars, and "Your data" sits alone at the bottom with empty space beside it
 - [ ] Restructure the collection indexes (Labs, Projects, Paths): a single 692px column of titles and "Practice for" lines, with the right half of the page empty at 1440 and nothing about what each lab or project asks
 - [ ] Restructure Library: one long column (22,000px at 1440) with type chips and indented citing rows; no grouping or reading order, and the right half empty at 1440

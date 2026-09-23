@@ -110,7 +110,7 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
 ```text
  Atlas                                                        [ Plate | List ]
  116 competencies in 12 domains. Select one to see why it matters and where to start.
- [ Search… ]  Level ▾  Your state ▾  Project ▾  [ ] Ready routes only   Showing 19 of 116   Clear
+ [⌕ Search… ]  Target level All ▾  Your state Any ▾  Project All ▾  □ Ready routes only   Showing 19 of 116  Clear
  legend
  ┌──────────── plate (explore) ──────────────┐ ┌─ drawer, 40%, over the dimmed plate ─┐
  │                                            │ │ AI engineering                     ✕ │
@@ -128,9 +128,9 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
 - List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
 - Drawer head: the domain as a section label, the title, then the route page's details line led by the item's maturity and its glyph (no tags, no ID).
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
-- Filters: the collection's facets, except the page condition field, which is the "Ready routes only" toggle (`?ready=1`); your state; one facet per related collection (projects).
+- Filters: a ruled key between hairlines above the legend, not a form. Search; one quiet menu button per facet naming its current choice (the collection's facets, except the page condition field, which is the "Ready routes only" toggle, `?ready=1`; your state; one per related collection, projects); the toggle; the live count (`role="status"`); Clear. A button opens a React Aria menu of options, the current one on a magenta rule and `aria-checked`; focus returns to the button on close. No native selects; all disabled until hydration.
 - URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
-- Mobile: filters behind "Filters (n)" opening a sheet; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
+- Mobile: filters behind "Filters (n)" opening a sheet, the same menu buttons as full-width rows; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
 
 ### Route sheet
 

@@ -6,10 +6,10 @@ Spec: [../spec.md](../spec.md)
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Each facet from the model is a menu button showing its current choice; choosing updates the plate, list, count, and URL as before
-- [ ] Fully keyboard operable; the count is announced; focus returns to the button on close
-- [ ] Existing Atlas tests pass unchanged in behaviour; new tests drive the menus by keyboard
-- [ ] DESIGN.md's Atlas section replaced in place
-- [ ] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass
+- [x] Each facet from the model is a menu button showing its current choice; choosing updates the plate, list, count, and URL as before
+- [x] Fully keyboard operable; the count is announced; focus returns to the button on close
+- [x] Existing Atlas tests pass unchanged in behaviour; new tests drive the menus by keyboard
+- [x] DESIGN.md's Atlas section replaced in place
+- [x] `pnpm run check`, `pnpm run test:e2e`, `make check`, `capture.mjs` pass

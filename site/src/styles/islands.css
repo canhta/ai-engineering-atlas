@@ -1471,16 +1471,19 @@
   color: var(--sheet);
 }
 
+/* The Atlas filters: a ruled key above the plate (DESIGN.md → Atlas). */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-4);
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
   margin: 0 0 var(--space-3);
+  padding: var(--space-2) 0;
+  border-block: var(--border-width) solid var(--line);
 }
 
 .filter-search {
-  flex: 1 1 16rem;
+  flex: 0 1 15rem;
 }
 
 .filter-controls {
@@ -1491,10 +1494,102 @@
   display: none;
 }
 
+.filter-bar .results {
+  margin: 0 0 0 auto;
+}
+
+.facet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.5rem;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--text-ui);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-control) var(--ease);
+}
+
+.facet-label {
+  margin-right: var(--space-1);
+  color: var(--ink-muted);
+}
+
+.facet-value {
+  font-weight: 550;
+}
+
+.facet[data-hovered],
+.facet[data-pressed],
+.facet[aria-expanded="true"] {
+  background: var(--wash);
+}
+
+.facet[data-disabled] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.facet-popover {
+  z-index: 50;
+  min-width: 12rem;
+  max-width: calc(100vw - 2 * var(--space-4));
+  overflow: auto;
+  border: var(--border-width) solid var(--ink);
+  border-radius: var(--radius-float);
+  background: var(--sheet);
+  box-shadow: var(--shadow-float);
+}
+
+.facet-menu {
+  padding: var(--space-1) 0;
+  outline: none;
+}
+
+.facet-option {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 var(--space-4) 0 var(--space-3);
+  border-left: 3px solid transparent;
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+}
+
+.facet-option[data-focused] {
+  background: var(--wash);
+}
+
+.facet-option[data-focus-visible] {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
+/* The current choice stands on a magenta rule, like the current tab, and is set in bold. */
+.facet-option[data-selected] {
+  border-left-color: var(--route);
+  font-weight: 600;
+}
+
 .filter-sheet {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-2);
   margin: var(--space-4) 0;
+}
+
+.filter-sheet .facet {
+  justify-content: space-between;
+  border-bottom: var(--border-width) solid var(--line);
+  border-radius: 0;
+}
+
+.filter-sheet .facet-value {
+  margin-left: auto;
 }
 
 .results {
@@ -1534,6 +1629,15 @@
 
   .filter-open {
     display: inline-flex;
+  }
+
+  .filter-search {
+    flex: 1 1 12rem;
+  }
+
+  .filter-bar .results {
+    flex-basis: 100%;
+    margin: 0;
   }
 }
 

@@ -615,7 +615,8 @@ test("recorded evidence shows on the route, the progress page, and the atlas fil
   await expect(page.getByRole("link", { name: "Tool Calling" }).first()).toBeVisible();
 
   await open(page, "/en/map/");
-  await page.getByRole("combobox", { name: "Your state" }).selectOption("done");
+  await page.getByRole("button", { name: /^Your state/ }).click();
+  await page.getByRole("menuitemradio", { name: "Demonstrated or beyond" }).click();
   await expect(count(page)).toHaveText(`Showing 1 of ${TOTAL}`);
 });
 
@@ -799,7 +800,7 @@ test("@mobile the drawer is a full-screen sheet", async ({ page }) => {
 
 test("@mobile filters live in a sheet with a live count", async ({ page }) => {
   await open(page, "/en/map/");
-  await expect(page.getByLabel("Target level")).toBeHidden();
+  await expect(page.getByRole("button", { name: /^Target level/ })).toBeHidden();
   await page.getByRole("button", { name: "Filters (0)" }).click();
   const sheet = page.getByRole("dialog", { name: "Filters" });
   await expect(sheet).toBeVisible();
@@ -893,4 +894,87 @@ test("the top bar never blurs or covers the focused element", async ({ page }) =
     ]);
     expect(top).toBeGreaterThanOrEqual(barBottom);
   }
+});
+
+// ---------------------------------------------------------------- Atlas filter key
+
+/** The first facet of the tracked collection (the page condition is the ready toggle), and its busiest value. */
+function facetFixture() {
+  const c = tracked as typeof tracked & { facets?: string[]; page_when?: { field?: string } };
+  const field = (c.facets ?? []).find((f) => f !== c.page_when?.field)!;
+  const vocabulary = model.vocabularies[tracked.fields[field].vocabulary!] as Record<
+    string,
+    { label: L10n; order: number }
+  >;
+  const values = Object.entries(vocabulary)
+    .sort(([, a], [, b]) => a.order - b.order)
+    .map(([value]) => value);
+  const has = (item: (typeof trackedItems)[number], value: string) => {
+    const v = item.fields[field];
+    return Array.isArray(v) ? v.includes(value) : v === value;
+  };
+  const counts = values.map((value) => trackedItems.filter((i) => has(i, value)).length);
+  const index = counts.indexOf(Math.max(...counts));
+  const value = values[index];
+  return {
+    label: (c.fields[field] as { label?: L10n }).label!.en,
+    index,
+    optionLabel: vocabulary[value].label.en,
+    shown: counts[index],
+    inside: trackedItems.find((i) => has(i, value))!.id,
+    outside: trackedItems.find((i) => !has(i, value))!.id,
+  };
+}
+
+test("the filter key's facet menus work by keyboard and return focus to their button", async ({ page }) => {
+  const f = facetFixture();
+  await open(page, "/en/map/");
+  // No native selects: each facet is a button naming its current choice.
+  await expect(page.locator(".atlas select")).toHaveCount(0);
+  const button = page.getByRole("button", { name: new RegExp(`^${f.label}`) });
+  await expect(button).toHaveText(new RegExp(`${f.label}.*All`));
+
+  await button.focus();
+  await page.keyboard.press("Enter");
+  const menu = page.getByRole("menu", { name: f.label });
+  await expect(menu).toBeVisible();
+  await page.keyboard.press("Home");
+  // "All" comes first, then the vocabulary in its declared order.
+  for (let i = 0; i <= f.index; i++) await page.keyboard.press("ArrowDown");
+  await expect(menu.getByRole("menuitemradio", { name: f.optionLabel })).toBeFocused();
+  await page.keyboard.press("Enter");
+
+  await expect(menu).toBeHidden();
+  await expect(button).toBeFocused();
+  await expect(button).toContainText(f.optionLabel);
+  await expect(count(page)).toHaveText(`Showing ${f.shown} of ${TOTAL}`);
+  await expect(tile(page, f.inside)).not.toHaveClass(/is-dim/);
+  await expect(tile(page, f.outside)).toHaveClass(/is-dim/);
+
+  // Reopening marks the current choice; Escape leaves it and returns focus.
+  await page.keyboard.press("ArrowDown");
+  await expect(menu.getByRole("menuitemradio", { name: f.optionLabel })).toHaveAttribute("aria-checked", "true");
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(button).toBeFocused();
+  await expect(count(page)).toHaveText(`Showing ${f.shown} of ${TOTAL}`);
+
+  await page.getByRole("button", { name: "Clear filters" }).first().click();
+  await expect(button).toContainText("All");
+  await expect(count(page)).toHaveText(`Showing ${TOTAL} of ${TOTAL}`);
+});
+
+test("@mobile the filter sheet's facet menus update its count", async ({ page }) => {
+  const f = facetFixture();
+  await open(page, "/en/map/");
+  await page.getByRole("button", { name: "Filters (0)" }).click();
+  const sheet = page.getByRole("dialog", { name: "Filters" });
+  await sheet.getByRole("button", { name: new RegExp(`^${f.label}`) }).click();
+  await page.getByRole("menuitemradio", { name: f.optionLabel }).click();
+  await expect(page.getByRole("menu")).toBeHidden();
+  await expect(sheet.getByRole("button", { name: new RegExp(`^${f.label}`) })).toBeFocused();
+  await sheet.getByRole("button", { name: `Show ${f.shown}` }).click();
+  await expect(sheet).toBeHidden();
+  await expect(page.getByRole("button", { name: "Filters (1)" })).toBeVisible();
+  await expect(count(page)).toHaveText(`Showing ${f.shown} of ${TOTAL}`);
 });

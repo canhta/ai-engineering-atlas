@@ -15,8 +15,12 @@ import {
   Input,
   type Key,
   Label,
+  Menu,
+  MenuItem,
+  MenuTrigger,
   Modal,
   ModalOverlay,
+  Popover,
   SearchField,
 } from "react-aria-components";
 import { type Lang, useTranslations } from "../../i18n";
@@ -63,6 +67,58 @@ function setParam(name: string, value: string | null) {
   if (value === null) url.searchParams.delete(name);
   else url.searchParams.set(name, value);
   window.history.replaceState(null, "", url);
+}
+
+interface MenuOption {
+  id: string;
+  label: Localized;
+}
+
+/**
+ * One facet of the key: a quiet button naming the facet and its current choice, opening a menu
+ * of options (DESIGN.md → Atlas). React Aria returns focus to the button when the menu closes.
+ */
+function FacetMenu(props: {
+  lang: Lang;
+  label: string;
+  value: string;
+  options: MenuOption[];
+  isDisabled: boolean;
+  onChange: (value: string) => void;
+}) {
+  const { lang, label, value, options, isDisabled, onChange } = props;
+  const current = options.find((o) => o.id === value) ?? options[0];
+  return (
+    <MenuTrigger>
+      <Button className="facet" isDisabled={isDisabled}>
+        <span className="facet-label">{label}</span>
+        <span className="visually-hidden">: </span>
+        <span className="facet-value" lang={langOf(current.label, lang)}>
+          {current.label.value}
+        </span>
+        <Icon name="expand" />
+      </Button>
+      <Popover className="facet-popover" placement="bottom start" offset={4}>
+        <Menu
+          className="facet-menu"
+          aria-label={label}
+          selectionMode="single"
+          disallowEmptySelection
+          selectedKeys={[current.id]}
+          onSelectionChange={(keys) => {
+            const [next] = keys === "all" ? [] : [...keys];
+            if (next !== undefined) onChange(String(next));
+          }}
+        >
+          {options.map((o) => (
+            <MenuItem key={o.id} id={o.id} className="facet-option" textValue={o.label.value}>
+              <span lang={langOf(o.label, lang)}>{o.label.value}</span>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Popover>
+    </MenuTrigger>
+  );
 }
 
 export default function AtlasExplorer(props: Props) {
@@ -153,54 +209,43 @@ export default function AtlasExplorer(props: Props) {
     setParam("ready", null);
   };
 
+  const local = (value: string): Localized => ({ value, lang });
+  const anyOption: MenuOption = { id: "any", label: local(t("map.filter.any")) };
+  const stateOptions: MenuOption[] = (["any", "notStarted", "inProgress", "done"] as const).map((id) => ({
+    id,
+    label: local(t(`map.filter.state.${id}`)),
+  }));
   const controls: ReactNode = (
     <>
       {facets.map((f) => (
-        <label className="field" key={f.field}>
-          <span>{f.label}</span>
-          <select
-            value={facetValues[f.field] ?? "any"}
-            disabled={!hydrated}
-            onChange={(e) => setFacetValues((v) => ({ ...v, [f.field]: e.target.value }))}
-          >
-            <option value="any">{t("map.filter.any")}</option>
-            {f.options.map((o) => (
-              <option key={o.value} value={o.value} lang={langOf(o.label, lang)}>
-                {o.label.value}
-              </option>
-            ))}
-          </select>
-        </label>
+        <FacetMenu
+          key={f.field}
+          lang={lang}
+          label={f.label}
+          value={facetValues[f.field] ?? "any"}
+          options={[anyOption, ...f.options.map((o) => ({ id: o.value, label: o.label }))]}
+          isDisabled={!hydrated}
+          onChange={(value) => setFacetValues((v) => ({ ...v, [f.field]: value }))}
+        />
       ))}
-      <label className="field">
-        <span>{t("map.filter.state")}</span>
-        <select
-          value={stateFilter}
-          disabled={!hydrated}
-          onChange={(e) => setStateFilter(e.target.value as StateFilter)}
-        >
-          <option value="any">{t("map.filter.state.any")}</option>
-          <option value="notStarted">{t("map.filter.state.notStarted")}</option>
-          <option value="inProgress">{t("map.filter.state.inProgress")}</option>
-          <option value="done">{t("map.filter.state.done")}</option>
-        </select>
-      </label>
+      <FacetMenu
+        lang={lang}
+        label={t("map.filter.state")}
+        value={stateFilter}
+        options={stateOptions}
+        isDisabled={!hydrated}
+        onChange={(value) => setStateFilter(value as StateFilter)}
+      />
       {relatedFacets.map((f, i) => (
-        <label className="field" key={f.label}>
-          <span>{f.label}</span>
-          <select
-            value={related[i]}
-            disabled={!hydrated}
-            onChange={(e) => setRelated((r) => r.map((v, j) => (j === i ? e.target.value : v)))}
-          >
-            <option value="any">{t("map.filter.any")}</option>
-            {f.options.map((o) => (
-              <option key={o.ref} value={o.ref} lang={langOf(o.title, lang)}>
-                {o.title.value}
-              </option>
-            ))}
-          </select>
-        </label>
+        <FacetMenu
+          key={f.label}
+          lang={lang}
+          label={f.label}
+          value={related[i]}
+          options={[anyOption, ...f.options.map((o) => ({ id: o.ref, label: o.title }))]}
+          isDisabled={!hydrated}
+          onChange={(value) => setRelated((r) => r.map((v, j) => (j === i ? value : v)))}
+        />
       ))}
       <CheckboxField
         isSelected={readyOnly}
@@ -259,7 +304,7 @@ export default function AtlasExplorer(props: Props) {
 
       <search className="filter-bar">
         <SearchField value={query} onChange={setQuery} className="field filter-search" isDisabled={!hydrated}>
-          <Label>{t("map.search")}</Label>
+          <Label className="visually-hidden">{t("map.search")}</Label>
           <div className="input-row">
             <Icon name="search" />
             <Input placeholder={t("map.searchPlaceholder")} />
@@ -275,18 +320,17 @@ export default function AtlasExplorer(props: Props) {
         <Button className="button filter-open" isDisabled={!hydrated} onPress={() => setFiltersOpen(true)}>
           {t("map.filters", { count: activeFilters - (query.trim() ? 1 : 0) })}
         </Button>
+        <div className="results">
+          <p role="status" className="tabular">
+            {t("map.results", { shown, total: all.length })}
+          </p>
+          {filtering && (
+            <Button className="button-quiet" onPress={clear}>
+              {t("map.clear")}
+            </Button>
+          )}
+        </div>
       </search>
-
-      <div className="results">
-        <p role="status" className="tabular">
-          {t("map.results", { shown, total: all.length })}
-        </p>
-        {filtering && (
-          <Button className="button-quiet" onPress={clear}>
-            {t("map.clear")}
-          </Button>
-        )}
-      </div>
 
       <PlateLegend lang={lang} stateLabels={stateLabels} />
 
