@@ -213,3 +213,25 @@ test("a lab that needs NumPy loads it from our own origin and runs", async ({ pa
   expect(wheel.length).toBeGreaterThan(0);
   for (const url of wheel) expect(new URL(url).origin).toBe(new URL(page.url()).origin);
 });
+
+test("Run uses the code just typed, even before the page re-renders the edit", async ({ page }) => {
+  await open(page);
+  // Load Python first, so only the edit-then-Run order is under test.
+  await run(page).click();
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "error", LOAD);
+  await editor(page).click();
+  await page.keyboard.press("ControlOrMeta+a");
+  await page.keyboard.press("Delete");
+  // Insert, let CodeMirror read the edit (its mutation observer runs as a microtask), then press Run
+  // in the same task: React has not re-rendered the edit when Run's handler runs.
+  await editor(page).evaluate(
+    async (el, text) => {
+      el.focus();
+      document.execCommand("insertText", false, text);
+      await Promise.resolve();
+      (document.querySelector(".lab-bench button.button-primary") as HTMLButtonElement).click();
+    },
+    withReference(lab("starter.py"), lab("solution.py")),
+  );
+  await expect(verdict(page)).toHaveAttribute("data-verdict", "pass", LOAD);
+});

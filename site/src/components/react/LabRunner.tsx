@@ -50,7 +50,14 @@ export default function LabRunner(props: Props) {
   const starter = files[editable];
   const [stored, saveStored] = useLabCode(labRef);
   const [referenceOpened, openReference] = useReferenceOpened(labRef);
-  const [code, setCode] = useState(starter);
+  const [code, setCodeState] = useState(starter);
+  // Run reads the latest code from here, not from the last render: a Run pressed before React
+  // re-renders an edit (a paste, a slow machine) would otherwise run the previous code.
+  const latestCode = useRef(starter);
+  const setCode = (value: string) => {
+    latestCode.current = value;
+    setCodeState(value);
+  };
   const [mounted, setMounted] = useState(false);
   const [tab, setTab] = useState<Key>(editable);
   const [focusLine, setFocusLine] = useState<{ line: number; nonce: number }>();
@@ -99,7 +106,7 @@ export default function LabRunner(props: Props) {
       }
     }
     setPhase("running");
-    const submitted = code;
+    const submitted = latestCode.current;
     const version = current.version;
     const result = await current.run(
       { lab: labRef.replace(/[^\w.-]/g, "-"), files, editable, code: submitted, run },

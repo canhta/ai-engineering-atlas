@@ -185,13 +185,12 @@ async function contentsLayout(browser: Browser, javaScriptEnabled: boolean) {
   const page = await context.newPage();
   if (javaScriptEnabled) await open(page, "/en/sources/");
   else await page.goto("/en/sources/");
-  // Measured once the fonts are in, so only hydration could move a row.
+  // Measured once the fonts are in, so only hydration could move a row. The measurement itself is
+  // synchronous: awaiting inside it let hydration swap the nodes and read detached ones as y = 0.
+  await page.evaluate(() => document.fonts.ready);
   const boxes = await page
     .locator(".library-kinds li, .library-results, .library-section h2")
-    .evaluateAll(async (els) => {
-      await document.fonts.ready;
-      return els.map((e) => [e.textContent?.trim(), Math.round(e.getBoundingClientRect().y)]);
-    });
+    .evaluateAll((els) => els.map((e) => [e.textContent?.trim(), Math.round(e.getBoundingClientRect().y)]));
   await context.close();
   return boxes;
 }
