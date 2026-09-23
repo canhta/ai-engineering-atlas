@@ -1,0 +1,110 @@
+id: security.sandboxing
+title: Sandboxing
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "When an AI system can execute generated or user-supplied code, shell commands, build steps, document converters, or other untrusted processes, authorization alone is not enough. The execution environment must limit what that process can read, write, connect to, consume, persist, and escalate into. A useful sandbox is an explicit threat boundary across filesystem, network, process/kernel interface, credentials, resources, lifetime, and cleanup—not merely a container label."
+curriculum_evidence:
+  - article.anthropic-agent-sandboxing
+  - docs.gvisor-security-model
+  - docs.kubernetes-security-context
+prerequisites:
+  - security.tool-permissions
+  - security.data-exfiltration
+  - production.architecture
+outcomes:
+  - "Define the untrusted execution threat model before selecting a sandbox mechanism."
+  - "Separate tool authorization from runtime containment: an allowed code-execution tool still needs an execution boundary."
+  - "Restrict filesystem access to explicit working directories and mount only the data required for the current task."
+  - "Use read-only or immutable roots where practical and keep writable state ephemeral or narrowly scoped."
+  - "Keep host secrets, SSH keys, cloud credentials, service tokens, metadata endpoints, and unrelated tenant files outside the sandbox."
+  - "Deny outbound network access by default for code that does not need it and route approved egress through a constrained policy or proxy where network is required."
+  - "Treat filesystem and network isolation as complementary so one cannot be used to bypass the other."
+  - "Run with a non-root identity, prevent privilege escalation, and remove Linux capabilities or equivalent privileges not required by the workload."
+  - "Limit process count, CPU, memory, storage, execution time, and concurrency to contain denial-of-service behavior."
+  - "Choose stronger isolation such as an application kernel or microVM when the host-kernel attack surface or multi-tenant threat warrants it."
+  - "Understand that containers, seccomp, gVisor-like sandboxes, and VMs expose different attack surfaces and performance/compatibility trade-offs."
+  - "Bind sandbox lifetime and persistent mounts to the user, tenant, job, or trust boundary that authorized the work."
+  - "Destroy or reset execution state between trust domains so one run cannot leave hidden state for another."
+  - "Treat files and stdout/stderr produced by untrusted execution as untrusted input to the next model/application step."
+  - "Instrument sandbox starts, exits, policy denials, resource exhaustion, and egress attempts without leaking sandbox secrets into telemetry."
+  - "Fail closed when the sandbox policy or egress control cannot be established."
+  - "Test path traversal, symlink/mount abuse, privilege escalation, forbidden network, credential discovery, resource exhaustion, and cross-sandbox persistence."
+  - "Measure the latency/cost/compatibility overhead of the selected isolation and remove unnecessary permissions rather than weakening isolation for convenience."
+diagnostic:
+  tasks:
+    - "Given a coding agent that can run shell commands, list which host files, network destinations, credentials, kernel interfaces, and resources must remain unreachable."
+    - "Explain why a container running as root with host-mounted credentials is not a sufficient sandbox."
+    - "Design the network policy for a task that needs package downloads from two approved registries but must not exfiltrate data elsewhere."
+    - "Compare native container isolation, gVisor-style application-kernel isolation, and a VM/microVM for an untrusted multi-tenant execution workload."
+  pass_condition: "Skip introductory material only if the learner can define filesystem, network, privilege, resource, lifetime, and cleanup boundaries; select an isolation strength from the threat model; and reproduce escape/exfiltration/resource-abuse tests."
+learning_route:
+  mental_model:
+    - source: article.anthropic-agent-sandboxing
+      locator: "Sections \"Sandboxing: a safer and more autonomous approach\" and the discussion of filesystem isolation and network isolation"
+      purpose: "Ground an AI-agent-specific sandbox in two complementary boundaries: which files code can access and which network destinations it can reach, especially under prompt injection."
+    - source: docs.gvisor-security-model
+      locator: "Sections \"Threats: The Anatomy of an Exploit\", \"Goals: Limiting Exposure\", \"What can a sandbox do?\", and \"Principles: Defense-in-Depth\""
+      purpose: "Build a deeper isolation mental model around host attack surface, syscall mediation, defense in depth, resource/network controls, and the limits of sandboxing."
+    - source: docs.kubernetes-security-context
+      locator: "SecurityContext controls including `runAsNonRoot`, `allowPrivilegeEscalation`, Linux capabilities, `readOnlyRootFilesystem`, and `seccompProfile`"
+      purpose: "Translate sandbox intent into concrete process/container hardening controls that reduce privilege and host exposure."
+  guided_practice:
+    - task: "Design the Knowledge Assistant's untrusted execution envelope: filesystem mounts, write paths, network destinations, credentials, UID/capabilities, resource limits, runtime/lifetime, cleanup, and escalation policy. State which control prevents each attack."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Add a sandboxed execution path for one intentionally untrusted task, then prove it cannot read host/other-tenant files, contact forbidden network destinations, gain extra privilege, persist across isolation boundaries, or exhaust unbounded resources."
+experiments:
+  - "Attempt to read host or other-tenant secrets through absolute paths, traversal, symlinks, or unexpected mounts and verify access fails."
+  - "Attempt outbound connections to unapproved hosts while allowing only the minimum declared registry/API destinations."
+  - "Run as a non-root user, request privilege escalation or an unnecessary capability, and verify the sandbox cannot obtain it."
+  - "Attempt to discover cloud metadata, host credentials, SSH keys, or service tokens and verify they are absent or unreachable."
+  - "Launch excessive processes, memory allocation, CPU work, disk growth, or a long-running process and verify resource/time limits terminate or throttle it."
+  - "Write hidden state in one sandbox run, destroy/reset the sandbox, and verify a different user/tenant/job cannot observe it unless persistence was explicitly authorized."
+  - "Feed malicious output/files from the sandbox back to the application and verify they are treated as untrusted rather than as trusted tool results."
+  - "Measure overhead and compatibility under the stronger sandbox, then justify any exception without expanding unrelated privileges."
+exit_evidence:
+  - "A sandbox threat model identifies protected host, tenant, credential, network, and resource assets."
+  - "Filesystem allow/deny policy defines readable mounts, writable paths, read-only roots, and ephemeral state."
+  - "Network policy is deny-by-default or equivalently restrictive and documents every allowed egress destination."
+  - "Credentials/secrets needed outside the sandbox are not mounted or exposed to the untrusted process."
+  - "The process runs without unnecessary root, capabilities, or privilege escalation."
+  - "CPU, memory, process, storage, wall-time, and concurrency limits are explicit where supported."
+  - "Sandbox lifetime and persistence are bound to the correct user, tenant, job, and trust domain."
+  - "A filesystem escape/traversal test fails safely."
+  - "A forbidden-network/exfiltration test fails safely."
+  - "A privilege-escalation or host-interface abuse test fails safely."
+  - "A resource-exhaustion test demonstrates bounded impact."
+  - "A cross-run or cross-tenant persistence test demonstrates cleanup/isolation."
+  - "Sandbox outputs are reclassified as untrusted before entering the model or privileged application paths."
+  - "Telemetry records policy denials and resource failures without exposing credentials."
+  - "The selected isolation strength and its performance/compatibility cost are justified from the threat model."
+  - "The final decision states which risks remain outside the sandbox, including higher-level application bugs or hardware/side-channel classes not covered by the chosen mechanism."
+transfer:
+  task: "Redesign the sandbox for a browser automation or data-analysis agent whose workload needs different filesystem mounts, network access, persistence, GPU/accelerator access, and tenant isolation."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - article.anthropic-agent-sandboxing
+    - docs.gvisor-security-model
+    - docs.kubernetes-security-context
+  practice:
+    - article.anthropic-agent-sandboxing
+    - docs.kubernetes-security-context
+  production-reference:
+    - docs.gvisor-security-model
+    - docs.kubernetes-security-context
+metadata:
+  last_reviewed: 2026-09-23
+  evidence_required: true

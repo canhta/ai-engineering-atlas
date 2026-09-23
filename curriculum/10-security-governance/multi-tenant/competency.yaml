@@ -1,0 +1,109 @@
+id: security.multi-tenant
+title: "Multi-Tenant Isolation"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "A user can be correctly authenticated and authorized for an application and still cross into another customer's resources if tenant context is missing or inconsistently enforced. AI systems multiply this risk because tenant-private data can leak through retrieval filters, vector indexes, memories, caches, tools, background jobs, logs, and shared model context. Tenant isolation therefore needs an explicit end-to-end context and resource boundary that survives every shared layer."
+curriculum_evidence:
+  - docs.azure-multitenant-identity
+  - docs.aws-saas-tenant-isolation
+  - docs.azure-multitenant-tenancy-models
+prerequisites:
+  - security.auth
+  - security.data-exfiltration
+  - retrieval.search
+  - production.caching
+outcomes:
+  - "Distinguish user identity from tenant identity and represent a user-to-tenant relationship explicitly."
+  - "Support users who belong to more than one tenant without treating the user ID as a global tenant selector."
+  - "Derive or validate tenant context from trusted identity/session state rather than accepting an arbitrary client-provided tenant identifier."
+  - "Propagate tenant context through API, retrieval, vector search, memory, cache, tool, background-job, queue, event, telemetry, and audit paths."
+  - "Scope every tenant resource access to the current tenant even when the underlying infrastructure is pooled."
+  - "Design tenant-aware resource keys and indexes so an omitted application filter cannot silently expose another tenant's rows or documents where stronger enforcement is available."
+  - "Apply tenant filtering before retrieved content enters model context."
+  - "Namespace caches, checkpoints, memories, files, and derived artifacts by tenant and any additional user/resource scope required for confidentiality."
+  - "Prevent a background task, retry, replay, or resumed agent run from losing the tenant context that authorized its original work."
+  - "Choose pool, silo, or bridge isolation independently for compute, storage, vector data, queues, caches, and other resources based on security, compliance, cost, and noisy-neighbor constraints."
+  - "Use tenant-scoped service credentials or policy where downstream systems support it instead of relying only on application conventions."
+  - "Separate provider/operator administration from tenant-user permissions and make cross-tenant support access explicit and auditable."
+  - "Apply per-tenant rate, quota, concurrency, or resource controls where one tenant could exhaust shared capacity."
+  - "Keep tenant identifiers and metrics useful for operations without leaking sensitive tenant data to another tenant."
+  - "Handle tenant onboarding, suspension, offboarding, retention, and deletion without leaving reusable data, cache entries, jobs, or credentials behind."
+  - "Test cross-tenant access at every major shared boundary instead of testing only database rows."
+  - "Prefer shared isolation enforcement mechanisms over relying on every service developer to remember a tenant filter."
+  - "Document residual shared infrastructure and the failure that would be required for one tenant to affect another."
+diagnostic:
+  tasks:
+    - "Explain how an authenticated and authorized user can still read another tenant's data in a pooled SaaS system."
+    - "Trace tenant context through API, vector retrieval, cache, background job, and audit log for one Knowledge Assistant request."
+    - "Design behavior for one user who belongs to two tenants and switches tenant context without changing identity."
+    - "Choose pool, silo, or bridge isolation for vector data and caches under conflicting cost, compliance, and noisy-neighbor requirements."
+  pass_condition: "Skip introductory material only if the learner can carry trusted tenant context end to end, enforce it at every shared resource boundary, test cross-tenant failures outside the database layer, and defend a pool/silo/bridge isolation choice."
+learning_route:
+  mental_model:
+    - source: docs.aws-saas-tenant-isolation
+      locator: "Section \"Tenant isolation\" in SaaS Architecture Fundamentals"
+      purpose: "Establish the critical distinction that authentication and authorization do not themselves guarantee isolation; every tenant resource access needs explicit tenant scoping."
+    - source: docs.azure-multitenant-identity
+      locator: "Sections \"Authorization\", \"Add tenant identity and role information to tokens\", \"User and tenant conflation\", and \"Role and resource authorization conflation\""
+      purpose: "Model the relationship between user identity, tenant context, roles, and resource-level authorization, including users who belong to multiple tenants."
+    - source: docs.azure-multitenant-tenancy-models
+      locator: "Section \"Tenant isolation\" and the isolation continuum discussion covering security, cost, and performance trade-offs"
+      purpose: "Treat isolation as a per-component spectrum rather than a single architecture label, enabling pool, silo, and mixed decisions from concrete constraints."
+  guided_practice:
+    - task: "Annotate the Knowledge Assistant architecture with every place tenant context must exist: request/session, retrieval, vector index, cache, memory, tool credentials, background jobs, traces, and admin paths. For each boundary, state the enforcement mechanism and negative test."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Turn the Knowledge Assistant into a two-tenant test system, then prove tenant A cannot access tenant B through API parameters, retrieval, caches, memories, tool calls, background jobs, replay, or admin paths while preserving shared infrastructure where justified."
+experiments:
+  - "Change a client-supplied tenant identifier while keeping the same authenticated session and verify trusted tenant context cannot be forged."
+  - "Remove a retrieval or vector-store tenant filter in a test path and verify a stronger isolation control or regression test catches the cross-tenant result before model context."
+  - "Seed identical cache keys for two tenants and verify values cannot collide or be served across tenants."
+  - "Resume an agent/background job after serialization and verify the original tenant context remains bound and reauthorized."
+  - "Switch a multi-tenant user between two valid tenants and verify access changes with tenant context rather than user identity alone."
+  - "Attempt provider-admin or support access across tenants and verify the elevated path is explicit, scoped, and audited."
+  - "Generate a noisy-neighbor load from one tenant and verify quotas or isolation prevent unacceptable impact on another tenant."
+  - "Offboard one tenant and verify retained documents, vector entries, caches, jobs, memories, and credentials follow the declared deletion/retention policy."
+exit_evidence:
+  - "A tenant-context contract defines how tenant identity is established, selected, validated, propagated, and changed."
+  - "User identity and tenant membership are modeled separately."
+  - "Every API/resource access is scoped to trusted tenant context."
+  - "Retrieval and vector-search tests prove tenant-private content cannot cross into another tenant's model context."
+  - "Cache, memory, checkpoint, file, and replay namespaces include the tenant/resource scope required for isolation."
+  - "Background jobs, retries, and resumed workflows preserve or revalidate tenant context."
+  - "A pool/silo/bridge decision exists for major shared resource classes."
+  - "At least one enforcement layer prevents cross-tenant access independently of a developer-supplied query filter where the platform allows it."
+  - "A multi-tenant user-switch test proves context changes intentionally and cannot be forged by arbitrary request parameters."
+  - "Admin/support cross-tenant access is separately authorized and audited."
+  - "Per-tenant resource or quota controls address a declared noisy-neighbor risk where applicable."
+  - "Tenant offboarding/removal cleans or retains data according to an explicit lifecycle policy."
+  - "Cross-tenant negative tests cover more than the primary database, including at least retrieval and one cache/state/tool/background path."
+  - "The final decision records residual shared resources and why their isolation level is acceptable."
+transfer:
+  task: "Redesign isolation for a multi-tenant coding or analytics agent where tenants share compute but require different storage, network, model-provider, and support-access isolation levels."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - docs.aws-saas-tenant-isolation
+    - docs.azure-multitenant-identity
+    - docs.azure-multitenant-tenancy-models
+  practice:
+    - docs.aws-saas-tenant-isolation
+    - docs.azure-multitenant-identity
+  production-reference:
+    - docs.azure-multitenant-tenancy-models
+    - docs.aws-saas-tenant-isolation
+metadata:
+  last_reviewed: 2026-09-23
+  evidence_required: true

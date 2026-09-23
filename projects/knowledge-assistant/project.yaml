@@ -34,8 +34,11 @@ milestones:
   - drift-monitoring
   - architecture-synthesis
   - operating-lifecycle-synthesis
+  - authentication-authorization-boundary
+  - multi-tenant-isolation
   - tool-permission-boundary
   - data-exfiltration-boundary
+  - sandboxed-execution
   - integrated-security-attack-path
   - incident-and-feedback
 competencies:
@@ -71,9 +74,12 @@ competencies:
   - production.drift
   - production.architecture
   - production.mlops-llmops
+  - security.auth
+  - security.multi-tenant
   - security.tool-permissions
   - security.prompt-injection
   - security.data-exfiltration
+  - security.sandboxing
 evidence:
   - product-brief
   - baseline-results
@@ -139,12 +145,18 @@ evidence:
   - operating-lifecycle-map
   - automation-boundary-record
   - production-readiness-review
+  - authentication-boundary-contract
+  - token-session-validation-record
+  - tenant-context-contract
+  - tenant-isolation-matrix
   - tool-capability-inventory
   - tool-permission-matrix
   - approval-policy
   - sensitive-data-flow-map
   - exfiltration-sink-policy
   - security-boundary-failure-matrix
+  - sandbox-contract
+  - sandbox-failure-matrix
   - security-audit-record
   - decision-records
   - traces

@@ -701,7 +701,49 @@ Map the full operating loop around the selected architecture.
 
 **Decision:** automate only the transitions that reduce risk, lead time, or toil without weakening evidence or required human judgment.
 
-## Milestone 30 — tool permission boundary
+## Milestone 30 — authentication and authorization boundary
+
+Use [Authentication and Authorization](../../curriculum/10-security-governance/auth/) and the [Security Boundaries evidence contract](security-boundaries/).
+
+Build identity and resource authorization before relying on agent-level controls.
+
+**Evidence:**
+
+- trusted issuer / principal mapping;
+- token or assertion validation contract;
+- access-token resource/scope restriction;
+- deny-by-default authorization policy;
+- object/resource-level negative tests;
+- session timeout / reauthentication / logout / revocation behavior;
+- service versus user identity separation;
+- credential/logging policy;
+- one privilege change observed by a subsequent request.
+
+**Decision:** authenticated identity is only input to authorization; every protected request still requires an explicit resource decision.
+
+## Milestone 31 — multi-tenant isolation
+
+Use [Multi-Tenant Isolation](../../curriculum/10-security-governance/multi-tenant/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
+
+Run the Knowledge Assistant with at least two synthetic tenants.
+
+**Evidence:**
+
+- tenant-context contract;
+- multi-tenant user/context-switch behavior;
+- API/resource tenant enforcement;
+- retrieval/vector isolation;
+- cache/state/memory namespace isolation;
+- background-job/retry tenant propagation;
+- admin/support cross-tenant policy;
+- pool/silo/bridge decision;
+- noisy-neighbor control where relevant;
+- tenant offboarding/deletion test;
+- cross-tenant negative-test matrix.
+
+**Decision:** tenant context must survive every shared layer; login and role checks alone do not prove isolation.
+
+## Milestone 32 — tool permission boundary
 
 Use the [Tool Permissions](../../curriculum/10-security-governance/tool-permissions/) route and the [Security Boundaries evidence contract](security-boundaries/).
 
@@ -723,7 +765,7 @@ Reduce the tool surface before testing prompt injection.
 
 **Decision:** the model may propose an action, but deterministic downstream policy decides whether that action exists and is authorized.
 
-## Milestone 31 — data exfiltration boundary
+## Milestone 33 — data exfiltration boundary
 
 Use the [Data Exfiltration](../../curriculum/10-security-governance/data-exfiltration/) route and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -745,24 +787,51 @@ Map protected data before testing how an attacker might move it.
 
 **Decision:** sensitive data may reach only the sources, transformations, stores, and sinks explicitly allowed by application policy.
 
-## Milestone 32 — integrated security attack path
+## Milestone 34 — sandboxed execution
 
-Reuse [Prompt Injection and Trust Boundaries](../../curriculum/10-security-governance/prompt-injection/) together with both new security routes.
+Use [Sandboxing](../../curriculum/10-security-governance/sandboxing/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
-Inject adversarial retrieved or tool content and treat the model output as compromised.
+Add one intentionally untrusted execution task only after its runtime boundary is explicit.
+
+**Evidence:**
+
+- sandbox threat model;
+- filesystem mounts and write paths;
+- network egress policy;
+- non-root / no-escalation / capability policy;
+- credential exclusion;
+- CPU / memory / PID / storage / wall-time limits;
+- sandbox lifetime and cleanup;
+- filesystem escape/traversal test;
+- forbidden network test;
+- privilege escalation test;
+- resource-exhaustion test;
+- cross-run / cross-tenant persistence test;
+- measured sandbox overhead.
+
+**Decision:** an allowed execution tool runs inside the smallest filesystem, network, privilege, resource, and lifetime envelope that can complete the task.
+
+## Milestone 35 — integrated security attack path
+
+Reuse [Prompt Injection and Trust Boundaries](../../curriculum/10-security-governance/prompt-injection/) together with the other ready security routes.
+
+Inject adversarial retrieved or tool content and treat model output as compromised.
 
 At minimum prove:
 
+- identity/session tampering is rejected;
+- tenant context cannot be forged;
 - the model cannot call an unexposed capability;
 - the model cannot broaden user/tenant resource scope;
 - high-impact actions cannot bypass approval;
 - protected data cannot enter context without authorization;
 - sensitive data cannot reach an unapproved external sink;
+- sandboxed code cannot reach host/other-tenant files or forbidden network;
 - logs, traces, cache, and streaming paths do not become alternate leak channels.
 
 **Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior.
 
-## Milestone 33 — incident and feedback loop
+## Milestone 36 — incident and feedback loop
 
 Inject or analyze one failure:
 
@@ -771,7 +840,9 @@ Inject or analyze one failure:
 - retrieval regression;
 - malformed document;
 - tool failure;
-- prompt-injection attempt.
+- prompt-injection attempt;
+- cross-tenant access attempt;
+- sandbox policy violation.
 
 Produce:
 

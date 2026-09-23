@@ -11674,7 +11674,329 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/sandboxing",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "When an AI system can execute generated or user-supplied code, shell commands, build steps, document converters, or other untrusted processes, authorization alone is not enough. The execution environment must limit what that process can read, write, connect to, consume, persist, and escalate into. A useful sandbox is an explicit threat boundary across filesystem, network, process/kernel interface, credentials, resources, lifetime, and cleanup—not merely a container label."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "security.tool-permissions"
+                },
+                {
+                  "ref": "security.data-exfiltration"
+                },
+                {
+                  "ref": "production.architecture"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define the untrusted execution threat model before selecting a sandbox mechanism."
+                },
+                {
+                  "en": "Separate tool authorization from runtime containment: an allowed code-execution tool still needs an execution boundary."
+                },
+                {
+                  "en": "Restrict filesystem access to explicit working directories and mount only the data required for the current task."
+                },
+                {
+                  "en": "Use read-only or immutable roots where practical and keep writable state ephemeral or narrowly scoped."
+                },
+                {
+                  "en": "Keep host secrets, SSH keys, cloud credentials, service tokens, metadata endpoints, and unrelated tenant files outside the sandbox."
+                },
+                {
+                  "en": "Deny outbound network access by default for code that does not need it and route approved egress through a constrained policy or proxy where network is required."
+                },
+                {
+                  "en": "Treat filesystem and network isolation as complementary so one cannot be used to bypass the other."
+                },
+                {
+                  "en": "Run with a non-root identity, prevent privilege escalation, and remove Linux capabilities or equivalent privileges not required by the workload."
+                },
+                {
+                  "en": "Limit process count, CPU, memory, storage, execution time, and concurrency to contain denial-of-service behavior."
+                },
+                {
+                  "en": "Choose stronger isolation such as an application kernel or microVM when the host-kernel attack surface or multi-tenant threat warrants it."
+                },
+                {
+                  "en": "Understand that containers, seccomp, gVisor-like sandboxes, and VMs expose different attack surfaces and performance/compatibility trade-offs."
+                },
+                {
+                  "en": "Bind sandbox lifetime and persistent mounts to the user, tenant, job, or trust boundary that authorized the work."
+                },
+                {
+                  "en": "Destroy or reset execution state between trust domains so one run cannot leave hidden state for another."
+                },
+                {
+                  "en": "Treat files and stdout/stderr produced by untrusted execution as untrusted input to the next model/application step."
+                },
+                {
+                  "en": "Instrument sandbox starts, exits, policy denials, resource exhaustion, and egress attempts without leaking sandbox secrets into telemetry."
+                },
+                {
+                  "en": "Fail closed when the sandbox policy or egress control cannot be established."
+                },
+                {
+                  "en": "Test path traversal, symlink/mount abuse, privilege escalation, forbidden network, credential discovery, resource exhaustion, and cross-sandbox persistence."
+                },
+                {
+                  "en": "Measure the latency/cost/compatibility overhead of the selected isolation and remove unnecessary permissions rather than weakening isolation for convenience."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a coding agent that can run shell commands, list which host files, network destinations, credentials, kernel interfaces, and resources must remain unreachable."
+                },
+                {
+                  "en": "Explain why a container running as root with host-mounted credentials is not a sufficient sandbox."
+                },
+                {
+                  "en": "Design the network policy for a task that needs package downloads from two approved registries but must not exfiltrate data elsewhere."
+                },
+                {
+                  "en": "Compare native container isolation, gVisor-style application-kernel isolation, and a VM/microVM for an untrusted multi-tenant execution workload."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can define filesystem, network, privilege, resource, lifetime, and cleanup boundaries; select an isolation strength from the threat model; and reproduce escape/exfiltration/resource-abuse tests."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "article.anthropic-agent-sandboxing",
+                  "locator": {
+                    "en": "Sections \"Sandboxing: a safer and more autonomous approach\" and the discussion of filesystem isolation and network isolation"
+                  },
+                  "purpose": {
+                    "en": "Ground an AI-agent-specific sandbox in two complementary boundaries: which files code can access and which network destinations it can reach, especially under prompt injection."
+                  }
+                },
+                {
+                  "resource": "docs.gvisor-security-model",
+                  "locator": {
+                    "en": "Sections \"Threats: The Anatomy of an Exploit\", \"Goals: Limiting Exposure\", \"What can a sandbox do?\", and \"Principles: Defense-in-Depth\""
+                  },
+                  "purpose": {
+                    "en": "Build a deeper isolation mental model around host attack surface, syscall mediation, defense in depth, resource/network controls, and the limits of sandboxing."
+                  }
+                },
+                {
+                  "resource": "docs.kubernetes-security-context",
+                  "locator": {
+                    "en": "SecurityContext controls including `runAsNonRoot`, `allowPrivilegeEscalation`, Linux capabilities, `readOnlyRootFilesystem`, and `seccompProfile`"
+                  },
+                  "purpose": {
+                    "en": "Translate sandbox intent into concrete process/container hardening controls that reduce privilege and host exposure."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Design the Knowledge Assistant's untrusted execution envelope: filesystem mounts, write paths, network destinations, credentials, UID/capabilities, resource limits, runtime/lifetime, cleanup, and escalation policy. State which control prevents each attack."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Add a sandboxed execution path for one intentionally untrusted task, then prove it cannot read host/other-tenant files, contact forbidden network destinations, gain extra privilege, persist across isolation boundaries, or exhaust unbounded resources."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Attempt to read host or other-tenant secrets through absolute paths, traversal, symlinks, or unexpected mounts and verify access fails."
+                },
+                {
+                  "en": "Attempt outbound connections to unapproved hosts while allowing only the minimum declared registry/API destinations."
+                },
+                {
+                  "en": "Run as a non-root user, request privilege escalation or an unnecessary capability, and verify the sandbox cannot obtain it."
+                },
+                {
+                  "en": "Attempt to discover cloud metadata, host credentials, SSH keys, or service tokens and verify they are absent or unreachable."
+                },
+                {
+                  "en": "Launch excessive processes, memory allocation, CPU work, disk growth, or a long-running process and verify resource/time limits terminate or throttle it."
+                },
+                {
+                  "en": "Write hidden state in one sandbox run, destroy/reset the sandbox, and verify a different user/tenant/job cannot observe it unless persistence was explicitly authorized."
+                },
+                {
+                  "en": "Feed malicious output/files from the sandbox back to the application and verify they are treated as untrusted rather than as trusted tool results."
+                },
+                {
+                  "en": "Measure overhead and compatibility under the stronger sandbox, then justify any exception without expanding unrelated privileges."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A sandbox threat model identifies protected host, tenant, credential, network, and resource assets."
+                },
+                {
+                  "en": "Filesystem allow/deny policy defines readable mounts, writable paths, read-only roots, and ephemeral state."
+                },
+                {
+                  "en": "Network policy is deny-by-default or equivalently restrictive and documents every allowed egress destination."
+                },
+                {
+                  "en": "Credentials/secrets needed outside the sandbox are not mounted or exposed to the untrusted process."
+                },
+                {
+                  "en": "The process runs without unnecessary root, capabilities, or privilege escalation."
+                },
+                {
+                  "en": "CPU, memory, process, storage, wall-time, and concurrency limits are explicit where supported."
+                },
+                {
+                  "en": "Sandbox lifetime and persistence are bound to the correct user, tenant, job, and trust domain."
+                },
+                {
+                  "en": "A filesystem escape/traversal test fails safely."
+                },
+                {
+                  "en": "A forbidden-network/exfiltration test fails safely."
+                },
+                {
+                  "en": "A privilege-escalation or host-interface abuse test fails safely."
+                },
+                {
+                  "en": "A resource-exhaustion test demonstrates bounded impact."
+                },
+                {
+                  "en": "A cross-run or cross-tenant persistence test demonstrates cleanup/isolation."
+                },
+                {
+                  "en": "Sandbox outputs are reclassified as untrusted before entering the model or privileged application paths."
+                },
+                {
+                  "en": "Telemetry records policy denials and resource failures without exposing credentials."
+                },
+                {
+                  "en": "The selected isolation strength and its performance/compatibility cost are justified from the threat model."
+                },
+                {
+                  "en": "The final decision states which risks remain outside the sandbox, including higher-level application bugs or hardware/side-channel classes not covered by the chosen mechanism."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the sandbox for a browser automation or data-analysis agent whose workload needs different filesystem mounts, network access, persistence, GPU/accelerator access, and tenant isolation."
+              }
+            }
+          ]
         }
       },
       {
@@ -11684,7 +12006,322 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/auth",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "AI applications still rely on ordinary identity and access-control boundaries. Authentication proves who or what is acting; authorization decides whether that principal may perform a particular action on a particular resource at that time. Agentic behavior makes this more important because model output must never become an identity, session, or authorization oracle. A production design needs validated identity assertions, scoped sessions and tokens, deny-by-default resource checks, reauthentication for higher-risk actions, service identities, revocation, and auditable failures."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": []
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Distinguish identity proofing, authentication, federation, session management, authorization, and tenant isolation instead of collapsing them into login."
+                },
+                {
+                  "en": "Treat authenticated identity claims as input to authorization rather than as permission by themselves."
+                },
+                {
+                  "en": "Validate signed identity or access assertions against expected issuer, audience, signature, expiration, and other flow-specific claims before trusting them."
+                },
+                {
+                  "en": "Use authorization-code flows with PKCE and CSRF/mix-up protections for browser or native OAuth clients where those flows apply."
+                },
+                {
+                  "en": "Reject password-grant or credential-forwarding patterns that move user credentials into application code unnecessarily."
+                },
+                {
+                  "en": "Restrict access-token privilege and resource audience to the minimum required for the protected API."
+                },
+                {
+                  "en": "Separate ID tokens used to establish identity from access tokens used to authorize protected-resource calls."
+                },
+                {
+                  "en": "Define server-side session lifetime, inactivity, reauthentication, logout, and revocation behavior."
+                },
+                {
+                  "en": "Use stronger or phishing-resistant authentication for higher-risk access where the threat and assurance requirement justify it."
+                },
+                {
+                  "en": "Perform authorization on every protected request rather than trusting prior UI visibility, route selection, or model/tool decisions."
+                },
+                {
+                  "en": "Deny by default when no explicit authorization rule grants an action."
+                },
+                {
+                  "en": "Authorize the tuple of principal, action, resource, context, and current policy rather than role membership alone when finer control is required."
+                },
+                {
+                  "en": "Use stable user/service identities and keep service credentials distinct from delegated user sessions."
+                },
+                {
+                  "en": "Require step-up authentication or fresh authorization for sensitive actions when previous authentication is too old or weak for the operation."
+                },
+                {
+                  "en": "Keep session secrets, bearer tokens, refresh tokens, and reusable credentials out of model-visible prompts, tool arguments, logs, and client-controlled state."
+                },
+                {
+                  "en": "Audit successful and denied privileged operations with actor, resource, decision, and correlation context without logging reusable credentials."
+                },
+                {
+                  "en": "Revoke or down-scope access after logout, security events, membership changes, or policy changes and verify the effect reaches subsequent requests."
+                },
+                {
+                  "en": "Test object-level and action-level authorization failures instead of stopping at a successful login test."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given an OIDC login and an API call, identify which artifact proves identity and which artifact authorizes access to the API."
+                },
+                {
+                  "en": "Explain why a valid token with the wrong issuer or audience must be rejected."
+                },
+                {
+                  "en": "Design an authorization check for user A attempting to edit resource R when role, ownership, tenant, and action all matter."
+                },
+                {
+                  "en": "Explain what should happen to active sessions and refresh tokens after logout, account compromise, or privilege revocation."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can separate authentication from authorization, validate identity/token boundaries, perform deny-by-default resource authorization on every request, and operate session/revocation behavior under failure."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.rfc9700-oauth-security",
+                  "locator": {
+                    "en": "Sections 2.1 \"Protecting Redirect-Based Flows\", 2.2 \"Sender-Constrained Access Tokens\", 2.3 \"Access Token Privilege Restriction\", and 4.14.2 \"Recommendations\""
+                  },
+                  "purpose": {
+                    "en": "Ground modern OAuth security in PKCE/redirect protection, restricted token privilege, replay resistance, refresh-token binding, revocation, and safe session renewal."
+                  }
+                },
+                {
+                  "resource": "standard.openid-connect-core",
+                  "locator": {
+                    "en": "Section 2 \"ID Token\" and Section 3.1.3.7 \"ID Token Validation\""
+                  },
+                  "purpose": {
+                    "en": "Establish the identity-assertion boundary and the requirement to validate issuer, audience, signature, expiration, nonce, and other claims before creating an authenticated application session."
+                  }
+                },
+                {
+                  "resource": "guide.nist-sp800-63b-4",
+                  "locator": {
+                    "en": "Sections \"Authenticator Assurance Level 2\", \"Phishing Resistance\", and \"Session Management\""
+                  },
+                  "purpose": {
+                    "en": "Connect authenticator strength, replay/phishing resistance, reauthentication, inactivity, and session lifecycle to the risk of the protected operation."
+                  }
+                },
+                {
+                  "resource": "guide.owasp-authorization",
+                  "locator": {
+                    "en": "Sections \"Enforce Least Privileges\", \"Deny by Default\", and \"Validate the Permissions on Every Request\""
+                  },
+                  "purpose": {
+                    "en": "Turn authenticated identity into deterministic authorization policy that is least-privileged, default-deny, and checked on every resource request."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Trace one Knowledge Assistant request from identity provider through application session to protected retrieval/tool access. Label issuer/audience validation, session state, authorization decision, step-up point, revocation source, and audit evidence."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Implement and test the Knowledge Assistant identity/session/resource-authorization boundary so expired, wrong-audience, revoked, cross-resource, and stale-privilege requests fail closed before retrieval, tools, or model context are reached."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Tamper with issuer, audience, signature, nonce/state, or expiry in a synthetic identity/token flow and verify the application rejects the session or request."
+                },
+                {
+                  "en": "Attempt an OAuth authorization flow without the declared PKCE/CSRF protection and verify the insecure path is not accepted."
+                },
+                {
+                  "en": "Use a token with broader scope than the API needs, reduce the privilege/resource audience, and verify the narrower token still supports the intended task."
+                },
+                {
+                  "en": "Hide a UI action but call its API directly and verify authorization still blocks the request."
+                },
+                {
+                  "en": "Change role, ownership, or resource policy after login and verify the next protected request observes the new decision."
+                },
+                {
+                  "en": "Revoke a session or refresh token after logout or a simulated security event and verify reuse fails."
+                },
+                {
+                  "en": "Require fresh or stronger authentication for one high-risk action and verify an old/weak session cannot silently perform it."
+                },
+                {
+                  "en": "Attempt to leak a session/token into logs or model-visible context and verify the secure path keeps the credential outside those surfaces."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "An identity boundary states which IdP/issuer is trusted and which claims establish the application principal."
+                },
+                {
+                  "en": "Token/session validation covers issuer, audience, signature, lifetime, and relevant replay/flow protections."
+                },
+                {
+                  "en": "Access tokens are restricted to the resource and privilege required by the protected API."
+                },
+                {
+                  "en": "ID-token and access-token responsibilities are not conflated."
+                },
+                {
+                  "en": "Authorization is evaluated server-side on every protected request."
+                },
+                {
+                  "en": "Default-deny behavior is explicit when no rule matches."
+                },
+                {
+                  "en": "At least one resource/object-level negative authorization test passes."
+                },
+                {
+                  "en": "Session lifetime, inactivity, reauthentication, logout, and revocation behavior are inspectable."
+                },
+                {
+                  "en": "A higher-risk action has a declared fresh/step-up authentication requirement where appropriate."
+                },
+                {
+                  "en": "Service identities and delegated user sessions are separated."
+                },
+                {
+                  "en": "Reusable credentials are excluded from model prompts, tool arguments, caches, and logs."
+                },
+                {
+                  "en": "A privilege or membership change is observed without requiring the model to reinterpret policy."
+                },
+                {
+                  "en": "Security audit evidence records actor, resource, action, decision, and correlation without exposing credentials."
+                },
+                {
+                  "en": "The final decision states which authentication assurance and authorization model are required for each protected surface."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign the authentication, session, and resource-authorization boundary for an enterprise assistant federated to a different IdP and supporting both human users and service-to-service callers."
+              }
+            }
+          ]
         }
       },
       {
@@ -11694,7 +12331,326 @@
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "system-operation",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/multi-tenant",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "A user can be correctly authenticated and authorized for an application and still cross into another customer's resources if tenant context is missing or inconsistently enforced. AI systems multiply this risk because tenant-private data can leak through retrieval filters, vector indexes, memories, caches, tools, background jobs, logs, and shared model context. Tenant isolation therefore needs an explicit end-to-end context and resource boundary that survives every shared layer."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "security.auth"
+                },
+                {
+                  "ref": "security.data-exfiltration"
+                },
+                {
+                  "ref": "retrieval.search"
+                },
+                {
+                  "ref": "production.caching"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Distinguish user identity from tenant identity and represent a user-to-tenant relationship explicitly."
+                },
+                {
+                  "en": "Support users who belong to more than one tenant without treating the user ID as a global tenant selector."
+                },
+                {
+                  "en": "Derive or validate tenant context from trusted identity/session state rather than accepting an arbitrary client-provided tenant identifier."
+                },
+                {
+                  "en": "Propagate tenant context through API, retrieval, vector search, memory, cache, tool, background-job, queue, event, telemetry, and audit paths."
+                },
+                {
+                  "en": "Scope every tenant resource access to the current tenant even when the underlying infrastructure is pooled."
+                },
+                {
+                  "en": "Design tenant-aware resource keys and indexes so an omitted application filter cannot silently expose another tenant's rows or documents where stronger enforcement is available."
+                },
+                {
+                  "en": "Apply tenant filtering before retrieved content enters model context."
+                },
+                {
+                  "en": "Namespace caches, checkpoints, memories, files, and derived artifacts by tenant and any additional user/resource scope required for confidentiality."
+                },
+                {
+                  "en": "Prevent a background task, retry, replay, or resumed agent run from losing the tenant context that authorized its original work."
+                },
+                {
+                  "en": "Choose pool, silo, or bridge isolation independently for compute, storage, vector data, queues, caches, and other resources based on security, compliance, cost, and noisy-neighbor constraints."
+                },
+                {
+                  "en": "Use tenant-scoped service credentials or policy where downstream systems support it instead of relying only on application conventions."
+                },
+                {
+                  "en": "Separate provider/operator administration from tenant-user permissions and make cross-tenant support access explicit and auditable."
+                },
+                {
+                  "en": "Apply per-tenant rate, quota, concurrency, or resource controls where one tenant could exhaust shared capacity."
+                },
+                {
+                  "en": "Keep tenant identifiers and metrics useful for operations without leaking sensitive tenant data to another tenant."
+                },
+                {
+                  "en": "Handle tenant onboarding, suspension, offboarding, retention, and deletion without leaving reusable data, cache entries, jobs, or credentials behind."
+                },
+                {
+                  "en": "Test cross-tenant access at every major shared boundary instead of testing only database rows."
+                },
+                {
+                  "en": "Prefer shared isolation enforcement mechanisms over relying on every service developer to remember a tenant filter."
+                },
+                {
+                  "en": "Document residual shared infrastructure and the failure that would be required for one tenant to affect another."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Explain how an authenticated and authorized user can still read another tenant's data in a pooled SaaS system."
+                },
+                {
+                  "en": "Trace tenant context through API, vector retrieval, cache, background job, and audit log for one Knowledge Assistant request."
+                },
+                {
+                  "en": "Design behavior for one user who belongs to two tenants and switches tenant context without changing identity."
+                },
+                {
+                  "en": "Choose pool, silo, or bridge isolation for vector data and caches under conflicting cost, compliance, and noisy-neighbor requirements."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip introductory material only if the learner can carry trusted tenant context end to end, enforce it at every shared resource boundary, test cross-tenant failures outside the database layer, and defend a pool/silo/bridge isolation choice."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "docs.aws-saas-tenant-isolation",
+                  "locator": {
+                    "en": "Section \"Tenant isolation\" in SaaS Architecture Fundamentals"
+                  },
+                  "purpose": {
+                    "en": "Establish the critical distinction that authentication and authorization do not themselves guarantee isolation; every tenant resource access needs explicit tenant scoping."
+                  }
+                },
+                {
+                  "resource": "docs.azure-multitenant-identity",
+                  "locator": {
+                    "en": "Sections \"Authorization\", \"Add tenant identity and role information to tokens\", \"User and tenant conflation\", and \"Role and resource authorization conflation\""
+                  },
+                  "purpose": {
+                    "en": "Model the relationship between user identity, tenant context, roles, and resource-level authorization, including users who belong to multiple tenants."
+                  }
+                },
+                {
+                  "resource": "docs.azure-multitenant-tenancy-models",
+                  "locator": {
+                    "en": "Section \"Tenant isolation\" and the isolation continuum discussion covering security, cost, and performance trade-offs"
+                  },
+                  "purpose": {
+                    "en": "Treat isolation as a per-component spectrum rather than a single architecture label, enabling pool, silo, and mixed decisions from concrete constraints."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Annotate the Knowledge Assistant architecture with every place tenant context must exist: request/session, retrieval, vector index, cache, memory, tool credentials, background jobs, traces, and admin paths. For each boundary, state the enforcement mechanism and negative test."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Turn the Knowledge Assistant into a two-tenant test system, then prove tenant A cannot access tenant B through API parameters, retrieval, caches, memories, tool calls, background jobs, replay, or admin paths while preserving shared infrastructure where justified."
+                      },
+                      "path": "projects/knowledge-assistant/security-boundaries/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Change a client-supplied tenant identifier while keeping the same authenticated session and verify trusted tenant context cannot be forged."
+                },
+                {
+                  "en": "Remove a retrieval or vector-store tenant filter in a test path and verify a stronger isolation control or regression test catches the cross-tenant result before model context."
+                },
+                {
+                  "en": "Seed identical cache keys for two tenants and verify values cannot collide or be served across tenants."
+                },
+                {
+                  "en": "Resume an agent/background job after serialization and verify the original tenant context remains bound and reauthorized."
+                },
+                {
+                  "en": "Switch a multi-tenant user between two valid tenants and verify access changes with tenant context rather than user identity alone."
+                },
+                {
+                  "en": "Attempt provider-admin or support access across tenants and verify the elevated path is explicit, scoped, and audited."
+                },
+                {
+                  "en": "Generate a noisy-neighbor load from one tenant and verify quotas or isolation prevent unacceptable impact on another tenant."
+                },
+                {
+                  "en": "Offboard one tenant and verify retained documents, vector entries, caches, jobs, memories, and credentials follow the declared deletion/retention policy."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A tenant-context contract defines how tenant identity is established, selected, validated, propagated, and changed."
+                },
+                {
+                  "en": "User identity and tenant membership are modeled separately."
+                },
+                {
+                  "en": "Every API/resource access is scoped to trusted tenant context."
+                },
+                {
+                  "en": "Retrieval and vector-search tests prove tenant-private content cannot cross into another tenant's model context."
+                },
+                {
+                  "en": "Cache, memory, checkpoint, file, and replay namespaces include the tenant/resource scope required for isolation."
+                },
+                {
+                  "en": "Background jobs, retries, and resumed workflows preserve or revalidate tenant context."
+                },
+                {
+                  "en": "A pool/silo/bridge decision exists for major shared resource classes."
+                },
+                {
+                  "en": "At least one enforcement layer prevents cross-tenant access independently of a developer-supplied query filter where the platform allows it."
+                },
+                {
+                  "en": "A multi-tenant user-switch test proves context changes intentionally and cannot be forged by arbitrary request parameters."
+                },
+                {
+                  "en": "Admin/support cross-tenant access is separately authorized and audited."
+                },
+                {
+                  "en": "Per-tenant resource or quota controls address a declared noisy-neighbor risk where applicable."
+                },
+                {
+                  "en": "Tenant offboarding/removal cleans or retains data according to an explicit lifecycle policy."
+                },
+                {
+                  "en": "Cross-tenant negative tests cover more than the primary database, including at least retrieval and one cache/state/tool/background path."
+                },
+                {
+                  "en": "The final decision records residual shared resources and why their isolation level is acceptable."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Redesign isolation for a multi-tenant coding or analytics agent where tenants share compute but require different storage, network, model-provider, and support-access isolation levels."
+              }
+            }
+          ]
         }
       },
       {
@@ -12425,10 +13381,19 @@
                   "en": "operating-lifecycle-synthesis"
                 },
                 {
+                  "en": "authentication-authorization-boundary"
+                },
+                {
+                  "en": "multi-tenant-isolation"
+                },
+                {
                   "en": "tool-permission-boundary"
                 },
                 {
                   "en": "data-exfiltration-boundary"
+                },
+                {
+                  "en": "sandboxed-execution"
                 },
                 {
                   "en": "integrated-security-attack-path"
@@ -12640,6 +13605,18 @@
                   "en": "production-readiness-review"
                 },
                 {
+                  "en": "authentication-boundary-contract"
+                },
+                {
+                  "en": "token-session-validation-record"
+                },
+                {
+                  "en": "tenant-context-contract"
+                },
+                {
+                  "en": "tenant-isolation-matrix"
+                },
+                {
                   "en": "tool-capability-inventory"
                 },
                 {
@@ -12656,6 +13633,12 @@
                 },
                 {
                   "en": "security-boundary-failure-matrix"
+                },
+                {
+                  "en": "sandbox-contract"
+                },
+                {
+                  "en": "sandbox-failure-matrix"
                 },
                 {
                   "en": "security-audit-record"
@@ -12953,12 +13936,27 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "security.auth"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "security.data-exfiltration"
     },
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "security.multi-tenant"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "security.sandboxing"
     },
     {
       "type": "member",
@@ -13277,6 +14275,11 @@
     },
     {
       "type": "prerequisite",
+      "from": "production.architecture",
+      "to": "security.sandboxing"
+    },
+    {
+      "type": "prerequisite",
       "from": "production.caching",
       "to": "production.architecture"
     },
@@ -13284,6 +14287,11 @@
       "type": "prerequisite",
       "from": "production.caching",
       "to": "security.data-exfiltration"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.caching",
+      "to": "security.multi-tenant"
     },
     {
       "type": "prerequisite",
@@ -13442,8 +14450,28 @@
     },
     {
       "type": "prerequisite",
+      "from": "retrieval.search",
+      "to": "security.multi-tenant"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.auth",
+      "to": "security.multi-tenant"
+    },
+    {
+      "type": "prerequisite",
       "from": "security.auth",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.data-exfiltration",
+      "to": "security.multi-tenant"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.data-exfiltration",
+      "to": "security.sandboxing"
     },
     {
       "type": "prerequisite",
@@ -13464,6 +14492,11 @@
       "type": "prerequisite",
       "from": "security.tool-permissions",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.tool-permissions",
+      "to": "security.sandboxing"
     },
     {
       "type": "prerequisite",
@@ -13517,6 +14550,12 @@
       "type": "article",
       "author": "Anthropic",
       "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents"
+    },
+    "article.anthropic-agent-sandboxing": {
+      "title": "Anthropic — Making Claude Code more secure and autonomous with sandboxing",
+      "type": "article",
+      "author": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/claude-code-sandboxing"
     },
     "article.anthropic-building-effective-agents": {
       "title": "Building Effective Agents",
@@ -13686,6 +14725,12 @@
       "author": "Amazon Web Services",
       "url": "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/genops4.html"
     },
+    "docs.aws-saas-tenant-isolation": {
+      "title": "AWS SaaS Architecture Fundamentals — Tenant isolation",
+      "type": "documentation",
+      "author": "Amazon Web Services",
+      "url": "https://docs.aws.amazon.com/whitepapers/latest/saas-architecture-fundamentals/tenant-isolation.html"
+    },
     "docs.azure-ai-architecture-pattern": {
       "title": "Azure Well-Architected — AI workload architecture pattern",
       "type": "documentation",
@@ -13697,6 +14742,18 @@
       "type": "documentation",
       "author": "Microsoft",
       "url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/azure-openai-gateway-multi-backend"
+    },
+    "docs.azure-multitenant-identity": {
+      "title": "Azure Architecture Center — Identity in multitenant solutions",
+      "type": "documentation",
+      "author": "Microsoft",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/approaches/identity"
+    },
+    "docs.azure-multitenant-tenancy-models": {
+      "title": "Azure Architecture Center — Tenancy models",
+      "type": "documentation",
+      "author": "Microsoft",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models"
     },
     "docs.cloudflare-ai-gateway-dynamic-routing": {
       "title": "Cloudflare AI Gateway — Dynamic Routing",
@@ -13788,11 +14845,23 @@
       "author": "Google",
       "url": "https://ai.google.dev/gemini-api/docs/structured-output"
     },
+    "docs.gvisor-security-model": {
+      "title": "gVisor — Security Model",
+      "type": "documentation",
+      "author": "gVisor",
+      "url": "https://gvisor.dev/docs/architecture_guide/security/"
+    },
     "docs.json-schema-object": {
       "title": "JSON Schema — Object",
       "type": "documentation",
       "author": "JSON Schema",
       "url": "https://json-schema.org/understanding-json-schema/reference/object"
+    },
+    "docs.kubernetes-security-context": {
+      "title": "Kubernetes — Configure a Security Context for a Pod or Container",
+      "type": "documentation",
+      "author": "Kubernetes",
+      "url": "https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
     },
     "docs.langgraph-persistence": {
       "title": "LangGraph — Persistence",
@@ -13998,11 +15067,23 @@
       "author": "Martin Zinkevich, Google",
       "url": "https://developers.google.com/machine-learning/guides/rules-of-ml"
     },
+    "guide.nist-sp800-63b-4": {
+      "title": "NIST SP 800-63B-4 — Authentication and Authenticator Management",
+      "type": "guide",
+      "author": "NIST",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html"
+    },
     "guide.openai-practical-agents": {
       "title": "A practical guide to building agents",
       "type": "guide",
       "author": "OpenAI",
       "url": "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/"
+    },
+    "guide.owasp-authorization": {
+      "title": "OWASP Authorization Cheat Sheet",
+      "type": "guide",
+      "author": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
     },
     "paper.calibration-modern-neural-networks": {
       "title": "On Calibration of Modern Neural Networks",
@@ -14052,6 +15133,12 @@
       "author": "Carlos E. Jimenez et al.",
       "url": "https://arxiv.org/abs/2310.06770"
     },
+    "standard.openid-connect-core": {
+      "title": "OpenID Connect Core 1.0",
+      "type": "standard",
+      "author": "OpenID Foundation",
+      "url": "https://openid.net/specs/openid-connect-core-1_0.html"
+    },
     "standard.owasp-llm01-prompt-injection": {
       "title": "OWASP LLM01:2025 Prompt Injection",
       "type": "standard",
@@ -14069,6 +15156,12 @@
       "type": "standard",
       "author": "OWASP Gen AI Security Project",
       "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
+    },
+    "standard.rfc9700-oauth-security": {
+      "title": "RFC 9700 — Best Current Practice for OAuth 2.0 Security",
+      "type": "standard",
+      "author": "IETF",
+      "url": "https://www.rfc-editor.org/rfc/rfc9700.html"
     },
     "visual.3blue1brown-attention": {
       "title": "Attention in Transformers, Step-by-Step",

@@ -5,14 +5,48 @@ Extend the same Knowledge Assistant. The goal is not to prove that prompt inject
 Assume the model can be mistaken or manipulated and make the deterministic boundaries survive anyway:
 
 ```text
-untrusted source
+identity + tenant context
+→ authorization
+→ untrusted source
 → model/control decision
-→ tool or protected data source
-→ sensitive data
-→ output / tool / URL / log / cache / external sink
+→ tool / protected data / sandboxed execution
+→ output / external sink / persisted state
 ```
 
-## Stage 1 — minimize and authorize tools
+## Stage 1 — authenticate and authorize
+
+Use [authentication-boundary.template.md](authentication-boundary.template.md).
+
+Define:
+
+- trusted issuer / principal;
+- token or assertion validation;
+- session lifetime and revocation;
+- access-token resource/scope;
+- deny-by-default authorization;
+- resource/object checks;
+- step-up or fresh authentication for higher-risk actions;
+- service versus user identity.
+
+The model never decides who the caller is or whether an API request is authorized.
+
+## Stage 2 — isolate tenants
+
+Use [tenant-isolation.template.md](tenant-isolation.template.md).
+
+Track tenant context through:
+
+- API requests;
+- retrieval/vector data;
+- caches and memories;
+- tools and credentials;
+- jobs/retries/resume;
+- telemetry and audit;
+- admin/support access.
+
+Test at least two synthetic tenants. Authentication and authorization alone are not sufficient evidence of isolation.
+
+## Stage 3 — minimize and authorize tools
 
 Use [tool-permission-matrix.template.md](tool-permission-matrix.template.md).
 
@@ -29,7 +63,7 @@ For every tool/action record:
 
 Remove unnecessary functionality before trying to secure it.
 
-## Stage 2 — map sensitive data
+## Stage 4 — map sensitive data
 
 Use [sensitive-data-flow.template.md](sensitive-data-flow.template.md).
 
@@ -48,26 +82,31 @@ Classify protected sources and every place the data can flow:
 
 Authorize before context assembly. Do not depend on the model to decide what it is allowed to see or where it may transmit protected data.
 
-## Stage 3 — attack the combined path
+## Stage 5 — sandbox untrusted execution
+
+Use [sandbox-contract.template.md](sandbox-contract.template.md) and [sandbox-failure-matrix.template.md](sandbox-failure-matrix.template.md).
+
+Define:
+
+- readable/writable filesystem;
+- network egress;
+- process identity and capabilities;
+- credential exposure;
+- CPU/memory/PID/storage/time limits;
+- persistence and cleanup;
+- tenant/job lifetime;
+- behavior when policy cannot be applied.
+
+## Stage 6 — attack the combined path
 
 Use [security-boundary-failure-matrix.template.md](security-boundary-failure-matrix.template.md).
 
 Use synthetic secrets or canary records.
 
-Treat the model output as attacker-controlled and try:
-
-- forbidden tool/action;
-- wrong user/tenant resource;
-- wrong-audience credential;
-- approval bypass;
-- indirect injection requesting sensitive retrieval;
-- unapproved external sink;
-- hidden URL/tool-argument sink;
-- cache or telemetry leak;
-- partial streaming leak.
+Treat model output as attacker-controlled and attempt identity, tenant, permission, exfiltration, cache/telemetry, streaming, and sandbox bypasses.
 
 ## Exit condition
 
-Another engineer should be able to replay the attack cases and see deterministic policy—not model obedience—prevent unauthorized actions and sensitive-data transmission.
+Another engineer should be able to replay the attack cases and see deterministic policy—not model obedience—protect identity, tenant boundaries, actions, sensitive data, and execution isolation.
 
-A model refusal alone is not sufficient evidence.
+A successful login, model refusal, or container startup alone is not sufficient evidence.

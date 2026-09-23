@@ -1179,3 +1179,204 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: standard.rfc9700-oauth-security
+    type: standard
+    title: RFC 9700 — Best Current Practice for OAuth 2.0 Security
+    author: IETF
+    url: https://www.rfc-editor.org/rfc/rfc9700.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.auth
+      - oauth
+      - pkce
+      - access-tokens
+      - refresh-tokens
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: standard.openid-connect-core
+    type: standard
+    title: OpenID Connect Core 1.0
+    author: OpenID Foundation
+    url: https://openid.net/specs/openid-connect-core-1_0.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - security.auth
+      - oidc
+      - identity
+      - token-validation
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: guide.nist-sp800-63b-4
+    type: guide
+    title: NIST SP 800-63B-4 — Authentication and Authenticator Management
+    author: NIST
+    url: https://pages.nist.gov/800-63-4/sp800-63b.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - security.auth
+      - authentication
+      - phishing-resistance
+      - session-management
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: guide.owasp-authorization
+    type: guide
+    title: OWASP Authorization Cheat Sheet
+    author: OWASP
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.auth
+      - authorization
+      - least-privilege
+      - deny-by-default
+      - per-request-authorization
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.aws-saas-tenant-isolation
+    type: documentation
+    title: AWS SaaS Architecture Fundamentals — Tenant isolation
+    author: Amazon Web Services
+    url: https://docs.aws.amazon.com/whitepapers/latest/saas-architecture-fundamentals/tenant-isolation.html
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.multi-tenant
+      - tenant-context
+      - isolation
+      - pooled-resources
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 180
+
+  - id: docs.azure-multitenant-identity
+    type: documentation
+    title: Azure Architecture Center — Identity in multitenant solutions
+    author: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/approaches/identity
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.multi-tenant
+      - security.auth
+      - tenant-identity
+      - authorization
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.azure-multitenant-tenancy-models
+    type: documentation
+    title: Azure Architecture Center — Tenancy models
+    author: Microsoft
+    url: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/considerations/tenancy-models
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - security.multi-tenant
+      - silo
+      - pool
+      - isolation
+      - noisy-neighbor
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: article.anthropic-agent-sandboxing
+    type: article
+    title: Anthropic — Making Claude Code more secure and autonomous with sandboxing
+    author: Anthropic
+    url: https://www.anthropic.com/engineering/claude-code-sandboxing
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.sandboxing
+      - filesystem-isolation
+      - network-isolation
+      - prompt-injection
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.gvisor-security-model
+    type: documentation
+    title: gVisor — Security Model
+    author: gVisor
+    url: https://gvisor.dev/docs/architecture_guide/security/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - production-reference
+      - reference
+    covers:
+      - security.sandboxing
+      - workload-isolation
+      - syscall-isolation
+      - defense-in-depth
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90
+
+  - id: docs.kubernetes-security-context
+    type: documentation
+    title: Kubernetes — Configure a Security Context for a Pod or Container
+    author: Kubernetes
+    url: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+    roles:
+      - curriculum-evidence
+      - teaching
+      - practice
+      - production-reference
+      - reference
+    covers:
+      - security.sandboxing
+      - run-as-non-root
+      - privilege-escalation
+      - capabilities
+      - read-only-filesystem
+      - seccomp
+    source_verified: true
+    last_checked: 2026-09-23
+    review_interval_days: 90

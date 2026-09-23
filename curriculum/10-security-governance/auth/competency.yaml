@@ -1,0 +1,112 @@
+id: security.auth
+title: "Authentication and Authorization"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - system-operation
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "AI applications still rely on ordinary identity and access-control boundaries. Authentication proves who or what is acting; authorization decides whether that principal may perform a particular action on a particular resource at that time. Agentic behavior makes this more important because model output must never become an identity, session, or authorization oracle. A production design needs validated identity assertions, scoped sessions and tokens, deny-by-default resource checks, reauthentication for higher-risk actions, service identities, revocation, and auditable failures."
+curriculum_evidence:
+  - standard.rfc9700-oauth-security
+  - standard.openid-connect-core
+  - guide.nist-sp800-63b-4
+  - guide.owasp-authorization
+prerequisites:
+
+outcomes:
+  - "Distinguish identity proofing, authentication, federation, session management, authorization, and tenant isolation instead of collapsing them into login."
+  - "Treat authenticated identity claims as input to authorization rather than as permission by themselves."
+  - "Validate signed identity or access assertions against expected issuer, audience, signature, expiration, and other flow-specific claims before trusting them."
+  - "Use authorization-code flows with PKCE and CSRF/mix-up protections for browser or native OAuth clients where those flows apply."
+  - "Reject password-grant or credential-forwarding patterns that move user credentials into application code unnecessarily."
+  - "Restrict access-token privilege and resource audience to the minimum required for the protected API."
+  - "Separate ID tokens used to establish identity from access tokens used to authorize protected-resource calls."
+  - "Define server-side session lifetime, inactivity, reauthentication, logout, and revocation behavior."
+  - "Use stronger or phishing-resistant authentication for higher-risk access where the threat and assurance requirement justify it."
+  - "Perform authorization on every protected request rather than trusting prior UI visibility, route selection, or model/tool decisions."
+  - "Deny by default when no explicit authorization rule grants an action."
+  - "Authorize the tuple of principal, action, resource, context, and current policy rather than role membership alone when finer control is required."
+  - "Use stable user/service identities and keep service credentials distinct from delegated user sessions."
+  - "Require step-up authentication or fresh authorization for sensitive actions when previous authentication is too old or weak for the operation."
+  - "Keep session secrets, bearer tokens, refresh tokens, and reusable credentials out of model-visible prompts, tool arguments, logs, and client-controlled state."
+  - "Audit successful and denied privileged operations with actor, resource, decision, and correlation context without logging reusable credentials."
+  - "Revoke or down-scope access after logout, security events, membership changes, or policy changes and verify the effect reaches subsequent requests."
+  - "Test object-level and action-level authorization failures instead of stopping at a successful login test."
+diagnostic:
+  tasks:
+    - "Given an OIDC login and an API call, identify which artifact proves identity and which artifact authorizes access to the API."
+    - "Explain why a valid token with the wrong issuer or audience must be rejected."
+    - "Design an authorization check for user A attempting to edit resource R when role, ownership, tenant, and action all matter."
+    - "Explain what should happen to active sessions and refresh tokens after logout, account compromise, or privilege revocation."
+  pass_condition: "Skip introductory material only if the learner can separate authentication from authorization, validate identity/token boundaries, perform deny-by-default resource authorization on every request, and operate session/revocation behavior under failure."
+learning_route:
+  mental_model:
+    - source: standard.rfc9700-oauth-security
+      locator: "Sections 2.1 \"Protecting Redirect-Based Flows\", 2.2 \"Sender-Constrained Access Tokens\", 2.3 \"Access Token Privilege Restriction\", and 4.14.2 \"Recommendations\""
+      purpose: "Ground modern OAuth security in PKCE/redirect protection, restricted token privilege, replay resistance, refresh-token binding, revocation, and safe session renewal."
+    - source: standard.openid-connect-core
+      locator: "Section 2 \"ID Token\" and Section 3.1.3.7 \"ID Token Validation\""
+      purpose: "Establish the identity-assertion boundary and the requirement to validate issuer, audience, signature, expiration, nonce, and other claims before creating an authenticated application session."
+    - source: guide.nist-sp800-63b-4
+      locator: "Sections \"Authenticator Assurance Level 2\", \"Phishing Resistance\", and \"Session Management\""
+      purpose: "Connect authenticator strength, replay/phishing resistance, reauthentication, inactivity, and session lifecycle to the risk of the protected operation."
+    - source: guide.owasp-authorization
+      locator: "Sections \"Enforce Least Privileges\", \"Deny by Default\", and \"Validate the Permissions on Every Request\""
+      purpose: "Turn authenticated identity into deterministic authorization policy that is least-privileged, default-deny, and checked on every resource request."
+  guided_practice:
+    - task: "Trace one Knowledge Assistant request from identity provider through application session to protected retrieval/tool access. Label issuer/audience validation, session state, authorization decision, step-up point, revocation source, and audit evidence."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/security-boundaries/
+      task: "Implement and test the Knowledge Assistant identity/session/resource-authorization boundary so expired, wrong-audience, revoked, cross-resource, and stale-privilege requests fail closed before retrieval, tools, or model context are reached."
+experiments:
+  - "Tamper with issuer, audience, signature, nonce/state, or expiry in a synthetic identity/token flow and verify the application rejects the session or request."
+  - "Attempt an OAuth authorization flow without the declared PKCE/CSRF protection and verify the insecure path is not accepted."
+  - "Use a token with broader scope than the API needs, reduce the privilege/resource audience, and verify the narrower token still supports the intended task."
+  - "Hide a UI action but call its API directly and verify authorization still blocks the request."
+  - "Change role, ownership, or resource policy after login and verify the next protected request observes the new decision."
+  - "Revoke a session or refresh token after logout or a simulated security event and verify reuse fails."
+  - "Require fresh or stronger authentication for one high-risk action and verify an old/weak session cannot silently perform it."
+  - "Attempt to leak a session/token into logs or model-visible context and verify the secure path keeps the credential outside those surfaces."
+exit_evidence:
+  - "An identity boundary states which IdP/issuer is trusted and which claims establish the application principal."
+  - "Token/session validation covers issuer, audience, signature, lifetime, and relevant replay/flow protections."
+  - "Access tokens are restricted to the resource and privilege required by the protected API."
+  - "ID-token and access-token responsibilities are not conflated."
+  - "Authorization is evaluated server-side on every protected request."
+  - "Default-deny behavior is explicit when no rule matches."
+  - "At least one resource/object-level negative authorization test passes."
+  - "Session lifetime, inactivity, reauthentication, logout, and revocation behavior are inspectable."
+  - "A higher-risk action has a declared fresh/step-up authentication requirement where appropriate."
+  - "Service identities and delegated user sessions are separated."
+  - "Reusable credentials are excluded from model prompts, tool arguments, caches, and logs."
+  - "A privilege or membership change is observed without requiring the model to reinterpret policy."
+  - "Security audit evidence records actor, resource, action, decision, and correlation without exposing credentials."
+  - "The final decision states which authentication assurance and authorization model are required for each protected surface."
+transfer:
+  task: "Redesign the authentication, session, and resource-authorization boundary for an enterprise assistant federated to a different IdP and supporting both human users and service-to-service callers."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.rfc9700-oauth-security
+    - standard.openid-connect-core
+    - guide.nist-sp800-63b-4
+    - guide.owasp-authorization
+  practice:
+    - standard.rfc9700-oauth-security
+    - guide.owasp-authorization
+  production-reference:
+    - guide.nist-sp800-63b-4
+    - standard.openid-connect-core
+    - guide.owasp-authorization
+metadata:
+  last_reviewed: 2026-09-23
+  evidence_required: true
