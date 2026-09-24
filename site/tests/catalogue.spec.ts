@@ -152,5 +152,12 @@ test("@mobile every item page in the other collections fits a phone, Markdown ta
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
       );
       expect(overflow, `/en/${c.id}/${item.id}/`).toBeLessThanOrEqual(0);
+      // A block that scrolls in place must be reachable from the keyboard (axe scrollable-region-focusable).
+      const unreachable = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>(".markdown table, .markdown pre")]
+          .filter((el) => el.scrollWidth > el.clientWidth && el.tabIndex < 0)
+          .map((el) => el.tagName),
+      );
+      expect(unreachable, `/en/${c.id}/${item.id}/`).toEqual([]);
     }
 });

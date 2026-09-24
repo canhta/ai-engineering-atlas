@@ -1,7 +1,8 @@
 // Markdown bodies of `text` blocks (format: markdown), rendered at build time. Relative links
 // resolve against the item's repository path: to the atlas page of the item at that path when
 // it has one, otherwise to the file in the repository. Headings move down one level, since the
-// block's own title is the h2. Raw HTML is escaped: bodies are content, not markup.
+// block's own title is the h2. Raw HTML is escaped: bodies are content, not markup. Tables and code
+// blocks are focusable, since they scroll sideways on a narrow screen.
 import { Marked, type Tokens } from "marked";
 import type { Lang } from "../i18n";
 import { itemUrl, refAtPath, repoUrl } from "./atlas";
@@ -49,5 +50,6 @@ export function renderMarkdown(body: string, sourcePath: string, lang: Lang): st
       },
     },
   });
-  return marked.parse(body, { async: false });
+  // A table or code block wider than the column scrolls in place; tabindex lets a keyboard scroll it.
+  return marked.parse(body, { async: false }).replace(/<(table|pre)>/g, '<$1 tabindex="0">');
 }
