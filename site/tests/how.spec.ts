@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 // How it works (DESIGN.md → Information architecture, How it works). Every expected value comes from the content model: the
 // learner states, the described capability types, and the tracked collection's step blocks.
@@ -33,7 +32,7 @@ const pick = (l: L10n, lang: "en" | "vi") => (lang === "en" ? l.en : (l.vi ?? l.
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

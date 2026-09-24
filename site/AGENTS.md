@@ -13,7 +13,7 @@ Run from `site/` unless noted.
 | `pnpm install`                           | Install; build scripts are allowed only for the packages in `pnpm-workspace.yaml`                                                                                                                                                          |
 | `pnpm run dev`                           | Dev server. Astro's CSP and `_headers` do not apply in dev                                                                                                                                                                                 |
 | `pnpm run check`                         | Typecheck, unit tests (`node --test` for logic and the Worker, Vitest for the block renderer), style lint, i18n parity, token contrast, headers, icons, content coupling, build                                                            |
-| `pnpm run test:worker`                   | The Worker alone (part of `check`): routing, 503 without configuration, OAuth with provider HTTP mocked, sessions against the D1 migrations in Node's SQLite                                                                               |
+| `pnpm run test:worker`                   | The Worker alone (part of `check`): routing, `/api/me` and 503 without configuration, OAuth with provider HTTP mocked, sessions against the D1 migrations in Node's SQLite                                                                 |
 | `pnpm run test:labs`                     | Browser labs under Pyodide in Node: the reference passes, and the starter gives the same result as `python3 tests.py` (needs `python3`, or set `PYTHON`)                                                                                   |
 | `pnpm run test:e2e`                      | Browser tests against the built site (starts `pnpm run preview`): desktop at 1440px; tests tagged `@mobile` at 390px                                                                                                                       |
 | `pnpm run build` then `pnpm run preview` | Serve `dist/` through Wrangler with `_headers` applied (http://127.0.0.1:8787, or `ATLAS_PORT`)                                                                                                                                            |
@@ -45,7 +45,7 @@ Two workflows: **CI** (`ci.yml`) runs on every push and decides whether a commit
 ## Tests
 
 - Browser tests read counts, task numbers, and source counts from `src/data/atlas.json`; never type a number such as "19 of 116" into a test. The curriculum grows, and a pinned count fails on the next route promotion instead of on a regression.
-- Every test fails on a console error, an uncaught exception, or a CSP violation (`isConsoleError` in `tests/fixtures/console.ts`). The one exemption is Chrome's "Failed to load resource" for `/api/me`, whose 401 or 503 is the expected answer.
+- Every test fails on a console error, an uncaught exception, or a CSP violation.
 
 ## Learner state
 
@@ -77,9 +77,9 @@ Two workflows: **CI** (`ci.yml`) runs on every push and decides whether a commit
 ## AI tutor and Worker
 
 - The Worker lives in `worker/` (`index.ts` entry, `api.ts` routes). `wrangler.jsonc` runs it first for `/api/*` only, which `check:headers` enforces: `_headers` never applies to a Worker response, so pages must stay assets. API responses set their own headers in `worker/http.ts`.
-- Sign-in: `GET /api/auth/{github,google}` → provider → `/api/auth/{provider}/callback` (state and PKCE S256, code exchanged server-side, provider token discarded, no email asked for); `GET /api/me` (200 or 401 with the providers offered); `POST /api/auth/signout` (same-origin only). The top bar's `AccountMenu.tsx` renders nothing unless `/api/me` answers 200 or 401.
+- Sign-in: `GET /api/auth/{github,google}` → provider → `/api/auth/{provider}/callback` (state and PKCE S256, code exchanged server-side, provider token discarded, no email asked for); `GET /api/me`; `POST /api/auth/signout` (same-origin only). `/api/me` is asked on every page, so it always answers 200 (a failed request would be a console error): `{available: true, user, providers}` with `user` null when signed out, or `{available: false}`. The top bar's `AccountMenu.tsx` renders nothing unless `available` is true.
 - One cookie, `__Host-atlas-session` (HttpOnly, Secure, SameSite=Lax): a signed 10-minute sign-in check, then an opaque session token. D1 keeps an HMAC of the token with a 30-day expiry. Changing what is stored or sent means changing `/{lang}/privacy/` in the same change.
-- Configuration: secrets `SESSION_SECRET`, `GITHUB_CLIENT_ID`/`_SECRET`, `GOOGLE_CLIENT_ID`/`_SECRET`; var `ALLOWED_ORIGINS`; D1 binding `DB`. Anything missing makes `/api/*` answer 503 and leaves the site as it is. Locally, put them in `.dev.vars` (git-ignored) and apply migrations with `wrangler d1 migrations apply DB --local`.
+- Configuration: secrets `SESSION_SECRET`, `GITHUB_CLIENT_ID`/`_SECRET`, `GOOGLE_CLIENT_ID`/`_SECRET`; var `ALLOWED_ORIGINS`; D1 binding `DB`. Anything missing makes `/api/me` answer `{available: false}` and the other `/api/*` endpoints 503, and leaves the site as it is. Locally, put them in `.dev.vars` (git-ignored) and apply migrations with `wrangler d1 migrations apply DB --local`.
 - D1 holds users, sessions, and usage counters only (`worker/migrations/`, one numbered SQL file per change, never edited once applied). Learner answers, code, and progress never go there.
 - AI calls will go through the same Worker, behind sign-in; the provider key is a Worker secret and never reaches the browser. The browser sends an action, a route ID, and learner input; the Worker builds the prompt from the route contract. Learner answers and code pass through to the provider and are not stored, except messages the learner reports as wrong.
 - AI roles and their limits are listed in the web atlas RFC ("AI support"). A new role needs an RFC change first.

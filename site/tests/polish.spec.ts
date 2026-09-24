@@ -5,7 +5,6 @@
 // expected value comes from the content model.
 import { readFileSync } from "node:fs";
 import { type Browser, expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 type L10n = { en: string; vi?: string };
 type Block = {
@@ -46,7 +45,7 @@ const stateLabel = (state: string) => model.vocabularies.state[state].label.en;
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

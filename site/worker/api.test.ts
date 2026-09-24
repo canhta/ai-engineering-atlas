@@ -61,6 +61,14 @@ function setup(overrides: Partial<Env> = {}) {
   };
 }
 
+/** GET /api/me: always 200 JSON and never cached; returns the body. */
+async function me(t: ReturnType<typeof setup>, cookie?: string) {
+  const response = await t.request("/api/me", { cookie });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("Cache-Control"), "no-store");
+  return response.json();
+}
+
 /** The cookie a response sets: its value and attributes. */
 function cookieOf(response: Response) {
   const header = response.headers.get("Set-Cookie");
@@ -138,7 +146,7 @@ test("missing configuration answers 503 with the missing names, never values", a
   ];
   for (const [overrides, name] of cases) {
     const t = setup(overrides);
-    for (const path of ["/api/me", "/api/auth/github", "/api/auth/signout"]) {
+    for (const path of ["/api/auth/github", "/api/auth/signout"]) {
       const response = await t.request(path, { method: path.endsWith("signout") ? "POST" : "GET" });
       assert.equal(response.status, 503, `${name} ${path}`);
       const body = await response.json();
@@ -146,6 +154,8 @@ test("missing configuration answers 503 with the missing names, never values", a
       assert.match(body.message, new RegExp(name));
       assert.doesNotMatch(body.message, /gh-secret|google-secret|ssss/);
     }
+    // /api/me is asked on every page, so it answers 200 and only says sign-in is unavailable.
+    assert.deepEqual(await me(t), { available: false }, name);
   }
   const nothing = setup({
     DB: undefined,
@@ -156,20 +166,21 @@ test("missing configuration answers 503 with the missing names, never values", a
     GOOGLE_CLIENT_ID: undefined,
     GOOGLE_CLIENT_SECRET: undefined,
   });
-  assert.equal((await nothing.request("/api/me")).status, 503);
+  assert.deepEqual(await me(nothing), { available: false });
+  assert.equal((await nothing.request("/api/auth/signout", { method: "POST" })).status, 503);
   assert.equal((await nothing.request("/en/")).status, 200);
 });
 
 test("a provider without both credentials is not offered, and starting it answers 503", async () => {
   const t = setup({ GOOGLE_CLIENT_SECRET: undefined });
-  const me = await t.request("/api/me");
-  assert.deepEqual((await me.json()).providers, ["github"]);
+  assert.deepEqual((await me(t)).providers, ["github"]);
   assert.equal((await t.request("/api/auth/google")).status, 503);
 });
 
 test("an origin outside ALLOWED_ORIGINS is refused", async () => {
   const t = setup({ ALLOWED_ORIGINS: "https://elsewhere.example" });
-  assert.equal((await t.request("/api/me")).status, 403);
+  assert.deepEqual(await me(t), { available: false });
+  assert.equal((await t.request("/api/auth/github")).status, 403);
 });
 
 // ------------------------------------------------------------------ OAuth start
@@ -366,32 +377,31 @@ test("Google: the ID token must be for this client and unexpired", async () => {
 
 // ------------------------------------------------------------------ sessions
 
-test("/api/me returns the signed-in user, or 401 with the providers offered", async () => {
+const SIGNED_OUT = { available: true, user: null, providers: ["github", "google"] };
+
+test("/api/me answers 200 with the signed-in user, or user null, and the providers offered", async () => {
   const t = setup();
-  const anonymous = await t.request("/api/me");
-  assert.equal(anonymous.status, 401);
-  assert.deepEqual(await anonymous.json(), { error: "signed-out", providers: ["github", "google"] });
-  assert.equal(anonymous.headers.get("Cache-Control"), "no-store");
+  assert.deepEqual(await me(t), SIGNED_OUT);
 
   const { session } = await signIn(t);
-  const me = await t.request("/api/me", { cookie: session });
-  assert.equal(me.status, 200);
-  assert.deepEqual(await me.json(), {
+  assert.deepEqual(await me(t, session), {
+    available: true,
     user: { name: "Ada Lovelace", provider: "github" },
     providers: ["github", "google"],
   });
-  const forged = await t.request("/api/me", { cookie: "s.not-a-real-token" });
-  assert.equal(forged.status, 401);
+  assert.deepEqual(await me(t, "s.not-a-real-token"), SIGNED_OUT);
+  assert.deepEqual(await me(t, "p.a-sign-in-in-progress"), SIGNED_OUT);
 });
 
 test("a session expires after 30 days and is removed", async () => {
   const t = setup();
   const { session } = await signIn(t);
   t.advance(SESSION_SECONDS * 1000 - 1);
-  assert.equal((await t.request("/api/me", { cookie: session })).status, 200);
+  assert.equal((await me(t, session)).user.name, "Ada Lovelace");
   t.advance(1);
   const expired = await t.request("/api/me", { cookie: session });
-  assert.equal(expired.status, 401);
+  assert.equal(expired.status, 200);
+  assert.deepEqual(await expired.json(), SIGNED_OUT);
   assert.equal(cookieOf(expired).value, "");
   assert.equal(t.db.sqlite.prepare("SELECT count(*) AS n FROM sessions").get()?.n, 0);
 });
@@ -410,13 +420,13 @@ test("sign-out needs a same-origin POST, deletes the session, and clears the coo
     const refused = await t.request("/api/auth/signout", { method: "POST", cookie: session, headers });
     assert.equal(refused.status, 403, JSON.stringify(headers));
   }
-  assert.equal((await t.request("/api/me", { cookie: session })).status, 200, "still signed in");
+  assert.equal((await me(t, session)).user?.name, "Ada Lovelace", "still signed in");
 
   const out = await t.request("/api/auth/signout", { method: "POST", cookie: session, headers: { Origin: ORIGIN } });
   assert.equal(out.status, 204);
   assert.deepEqual(cookieOf(out).attrs, ["Path=/", "Max-Age=0", "HttpOnly", "Secure", "SameSite=Lax"]);
   assert.equal(t.db.sqlite.prepare("SELECT count(*) AS n FROM sessions").get()?.n, 0);
-  assert.equal((await t.request("/api/me", { cookie: session })).status, 401);
+  assert.deepEqual(await me(t, session), SIGNED_OUT);
 
   const fetchMetadata = await t.request("/api/auth/signout", {
     method: "POST",

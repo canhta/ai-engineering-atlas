@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 // Search across everything (DESIGN.md → Information architecture). Titles, labels, and counts come
 // from the content model and the UI strings, never typed in: the curriculum grows.
@@ -36,7 +35,7 @@ const label = (id: string) => others.find((c) => c.id === id)!.label.en;
 let errors: string[] = [];
 test.beforeEach(async ({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(() => {
     document.addEventListener("securitypolicyviolation", (e) =>

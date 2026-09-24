@@ -1,6 +1,6 @@
 # Owner setup: sign-in (Phase 2, slice 1)
 
-Human steps before sign-in works on ai-eng.canhta.com. The code is on branch `phase2/01-sign-in`; nothing here has been run. Until every step is done, `/api/*` answers 503 and the site works as before, so the steps can be spread over several days and deployed in any state.
+Human steps before sign-in works on ai-eng.canhta.com. The code is on branch `phase2/01-sign-in`; nothing here has been run. Until every step is done, `/api/me` answers `{"available":false}`, the other `/api/*` endpoints answer 503, and the site works as before, so the steps can be spread over several days and deployed in any state.
 
 Run commands from `site/`. Callback paths are fixed by the Worker: `/api/auth/github/callback` and `/api/auth/google/callback`.
 
@@ -90,7 +90,7 @@ A provider with only one of its two secrets is not offered; the other still work
 
 ## 7. Check production
 
-- [ ] `curl -s https://ai-eng.canhta.com/api/me` answers `{"error":"signed-out","providers":["github","google"]}` with status 401.
+- [ ] `curl -s https://ai-eng.canhta.com/api/me` answers `{"available":true,"user":null,"providers":["github","google"]}` with status 200.
 - [ ] Sign in with GitHub and with Google from `/en/`; the top bar shows your name; Sign out returns it to "Sign in".
 - [ ] `/en/privacy/` and `/vi/privacy/` load from the footer; review the Vietnamese strings listed in `site/TODO.md`.
 - [ ] `node scripts/capture.mjs https://ai-eng.canhta.com prod-review "/{lang}/" "/{lang}/privacy/"` reports no problems.

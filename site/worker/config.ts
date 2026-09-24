@@ -1,6 +1,7 @@
 // Worker bindings and configuration (site/AGENTS.md → AI tutor and Worker). Everything the API
-// needs comes from Worker secrets, vars, and the D1 binding; when any of it is missing, every
-// /api/* request answers 503 and the static site is unaffected.
+// needs comes from Worker secrets, vars, and the D1 binding; when any of it is missing, /api/me
+// answers `available: false`, every other /api/* request answers 503, and the static site is
+// unaffected.
 
 /** The subset of Cloudflare's D1 API the Worker uses. */
 export interface D1PreparedStatement {

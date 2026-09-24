@@ -2,7 +2,7 @@
 // path is served by static assets with `public/_headers`, and reaches this handler only when no
 // asset matched, in which case it goes straight back to the assets binding (the 404 page).
 //
-//   GET  /api/me                          the signed-in user (200) or 401, with the providers offered
+//   GET  /api/me                          always 200: { available, user (or null), providers }
 //   GET  /api/auth/{github,google}        start OAuth: state + PKCE in the session cookie, 302 to the provider
 //   GET  /api/auth/{provider}/callback    verify state, exchange the code server-side, start a session
 //   POST /api/auth/signout                same-origin only; ends the session and clears the cookie
@@ -46,6 +46,22 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
   if (url.pathname !== "/api" && !url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
 
   const read = readConfig(env);
+  const parts = url.pathname.split("/").slice(2); // after "/api"
+  const allowed = !("missing" in read) && read.config.origins.includes(url.origin);
+
+  // GET /api/me always answers 200, so the top bar's question on every page never logs a failed
+  // request in the browser: `available: false` when sign-in cannot work here.
+  if (parts.length === 1 && parts[0] === "me") {
+    if (request.method !== "GET") return methodNotAllowed("GET");
+    if ("missing" in read || !allowed) return json(200, { available: false });
+    const { config } = read;
+    const offered = PROVIDERS.filter((p) => config.providers[p]);
+    const cookie = readCookie(request);
+    const user = await findSession(config.db, config.secret, cookie, deps.now());
+    const clear = !user && hasSessionCookie(cookie) ? clearCookie : undefined;
+    return json(200, { available: true, user, providers: offered }, clear);
+  }
+
   if ("missing" in read) {
     return json(503, {
       error: "not-configured",
@@ -53,23 +69,11 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
     });
   }
   const { config } = read;
-  if (!config.origins.includes(url.origin)) {
+  if (!allowed) {
     return json(403, { error: "origin-not-allowed", message: "This origin is not in ALLOWED_ORIGINS." });
   }
-  const offered = PROVIDERS.filter((p) => config.providers[p]);
   const now = deps.now();
   const cookie = readCookie(request);
-  const parts = url.pathname.split("/").slice(2); // after "/api"
-
-  // GET /api/me
-  if (parts.length === 1 && parts[0] === "me") {
-    if (request.method !== "GET") return methodNotAllowed("GET");
-    const user = await findSession(config.db, config.secret, cookie, now);
-    if (!user) {
-      return json(401, { error: "signed-out", providers: offered }, hasSessionCookie(cookie) ? clearCookie : undefined);
-    }
-    return json(200, { user, providers: offered });
-  }
 
   if (parts[0] !== "auth") return json(404, { error: "not-found" });
 

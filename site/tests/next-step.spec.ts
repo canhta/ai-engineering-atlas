@@ -3,7 +3,6 @@
 
 import { fileURLToPath } from "node:url";
 import { expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 const FIXTURE = fileURLToPath(new URL("fixtures/next-step.progress.yaml", import.meta.url));
 
@@ -26,7 +25,7 @@ const nextList = (page: Page) => page.getByRole("region", { name: "Next for you"
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

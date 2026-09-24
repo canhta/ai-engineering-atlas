@@ -3,7 +3,6 @@
 // Items and relations come from the content model, never typed in.
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 type L10n = { en: string; vi?: string };
 type Item = { id: string; title: L10n; page?: { blocks: { type: string }[] } };
@@ -35,7 +34,7 @@ async function open(page: Page, path: string) {
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

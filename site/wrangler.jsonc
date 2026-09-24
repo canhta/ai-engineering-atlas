@@ -17,6 +17,7 @@
   // GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET. Local development reads them from .dev.vars.
   // The D1 binding "DB" (migrations in worker/migrations/) is added here once the owner has
   // created the database; without an ID, `wrangler deploy` would create one on its own.
-  // Until all of it is set, /api/* answers 503 and the static site is unaffected.
+  // Until all of it is set, /api/me answers {"available": false}, the other /api/* endpoints
+  // answer 503, and the static site is unaffected.
   "vars": { "ALLOWED_ORIGINS": "https://ai-eng.canhta.com" },
 }

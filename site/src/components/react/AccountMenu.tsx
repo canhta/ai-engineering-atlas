@@ -1,7 +1,8 @@
 // Sign-in in the top bar (DESIGN.md → Global frame), a JavaScript enhancement only. It asks
-// /api/me once: 401 shows "Sign in" with a menu of the providers the Worker offers; 200 shows the
-// learner's name with "Sign out". Anything else (no Worker, 503 without configuration, offline)
-// renders nothing. Signing in or out never touches learner progress.
+// /api/me once (always 200 JSON, so no page logs a failed request): `user: null` shows "Sign in"
+// with a menu of the providers the Worker offers; a user shows the learner's name with "Sign out".
+// `available: false`, or anything else (no Worker, offline), renders nothing. Signing in or out
+// never touches learner progress.
 import { useEffect, useState } from "react";
 import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 import { type Lang, useTranslations } from "../../i18n";
@@ -14,18 +15,16 @@ interface Account {
   providers: string[];
 }
 
-/**
- * Read /api/me defensively: only the two shapes the Worker sends count, the signed-in user (200)
- * and `error: "signed-out"` (401). Anything else, the 503 body included, means no sign-in here.
- */
-function parse(ok: boolean, body: unknown): Account | null {
+/** Read /api/me defensively: only `available: true` with a user or `user: null` counts. */
+function parse(body: unknown): Account | null {
   if (!body || typeof body !== "object") return null;
-  const b = body as { user?: { name?: unknown }; error?: unknown; providers?: unknown };
+  const b = body as { available?: unknown; user?: { name?: unknown } | null; providers?: unknown };
+  if (b.available !== true) return null;
   const providers = Array.isArray(b.providers)
     ? b.providers.filter((p) => typeof p === "string" && p in PROVIDER_NAMES)
     : [];
-  if (ok && typeof b.user?.name === "string") return { user: { name: b.user.name }, providers };
-  if (!ok && b.error === "signed-out" && providers.length) return { user: null, providers };
+  if (typeof b.user?.name === "string") return { user: { name: b.user.name }, providers };
+  if (b.user === null && providers.length) return { user: null, providers };
   return null;
 }
 
@@ -37,7 +36,7 @@ export default function AccountMenu({ lang }: { lang: Lang }) {
   useEffect(() => {
     let live = true;
     fetch("/api/me", { credentials: "same-origin", headers: { Accept: "application/json" } })
-      .then(async (response) => parse(response.ok, await response.json()))
+      .then(async (response) => (response.ok ? parse(await response.json()) : null))
       .catch(() => null)
       .then((next) => {
         if (live) setAccount(next);

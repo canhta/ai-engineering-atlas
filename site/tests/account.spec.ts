@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
-import { isConsoleError } from "./fixtures/console";
 
 // Sign-in in the top bar and the privacy page (DESIGN.md → Global frame; site/AGENTS.md → AI tutor
-// and Worker). The preview runs the Worker without configuration, so /api/* answers 503 and the
-// bar shows nothing; signed-out and signed-in bars are checked by answering /api/me in the test.
+// and Worker). The preview runs the Worker without configuration, so /api/me answers
+// `available: false` and the bar shows nothing; signed-out and signed-in bars are checked by
+// answering /api/me in the test. /api/me always answers 200, so no page logs a failed request.
 const ui = (lang: "en" | "vi"): Record<string, string> =>
   JSON.parse(readFileSync(new URL(`../src/i18n/${lang}.json`, import.meta.url), "utf8"));
 const en = ui("en");
@@ -12,7 +12,7 @@ const en = ui("en");
 let errors: string[] = [];
 test.beforeEach(async ({ page }) => {
   errors = [];
-  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(() => {
     document.addEventListener("securitypolicyviolation", (e) =>
@@ -32,21 +32,38 @@ async function open(page: Page, path: string) {
   await page.waitForLoadState("load");
 }
 
-function answerMe(page: Page, status: number, body: unknown) {
-  return page.route("**/api/me", (route) => route.fulfill({ status, json: body }));
+function answerMe(page: Page, body: unknown) {
+  return page.route("**/api/me", (route) => route.fulfill({ status: 200, json: body }));
 }
 
 const bar = (page: Page) => page.locator("header.topbar");
 
-test("without the Worker's configuration, /api answers 503 and the bar shows no sign-in", async ({ page, request }) => {
-  const api = await request.get("/api/me");
-  expect(api.status()).toBe(503);
-  expect(api.headers()["cache-control"]).toBe("no-store");
-  expect((await api.json()).error).toBe("not-configured");
+test("without the Worker's configuration, /api/me says unavailable and the bar shows no sign-in", async ({
+  page,
+  request,
+}) => {
+  const me = await request.get("/api/me");
+  expect(me.status()).toBe(200);
+  expect(me.headers()["cache-control"]).toBe("no-store");
+  expect(await me.json()).toEqual({ available: false });
+  const signout = await request.post("/api/auth/signout");
+  expect(signout.status()).toBe(503);
+  expect((await signout.json()).error).toBe("not-configured");
 
   await open(page, "/en/");
   await expect(bar(page).getByRole("link", { name: en["nav.atlas"], exact: true })).toBeVisible();
   await expect(bar(page).locator(".account-trigger")).toHaveCount(0);
+});
+
+test("the unconfigured and the signed-out top bar log no console error", async ({ page }) => {
+  // Every console message of type error counts here, failed network requests included.
+  const logged: string[] = [];
+  page.on("console", (m) => m.type() === "error" && logged.push(`${m.location().url}: ${m.text()}`));
+  for (const path of ["/en/", "/vi/map/", "/en/privacy/"]) await open(page, path);
+  await answerMe(page, { available: true, user: null, providers: ["github"] });
+  await open(page, "/en/progress/");
+  await expect(bar(page).getByRole("button", { name: en["account.signIn"] })).toBeVisible();
+  expect(logged).toEqual([]);
 });
 
 test("pages keep their isolation headers with the Worker in front", async ({ request }) => {
@@ -58,7 +75,7 @@ test("pages keep their isolation headers with the Worker in front", async ({ req
 });
 
 test("signed out: Sign in opens a menu of the offered providers, returning to this page", async ({ page }) => {
-  await answerMe(page, 401, { error: "signed-out", providers: ["github", "google"] });
+  await answerMe(page, { available: true, user: null, providers: ["github", "google"] });
   await open(page, "/en/progress/");
   const trigger = bar(page).getByRole("button", { name: en["account.signIn"] });
   await expect(trigger).toBeVisible();
@@ -75,14 +92,18 @@ test("signed out: Sign in opens a menu of the offered providers, returning to th
 });
 
 test("signed out with no provider offered shows nothing", async ({ page }) => {
-  await answerMe(page, 401, { error: "signed-out", providers: [] });
+  await answerMe(page, { available: true, user: null, providers: [] });
   await open(page, "/en/");
   await expect(bar(page).locator(".account-trigger")).toHaveCount(0);
 });
 
 test("signed in: the name opens Sign out, which posts and returns the bar to Sign in", async ({ page }) => {
   const t = ui("vi");
-  await answerMe(page, 200, { user: { name: "Ada Lovelace", provider: "github" }, providers: ["github"] });
+  await answerMe(page, {
+    available: true,
+    user: { name: "Ada Lovelace", provider: "github" },
+    providers: ["github"],
+  });
   const posts: string[] = [];
   await page.route("**/api/auth/signout", (route) => {
     posts.push(route.request().method());
@@ -119,7 +140,8 @@ for (const lang of ["en", "vi"] as const) {
 }
 
 test("the privacy page and a signed-in bar fit a phone @mobile", async ({ page }) => {
-  await answerMe(page, 200, {
+  await answerMe(page, {
+    available: true,
     user: { name: "Nguyễn Thị Minh Khai Phương", provider: "google" },
     providers: ["google"],
   });
