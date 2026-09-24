@@ -108,7 +108,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Typecheck, unit tests, lint, i18n, contrast, headers, icons, build
+      # Includes the Worker tests (pnpm run test:worker): no Cloudflare secrets needed.
+      - name: Typecheck, unit and Worker tests, lint, i18n, contrast, headers, icons, build
         run: pnpm run check
 
       # Browser labs must behave as `python tests.py` does locally (site/scripts/test-labs.mjs).
