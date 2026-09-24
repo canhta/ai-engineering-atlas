@@ -34,7 +34,7 @@ Two workflows: **CI** (`ci.yml`) runs on every push and decides whether a commit
 
 ## Data contract
 
-- `src/data/atlas.json` is the content model v2 ([RFC](../rfcs/0000-content-model.md), [schema](../schemas/site-data.schema.json)): site, vocabularies, collections, items with typed blocks, relations, resources. Regenerate it with `python scripts/build_site_data.py --write`; `make check` fails when it is stale.
+- `src/data/atlas.json` is the content model v2 ([RFC](../rfcs/0000-content-model.md), [schema](../schemas/site-data.schema.json)): site, vocabularies, collections, items with typed blocks, relations, resources, and dated `changes` (the What changed page, `src/lib/changes.ts`). Regenerate it with `python scripts/build_site_data.py --write`; `make check` fails when it is stale.
 - The site renders only the content model. Curriculum field names, section titles, and vocabulary labels live in [curriculum/presentation.yaml](../curriculum/presentation.yaml), not in `src/`. `pnpm run check:coupling` fails when a curriculum field name (from `presentation.yaml` and `schemas/competency.schema.json`) appears in `src/` outside `src/data/`.
 - `src/lib/atlas.ts` is the only reader of the model. Islands never import it (it would ship the whole model to the browser); pages pass them plain props. `text(l10n, lang)` returns `{value, lang}`: render `lang` on the element when it differs from the page language.
 - Blocks render through `src/components/blocks/Block.astro`, one component per block type. Route, project, and lab pages share `src/components/sheet/ItemSheet.astro`; a page with a `runner` block uses its workbench layout.

@@ -393,6 +393,50 @@
         },
         "order": 6
       }
+    },
+    "change_kind": {
+      "promoted": {
+        "label": {
+          "en": "Promoted to ready",
+          "vi": "Có lộ trình"
+        },
+        "order": 0
+      },
+      "demoted": {
+        "label": {
+          "en": "Moved back to mapped",
+          "vi": "Trở lại chưa có lộ trình"
+        },
+        "order": 1
+      },
+      "added": {
+        "label": {
+          "en": "Added to the map",
+          "vi": "Thêm vào bản đồ"
+        },
+        "order": 2
+      },
+      "removed": {
+        "label": {
+          "en": "Removed from the map",
+          "vi": "Loại bỏ khỏi bản đồ"
+        },
+        "order": 3
+      },
+      "lab-added": {
+        "label": {
+          "en": "Lab added",
+          "vi": "Thêm lab"
+        },
+        "order": 4
+      },
+      "lab-removed": {
+        "label": {
+          "en": "Lab removed",
+          "vi": "Loại bỏ lab"
+        },
+        "order": 5
+      }
     }
   },
   "collections": [
@@ -15993,5 +16037,314 @@
       "author": "Jay Alammar",
       "url": "https://jalammar.github.io/illustrated-transformer/"
     }
+  },
+  "changes": {
+    "vocabulary": "change_kind",
+    "releases": [
+      {
+        "version": "0.1.0",
+        "date": "2026-09-22"
+      }
+    ],
+    "entries": [
+      {
+        "date": "2026-09-22",
+        "kind": "lab-added",
+        "refs": [
+          "lab:self-attention"
+        ]
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "lab-added",
+        "refs": [
+          "lab:evaluation-harness"
+        ]
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "llm.self-attention"
+        ],
+        "predates_review": true,
+        "note": {
+          "en": "Promoted in its competency.yaml before the catalog existed; no RFC reviews this promotion."
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "ai.evaluation"
+        ],
+        "predates_review": true,
+        "note": {
+          "en": "Promoted in its competency.yaml before the catalog existed; no RFC reviews this promotion."
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "lab-added",
+        "refs": [
+          "lab:model-selection"
+        ]
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "lab-added",
+        "refs": [
+          "lab:agentic-design"
+        ]
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "lab-added",
+        "refs": [
+          "lab:prompt-injection-boundaries"
+        ]
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "ai.model-selection",
+          "agents.deterministic-vs-agentic",
+          "security.prompt-injection"
+        ],
+        "predates_review": true,
+        "note": {
+          "en": "Promoted in one commit with no RFC; no RFC reviews this promotion."
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "ai.product-framing",
+          "retrieval.search",
+          "ai.embeddings"
+        ],
+        "decision": {
+          "id": "0001",
+          "path": "rfcs/0001-applied-ai-foundation-slice.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "retrieval.chunking",
+          "retrieval.reranking",
+          "retrieval.rag-evaluation"
+        ],
+        "decision": {
+          "id": "0002",
+          "path": "rfcs/0002-retrieval-quality-slice.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "ai.context-engineering",
+          "ai.tool-calling"
+        ],
+        "decision": {
+          "id": "0003",
+          "path": "rfcs/0003-context-engineering-and-tool-calling.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "ai.structured-outputs",
+          "ai.uncertainty-abstention-trust"
+        ],
+        "decision": {
+          "id": "0004",
+          "path": "rfcs/0004-structured-outputs-and-abstention.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "agents.state",
+          "agents.memory"
+        ],
+        "decision": {
+          "id": "0005",
+          "path": "rfcs/0005-agent-state-and-memory.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "agents.planning",
+          "agents.verification"
+        ],
+        "decision": {
+          "id": "0006",
+          "path": "rfcs/0006-planning-and-verification.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "agents.long-running",
+          "agents.orchestration"
+        ],
+        "decision": {
+          "id": "0007",
+          "path": "rfcs/0007-long-running-and-orchestration.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "removed",
+        "refs": [],
+        "unlisted": [
+          "agents.fundamentals"
+        ],
+        "decision": {
+          "id": "0008",
+          "path": "rfcs/0008-multi-agent-and-agent-catalog-cleanup.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "agents.multi-agent"
+        ],
+        "decision": {
+          "id": "0008",
+          "path": "rfcs/0008-multi-agent-and-agent-catalog-cleanup.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "agents.mcp"
+        ],
+        "decision": {
+          "id": "0009",
+          "path": "rfcs/0009-model-context-protocol.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.model-gateway",
+          "production.observability"
+        ],
+        "decision": {
+          "id": "0010",
+          "path": "rfcs/0010-model-gateway-and-observability.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.versioning",
+          "production.release-engineering"
+        ],
+        "decision": {
+          "id": "0011",
+          "path": "rfcs/0011-versioned-ai-releases.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.cost",
+          "production.latency"
+        ],
+        "decision": {
+          "id": "0012",
+          "path": "rfcs/0012-ai-latency-and-cost-engineering.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.caching",
+          "production.streaming"
+        ],
+        "decision": {
+          "id": "0013",
+          "path": "rfcs/0013-ai-caching-and-streaming.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.drift"
+        ],
+        "decision": {
+          "id": "0014",
+          "path": "rfcs/0014-production-drift-monitoring.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "production.architecture",
+          "production.mlops-llmops"
+        ],
+        "decision": {
+          "id": "0015",
+          "path": "rfcs/0015-production-ai-synthesis.md"
+        }
+      },
+      {
+        "date": "2026-09-22",
+        "kind": "promoted",
+        "refs": [
+          "security.tool-permissions",
+          "security.data-exfiltration"
+        ],
+        "decision": {
+          "id": "0016",
+          "path": "rfcs/0016-tool-permissions-and-data-exfiltration.md"
+        }
+      },
+      {
+        "date": "2026-09-23",
+        "kind": "promoted",
+        "refs": [
+          "security.auth",
+          "security.multi-tenant",
+          "security.sandboxing"
+        ],
+        "decision": {
+          "id": "0017",
+          "path": "rfcs/0017-identity-tenant-isolation-and-sandboxing.md"
+        }
+      },
+      {
+        "date": "2026-09-23",
+        "kind": "promoted",
+        "refs": [
+          "security.guardrails",
+          "security.supply-chain-data"
+        ],
+        "decision": {
+          "id": "0018",
+          "path": "rfcs/0018-ai-supply-chain-and-guardrails.md"
+        }
+      }
+    ]
   }
 }

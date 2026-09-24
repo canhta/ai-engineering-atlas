@@ -338,5 +338,14 @@
   "privacy.sent.ai": "Hiện chưa có trợ giúp AI. Khi có, câu trả lời và code của bạn chỉ được gửi tới nhà cung cấp mô hình khi bạn dùng một thao tác AI và không được lưu lại, trừ tin nhắn bạn báo là sai.",
   "privacy.sent.host": "Trang chạy trên Cloudflare; Cloudflare xử lý từng yêu cầu để phục vụ trang.",
   "privacy.delete.title": "Xóa dữ liệu",
-  "privacy.delete.body": "Đăng xuất sẽ xóa phiên. Để xóa hồ sơ người dùng và bộ đếm lượt dùng, hãy liên hệ chủ repo qua các link ở cuối trang."
+  "privacy.delete.body": "Đăng xuất sẽ xóa phiên. Để xóa hồ sơ người dùng và bộ đếm lượt dùng, hãy liên hệ chủ repo qua các link ở cuối trang.",
+  "changes.title": "Nhật ký thay đổi",
+  "changes.intro": "Lộ trình mới sẵn sàng, lab mới và mục bị loại bỏ, theo từng bản phát hành. Mỗi thay đổi ghi ngày áp dụng và RFC đã quyết định nó.",
+  "changes.last": "Thay đổi gần nhất: {date}.",
+  "changes.unreleased": "Chưa phát hành",
+  "changes.release": "Bản {version}",
+  "changes.releaseEmpty": "Bản này không ghi thay đổi nào về lộ trình.",
+  "changes.decision": "RFC {id}",
+  "changes.predates": "Trước khi có quy trình RFC",
+  "changes.itemLine": "{kind}: {date}"
 }

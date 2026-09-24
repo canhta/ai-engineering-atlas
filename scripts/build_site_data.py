@@ -602,6 +602,59 @@ def check_specimen(site: dict, collections: dict, items: dict) -> None:
             errors.append(f"presentation: site.specimen '{ref}' has no {need}")
 
 
+def build_changes(config: dict | None, resolver: Resolver, vocabularies: dict) -> dict | None:
+    """Dated changes (presentation `changes`): releases and entries in source order.
+
+    An entry lists the items it names as refs; a name that no longer resolves (a removed item) is
+    kept as an `unlisted` id so the page can print it without linking.
+    """
+    if not config:
+        return None
+    source = load_yaml(ROOT / config["from"])
+    vocabulary = config["vocabulary"]
+    if vocabulary not in vocabularies:
+        errors.append(f"presentation: changes names unknown vocabulary '{vocabulary}'")
+    kinds = vocabularies.get(vocabulary, {})
+    release_spec, entry_spec = config["releases"], config["entries"]
+    releases = [
+        {key: str(release.get(source_key)) for key, source_key in release_spec["map"].items()}
+        for release in source.get(release_spec["key"]) or []
+    ]
+    mapping = entry_spec["map"]
+    entries = []
+    for index, raw in enumerate(source.get(entry_spec["key"]) or []):
+        label = f"{config['from']} {entry_spec['key']}[{index}]"
+        kind = str(raw.get(mapping["kind"]))
+        if kind not in kinds:
+            errors.append(f"{label}: kind '{kind}' is missing from vocabulary '{vocabulary}'")
+        entry = {"date": str(raw.get(mapping["date"])), "kind": kind, "refs": []}
+        unlisted = []
+        for content_key, collection in entry_spec["refs"].items():
+            for value in raw.get(content_key) or []:
+                ref = resolver.ref_for(collection, str(value))
+                if resolver.collection_of(ref) == collection:
+                    entry["refs"].append(ref)
+                else:
+                    unlisted.append(str(value))
+        if unlisted:
+            entry["unlisted"] = unlisted
+        if raw.get(mapping["release"]) is not None:
+            entry["release"] = str(raw[mapping["release"]])
+        decision = raw.get(mapping["decision"])
+        if decision is not None:
+            files = sorted(ROOT.glob(config["decision_file"].replace("{}", str(decision))))
+            if len(files) != 1:
+                errors.append(f"{label}: decision '{decision}' resolves to {len(files)} files")
+            else:
+                entry["decision"] = {"id": str(decision), "path": rel(files[0])}
+        if raw.get(mapping["predates_review"]):
+            entry["predates_review"] = True
+        if raw.get(mapping["note"]) is not None:
+            entry["note"] = en(raw[mapping["note"]])
+        entries.append(entry)
+    return {"vocabulary": vocabulary, "releases": releases, "entries": entries}
+
+
 def collection_model(name: str, config: dict) -> dict:
     model = {"id": name, "label": config["label"]}
     if config.get("ref_prefix"):
@@ -707,6 +760,7 @@ def build():
         if not config.get("items_from", "").count("#"):
             items[name].sort(key=lambda item: item["id"])
     check_specimen(presentation["site"], collections, items)
+    changes = build_changes(presentation.get("changes"), resolver, vocabularies)
 
     return {
         "version": MODEL_VERSION,
@@ -717,6 +771,7 @@ def build():
         "items": items,
         "relations": [{"type": t, "from": f, "to": to} for t, f, to in sorted(relations)],
         "resources": {rid: resources[rid] for rid in sorted(used_resources)},
+        **({"changes": changes} if changes else {}),
     }
 
 

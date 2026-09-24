@@ -7,9 +7,9 @@ import "../styles/islands.css";
 import Icon from "../components/Icon.astro";
 import DueCount from "../components/react/DueCount";
 import { languages, useTranslations, type Lang } from "../i18n";
-import { site, text } from "../lib/atlas";
+import { changes, site, text } from "../lib/atlas";
 import AccountMenu from "../components/react/AccountMenu";
-import { homeUrl, howUrl, mapUrl, privacyUrl, progressUrl, searchUrl, switchLang } from "../lib/urls";
+import { changesUrl, homeUrl, howUrl, mapUrl, privacyUrl, progressUrl, searchUrl, switchLang } from "../lib/urls";
 
 interface Props {
   lang: Lang;
@@ -109,6 +109,7 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
           <strong>{siteTitle}</strong>
           <span>{t("footer.license")}</span>
           <a href={howUrl(lang)}>{t("how.title")}</a>
+          {changes && <a href={changesUrl(lang)}>{t("changes.title")}</a>}
           <a href={privacyUrl(lang)}>{t("footer.privacy")}</a>
           <a href={site.repository} rel="noopener">
             {t("footer.star")}

@@ -338,5 +338,14 @@
   "privacy.sent.ai": "AI help is not available yet. When it is, your answers and code are sent to the model provider only when you use an AI action, and are not stored, except a message you report as wrong.",
   "privacy.sent.host": "The site runs on Cloudflare, which handles each request to deliver it.",
   "privacy.delete.title": "Removing your data",
-  "privacy.delete.body": "Signing out deletes the session. To have your user record and usage counters deleted, contact the owner through the links at the bottom of the page."
+  "privacy.delete.body": "Signing out deletes the session. To have your user record and usage counters deleted, contact the owner through the links at the bottom of the page.",
+  "changes.title": "What changed",
+  "changes.intro": "Routes promoted to ready, labs added, and items removed, by release. Each change carries the day it landed and the RFC that decided it.",
+  "changes.last": "Last change {date}.",
+  "changes.unreleased": "Unreleased",
+  "changes.release": "Release {version}",
+  "changes.releaseEmpty": "No curriculum change is recorded in this release.",
+  "changes.decision": "RFC {id}",
+  "changes.predates": "Before the RFC process",
+  "changes.itemLine": "{kind}: {date}"
 }

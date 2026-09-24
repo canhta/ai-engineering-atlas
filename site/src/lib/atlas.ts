@@ -165,6 +165,37 @@ export interface Resource {
   author?: string;
 }
 
+export interface Release {
+  version: string;
+  /** ISO day. */
+  date: string;
+}
+
+export interface ChangeEntry {
+  /** ISO day the change landed. */
+  date: string;
+  /** A value of `Changes.vocabulary`. */
+  kind: string;
+  /** Items the change names that exist in the model. */
+  refs: string[];
+  /** Names that are no longer items (a removed competency), printed without a link. */
+  unlisted?: string[];
+  /** The release it shipped in; absent while unreleased. */
+  release?: string;
+  /** The record that decided it: its number and repository path. */
+  decision?: { id: string; path: string };
+  /** Made before the review process existed, so there is no decision record. */
+  predates_review?: true;
+  note?: L10n;
+}
+
+export interface Changes {
+  vocabulary: string;
+  releases: Release[];
+  /** Oldest first, as recorded. */
+  entries: ChangeEntry[];
+}
+
 interface Model {
   version: number;
   site: {
@@ -181,6 +212,7 @@ interface Model {
   items: Record<string, Item[]>;
   relations: Relation[];
   resources: Record<string, Resource>;
+  changes?: Changes;
 }
 
 const atlas = model as unknown as Model;
@@ -212,6 +244,8 @@ export const vocabularies = atlas.vocabularies;
 export const collections = atlas.collections;
 export const resources = atlas.resources;
 export const relations = atlas.relations;
+/** Dated changes, when the content side records them (the What changed page). */
+export const changes: Changes | undefined = atlas.changes;
 
 export const collection = (id: string) => collections.find((c) => c.id === id);
 export const itemsOf = (collectionId: string): Item[] => atlas.items[collectionId] ?? [];

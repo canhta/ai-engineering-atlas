@@ -1,0 +1,275 @@
+---
+// What changed (DESIGN.md → Information architecture, What changed): the content model's dated
+// changes as a printed changelog. Unreleased first, then releases newest first; each entry is dated
+// in the gutter (once per day) and names its kind, the decision behind it, and the items it changed.
+// Server-rendered, no island. The page shows only what the record holds: no times, no invented notes.
+import Base from "../../../layouts/Base.astro";
+import { langPaths, useTranslations, type Lang } from "../../../i18n";
+import {
+  changes,
+  itemUrl,
+  langAttr,
+  repoUrl,
+  resolveRef,
+  text,
+  trackedItems,
+  hasPage,
+  vocabularyLabel,
+} from "../../../lib/atlas";
+import { changeAnchor, lastChangeDate, releaseGroups } from "../../../lib/changes";
+import { formatDate } from "../../../lib/dates";
+
+export const getStaticPaths = () => (changes ? langPaths() : []);
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const record = changes!;
+const groups = releaseGroups(record);
+const kindLabel = (kind: string) => vocabularyLabel(record.vocabulary, kind, lang);
+const number = new Intl.NumberFormat(lang);
+
+const ready = trackedItems.filter(hasPage).length;
+const last = lastChangeDate(record);
+const [lastBefore, lastAfter] = t("changes.last").split("{date}");
+const untranslated = lang !== "en" && record.entries.some((e) => e.note && !e.note[lang]);
+
+const named = (ref: string) => {
+  const found = resolveRef(ref);
+  return { title: found ? text(found.item.title, lang) : { value: ref, lang: "en" as Lang }, href: itemUrl(lang, ref) };
+};
+const headingId = (version?: string) => (version ? `release-${version.replaceAll(".", "-")}` : "unreleased");
+---
+
+<Base lang={lang} title={t("changes.title")} description={t("changes.intro")}>
+  <h1 class="page-title">{t("changes.title")}</h1>
+  <p class="lead">{t("changes.intro")}</p>
+  <p class="muted tabular changes-summary">
+    {t("home.counts", { ready, mapped: trackedItems.length - ready })}.
+    {last && (
+      <>
+        {" "}
+        {lastBefore}
+        <time datetime={last}>{formatDate(last, lang)}</time>
+        {lastAfter}
+      </>
+    )}
+  </p>
+  {untranslated && (
+    <p class="untranslated small" role="note">
+      {t("translation.missing")}
+    </p>
+  )}
+
+  {groups.map((group) => (
+    <section class="release" aria-labelledby={headingId(group.version)}>
+      <header class="release-head">
+        <h2 id={headingId(group.version)}>
+          {group.version ? t("changes.release", { version: group.version }) : t("changes.unreleased")}
+        </h2>
+        {group.date && (
+          <time class="muted tabular" datetime={group.date}>
+            {formatDate(group.date, lang)}
+          </time>
+        )}
+      </header>
+      {group.counts.length > 0 && (
+        <ul class="details-line release-counts">
+          {group.counts.map(({ kind, count }) => (
+            <li lang={langAttr(kindLabel(kind), lang)}>
+              {kindLabel(kind).value} <span class="tabular">{number.format(count)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {group.days.length === 0 ? (
+        <p class="release-empty muted">{t("changes.releaseEmpty")}</p>
+      ) : (
+        <ol class="changes">
+          {group.days.flatMap((day) =>
+            day.entries.map((entry, i) => (
+              <li class="change" id={changeAnchor(entry.index)}>
+                <time class:list={["change-date tabular", { "is-same-day": i > 0 }]} datetime={entry.date}>
+                  {formatDate(entry.date, lang)}
+                </time>
+                <div class="change-body">
+                  <ul class="details-line change-facts">
+                    <li class="change-kind" lang={langAttr(kindLabel(entry.kind), lang)}>
+                      {kindLabel(entry.kind).value}
+                    </li>
+                    {entry.decision ? (
+                      <li>
+                        <a href={repoUrl(entry.decision.path)} rel="noopener noreferrer">
+                          {t("changes.decision", { id: entry.decision.id })}
+                        </a>
+                      </li>
+                    ) : (
+                      entry.predates_review && <li>{t("changes.predates")}</li>
+                    )}
+                  </ul>
+                  <ul class="change-items">
+                    {entry.refs.map((ref) => {
+                      const item = named(ref);
+                      return (
+                        <li lang={langAttr(item.title, lang)}>
+                          {item.href ? <a href={item.href}>{item.title.value}</a> : item.title.value}
+                        </li>
+                      );
+                    })}
+                    {(entry.unlisted ?? []).map((id) => (
+                      <li>
+                        <code>{id}</code>
+                      </li>
+                    ))}
+                  </ul>
+                  {entry.note && (
+                    <p class="change-note" lang={langAttr(text(entry.note, lang), lang)}>
+                      {text(entry.note, lang).value}
+                    </p>
+                  )}
+                </div>
+              </li>
+            )),
+          )}
+        </ol>
+      )}
+    </section>
+  ))}
+</Base>
+
+<style>
+  /* A printed changelog: each release opens on its head and an ink rule; entries are dated in the
+     gutter like the Progress evidence log, the date printed once per day. */
+  .changes-summary {
+    margin: 0 0 var(--space-4);
+  }
+
+  .untranslated {
+    display: inline-block;
+    margin: 0;
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-width) dashed var(--line-strong);
+    border-radius: var(--radius-mark);
+    color: var(--ink-muted);
+  }
+
+  .release {
+    max-width: 60rem;
+    margin-top: var(--space-12);
+  }
+
+  .release-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .release-head h2 {
+    margin: 0;
+  }
+
+  .release-counts {
+    margin-top: var(--space-2);
+    color: var(--ink-muted);
+  }
+
+  .release-empty {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-4);
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .changes {
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .change {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--space-2) var(--space-6);
+    padding: var(--space-4) 0 var(--space-5);
+    border-bottom: var(--border-width) solid var(--line);
+    scroll-margin-top: calc(var(--bar-offset) + var(--space-4));
+  }
+
+  .change:target {
+    background: var(--wash);
+  }
+
+  .change-date {
+    padding-top: 0.15em;
+    font-size: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  /* A day's date is printed once; the repeat stays in the markup for screen readers. */
+  .change-date.is-same-day {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .change-body {
+    grid-column: 2;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .change-kind {
+    font-weight: 600;
+  }
+
+  .change-facts {
+    color: var(--ink-muted);
+  }
+
+  .change-facts .change-kind {
+    color: var(--ink);
+  }
+
+  /* The items the change names, in the reading face, running on as a list. */
+  .change-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-reading);
+    font-size: var(--text-reading);
+    line-height: 1.45;
+  }
+
+  .change-items li:not(:last-child)::after {
+    content: ",";
+    margin-right: 0.35em;
+  }
+
+  .change-items code {
+    font-size: var(--text-small);
+  }
+
+  .change-note {
+    max-width: var(--measure);
+    margin: 0;
+    font-family: var(--font-reading);
+    font-style: italic;
+    color: var(--ink-muted);
+  }
+
+  @media (width < 640px) {
+    .change {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .change-body {
+      grid-column: 1;
+    }
+  }
+</style>

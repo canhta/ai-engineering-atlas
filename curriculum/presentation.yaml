@@ -125,6 +125,29 @@ vocabularies:
             vi: "Bạn đã dùng kỹ năng trong một hệ thống thật hoặc tích hợp.",
           }
 
+  # Kinds of dated curriculum change (curriculum/changelog.yaml, rfcs/0021-dated-curriculum-changes.md),
+  # shown on the What changed page and on item pages.
+  change_kind:
+    values:
+      promoted: { label: { en: Promoted to ready, vi: Có lộ trình } }
+      demoted: { label: { en: Moved back to mapped, vi: Trở lại chưa có lộ trình } }
+      added: { label: { en: Added to the map, vi: Thêm vào bản đồ } }
+      removed: { label: { en: Removed from the map, vi: Loại bỏ khỏi bản đồ } }
+      lab-added: { label: { en: Lab added, vi: Thêm lab } }
+      lab-removed: { label: { en: Lab removed, vi: Loại bỏ lab } }
+
+# Dated changes: `entries` maps the model's keys to the change log's; `refs` names, per content key,
+# the collection whose items it lists; `decision` resolves to one repository file.
+changes:
+  from: curriculum/changelog.yaml
+  vocabulary: change_kind
+  releases: { key: releases, map: { version: version, date: date } }
+  entries:
+    key: changes
+    map: { date: date, kind: kind, release: release, note: note, decision: rfc, predates_review: pre_rfc }
+    refs: { competencies: competencies, labs: labs }
+  decision_file: "rfcs/{}-*.md"
+
 collections:
   competencies:
     label: { en: Competencies, vi: Kỹ năng }

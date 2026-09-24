@@ -66,7 +66,14 @@ relations:
   - { type: member, from: project:knowledge-assistant, to: ai.tool-calling }
 resources:                      # only resources referenced by a block
   <id>: { title, url, type?, author? }
+changes?:                       # dated changes (rfcs/0021-dated-curriculum-changes.md), oldest first
+  vocabulary: change_kind       # labels each entry's kind
+  releases: [{ version, date }]
+  entries:
+    - { date, kind, refs: [ref], unlisted?: [id], release?, decision?: { id, path }, predates_review?: true, note?: L10n }
 ```
+
+An entry's `refs` are the items it names that exist; `unlisted` keeps names that no longer resolve (a removed competency). `decision` is the record that decided it (`path` is a repository file); `predates_review` marks a change made before that process existed.
 
 `L10n` is `{ en: string, vi?: string }`. Curriculum text carries only `en` until a reviewed translation exists; the renderer falls back to `en` and marks the passage `lang="en"`.
 
@@ -150,6 +157,13 @@ collections:
   projects: { label: L10n, ref_prefix: project, items_from: "projects/*/project.yaml", title: title,
               relations: [{type: member, field: competencies, direction: out}], blocks: [purpose, milestones, evidence], … }
   paths:    { label: L10n, ref_prefix: path, items_from: "paths/*.md", exclude: [README.md], fields: {path: …} }
+changes:                         # optional; the model's `changes`
+  from: curriculum/changelog.yaml
+  vocabulary: change_kind
+  releases: { key: releases, map: { version: version, date: date } }
+  entries: { key: changes, map: { date: date, kind: kind, release: release, note: note, decision: rfc, predates_review: pre_rfc },
+             refs: { competencies: competencies, labs: labs } }   # content key → collection its ids name
+  decision_file: "rfcs/{}-*.md"   # the decision value resolves to exactly one file
 ```
 
 - Block order on the page is the order in this file. A block whose field is absent is skipped.

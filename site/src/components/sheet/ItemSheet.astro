@@ -14,6 +14,7 @@ import StepRail, { type RailEntry } from "../react/StepRail";
 import { useTranslations, type Lang } from "../../i18n";
 import {
   bridgeAnchor,
+  changes,
   detailsOf,
   groupOf,
   itemUrl,
@@ -26,13 +27,16 @@ import {
   text,
   trackedCollection,
   trackedItemsPointingAt,
+  vocabularyLabel,
   type Collection,
   type Item,
 } from "../../lib/atlas";
+import { changeAnchor, latestChangeOf } from "../../lib/changes";
+import { formatDate } from "../../lib/dates";
 import { TARGET_STATES, type TargetState } from "../../lib/progress";
 import { refOf } from "../../lib/refs";
 import { nextGraph, nextLinks } from "../../lib/summaries";
-import { mapUrl } from "../../lib/urls";
+import { changesUrl, mapUrl } from "../../lib/urls";
 
 interface Props {
   collection: Collection;
@@ -58,6 +62,12 @@ const section = group
   ? { label: group.label, href: `${mapUrl(lang)}?group=${encodeURIComponent(group.value)}` }
   : { label: text(c.label, lang), href: c.page_when ? mapUrl(lang) : `/${lang}/${pageSegment(c)}/` };
 const details = detailsOf(c, item, lang);
+
+// The latest dated change naming this item ("Promoted to ready: Sep 22, 2026 | RFC 0002"), linking
+// to its entry on the What changed page (DESIGN.md → Information architecture, What changed).
+const change = changes ? latestChangeOf(changes, ref) : undefined;
+const changeKind = change && changes ? vocabularyLabel(changes.vocabulary, change.kind, lang) : undefined;
+const [changeBefore, changeAfter] = t("changes.itemLine", { kind: changeKind?.value ?? "" }).split("{date}");
 
 // Learner progress: only for collections that track it.
 const declaredTarget = targetOf(c, item);
@@ -146,6 +156,26 @@ const railEntries: RailEntry[] = blocks.map((b) => {
           entries={practisedBy}
           lead={t("lab.practises")}
         />
+      )}
+      {change && (
+        <ul class="details-line sheet-change" aria-label={t("changes.title")}>
+          <li>
+            <a href={`${changesUrl(lang)}#${changeAnchor(change.index)}`} lang={langAttr(changeKind!, lang)}>
+              {changeBefore}
+              <time datetime={change.date}>{formatDate(change.date, lang)}</time>
+              {changeAfter}
+            </a>
+          </li>
+          {change.decision ? (
+            <li>
+              <a href={repoUrl(change.decision.path)} rel="noopener noreferrer">
+                {t("changes.decision", { id: change.decision.id })}
+              </a>
+            </li>
+          ) : (
+            change.predates_review && <li>{t("changes.predates")}</li>
+          )}
+        </ul>
       )}
       <div class="sheet-actions">
         <a class="button-quiet" href={repoUrl(page.source_path)} rel="noopener noreferrer">
@@ -297,6 +327,20 @@ const railEntries: RailEntry[] = blocks.map((b) => {
     border: var(--border-width) dashed var(--line-strong);
     border-radius: var(--radius-mark);
     color: var(--ink-muted);
+  }
+
+  /* The latest dated change, a muted colophon line above the quiet actions. */
+  .sheet-head .sheet-change {
+    margin: var(--space-4) 0 0;
+    color: var(--ink-muted);
+  }
+
+  .sheet-change a {
+    color: inherit;
+  }
+
+  .sheet-change a:hover {
+    color: var(--ink);
   }
 
   .sheet-actions {
