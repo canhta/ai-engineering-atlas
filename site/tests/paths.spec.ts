@@ -8,7 +8,7 @@ import { expect, type Page, test } from "@playwright/test";
 type L10n = { en: string; vi?: string };
 type Entry = { ref: string; required: boolean; when?: L10n; level?: string };
 type Stage = { id: string; title: L10n; level?: string; entries: Entry[] };
-type Block = { type: string; stages?: Stage[] };
+type Block = { type: string; id: string; stages?: Stage[]; items?: { ref: string }[] };
 type Item = { id: string; title: L10n; page?: { blocks: Block[] } };
 type Model = {
   collections: { id: string; label: L10n; ref_prefix?: string; progress?: { tracks?: boolean } }[];
@@ -30,6 +30,8 @@ const pathRef = `${found.c.ref_prefix}:${found.item.id}`;
 const stages = found.block!.stages!;
 const entries = stages.flatMap((s) => s.entries);
 const url = (lang: string) => `/${lang}/${found.c.id}/${found.item.id}/`;
+const assumed = found.item.page!.blocks.find((b) => b.type === "prerequisites")!;
+const titleOf = (ref: string) => trackedItems.find((i) => i.id === ref)!.title.en;
 const readyEntry = entries.find((e) => withPage.has(e.ref))!;
 const mappedEntry = entries.find((e) => !withPage.has(e.ref))!;
 const optionalEntry = entries.find((e) => !e.required);
@@ -92,6 +94,16 @@ test("the path screen lists its stages in order, in the rail and on the page", a
     const rows = page.locator(`#${stage.id} .stage-entry`);
     await expect(rows).toHaveCount(stage.entries.length);
     for (const [j, entry] of stage.entries.entries()) await expect(rows.nth(j)).toHaveAttribute("data-ref", entry.ref);
+  }
+});
+
+test("the path lists its assumed topics once, in their block with a rail entry", async ({ page }) => {
+  await open(page, url("en"));
+  await expect(page.locator(`.rail-list a[href="#${assumed.id}"]`)).toHaveCount(1);
+  const main = page.locator("main");
+  for (const { ref } of assumed.items!) {
+    await expect(main.getByText(titleOf(ref), { exact: true })).toHaveCount(1);
+    await expect(page.locator(`#${assumed.id}`)).toContainText(titleOf(ref));
   }
 });
 

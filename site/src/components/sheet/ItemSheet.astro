@@ -78,9 +78,11 @@ const target: TargetState | undefined = c.progress?.tracks
     : "demonstrated"
   : undefined;
 
+// The prerequisite line ("Not feeling ready? Needs …") asks whether the learner is ready to start,
+// so only a sheet that tracks progress carries it; elsewhere the prerequisites block alone lists them.
 const prereqBlock = page.blocks.find((b) => b.type === "prerequisites");
 const prereqs: PrereqEntry[] =
-  prereqBlock?.type === "prerequisites"
+  target && prereqBlock?.type === "prerequisites"
     ? prereqBlock.items.map((p) => {
         const found = resolveRef(p.ref);
         return {
