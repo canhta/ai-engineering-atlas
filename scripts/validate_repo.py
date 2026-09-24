@@ -7,6 +7,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 errors = []
+warnings = []
 
 VALID_LEVELS = {"L0", "L1", "L2", "L3", "L4"}
 VALID_ROUTE_STATUS = {"incomplete", "seeded", "ready"}
@@ -445,20 +446,24 @@ for cid, item in catalog.items():
 
 
 # ---------------------------------------------------------------------------
-# Reference projects
+# Reference projects (rfcs/0022-titled-project-milestones.md)
 # ---------------------------------------------------------------------------
 
-PROJECT_REQUIRED = {
-    "id",
-    "title",
-    "spines",
-    "purpose",
-    "milestones",
-    "competencies",
-    "evidence",
-}
+PROJECT_REQUIRED = {"id", "title", "spines", "purpose", "milestones"}
 project_ids = set()
 projects = []
+
+
+def h2_headings(markdown: str) -> list[str]:
+    """`## ` headings outside fenced code blocks, in order."""
+    headings, fenced = [], False
+    for line in markdown.splitlines():
+        if line.startswith("```"):
+            fenced = not fenced
+        elif not fenced and line.startswith("## "):
+            headings.append(line[3:].strip())
+    return headings
+
 
 for path in sorted((ROOT / "projects").rglob("project.yaml")):
     rel = path.relative_to(ROOT)
@@ -472,7 +477,10 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
     for field in sorted(PROJECT_REQUIRED - data.keys()):
         errors.append(f"{rel}: missing '{field}'")
 
-    projects.append({"data": data, "path": path})
+    milestones = [m for m in data.get("milestones") or [] if isinstance(m, dict)]
+    # A project's competencies are the union of what its milestones integrate.
+    competencies = {cid for m in milestones for cid in m.get("integrates") or []}
+    projects.append({"data": data, "path": path, "competencies": competencies})
 
     pid = data.get("id")
     if pid:
@@ -484,16 +492,45 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
         if spine not in VALID_SPINES:
             errors.append(f"{rel}: invalid spine '{spine}'")
 
-    for cid in data.get("competencies", []) or []:
-        if cid not in catalog:
-            errors.append(f"{rel}: unknown catalog competency '{cid}'")
+    seen_milestones = set()
+    for milestone in milestones:
+        mid = milestone.get("id")
+        where = f"{rel}: milestone '{mid}'"
+        if mid in seen_milestones:
+            errors.append(f"{rel}: duplicate milestone id '{mid}'")
+        seen_milestones.add(mid)
 
-    if not path.with_name("README.md").exists():
+        for cid in milestone.get("integrates") or []:
+            if cid not in catalog:
+                errors.append(f"{where}: unknown catalog competency '{cid}'")
+
+        package = milestone.get("package")
+        if package and not (path.parent / package / "README.md").is_file():
+            errors.append(f"{where}: package '{package}' has no README.md in {rel.parent}")
+
+        # Open owner questions stay visible in every run until an RFC decides them.
+        gaps = [name for name in ("ask", "integrates", "evidence") if not milestone.get(name)]
+        if gaps:
+            warnings.append(f"{where}: {', '.join(gaps)} not decided yet (owner question)")
+
+    readme = path.with_name("README.md")
+    if not readme.exists():
         errors.append(f"{rel}: project requires README.md")
+    elif milestones:
+        # One `## <title>` per milestone, in milestone order, with no other `##` heading between them.
+        headings = h2_headings(readme.read_text(encoding="utf-8"))
+        titles = [str(m.get("title")) for m in milestones]
+        start = headings.index(titles[0]) if titles[0] in headings else 0
+        found = headings[start : start + len(titles)]
+        for title, heading in zip(titles, found + [None] * (len(titles) - len(found)), strict=True):
+            if title != heading:
+                errors.append(f"{rel}: milestone '{title}' must equal the README's next ## heading, found '{heading}'")
+                break
 
 
-# Ready competencies that target applied evidence must be integrated into
-# at least one declared project on a matching project spine.
+# Ready competencies that target applied evidence must be integrated by a milestone of at least
+# one project on a matching spine. A route whose README already names such a project, while no
+# milestone of it integrates the route yet, is an open owner question (a warning), not an error.
 for cid, route in route_competencies.items():
     data = route["data"]
     if data.get("status") != "ready":
@@ -502,20 +539,104 @@ for cid, route in route_competencies.items():
         continue
 
     required_spines = set(data.get("project_spines") or [])
-    matches = []
+    candidates = [p for p in projects if required_spines & set(p["data"].get("spines") or [])]
+    if any(cid in p["competencies"] for p in candidates):
+        continue
 
-    for project in projects:
-        pdata = project["data"]
-        if cid not in (pdata.get("competencies") or []):
+    route_readme = route["path"].with_name("README.md")
+    readme_text = route_readme.read_text(encoding="utf-8") if route_readme.exists() else ""
+    named = [p["data"].get("id") for p in candidates if f"/projects/{p['path'].parent.name}/" in readme_text]
+    message = (
+        f"{route['path'].relative_to(ROOT)}: target state applied requires "
+        "a project milestone that integrates this competency on a matching spine"
+    )
+    if named:
+        warnings.append(f"{message}; its README names {', '.join(named)} (owner question)")
+    else:
+        errors.append(message)
+
+
+# ---------------------------------------------------------------------------
+# Learning paths (rfcs/0020-structured-learning-paths.md)
+# ---------------------------------------------------------------------------
+
+LEVEL_ORDER = {level: index for index, level in enumerate(sorted(VALID_LEVELS))}
+path_count = 0
+unrouted_required = 0
+
+for path in sorted((ROOT / "paths").glob("*.yaml")):
+    rel = path.relative_to(ROOT)
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        errors.append(f"{rel}: YAML parse error: {exc}")
+        continue
+    path_count += 1
+
+    if data.get("id") != path.stem:
+        errors.append(f"{rel}: id '{data.get('id')}' must equal the file name '{path.stem}'")
+
+    assumes = data.get("assumes") or []
+    for cid in assumes:
+        if cid not in catalog:
+            errors.append(f"{rel}: assumes unknown catalog competency '{cid}'")
+
+    stages = data.get("stages") or []
+    entries = [(stage, entry) for stage in stages for entry in stage.get("entries") or []]
+    order = [entry.get("id") for _, entry in entries]
+    position = {}
+    for index, cid in enumerate(order):
+        if cid in position:
+            errors.append(f"{rel}: '{cid}' appears more than once")
+        position.setdefault(cid, index)
+        if cid in assumes:
+            errors.append(f"{rel}: '{cid}' is both an entry and assumed")
+
+    stage_ids = [stage.get("id") for stage in stages]
+    for sid in {s for s in stage_ids if stage_ids.count(s) > 1}:
+        errors.append(f"{rel}: duplicate stage id '{sid}'")
+
+    for index, (stage, entry) in enumerate(entries):
+        cid = entry.get("id")
+        where = f"{rel}: entry '{cid}'"
+        if cid not in catalog:
+            errors.append(f"{where}: unknown catalog competency")
             continue
-        if required_spines & set(pdata.get("spines") or []):
-            matches.append(pdata.get("id"))
+        required = entry.get("required", True)
+        if entry.get("when") and required:
+            errors.append(f"{where}: 'when' is only allowed with required: false")
 
-    if not matches:
-        errors.append(
-            f"{route['path'].relative_to(ROOT)}: target state applied requires "
-            "a project.yaml that declares this competency on a matching spine"
-        )
+        ready = catalog[cid].get("status") == "ready" and cid in route_competencies
+        if not ready:
+            if entry.get("target_level"):
+                errors.append(f"{where}: target_level is only allowed on a ready route")
+            if entry.get("order_exceptions"):
+                errors.append(f"{where}: order_exceptions are only allowed on a ready route")
+            if required:
+                unrouted_required += 1
+            continue
+
+        route = route_competencies[cid]["data"]
+        # A path cannot demand more than the route's own contract defines.
+        level = entry.get("target_level") or stage.get("target_level")
+        if level and LEVEL_ORDER[level] > LEVEL_ORDER.get(route.get("target_level"), -1):
+            errors.append(f"{where}: target level {level} exceeds the route's own {route.get('target_level')}")
+
+        # Walking in path order, each prerequisite comes earlier, is assumed, or is a stated exception.
+        prerequisites = route.get("prerequisites") or []
+        exceptions = {e.get("prerequisite"): e.get("reason") for e in entry.get("order_exceptions") or []}
+        for prereq in prerequisites:
+            if position.get(prereq, len(order)) < index or prereq in assumes:
+                continue
+            if exceptions.get(prereq):
+                continue
+            placed = "later on the path" if prereq in position else "not on the path"
+            errors.append(f"{where}: prerequisite '{prereq}' is {placed}; move it, assume it, or state an exception")
+        for prereq in exceptions:
+            if prereq not in prerequisites:
+                errors.append(f"{where}: order exception '{prereq}' is not a declared prerequisite")
+            elif position.get(prereq, -1) <= index:
+                errors.append(f"{where}: order exception '{prereq}' is stale; it is not later on the path")
 
 
 # ---------------------------------------------------------------------------
@@ -765,6 +886,12 @@ for rid in sorted(ready_source_ids):
 # Result
 # ---------------------------------------------------------------------------
 
+if warnings:
+    print("Open owner questions (warnings):\n")
+    for warning in warnings:
+        print(f"- {warning}")
+    print()
+
 if errors:
     print("Validation failed:\n")
     for error in errors:
@@ -777,5 +904,6 @@ coverage_count = len(catalog) - ready_count
 print(
     f"OK: {len(catalog)} catalog competencies "
     f"({ready_count} ready, {coverage_count} coverage), "
-    f"{len(resource_map)} resources, {len(project_ids)} projects"
+    f"{len(resource_map)} resources, {len(project_ids)} projects, "
+    f"{path_count} {'path' if path_count == 1 else 'paths'} ({unrouted_required} required path steps have no route yet)"
 )

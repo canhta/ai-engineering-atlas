@@ -2,21 +2,46 @@ id: project.tiny-transformer
 title: Tiny Transformer
 spines: [foundation]
 purpose: "Make language-model mechanisms inspectable from training through inference."
+# Milestones in README order (rfcs/0022-titled-project-milestones.md). `integrates: []` or an empty
+# `evidence` is an open owner question (F6 in the RFC) and is reported by `make check` until it is decided.
 milestones:
-  - experiment-contract
-  - training-mechanics
-  - tokenizer-and-embeddings
-  - self-attention
-  - transformer-block
-  - language-model-training
-  - decoding
-  - inference-behavior
-competencies:
-  - llm.self-attention
-evidence:
-  - code
-  - tests
-  - visualization
-  - experiment-results
-  - failure-analysis
-  - explanation
+  - id: experiment-contract
+    title: Experiment contract
+    ask: "Before writing model code, record: corpus and license, vocabulary/tokenization choice, context length, model size, training budget, one simple baseline, and metrics to record."
+    integrates: [] # F6
+    evidence: [] # F6: no evidence ID names the short experiment note
+  - id: training-mechanics
+    title: Training mechanics
+    ask: Build or inspect enough numerical machinery to explain one training step.
+    integrates: [] # F6
+    evidence: [explanation, failure-analysis]
+  - id: tokenizer-and-embeddings
+    title: Tokenizer and embeddings
+    ask: Implement or configure a simple tokenizer and embedding lookup.
+    integrates: [] # F6
+    evidence: [experiment-results, explanation]
+  - id: self-attention
+    title: Self-attention
+    ask: Implement simplified causal self-attention.
+    integrates: [llm.self-attention]
+    evidence: [code, tests, visualization, experiment-results]
+  - id: transformer-block
+    title: Transformer block
+    ask: "Compose attention, residual connections, normalization, and a feed-forward network. Break one residual or normalization path and diagnose training behavior."
+    integrates: [] # F6
+    evidence: [code, failure-analysis]
+  - id: language-model-training
+    title: Language-model training
+    ask: Train the small model enough to verify the pipeline.
+    integrates: [] # F6
+    evidence: [experiment-results]
+  - id: decoding
+    title: Decoding
+    ask: At minimum compare deterministic decoding with one stochastic strategy.
+    integrates: [] # F6
+    evidence: [explanation]
+  - id: inference-behavior
+    title: Inference behavior
+    ask: Measure the system rather than stopping at generation.
+    integrates: [] # F6
+    evidence: [experiment-results]

@@ -20,6 +20,8 @@ export function resolveRepoPath(base: string, href: string): string {
 }
 
 export function renderMarkdown(body: string, sourcePath: string, lang: Lang): string {
+  // An item read from one file (a path's YAML) resolves links against the file's directory.
+  const base = /\.\w+$/.test(sourcePath) ? sourcePath.replace(/\/[^/]*$/, "") : sourcePath;
   const marked = new Marked({
     gfm: true,
     walkTokens(token) {
@@ -27,7 +29,7 @@ export function renderMarkdown(body: string, sourcePath: string, lang: Lang): st
       const link = token as Tokens.Link;
       if (/^([a-z]+:|#|\/)/i.test(link.href)) return;
       const [path, anchor] = link.href.split("#");
-      const repoPath = resolveRepoPath(sourcePath, path);
+      const repoPath = resolveRepoPath(base, path);
       const ref = refAtPath(repoPath);
       const page = ref ? itemUrl(lang, ref) : undefined;
       link.href = page ?? `${repoUrl(repoPath)}${anchor ? `#${anchor}` : ""}`;

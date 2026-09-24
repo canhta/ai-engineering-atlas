@@ -107,6 +107,52 @@ const fixture: Record<string, unknown> = {
       },
     ],
   },
+  milestones: {
+    type: "milestones",
+    id: "milestones",
+    title,
+    items: [
+      {
+        id: "first-step",
+        title: { en: "First step" },
+        ask: { en: "Build the simplest baseline." },
+        refs: ["ai.evaluation", "math.probability"],
+        evidence: ["baseline-results", "shared-record"],
+        path: "projects/knowledge-assistant/foundation",
+      },
+      { id: "open-step", title: { en: "Open step" }, refs: [], evidence: ["shared-record"] },
+    ],
+  },
+  sequence: {
+    type: "sequence",
+    id: "stages",
+    title,
+    vocabulary: "level",
+    stages: [
+      {
+        id: "first-stage",
+        title: { en: "First stage" },
+        guidance: { en: "Read the [route](../curriculum/07-ai-engineering/evaluation/) first." },
+        level: "L3",
+        entries: [
+          { ref: "ai.evaluation", required: true },
+          { ref: "math.probability", required: true },
+        ],
+      },
+      {
+        id: "second-stage",
+        title: { en: "Second stage" },
+        entries: [
+          {
+            ref: "ai.tool-calling",
+            required: false,
+            when: { en: "a project needs it" },
+            exceptions: [{ ref: "ai.evaluation", reason: { en: "Taught later on purpose." } }],
+          },
+        ],
+      },
+    ],
+  },
   data: { type: "data", id: "extra", title, value: { nested: [1, true, { en: "Localised leaf" }, { deeper: ["x"] }] } },
   unknown: { type: "timeline", id: "odd", title, entries: [{ year: 2026, note: "Unknown shape" }] },
 };
@@ -213,6 +259,46 @@ describe("block renderer", () => {
     expect(html).toContain("Write this before choosing.");
     expect(html).toContain("Candidate");
     expect(html).toContain("Quality");
+  });
+
+  test("milestones render titled sections with their anchor, ask, routes, evidence, and package", async () => {
+    const html = await render("milestones", "vi");
+    expect(html).toContain('id="first-step"');
+    expect(html).toContain('id="open-step"');
+    expect(html).toMatch(/<span lang="en"[^>]*>First step<\/span>/);
+    expect(html).toContain("Build the simplest baseline.");
+    // The routes it brings together are the prerequisite line: a ready route links, a mapped one does not.
+    expect(html).toContain('href="/vi/routes/ai.evaluation/"');
+    expect(html).not.toContain('href="/vi/routes/math.probability/"');
+    expect(html).toMatch(/<code[^>]*>baseline-results<\/code>/);
+    expect(html).toContain("/tree/main/projects/knowledge-assistant/foundation");
+    // A record listed under an earlier milestone names it; the first listing does not.
+    expect(html.match(/dùng chung với/g)).toHaveLength(1);
+    expect(html.indexOf("dùng chung với")).toBeGreaterThan(html.indexOf('id="open-step"'));
+    // An undecided ask is left out, not filled.
+    const open = html.slice(html.indexOf('id="open-step"'));
+    expect(open).not.toContain("milestone-ask");
+  });
+
+  test("sequence renders stages in order with guidance, entries, levels, and optional conditions", async () => {
+    const html = await render("sequence");
+    expect(html).toContain('id="first-stage"');
+    expect(html.indexOf('id="first-stage"')).toBeLessThan(html.indexOf('id="second-stage"'));
+    // Guidance is Markdown whose relative links resolve against a file item's directory.
+    expect(html).toContain('href="/en/routes/ai.evaluation/"');
+    // A ready route links and takes the stage level; a mapped competency does not link and has no level.
+    const first = html.slice(html.indexOf('id="first-stage"'), html.indexOf('id="second-stage"'));
+    expect(first).toContain("target L3 deep engineering competence");
+    // (Rendered markup only: the island also carries its props as serialized text.)
+    expect(first.match(/>target L3/g)).toHaveLength(1);
+    expect(first).not.toContain('href="/en/routes/math.probability/"');
+    expect(first).toContain("mapped, no route");
+    const second = html.slice(html.indexOf('id="second-stage"'));
+    expect(second).toContain("optional");
+    expect(second).toContain("a project needs it");
+    expect(second).toContain("Taught later on purpose.");
+    // No completion percentage: states come from evidence records only.
+    expect(html).not.toMatch(/\d+%/);
   });
 
   test("data renders nested values of any shape", async () => {

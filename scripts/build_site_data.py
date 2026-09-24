@@ -133,9 +133,14 @@ def raw_items(name: str, config: dict):
             content_file = path / config["content_from"] if config.get("content_from") else None
             content = load_yaml(content_file) if content_file and content_file.exists() else {}
             yield path.name, title, content, rel(path), {"path": rel(path), "files": files}
-        elif path.suffix == ".md":
-            yield path.stem, markdown_title(path, path.stem), {}, rel(path), {"path": rel(path)}
+        elif "*" in Path(spec).name:
+            # One item per file (`paths/*.yaml`): the id is the `id` key, else the file stem.
+            content = load_yaml(path)
+            item_id = content.get(id_key, path.stem) if id_key else path.stem
+            title = content.get(title_key, path.stem) if title_key else path.stem
+            yield item_id, title, content, rel(path), {"path": rel(path)}
         else:
+            # One item per directory holding a fixed file name (`projects/*/project.yaml`).
             content = load_yaml(path)
             title = content.get(title_key, path.parent.name) if title_key else path.parent.name
             yield path.parent.name, title, content, rel(path.parent), {"path": rel(path.parent)}
@@ -189,11 +194,12 @@ def page_matches(config: dict, fields: dict) -> bool:
 
 
 class Context:
-    def __init__(self, resources, resolver, label, source_path=None):
+    def __init__(self, resources, resolver, label, source_path=None, vocabularies=None):
         self.resources = resources
         self.resolver = resolver
         self.label = label
         self.source_path = source_path
+        self.vocabularies = vocabularies or {}
         self.used_resources: set[str] = set()
 
     def resource(self, value) -> str:
@@ -405,6 +411,90 @@ def block_form(spec, value, content, ctx):
     return {"fields": fields}, consumed
 
 
+def block_milestones(spec, value, content, ctx):
+    """Titled milestones of a project, in order: what each asks, integrates, and produces."""
+    mapping = spec["item"]
+    field = spec["field"]
+    items = []
+    for i, entry in enumerate(value if isinstance(value, list) else []):
+        where = f"{field}[{i}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{ctx.label}: {where} must be a mapping")
+            continue
+        item = {
+            "id": str(entry.get(mapping["id"]) or ""),
+            "title": ctx.text(entry.get(mapping["title"]), f"{where}.{mapping['title']}"),
+        }
+        if entry.get(mapping["ask"]) is not None:
+            item["ask"] = ctx.text(entry[mapping["ask"]], f"{where}.{mapping['ask']}")
+        item["refs"] = [ctx.resolver.ref(ref, ctx.label) for ref in entry.get(mapping["refs"]) or []]
+        item["evidence"] = [str(e) for e in entry.get(mapping["evidence"]) or []]
+        path = entry.get(mapping["path"])
+        if path:
+            repo_path = f"{ctx.source_path}/{str(path).strip('/')}"
+            if not (ROOT / repo_path).is_dir():
+                errors.append(f"{ctx.label}: {where}.{mapping['path']} '{path}' does not exist")
+            item["path"] = repo_path
+        items.append(item)
+    return {"items": items}, [f"{field}[].{k}" for k in mapping.values()]
+
+
+def block_sequence(spec, value, content, ctx):
+    """Ordered stages of item references (a learning path): each entry required or optional, with a level."""
+    field = spec["field"]
+    smap, emap, xmap = spec["stage"], spec["entry"], spec["exception"]
+    vocabulary = spec.get("vocabulary")
+
+    def level(raw, where):
+        if vocabulary and str(raw) not in ctx.vocabularies.get(vocabulary, {}):
+            errors.append(f"{ctx.label}: {where} '{raw}' is missing from vocabulary '{vocabulary}'")
+        return str(raw)
+
+    stages = []
+    for i, raw_stage in enumerate(value if isinstance(value, list) else []):
+        where = f"{field}[{i}]"
+        stage = {
+            "id": str(raw_stage.get(smap["id"]) or ""),
+            "title": ctx.text(raw_stage.get(smap["title"]), f"{where}.{smap['title']}"),
+        }
+        if raw_stage.get(smap["guidance"]) is not None:
+            stage["guidance"] = ctx.text(str(raw_stage[smap["guidance"]]).strip(), f"{where}.{smap['guidance']}")
+        if raw_stage.get(smap["level"]) is not None:
+            stage["level"] = level(raw_stage[smap["level"]], f"{where}.{smap['level']}")
+        entries = []
+        for j, raw_entry in enumerate(raw_stage.get(smap["entries"]) or []):
+            at = f"{where}.{smap['entries']}[{j}]"
+            entry = {
+                "ref": ctx.resolver.ref(raw_entry.get(emap["ref"]), ctx.label),
+                "required": raw_entry.get(emap["required"], True) is not False,
+            }
+            if raw_entry.get(emap["when"]) is not None:
+                entry["when"] = ctx.text(raw_entry[emap["when"]], f"{at}.{emap['when']}")
+            if raw_entry.get(emap["level"]) is not None:
+                entry["level"] = level(raw_entry[emap["level"]], f"{at}.{emap['level']}")
+            exceptions = [
+                {
+                    "ref": ctx.resolver.ref(x.get(xmap["ref"]), ctx.label),
+                    "reason": ctx.text(x.get(xmap["reason"]), f"{at}.{emap['exceptions']}"),
+                }
+                for x in raw_entry.get(emap["exceptions"]) or []
+            ]
+            if exceptions:
+                entry["exceptions"] = exceptions
+            entries.append(entry)
+        stage["entries"] = entries
+        stages.append(stage)
+
+    entries_path = f"{field}[].{smap['entries']}[]"
+    consumed = [f"{field}[].{smap[k]}" for k in ("id", "title", "guidance", "level")]
+    consumed += [f"{entries_path}.{emap[k]}" for k in ("ref", "required", "when", "level")]
+    consumed += [f"{entries_path}.{emap['exceptions']}[].{k}" for k in xmap.values()]
+    payload = {"stages": stages}
+    if vocabulary:
+        payload["vocabulary"] = vocabulary
+    return payload, consumed
+
+
 def block_data(spec, value, content, ctx):
     return {"value": value}, [spec["field"]]
 
@@ -418,6 +508,8 @@ BLOCK_TYPES = {
     "practice": block_practice,
     "runner": block_runner,
     "form": block_form,
+    "milestones": block_milestones,
+    "sequence": block_sequence,
     "data": block_data,
 }
 
@@ -722,7 +814,7 @@ def build():
 
             covered = list(base_covered)
             if page_matches(config, fields):
-                ctx = Context(resources, resolver, label, source_path)
+                ctx = Context(resources, resolver, label, source_path, vocabularies)
                 blocks = []
                 for spec in blocks_config:
                     handler = BLOCK_TYPES.get(spec["type"])

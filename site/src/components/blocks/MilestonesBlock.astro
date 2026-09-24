@@ -1,0 +1,159 @@
+---
+// A project's milestones (DESIGN.md → Route sheet → Project pages): each a section with its title,
+// what it asks, the routes it brings together (set like the prerequisite line, with the learner's
+// state after hydration), its evidence as artifact names, and its evidence package. The anchor is
+// the milestone's id; its position number appears only in the contents rail (RFC 0022). A record
+// already listed under an earlier milestone says which one, so one record is not counted twice.
+import Icon from "../Icon.astro";
+import PrereqLine, { type PrereqEntry } from "../react/PrereqLine";
+import { useTranslations, type Lang } from "../../i18n";
+import { itemUrl, langAttr, repoUrl, resolveRef, stateLabels, text, type MilestonesBlock } from "../../lib/atlas";
+
+interface Props {
+  block: MilestonesBlock;
+  lang: Lang;
+}
+
+const { block, lang } = Astro.props;
+const t = useTranslations(lang);
+const labels = stateLabels(lang);
+
+const firstWith = new Map<string, string>();
+const milestones = block.items.map((m) => {
+  const evidence = m.evidence.map((id) => {
+    const earlier = firstWith.get(id);
+    if (!earlier) firstWith.set(id, m.id);
+    const shared = earlier ? block.items.find((o) => o.id === earlier) : undefined;
+    return { id, sharedWith: shared ? text(shared.title, lang) : undefined };
+  });
+  const entries: PrereqEntry[] = m.refs.map((ref) => {
+    const found = resolveRef(ref);
+    return {
+      ref,
+      title: found ? text(found.item.title, lang) : { value: ref, lang: "en" },
+      url: itemUrl(lang, ref),
+    };
+  });
+  return {
+    ...m,
+    title: text(m.title, lang),
+    ask: m.ask ? text(m.ask, lang) : undefined,
+    entries,
+    evidence,
+    folder: m.path?.split("/").at(-1),
+  };
+});
+---
+
+<ol class="milestones">
+  {milestones.map((m) => (
+    <li id={m.id} class="milestone" aria-labelledby={`${m.id}-title`}>
+      <h3 id={`${m.id}-title`} class="milestone-title">
+        <span lang={langAttr(m.title, lang)}>{m.title.value}</span>
+      </h3>
+      {m.ask && (
+        <p class="reading milestone-ask" lang={langAttr(m.ask, lang)}>
+          {m.ask.value}
+        </p>
+      )}
+      {m.entries.length > 0 && (
+        <PrereqLine client:idle lang={lang} stateLabels={labels} entries={m.entries} lead={t("milestone.brings")} />
+      )}
+      {m.evidence.length > 0 && (
+        <p class="milestone-evidence">
+          <span class="prereq-lead">{t("milestone.evidence")}</span>{" "}
+          {m.evidence.map((e, i) => (
+            <>
+              <span class="milestone-record">
+                <code>{e.id}</code>
+                {e.sharedWith && (
+                  <span class="prereq-note">
+                    {" "}
+                    ({t("milestone.shared")} <span lang={langAttr(e.sharedWith, lang)}>{e.sharedWith.value}</span>)
+                  </span>
+                )}
+              </span>
+              {i < m.evidence.length - 1 && ", "}
+            </>
+          ))}
+        </p>
+      )}
+      {m.path && (
+        <p class="milestone-contract">
+          <a href={repoUrl(m.path)} rel="noopener noreferrer">
+            {t("milestone.contract")} <code>{m.folder}/</code>
+            <Icon name="external" />
+            <span class="visually-hidden">({t("link.external")})</span>
+          </a>
+        </p>
+      )}
+    </li>
+  ))}
+</ol>
+
+<style>
+  .milestones {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Each milestone reads like a section of a chapter, hairlines between them. */
+  .milestone {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-8) 0;
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .milestone:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .milestone-title {
+    font-family: var(--font-reading);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .milestone > * {
+    margin: 0;
+  }
+
+  .milestone-ask {
+    max-width: var(--measure);
+  }
+
+  .milestone :global(.prereq-line) {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .milestone-evidence {
+    max-width: 60rem;
+    line-height: 1.75;
+  }
+
+  /* Evidence records are artifact names: set in the mono face, not as prose. */
+  .milestone-record code {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+  }
+
+  .milestone-contract {
+    font-size: var(--text-ui);
+  }
+
+  .milestone-contract a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .milestone-contract code {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+  }
+</style>

@@ -19,7 +19,7 @@ The goal is to build a model small enough that the learner can inspect:
 
 Use a small synthetic or public-domain text corpus so iteration stays cheap.
 
-## Milestone 0 — experiment contract
+## Experiment contract
 
 Before writing model code, record:
 
@@ -33,7 +33,7 @@ Before writing model code, record:
 
 **Artifact:** short experiment note.
 
-## Milestone 1 — training mechanics
+## Training mechanics
 
 Build or inspect enough numerical machinery to explain one training step:
 
@@ -48,7 +48,7 @@ Depending on prior knowledge, this may use an autodiff framework or a small auto
 - trace one parameter from forward computation to update;
 - diagnose one unstable or missing-gradient case.
 
-## Milestone 2 — tokenizer and embeddings
+## Tokenizer and embeddings
 
 Implement or configure a simple tokenizer and embedding lookup.
 
@@ -59,7 +59,7 @@ Implement or configure a simple tokenizer and embedding lookup.
 
 **Evidence:** explain what the tokenizer does that the embedding layer does not.
 
-## Milestone 3 — self-attention
+## Self-attention
 
 Implement simplified causal self-attention.
 
@@ -72,7 +72,7 @@ Use the [Self-Attention competency](../../curriculum/06-llm-foundations/self-att
 - attention visualization;
 - sequence-length experiment.
 
-## Milestone 4 — transformer block
+## Transformer block
 
 Compose:
 
@@ -83,7 +83,7 @@ Compose:
 
 **Failure work:** break one residual or normalization path and diagnose training behavior.
 
-## Milestone 5 — language-model training
+## Language-model training
 
 Train the small model enough to verify the pipeline.
 
@@ -97,7 +97,7 @@ Record:
 
 The goal is not a leaderboard score. The goal is to connect training behavior to architecture and data choices.
 
-## Milestone 6 — decoding
+## Decoding
 
 Implement or compare decoding behavior.
 
@@ -105,7 +105,7 @@ At minimum compare deterministic decoding with one stochastic strategy.
 
 **Evidence:** explain why the same trained model can produce different output behavior under different decoding choices.
 
-## Milestone 7 — inference behavior
+## Inference behavior
 
 Measure the system rather than stopping at generation.
 

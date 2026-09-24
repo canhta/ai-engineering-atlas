@@ -247,17 +247,44 @@ collections:
       path: { label: { en: Repository path, vi: Đường dẫn repo } }
       spines: { label: { en: Spines, vi: Nhóm } }
     relations:
-      - { type: member, field: competencies, direction: out }
+      - { type: member, field: "milestones[].integrates", direction: out }
     blocks:
       - { id: purpose, field: purpose, type: text, title: { en: Purpose, vi: Mục đích } }
-      - { id: milestones, field: milestones, type: list, ordered: true, title: { en: Milestones, vi: Các mốc } }
-      - { id: evidence, field: evidence, type: list, title: { en: Evidence, vi: Bằng chứng } }
+      - id: milestones
+        field: milestones
+        type: milestones
+        item: { id: id, title: title, ask: ask, refs: integrates, evidence: evidence, path: package }
+        title: { en: Milestones, vi: Các mốc }
     ignore: [id, title]
 
   paths:
     label: { en: Paths, vi: Lộ trình theo vai trò }
     ref_prefix: path
-    items_from: "paths/*.md"
-    exclude: [README.md]
+    items_from: "paths/*.yaml"
+    id: id
+    title: title
     fields:
       path: { label: { en: Repository path, vi: Đường dẫn repo } }
+    relations:
+      - { type: member, field: "stages[].entries[].id", direction: out }
+    blocks:
+      - { id: audience, field: audience, type: text, title: { en: Audience, vi: Dành cho ai } }
+      - id: target-profile
+        field: target_profile
+        type: list
+        title: { en: Target profile, vi: Bạn sẽ làm được }
+      - id: assumed
+        field: assumes
+        type: prerequisites
+        title: { en: "Assumed, not taught on this path", vi: "Cần biết sẵn, lộ trình này không dạy" }
+      # rfcs/0020-structured-learning-paths.md: stages in path order, each entry a catalog reference.
+      - id: stages
+        field: stages
+        type: sequence
+        vocabulary: level
+        stage: { id: id, title: title, guidance: guidance, level: target_level, entries: entries }
+        entry: { ref: id, required: required, when: when, level: target_level, exceptions: order_exceptions }
+        exception: { ref: prerequisite, reason: reason }
+        title: { en: Stages, vi: Các giai đoạn }
+      - { id: completion, field: completion, type: list, title: { en: Completion standard, vi: Tiêu chuẩn hoàn thành } }
+    ignore: [id, title]
