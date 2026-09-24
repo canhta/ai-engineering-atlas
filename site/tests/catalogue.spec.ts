@@ -135,7 +135,22 @@ test("@mobile collection indexes stack their entries without horizontal scroll",
   for (const c of others) {
     await open(page, `/vi/${c.id}/`);
     await expect(page.locator(".catalogue thead")).toBeHidden();
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
     expect(overflow).toBeLessThanOrEqual(0);
   }
+});
+
+test("@mobile every item page in the other collections fits a phone, Markdown tables included", async ({ page }) => {
+  for (const c of others)
+    for (const item of model.items[c.id]) {
+      const response = await page.goto(`/en/${c.id}/${item.id}/`);
+      if (response?.status() !== 200) continue; // an item without a page
+      await page.evaluate(() => document.fonts.ready); // table widths depend on the web fonts
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      expect(overflow, `/en/${c.id}/${item.id}/`).toBeLessThanOrEqual(0);
+    }
 });

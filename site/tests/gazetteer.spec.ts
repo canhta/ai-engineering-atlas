@@ -228,5 +228,7 @@ test("@mobile the index stacks its entries without horizontal scroll", async ({ 
   await open(page, "/en/map/");
   const first = regions.find((r) => r.ready.length)!.ready[0];
   await expect(index(page).locator(`tr[data-ref="${first.id}"] .gazetteer-title`)).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(
+    true,
+  );
 });

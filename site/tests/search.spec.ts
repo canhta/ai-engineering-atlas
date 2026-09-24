@@ -149,7 +149,9 @@ test("@mobile the top bar keeps the search link on its second row without overfl
     await open(page, `/${lang}/search/`);
     const link = page.getByRole("link", { name: (lang === "en" ? en : vi)["nav.search"], exact: true });
     await expect(link).toBeInViewport();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
+    ).toBe(true);
     // Two rows: the wordmark, then the tabs and languages.
     const rows = await page
       .locator(".topbar-inner > :is(.wordmark, .topbar-tabs, .topbar-langs)")

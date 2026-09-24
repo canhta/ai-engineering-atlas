@@ -165,7 +165,10 @@ test("without JavaScript the grouped list reads, the contents link to sections, 
 test("@mobile the library reads in one column without horizontal scroll", async ({ page }) => {
   await open(page, "/en/sources/");
   await expect(sections(page)).toHaveCount(KINDS.length);
-  const [scroll, width] = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
+  const [scroll, width] = await page.evaluate(() => [
+    document.documentElement.scrollWidth,
+    document.documentElement.clientWidth,
+  ]);
   expect(scroll).toBeLessThanOrEqual(width);
   // The contents sit above the sections rather than beside them.
   const [contents, first] = await Promise.all([

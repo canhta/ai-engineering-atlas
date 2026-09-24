@@ -127,5 +127,7 @@ test("the footer links to the page and the header dates the latest change", asyn
 test("the page reads without horizontal scroll on a phone @mobile", async ({ page }) => {
   await open(page, "/vi/changelog/");
   await expect(page.locator(".change")).toHaveCount(entries.length);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(
+    true,
+  );
 });

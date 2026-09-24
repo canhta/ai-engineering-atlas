@@ -311,7 +311,9 @@ test("@mobile the plate stacks into readable region blocks without horizontal sc
     await open(page, path);
     await expect(tile(page, ROUTE_REF)).toBeVisible();
     await expect(tile(page, ROUTE_REF)).toHaveText(titleOf(routeItem));
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth),
+    ).toBe(true);
     // No prerequisite lines below 1024.
     await tile(page, ROUTE_REF).focus();
     await expect(page.locator(".plate-lines path")).toHaveCount(0);

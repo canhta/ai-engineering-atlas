@@ -166,6 +166,8 @@ test("the Atlas path filter keeps the plate and dims what is not on the path", a
 test("@mobile the path screen reads on a phone without horizontal scroll", async ({ page }) => {
   await open(page, url("vi"));
   await expect(page.locator(`#${stages[0].id}`)).toBeVisible();
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
   expect(overflow).toBeLessThanOrEqual(0);
 });

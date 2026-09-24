@@ -125,6 +125,8 @@ test("@mobile a project page on a phone has no horizontal scroll and a milestone
   await open(page, url("vi"));
   await expect(page.locator(".rail-bar")).toBeVisible();
   await expect(page.locator(`#${milestones[0].id}`)).toBeVisible();
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
   expect(overflow).toBeLessThanOrEqual(0);
 });

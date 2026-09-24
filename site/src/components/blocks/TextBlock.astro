@@ -72,6 +72,14 @@ const html = block.format === "markdown" ? renderMarkdown(body.value, sourcePath
     line-height: var(--leading-ui);
   }
 
+  /* A table wider than the column (long code names in its cells) scrolls in place, as a pre does. */
+  .markdown :global(table) {
+    display: block;
+    max-width: 100%;
+    margin: 0 0 var(--space-4);
+    overflow-x: auto;
+  }
+
   .markdown :global(code) {
     font-family: var(--font-mono);
     font-size: 0.9em;

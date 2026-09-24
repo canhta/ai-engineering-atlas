@@ -147,5 +147,7 @@ test("the privacy page and a signed-in bar fit a phone @mobile", async ({ page }
   });
   await open(page, "/vi/privacy/");
   await expect(bar(page).locator(".account-trigger")).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(
+    true,
+  );
 });

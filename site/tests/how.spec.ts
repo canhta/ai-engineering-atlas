@@ -93,5 +93,7 @@ test("Home's hero and the footer link to the page", async ({ page }) => {
 test("the page reads without horizontal scroll on a phone @mobile", async ({ page }) => {
   await open(page, "/vi/how/");
   await expect(page.locator(".how-key .how-row")).toHaveCount(STATES.length);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(
+    true,
+  );
 });
