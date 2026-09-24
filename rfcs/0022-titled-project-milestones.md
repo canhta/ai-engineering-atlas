@@ -62,7 +62,7 @@ The information the page needs already exists, but only as README prose. `projec
 ### Competencies and evidence are not tied to milestones
 
 - The Knowledge Assistant declares 40 competencies and 88 evidence IDs at project level. `scripts/validate_repo.py` checks that each competency exists in the catalog and that each ready route targeting `applied` appears in some project on a matching spine. It cannot say where in the project that competency is applied.
-- Two project competencies have no milestone that names their route: `ai.model-selection` and `agents.deterministic-vs-agentic` (see Flags). Both target `applied`, so the only integration evidence the validator accepts is a project-level list entry.
+- Two project competencies have no milestone that names their route: `ai.model-selection` and `agents.deterministic-vs-agentic` (see F7 in [Open questions for the owner](#open-questions-for-the-owner)). Both target `applied`, so the only integration evidence the validator accepts is a project-level list entry.
 - Evidence IDs exist only in `project.yaml`: no README, template, or script refers to `baseline-results`, `decision-records`, `security-tests`, or most others by ID.
 
 ### The contribution guide already defines a milestone's parts
@@ -78,6 +78,19 @@ The information the page needs already exists, but only as README prose. `projec
 Made With ML's MLOps course is organised as titled sections of titled lessons (Design: Setup, Product, Systems; Data: Preparation, Exploration, Preprocessing, Distributed; Model: Training, Tracking, Tuning, Evaluation, Serving; … Production: Jobs & Services, CI/CD workflows, Monitoring, Data engineering) under the headline "Learn how to combine machine learning with software engineering to design, develop, deploy and iterate on production ML applications" ([madewithml.com](https://madewithml.com/), checked 2026-09-24). Its product design lesson sets the one application the course works on: "a service that discovers and categorizes ML content from popular sources" ([Product design](https://madewithml.com/courses/mlops/product-design/), checked 2026-09-24).
 
 The mechanism taken from it: each stage of the evolving system is a named step the learner can navigate to, not an identifier. The atlas keeps its own shape (one project, milestones, evidence packages); it does not copy Made With ML's sections.
+
+### How milestone-based projects present milestones
+
+[.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) (2026-09-24, section "RFC 0022") compares seven milestone-based projects: [Made With ML](https://github.com/GokuMohandas/Made-With-ML), The Odin Project ([Rock Paper Scissors](https://www.theodinproject.com/lessons/foundations-rock-paper-scissors)), Full Stack Open ([part 1](https://fullstackopen.com/en/part1/java_script), [general info](https://fullstackopen.com/en/part0/general_info)), CS50x ([Mario](https://cs50.harvard.edu/x/2024/psets/1/mario/more/)), Microsoft [ML-For-Beginners](https://github.com/microsoft/ML-For-Beginners/blob/main/2-Regression/README.md), Microsoft [Generative AI for Beginners](https://github.com/microsoft/generative-ai-for-beginners/blob/main/06-text-generation-apps/README.md), and Boot.dev ([BookBot](https://www.boot.dev/courses/build-bookbot-python)). Findings this RFC applies:
+
+- **A title and a short ask per step** is the common shape: Boot.dev's one-line chapter descriptions, CS50's "Problem to Solve", Microsoft's assignment "Instructions" (high confidence).
+- **Evidence per unit.** Microsoft attaches a rubric to each assignment and CS50 a `check50` slug to each problem. Full Stack Open instead assesses the final state of one evolving app (medium-high confidence).
+- **Number by position, reference by a stable slug.** Microsoft's ordered lists, Boot.dev's chapters, and CS50's weeks number by position in navigation; CS50 `check50` slugs, Made With ML URLs, and Microsoft folder paths are what other things refer to. Full Stack Open is the exception (it references exercises as `1.3`) and belongs to a course re-edited as a whole, which is the drift found above (high confidence).
+- **No reference keeps generic project-level evidence** next to per-unit evidence: evidence belongs to an assignment, a problem slug, or a part submission (medium confidence).
+- **No reference has a structured per-step skills field.** `integrates` is stricter than outside practice; it is justified by this repository's catalog-first rule and applied-integration check, and nothing in the survey argues for relaxing it (medium confidence).
+- **No reference names one artifact under two units.** Full Stack Open accepts one final artifact as satisfying several steps (medium-low confidence for any rule on shared evidence).
+
+The research does not answer the content gaps (F1–F7, F9): they are decisions about this project's text and the catalog.
 
 ## Proposal
 
@@ -97,14 +110,16 @@ milestones:
     package: foundation/ # optional; evidence package directory inside the project
 ```
 
-| Field        | Required | Rule                                                                                                                                                                                                                                                      |
-| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`         | yes      | `^[a-z0-9]+(-[a-z0-9]+)*$`, unique in the project. Existing IDs are kept as they are, so any reference to them survives.                                                                                                                                  |
-| `title`      | yes      | Sentence case, no number prefix. Must equal a `## ` heading in the project README (see Validation).                                                                                                                                                       |
-| `ask`        | yes      | At most 300 characters. Taken from the milestone's README section (its lead instruction or its **Decision** line), cut but not reworded beyond grammar. It states what the learner does, not why the topic matters.                                       |
-| `integrates` | yes      | Catalog competency IDs, each checked against `curriculum/catalog.yaml` (catalog-first rule). A route the README section links with "Use the [X] route" is listed here; nothing else is added without an RFC. An empty list is allowed only while flagged. |
-| `evidence`   | yes      | Evidence IDs, at least one. An ID may appear in more than one milestone when two milestones share one record (for example one controlled optimization for latency and cost).                                                                              |
-| `package`    | no       | A directory inside the project that contains a `README.md` evidence contract (`foundation/`, `retrieval-quality/`, …). Several milestones may share a package.                                                                                            |
+| Field        | Required | Rule                                                                                                                                                                                                                                                                |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | yes      | `^[a-z0-9]+(-[a-z0-9]+)*$`, unique in the project. Existing IDs are kept as they are, so any reference to them survives.                                                                                                                                            |
+| `title`      | yes      | Sentence case, no number prefix. Must equal a `## ` heading in the project README (see Validation).                                                                                                                                                                 |
+| `ask`        | yes      | At most 300 characters. Taken from the milestone's README section (its lead instruction or its **Decision** line), cut but not reworded beyond grammar. It states what the learner does, not why the topic matters.                                                 |
+| `integrates` | yes      | Catalog competency IDs, each checked against `curriculum/catalog.yaml` (catalog-first rule). A route the README section links with "Use the [X] route" is listed here; nothing else is added without an RFC. An empty list is allowed only while flagged.           |
+| `evidence`   | yes      | Evidence IDs, at least one. An ID may appear in more than one milestone when two milestones share one record (for example one controlled optimization for latency and cost); the site marks every occurrence after the first "shared with <first milestone title>". |
+| `package`    | no       | A directory inside the project that contains a `README.md` evidence contract (`foundation/`, `retrieval-quality/`, …). Several milestones may share a package.                                                                                                      |
+
+The shape (title, ask, integrates, evidence) is kept as first drafted. Title and ask match the common shape in the survey above; per-milestone evidence matches Microsoft's per-assignment rubrics and CS50's per-problem slugs; `integrates` has no outside precedent and stays because of the catalog-first rule.
 
 `title` and `ask` are English strings, as all curriculum text is today; the content model's `L10n` fallback (`{ en }`, rendered with `lang="en"` and the untranslated marker) applies until a reviewed Vietnamese translation following [docs/VIETNAMESE_STYLE.md](../docs/VIETNAMESE_STYLE.md) exists.
 
@@ -158,7 +173,7 @@ To keep one version of each fact, `project.yaml` drops its top-level `competenci
 
 ### README sections
 
-The README keeps the milestone prose; only the heading changes, from `## Milestone 3 — hybrid retrieval and reranking` to `## Hybrid retrieval and reranking`. Numbers are dropped because they are what drifted. Other files link to a milestone by its heading anchor (`../../../projects/knowledge-assistant/#hybrid-retrieval-and-reranking`) or, on the site, by its ID.
+The README keeps the milestone prose; only the heading changes, from `## Milestone 3 — hybrid retrieval and reranking` to `## Hybrid retrieval and reranking`. Numbers are dropped because they are what drifted. Other files link to a milestone by its heading anchor (`../../../projects/knowledge-assistant/#hybrid-retrieval-and-reranking`) or, on the site, by its ID. A position number appears in one place only: the project page's contents rail, where it is computed from order and never stored or referenced. This is the "number by position, reference by a stable slug" pattern from the survey.
 
 The Knowledge Assistant's unnumbered "Product frame" section already fits this form. Its `###` subsections (User, Pain, …) stay as they are.
 
@@ -180,7 +195,7 @@ In `scripts/validate_repo.py` (and so `make check`):
 
 Two projects, 48 milestones. Titles come from the README `##` headings with the number removed and the first letter capitalised. Asks come from the quoted sentence of that section. "Package" is the evidence contract the README section or the project intro names. "Evidence" pairs existing `project.yaml` IDs with the section's evidence list or its package's templates by name; no evidence ID is created.
 
-Where the table shows **flag**, the existing reviewed text does not supply the field, and the owner must decide it in review. The draft does not fill those fields.
+Where the table shows **flag**, the existing reviewed text does not supply the field, and the owner must decide it in review ([Open questions for the owner](#open-questions-for-the-owner)). The draft does not fill those fields. The `(F8)` marks point to [Decisions taken from the research](#decisions-taken-from-the-research).
 
 ### Knowledge Assistant (`projects/knowledge-assistant/`)
 
@@ -244,20 +259,56 @@ The security package's stages 1–8 map one to one onto the eight security miles
 
 Tiny Transformer's evidence IDs are generic (`code`, `tests`, `visualization`, `experiment-results`, `failure-analysis`, `explanation`); the pairing above follows each section's **Evidence**, **Required artifacts**, or **Failure work** wording and should be confirmed in review.
 
-### Flags: fields the existing text does not supply
+### Decisions taken from the research
 
-- **F1 `rag`.** The section links no route. The catalog has no node for basic grounded answer generation; `retrieval.advanced-rag` (coverage) is a different scope. No evidence ID names the RAG artifact. Options for the owner: integrate `retrieval.rag-evaluation` here as well (the section's three-way evaluation split is that route's subject), add a catalog node through its own RFC, or merge this milestone into `rag-evaluation`.
+These apply recommendations of [.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) (see [How milestone-based projects present milestones](#how-milestone-based-projects-present-milestones)). The owner can still reverse them in review.
+
+- **F8 Shared evidence: allowed, with a note.** `performance-economics-experiment` and `rejected-optimization-record` come from the package's single "Stage 3 — one controlled optimization", which serves both latency and cost; `production-overhead-record` fits both gateway ("latency and operational-overhead comparison") and observability ("telemetry overhead"). They stay listed under both milestones, because splitting them would misstate the package. The site renders every occurrence after the first as "shared with <first milestone title>", so learners and reviewers do not count one record twice. Research confidence is medium-low (no reference names one artifact under two units; Full Stack Open accepts one final artifact for several steps), so assigning each record to one milestone remains an acceptable owner override.
+- **Unplaced evidence: removed.** `experiment-results`, `decision-records`, and `traces` in the Knowledge Assistant name no single milestone and are dropped from its `project.yaml`: each milestone already names its specific record, and no surveyed project keeps generic project-level evidence next to per-unit evidence (medium confidence). If the owner wants one of them as a project-wide artifact (for example a trace store several milestones use), it is attached to the first milestone that produces it, not kept in a project-level list, which the derived union rules out. F4 may reuse one of them for `vector-retrieval`; it then belongs to that milestone under the same rule.
+
+### Milestone order contradicts the contract prerequisites
+
+The Knowledge Assistant's README order places milestones before the milestones that integrate their routes' prerequisites. Checked 2026-09-24 against the prerequisites in each integrated route's `competency.yaml`, using the `integrates` column above and the current heading numbers:
+
+| Milestone (current number)                               | Integrates                                  | Prerequisite                 | Integrated at                                                                                                                        |
+| -------------------------------------------------------- | ------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| MCP interoperability (18)                                | `agents.mcp`                                | `security.prompt-injection`  | integrated security attack path (37); its own prerequisites `security.auth` (30) and `security.tool-permissions` (32) are also later |
+| Multi-tenant isolation (31)                              | `security.multi-tenant`                     | `security.data-exfiltration` | data exfiltration boundary (33)                                                                                                      |
+| Data exfiltration boundary (33)                          | `security.data-exfiltration`                | `security.prompt-injection`  | integrated security attack path (37)                                                                                                 |
+| Guardrail engineering (36)                               | `security.guardrails`                       | `security.prompt-injection`  | integrated security attack path (37)                                                                                                 |
+| Chunking quality (2), hybrid retrieval and reranking (3) | `retrieval.chunking`, `retrieval.reranking` | `ai.evaluation`              | RAG evaluation (5); the README's "Evaluation contract" in the product frame comes earlier but integrates no route in this draft      |
+
+The first row is the one [.scratch/research/paths-ordering.md](../.scratch/research/paths-ordering.md) (Q2) names: MCP (18) comes before authentication (30) and tool permissions (32), which the contracts require before prompt injection and so before MCP. [RFC 0020](0020-structured-learning-paths.md) orders the path `security.auth` → `security.tool-permissions` → `security.prompt-injection` → … → `agents.mcp`; the project should not teach the opposite order. The other rows come from running the same check over every milestone.
+
+This is an issue the migration must fix, not a decision this draft makes, because reordering milestones changes the project's reviewed text and its security package's stage order (`security-boundaries/README.md` stages 1–8 follow the milestones). Options for the owner:
+
+- move MCP interoperability after the security milestones, or move authentication, tool permissions, and a prompt-injection milestone before MCP (the order RFC 0020 uses for the path);
+- within the security block, order the milestones by their routes' prerequisites (auth, tool permissions, prompt injection, data exfiltration, multi-tenant, sandboxing, supply chain, guardrails), keeping the integrated attack path last as an integration milestone that reuses `security.prompt-injection`;
+- for the evaluation row, either list `ai.evaluation` on an earlier milestone (the evaluation contract is used from the lexical baseline on) or accept that a project milestone may integrate a route whose prerequisite the learner meets outside the project;
+- optionally add a validation rule: walking milestones in order, each integrated ready route's prerequisites are integrated earlier in the project or named in an exception with a reason, like RFC 0020's rule 3.
+
+### Open questions for the owner
+
+The existing reviewed text does not supply these fields. The milestone research states that comparable projects cannot answer them ("they are curriculum decisions about this project's text and the catalog"), so none has a research-backed answer. Where the path research ([.scratch/research/paths-ordering.md](../.scratch/research/paths-ordering.md)) bears on one, its suggestion is given so the owner can accept it in one line; otherwise the options are the draft's own.
+
+- **F1 `rag`.** The section links no route. The catalog has no node for basic grounded answer generation; `retrieval.advanced-rag` (coverage) is a different scope. No evidence ID names the RAG artifact. Options: integrate `retrieval.rag-evaluation` here as well (the section's three-way evaluation split is that route's subject), add a catalog node through its own RFC, or merge this milestone into `rag-evaluation`.
+  - _Related research (paths-ordering Q5):_ every compared roadmap has a basic RAG step before agents, and no catalog ID matches it; the suggestion is to log a catalog gap ("basic grounded answer generation with attribution") for a separate catalog RFC and not to map it to `retrieval.advanced-rag`. Until then, leave `integrates: []` with the warning.
 - **F2 `data-lifecycle`.** The section opens "Make the corpus change.", which does not state an ask on its own (it reads as a truncated "make the corpus changeable"); the usable text is the "Support at least: add; update; delete; freshness verification" list and the failure exercise. It links no route. `retrieval.data-lifecycle` exists as a coverage node but is not linked from the README or listed in `project.yaml`, so adding it is a curriculum decision. No evidence ID names the freshness or stale-index diagnosis record. `deterministic-vs-agentic/README.md` points here by mistake (see Evidence).
+  - _Research:_ none. RFC 0020 keeps `retrieval.data-lifecycle` on the path for "retrieval lifecycle", which is consistent with linking it here, but that is the owner's call.
 - **F3 `incident-and-feedback`.** The section links no route and the catalog has no incident-response node (`data.feedback-loops` is coverage and not linked). The ask and evidence can be taken from the text; `integrates` cannot.
+  - _Related research (paths-ordering Q8, medium confidence):_ "incident learning" maps to `production.mlops-llmops` ("Preserve lineage between ... production traces, incidents, and regression cases"; "One drift/incident signal reaches a continue, inspect, improve, or rollback decision ..."), with `production.observability` ("An incident is diagnosed from traces and metrics ...") for diagnosis; `data.feedback-loops` optionally as a coverage link for the feedback half.
 - **F4 `vector-retrieval`.** `foundation/README.md` requires an "Embedding retrieval record" and a "Decision record" (template `decision-record.template.md`), but `project.yaml` has no ID for the first, and only the generic `experiment-results` and `decision-records` for either.
+  - _Research:_ none. Under the unplaced-evidence decision above, reusing `experiment-results` or `decision-records` here makes this their first producing milestone; a new specific ID is the alternative.
 - **F5 `integrated-security-attack-path`.** The section reuses prompt injection "together with the other ready security routes" without naming them. Listing only `security.prompt-injection` follows the link; listing all eight security competencies follows the sentence. `security-audit-record` could belong here or to `authentication-authorization-boundary` (whose route owns "security audit behavior", RFC 0017); the text does not say.
+  - _Related research (paths-ordering Q7, medium confidence):_ OWASP LLM02, LLM08, and LLM03/LLM04 map onto `security.data-exfiltration`, `security.multi-tenant`, and `security.supply-chain-data`, the "other ready security routes" the sentence means. The research does not decide whether this milestone lists them; each already has its own milestone.
 - **F6 Tiny Transformer.** Only Milestone 3 links a route (`llm.self-attention`). Coverage nodes that match the other milestones by name exist (`dl.backpropagation`, `llm.tokenization`, `llm.embeddings`, `llm.transformer`, `llm.training`, `llm.decoding-sampling`, `llm.inference`), but the README does not link them and `project.yaml` does not list them. Linking them states that these milestones integrate those capabilities, which is a curriculum claim; the draft leaves `integrates: []` with the warning until the owner decides. `experiment-contract`'s artifact ("short experiment note") has no evidence ID.
+  - _Research:_ none.
 - **F7 Project competencies with no milestone.** `ai.model-selection` (targets `applied`; its README says "Use the process for a real decision in the Knowledge Assistant" without naming a milestone) and `agents.deterministic-vs-agentic` (targets `applied`; its content matches `tool-or-agent-workflow`, but that section links only Tool Calling). Under the derived union, both would leave the project unless a milestone integrates them, and the applied check would then fail. Proposed resolution for the second: add it to `tool-or-agent-workflow` and fix the stale "Milestone 6" link. The first has no obvious home in the text (answer generation and the model gateway are candidates); the owner decides.
-- **F8 Shared evidence.** `performance-economics-experiment` and `rejected-optimization-record` come from the package's single "Stage 3 — one controlled optimization", which serves both latency and cost; `production-overhead-record` fits both gateway ("latency and operational-overhead comparison") and observability ("telemetry overhead"). The draft lists them under both milestones; the owner may assign each to one.
+  - _Research:_ none. Note that `production.model-gateway` declares `ai.model-selection` as a prerequisite, which fits the model gateway boundary milestone as a candidate.
 - **F9 `chunking-quality`.** Its lead sentence refers to "the Round 1 failure analysis", a term defined nowhere in the project. The draft takes the ask from the **Decision** line instead; the README sentence should be fixed separately.
-- **Unplaced evidence IDs.** `experiment-results`, `decision-records`, and `traces` in the Knowledge Assistant name no single milestone. They are either removed (each milestone already names its specific record) or assigned by the owner.
+  - _Research:_ none.
 
-Migration does not merge until every flag has an owner decision recorded in this RFC.
+Migration does not merge until F1–F7 and F9 have an owner decision recorded in this RFC and the milestone order issue above is fixed or explicitly accepted.
 
 ## What the site renders
 
@@ -279,7 +330,7 @@ At a high level; the layout belongs to a site spec under `site/DESIGN.md`, like 
   ```
 
 - The content model gains one block type: `milestones` with `items: [{ id, title: L10n, ask: L10n, refs: ref[], evidence: string[], path? }]`. `schemas/site-data.schema.json` and `rfcs/0000-content-model.md`'s block table change in the same PR. The project-level `evidence` block goes; evidence now sits with its milestone.
-- The project page reads like a route page: the contents rail lists the milestones by title, numbered by position; each milestone section shows its title, the ask, an "Integrates" line set like the prerequisite line (route titles with the learner's state glyphs after hydration, mapped competencies unlinked), its evidence, and a link to the package README. Each section has the anchor `#<id>`.
+- The project page reads like a route page: the contents rail lists the milestones by title, numbered by position (the only place a milestone number appears); each milestone section shows its title, the ask, an "Integrates" line set like the prerequisite line (route titles with the learner's state glyphs after hydration, mapped competencies unlinked), its evidence (a record already listed under an earlier milestone carries "shared with <that milestone's title>"), and a link to the package README. Each section has the anchor `#<id>`.
 - Collection index: `passageOf()` for a project keeps using `purpose`; the "brings together" column is unchanged, since it reads the `member` relation.
 - Evidence IDs still render as identifiers. Titling them is the same problem at a smaller scale and is out of scope; the page can set them as artifact names in the mono face until then.
 
@@ -315,7 +366,7 @@ Rejected. Linking `llm.tokenization` to a Tiny Transformer milestone, or `retrie
 - resource changes: none.
 - schema: `schemas/project.schema.json` (milestone objects; top-level `competencies` and `evidence` removed); `schemas/site-data.schema.json` (`milestones` block).
 - scripts: `scripts/validate_repo.py` (Validation 1–7); `scripts/build_site_data.py` (the `milestones` block type).
-- content: both `project.yaml` files rewritten; 47 README headings lose their number (the Knowledge Assistant's "Product frame" already has none); `curriculum/08-agents/deterministic-vs-agentic/README.md`'s "Milestone 6" becomes a link to `#tool-use-or-agent-workflow`; `projects/README.md` unchanged.
+- content: both `project.yaml` files rewritten; 47 README headings lose their number (the Knowledge Assistant's "Product frame" already has none); `curriculum/08-agents/deterministic-vs-agentic/README.md`'s "Milestone 6" becomes a link to `#tool-use-or-agent-workflow`; `projects/README.md` unchanged; the Knowledge Assistant's milestone order and its security package's stage order change as the owner decides under [Milestone order contradicts the contract prerequisites](#milestone-order-contradicts-the-contract-prerequisites); the generic `experiment-results`, `decision-records`, and `traces` IDs leave the Knowledge Assistant unless attached to a producing milestone.
 - site: one renderer component for the `milestones` block, the project page rail, and a test rendering it from a fixture; `site/TODO.md`'s "Project pages: milestones render as raw IDs" item closes in that PR.
 - generated data: `site/src/data/atlas.json` regenerated.
 - follow-up it enables: competency routes and the PR template can name a milestone by ID (`project:knowledge-assistant#lexical-baseline`) instead of a number or a package path.
@@ -323,9 +374,12 @@ Rejected. Linking `llm.tokenization` to a Tiny Transformer milestone, or `retrie
 ## Review checklist
 
 - [ ] Evidence is traceable: every title and ask quotes an existing README section; every evidence ID already exists in `project.yaml`.
+- [x] Outside practice is cited to [.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) and its sources; the milestone shape, rail-only numbering, shared evidence, and unplaced evidence follow it.
 - [ ] No competency is added, removed, or linked beyond what the README route links state; flagged fields are left for the owner.
 - [ ] Every `integrates` ID is taken from `curriculum/catalog.yaml`.
-- [ ] Every flag (F1–F9, unplaced evidence) has a recorded owner decision before migration.
+- [x] F8 (shared evidence) and unplaced evidence are decided from cited research.
+- [ ] F1–F7 and F9 have a recorded owner decision before migration.
+- [ ] The milestone order issue (MCP before authentication and tool permissions, and the other rows) is fixed or explicitly accepted before migration.
 - [ ] Milestone IDs are unchanged, so existing references survive.
 - [ ] One version: project-level lists are derived, not duplicated; README headings are checked against titles.
 - [ ] The applied-integration check still passes for every ready route targeting `applied`.

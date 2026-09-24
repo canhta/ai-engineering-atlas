@@ -36,10 +36,21 @@ Findings:
    - The security routes were promoted at 23:54 +07 and 07:51 +07. A route promoted a few hours earlier in local time would fall on a different UTC day.
 6. **Commit messages cannot be used to find the change or its RFC.** Promotion commits start with `feat:`, `content:`, `curriculum: promote`, `curriculum: ship`, or `curriculum: complete`. `939a3b4` ("todo: screens to add from the roadmap.sh teardown…") also edits `rfcs/0009-model-context-protocol.md`. The RFC link has to come from which RFC file changed in the same commit, and that fails for the retrospective RFC 0001.
 7. **"Lab added" has no single date in history.**
-   - The five lab directories were created on 2026-09-22 at 09:13–09:35: `8612869`, `6d01785`, `ef4e543`, `3064954`, `1b93b82`.
-   - Browser-runnable versions came hours later: `842684c` 15:47, `9daf4a1` 17:14, `82f4314` 17:42. Each of those added `lab.yaml`.
-   - Which of the two events counts as "lab added" is an editorial decision. Git history cannot make it.
+   - The five lab directories were created on 2026-09-22 at 09:13–09:35: `8612869`, `6d01785`, `ef4e543`, `3064954`, `1b93b82`. Each of those commits adds only `README.md` (`git show --stat`).
+   - The rest of each lab followed within seconds, one file per commit with the same message. The commit that completed each lab (its last added file) is `24cf142` 09:14:09 (self-attention, `tests.py`), `f1f7ebb` 09:14:19 (evaluation-harness, `tests.py`), `25bda1c` 09:35:45 (model-selection, `decision-template.md`), `519c435` 09:35:49 (agentic-design, `decision-rubric.md`), and `dd142e5` 09:35:59 (prompt-injection-boundaries, `tests.py`). Verified with `git log --name-status -- labs/<id>`.
+   - Browser-runnable versions came hours later: `842684c` 15:47, `9daf4a1` 17:14, `82f4314` 17:42. Each of those added `lab.yaml`, the site's delivery contract. Only `82f4314` changed the lab itself (self-attention moved onto NumPy).
+   - Which event counts as "lab added" is an editorial decision. Git history cannot make it. [What counts as a lab addition](#what-counts-as-a-lab-addition) below makes it.
 8. **CI checks out one commit.** `.github/workflows/ci.yml` and `cd.yml` use `actions/checkout@v7` without `fetch-depth`, so the build sees a single commit. A build that derives dates from history would give every route the same date in CI and the correct dates locally.
+
+### What comparable projects do
+
+[.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) (2026-09-24) compares how learning and documentation projects record change. Its sources, each checked on the page cited there: [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/), the OSSU Computer Science [CHANGELOG](https://github.com/ossu/computer-science/blob/master/CHANGELOG.md) and its tags, [roadmap.sh/changelog](https://roadmap.sh/changelog), [MDN's changelog](https://developer.mozilla.org/en-US/docs/MDN/Changelog) and the browser-compat-data [schema](https://github.com/mdn/browser-compat-data/blob/main/schemas/compat-data-schema.md), [web.dev Baseline](https://web.dev/baseline), Exercism's [track `config.json`](https://github.com/exercism/docs/blob/main/building/tracks/config-json.md), freeCodeCamp's [release posts](https://www.freecodecamp.org/news/christmas-2025-freecodecamp-curriculum-updates/), [SemVer](https://semver.org/), GitHub's [about releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases), and Pro Git's [Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging). Findings:
+
+- **Every surveyed project writes its change record by hand.** Keep a Changelog: "Using commit log diffs as changelogs is a bad idea: they're full of noise." This supports option (a) over (c) as the source (high confidence).
+- **Dates exist without tags.** roadmap.sh keeps a dated changelog into 2026 with its last tag (`4.0`) from 2023-01-05; OSSU's changelog lists 7.2.2, which has no tag. Tagging after the fact is routine (Pro Git, "Tagging Later").
+- **Items are dated by when learners can use them.** browser-compat-data's `version_added` is the release a feature shipped in, web.dev Baseline dates by interoperability, Exercism hides `wip` exercises from students, and freeCodeCamp counts only "live" items. A delivery mode is recorded separately: browser-compat-data adds a second support statement when a feature needs a flag and does not move `version_added`.
+- **No surveyed project validates its changelog against current state.** The replay rule goes further than any reference; OSSU shows what it prevents (curriculum changes ship "immediately" through RFCs, and its changelog records none since 2017).
+- **SemVer:** "Once a versioned package has been released, the contents of that version MUST NOT be modified." A tag placed on a guessed commit would fix a claim about a release's contents.
 
 ### Existing conventions
 
@@ -99,6 +110,8 @@ Why (a):
 - It is the only option that can represent every event the "What changed" page lists: promotions, labs, removals, releases.
 - It keeps the date independent of how the repository was cloned.
 - It turns the promotion rule into a check: the catalog cannot say ready unless a dated, RFC-linked record says when and under which decision.
+
+The research in [What comparable projects do](#what-comparable-projects-do) rates (a) a high-confidence fit with practice: curated by hand, dated, "Unreleased" first, readable by people, with the replay check as the one mechanism no reference has. The generated `CHANGELOG.md` block follows Keep a Changelog's layout (Unreleased first, releases newest first, ISO dates).
 
 This applies the catalog-first rule to time: the catalog is canonical for IDs and current status, and the change log is canonical for when and why they changed.
 
@@ -194,6 +207,19 @@ changes:
 
 Dates are calendar days. The date is the day the change lands on `main`, written by the author and checked by the reviewer, not taken from a commit timestamp. The file records days only. Times would be precision it cannot back up.
 
+### What counts as a lab addition
+
+A `lab-added` event is dated the day a **complete lab** lands on `main`: one that meets the practice-packaging contract in [AGENTS.md](../AGENTS.md) (task, starter state, runnable checks where the capability calls for them, reference solution) and runs from the repository. Its `evidence` is the commit that completed the lab, not the commit that created the directory. Browser runnability is a property of the site, already recorded in the lab's `lab.yaml` `browser` block; it is not a curriculum event and gets no event of its own. `lab-removed` is dated the day the lab leaves `main`.
+
+This follows the pattern in [What comparable projects do](#what-comparable-projects-do): items are dated by when learners can use them, and a delivery mode is recorded beside the item rather than moving its date (research confidence: medium-high). The repository, not the site, is taken as the learner surface because the labs' own READMEs run them locally with `tests.py`. If the owner treats the web atlas as the primary surface, the date would move to the browser commit; for every current lab that is the same day.
+
+### Releases and tags
+
+- `0.1.0` stays in `releases` as `CHANGELOG.md` and `curriculum/manifest.yaml` record it (2026-09-22), with no events, and is **not** tagged retroactively. The record names no commit as the 0.1.0 state: `CHANGELOG.md` gained "0.1.0 — 2026-09-22 / Initial public repository." in `1dda52e` (08:29:07), the same commit whose "Unreleased" section already listed "Initial repository structure", and `manifest.yaml` with `version: 0.1.0` came in `78b4784` (08:29:23), two of the twenty "chore: build curriculum repository structure" commits (`3b8ae1d` 08:29:00 to `113a5f0` 08:29:59). Under SemVer a tag would fix a claim about 0.1.0's contents that the record does not support. The validator does not read git, so nothing depends on a tag.
+- The first tag is **`v0.2.0`**: annotated, pushed explicitly (`git push` does not transfer tags), on the commit that cuts the first release through this process, after the release state is internally consistent (`docs/VERSIONING.md` step 6).
+
+Research confidence for this section: medium. The sources allow tagging after the fact; the recommendation rests on the ambiguous repository record. Whether the owner wants a 0.1.0 tag anyway is an [open question](#open-questions-for-the-owner).
+
 ### Validation rules (`scripts/validate_repo.py`, run by `make check`)
 
 1. **References exist.**
@@ -279,16 +305,16 @@ Evidence grades:
 
 Other backfilled events:
 
-| Event                                    | Date       | Evidence                                       | RFC  |
-| ---------------------------------------- | ---------- | ---------------------------------------------- | ---- |
-| `removed: agents.fundamentals`           | 2026-09-22 | `bf4fa80`                                      | 0008 |
-| `lab-added: self-attention`              | 2026-09-22 | `8612869` (browser runner `82f4314`, same day) | none |
-| `lab-added: evaluation-harness`          | 2026-09-22 | `6d01785` (browser runner `842684c`, same day) | none |
-| `lab-added: model-selection`             | 2026-09-22 | `ef4e543` (rubric form `9daf4a1`, same day)    | none |
-| `lab-added: agentic-design`              | 2026-09-22 | `3064954` (rubric form `9daf4a1`, same day)    | none |
-| `lab-added: prompt-injection-boundaries` | 2026-09-22 | `1b93b82` (browser runner `842684c`, same day) | none |
+| Event                                    | Date       | Evidence                                                            | RFC  |
+| ---------------------------------------- | ---------- | ------------------------------------------------------------------- | ---- |
+| `removed: agents.fundamentals`           | 2026-09-22 | `bf4fa80`                                                           | 0008 |
+| `lab-added: self-attention`              | 2026-09-22 | `24cf142` (directory `8612869`; browser runner `82f4314`, same day) | none |
+| `lab-added: evaluation-harness`          | 2026-09-22 | `f1f7ebb` (directory `6d01785`; browser runner `842684c`, same day) | none |
+| `lab-added: model-selection`             | 2026-09-22 | `25bda1c` (directory `ef4e543`; rubric form `9daf4a1`, same day)    | none |
+| `lab-added: agentic-design`              | 2026-09-22 | `519c435` (directory `3064954`; rubric form `9daf4a1`, same day)    | none |
+| `lab-added: prompt-injection-boundaries` | 2026-09-22 | `dd142e5` (directory `1b93b82`; browser runner `842684c`, same day) | none |
 
-Lab events carry no RFC: labs are practice packaging for a route, not catalog changes. The backfill does not add `added` events for the 74 coverage items created in `6af1ef4`. They are the audited baseline the replay starts from.
+The `evidence` column is the commit that completed each lab, per [What counts as a lab addition](#what-counts-as-a-lab-addition); the directory and browser commits are listed for reviewers only. Lab events carry no RFC: labs are practice packaging for a route, not catalog changes. The backfill does not add `added` events for the 74 coverage items created in `6af1ef4`. They are the audited baseline the replay starts from.
 
 ### What the site renders
 
@@ -329,6 +355,11 @@ No per-release page, feed, or GitHub Release publishing is proposed now. A relea
 - **Workflow cost:** one appended event per promotion, lab, or removal, in the same pull request. `make check` fails if it is missing.
 - **Migration:** none for learner progress. Progress references competency IDs, which do not change.
 
+## Open questions for the owner
+
+- **A 0.1.0 tag.** This RFC keeps 0.1.0 untagged (see [Releases and tags](#releases-and-tags)). If the owner wants one anyway, it is an owner assertion about which commit was public as 0.1.0, not something the record shows.
+  - _Suggested by the research:_ tag nothing unless the owner can name the commit that was public as 0.1.0. If a tag is wanted regardless, the defensible commit is `113a5f0`, the last "chore: build curriculum repository structure" commit (08:29:59), because it closes the batch of structure commits that the 0.1.0 entry ("Initial public repository") describes. The research could not confirm whether the repository was public at that time (`git ls-remote --tags origin` returned nothing).
+
 ## Review checklist
 
 - [ ] The change log is the only record of curriculum change dates. `CHANGELOG.md`'s curriculum block is generated from it, and no prose copy remains.
@@ -336,9 +367,11 @@ No per-release page, feed, or GitHub Release publishing is proposed now. A relea
 - [ ] Every event references existing catalog IDs or lab directories, and removed IDs are absent from the catalog.
 - [ ] Every non-lab event references an Accepted curriculum RFC, or is a closed `pre_rfc` event with a note.
 - [ ] `make check` does not read git history, so its result does not depend on clone depth.
+- [x] Evidence from comparable projects is cited to [.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) and its sources.
 - [ ] Backfilled dates match the table above, and the five pre-RFC routes are labelled as such rather than attached to a later RFC.
 - [ ] The two golden routes are dated from `competency.yaml` history, not from catalog creation.
 - [ ] The site shows only what the file records: no invented release notes, no dates beyond day precision, and no "reviewed" claim for pre-RFC routes.
-- [ ] Decide what counts as a lab addition: the lab directory (proposed here) or the browser runner.
-- [ ] Decide whether the 0.1.0 release, which has no git tag, stays in `releases` as `CHANGELOG.md` states it, or is tagged first.
+- [x] Decide what counts as a lab addition: the day the complete lab lands on `main`, with `evidence` on the completing commit (hashes verified with `git show --stat` and `git log --name-status`); the browser runner is a site property.
+- [x] Decide whether the 0.1.0 release, which has no git tag, stays in `releases` as `CHANGELOG.md` states it, or is tagged first: kept as recorded, untagged; `v0.2.0` is the first tag.
+- [ ] Owner confirms whether a 0.1.0 tag is wanted anyway (open question above).
 - [ ] Reviewer explicitly approves or requests changes before implementation.

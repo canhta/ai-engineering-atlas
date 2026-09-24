@@ -35,6 +35,17 @@ That has three consequences:
 
 The mechanisms to extract are ordered stages, required and elective items, prerequisites shown next to each item, and order as a default rather than a gate. The course-level layout is not reused: here the unit is a catalog competency, and skipping is decided by learner evidence (the [baseline scan](../assessments/baseline.md) and diagnostics), not by self-report.
 
+### How comparable roadmaps order the same topics
+
+[.scratch/research/paths-ordering.md](../.scratch/research/paths-ordering.md) (2026-09-24) checks each open question of this draft against comparable roadmaps and against the competency contracts. Its sources: roadmap.sh [AI Engineer](https://roadmap.sh/ai-engineer) and [AI Agents](https://roadmap.sh/ai-agents) (node order read from page data); Chip Huyen, _AI Engineering_ ([ToC](https://github.com/chiphuyen/aie-book/blob/main/ToC.md), [chapter summaries](https://github.com/chiphuyen/aie-book/blob/main/chapter-summaries.md)); OSSU [Computer Science](https://github.com/ossu/computer-science) and [Data Science](https://github.com/ossu/data-science); Microsoft [Generative AI for Beginners](https://github.com/microsoft/generative-ai-for-beginners); [Made With ML](https://madewithml.com/courses/mlops/systems-design/); DeepLearning.AI [_Agentic AI_](https://www.deeplearning.ai/courses/agentic-ai/); the Hugging Face [Agents Course](https://huggingface.co/learn/agents-course/unit0/introduction); [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/) (LLM01, LLM06, LLM08); the [MCP specification](https://modelcontextprotocol.io/specification/latest) and its [Security Best Practices](https://modelcontextprotocol.io/specification/draft/basic/security_best_practices). The findings this RFC applies:
+
+- **Evaluation before the routes that use it** (Q1, high confidence). _AI Engineering_ teaches evaluation (ch. 3–4, with "Model Selection" inside ch. 4) before prompt engineering (ch. 5) and RAG and agents (ch. 6). Made With ML defines metrics and evaluation before modeling. DeepLearning.AI puts evals and error analysis before planning and multi-agent patterns. roadmap.sh and the Hugging Face course place evaluation late, but they are topic maps that state no prerequisites.
+- **Authorization and tool permissions before prompt injection, and all three before MCP** (Q2, high confidence). OWASP LLM01 mitigation 4 ("Enforce privilege control and least privilege access") and LLM06 ("Complete mediation": "Implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed") rest prompt-injection defense on authorization and permission controls. _AI Engineering_ covers prompt attacks at the end of ch. 5, before agents; Microsoft's course puts "Securing Your Generative AI Applications" (lesson 13) before RAG (15) and agents (17). The MCP specification puts "Security and Trust & Safety" in its overview. roadmap.sh places MCP before security, again without prerequisites.
+- **Conditional steps stay required** (Q6, medium to high confidence). Each conditional route's exit evidence is the decision itself (for example memory: "The final decision records whether memory is worth keeping"), and the path's completion standard asks for evidence "that unnecessary complexity was rejected as often as it was added". OSSU uses electives for interest, not for runtime conditions.
+- **The eleven Knowledge Assistant production and security routes belong on the path** (Q9, high confidence). _AI Engineering_ ch. 10 (guardrails, gateway, caches, monitoring, orchestration, feedback), roadmap.sh AI Agents' security block, and OWASP 2025 (LLM02, LLM03, LLM06, LLM08) treat these as baseline topics for the role.
+
+The research marks as needing the owner every question that is a mapping of this repository's prose onto catalog IDs (Q3, Q4, Q5, Q7, Q8, Q10, Q11). Its suggested answers are recorded next to those questions below, not applied.
+
 ## Proposal
 
 ### A. One YAML file per path
@@ -59,7 +70,7 @@ stages:
     entries:
       - id: ai.product-framing # a catalog ID; nothing else is allowed here
       - id: ai.model-selection
-        order_exceptions: # optional; a prerequisite placed later on purpose
+        order_exceptions: # optional; a prerequisite placed later on purpose (illustrative; the migrated path needs none)
           - prerequisite: ai.evaluation
             reason: ...
       - id: specialization.ai-devtools # illustrative only; placement is not a proposal
@@ -120,7 +131,7 @@ The `sequence` block follows [the content model RFC](0000-content-model.md): the
 
 One version of everything: `paths/applied-ai-engineer.md` is deleted in the same change that adds `paths/applied-ai-engineer.yaml`. Its prose moves into `guidance`, `target_profile`, and `completion`, shortened where the structure now carries it (phase headings become stage titles; links to route folders become entry IDs). Callers updated in the same change: [README.md](../README.md), [curriculum/README.md](../curriculum/README.md), [paths/README.md](../paths/README.md), [site/TODO.md](../site/TODO.md), `curriculum/presentation.yaml`, and `site/src/data/atlas.json` (regenerated). The rendered path page on the site becomes the readable version; the YAML is readable on GitHub as-is.
 
-The list below is derived only from the current prose and the catalog. Each prose topic maps to the catalog ID whose title matches it. Where the match is not exact, the entry carries a flag `[Qn]` that points to [Open questions for the owner](#open-questions-for-the-owner). Prose topics with no catalog ID are listed as comments, not entries: the path must not invent competencies.
+The list below is derived from the current prose and the catalog, with the four decisions in [Decisions taken from the research](#decisions-taken-from-the-research) (Q1, Q2, Q6, Q9) applied. Each prose topic maps to the catalog ID whose title matches it. Where the match is not exact, the entry carries a flag `[Qn]` that points to [Open questions for the owner](#open-questions-for-the-owner). Prose topics with no catalog ID are listed as comments, not entries: the path must not invent competencies.
 
 ```yaml
 stages:
@@ -149,58 +160,63 @@ stages:
       - { id: llm.context-windows }
       - { id: llm.kv-cache }
       - { id: llm.inference } # "inference cost/latency"
+  - id: evaluation # prose Phase F, moved before D (Q1); keeps the phase F guidance
+    target_level: L3 # "Exit at L3"; ai.evaluation targets L3
+    entries:
+      - { id: ai.evaluation } # ready
   - id: application-core # Phase D
     entries:
       - { id: ai.product-framing } # ready
-      - { id: ai.model-selection } # ready [Q1]
+      - { id: ai.model-selection } # ready
       - { id: ai.prompt-engineering } # "prompting"
-      - { id: ai.context-engineering } # ready [Q1]
-      - { id: ai.structured-outputs } # ready [Q1]
-      - { id: ai.tool-calling } # ready [Q1]
-      - { id: ai.uncertainty-abstention-trust } # ready [Q1]
+      - { id: ai.context-engineering } # ready
+      - { id: ai.structured-outputs } # ready
+      - { id: ai.tool-calling } # ready; candidate for "tool schemas" [Q7]
+      - { id: ai.uncertainty-abstention-trust } # ready
   - id: retrieval-rag # Phase E; reference system: projects/knowledge-assistant
     entries:
       - { id: retrieval.search } # ready; "lexical baseline"
       - { id: ai.embeddings } # ready
       - { id: retrieval.vector-search } # [Q5] "vector retrieval"
-      - { id: retrieval.chunking } # ready [Q1] [Q6] "when corpus/boundary failures justify it"
+      - { id: retrieval.chunking } # ready; condition in stage guidance (Q6)
       # "hybrid retrieval as needed": no catalog ID [Q5]
-      - { id: retrieval.reranking } # ready [Q1] [Q6] "when candidate ordering is the bottleneck"
+      - { id: retrieval.reranking } # ready; condition in stage guidance (Q6)
       # "RAG": no catalog ID [Q5]
-      - { id: retrieval.rag-evaluation } # ready [Q1]
+      - { id: retrieval.rag-evaluation } # ready
       - { id: retrieval.data-lifecycle } # "retrieval lifecycle"
-  - id: evaluation # Phase F
-    target_level: L3 # "Exit at L3"
-    entries:
-      - { id: ai.evaluation } # ready [Q1]
   - id: agents # Phase G
     entries:
       - { id: agents.deterministic-vs-agentic } # ready; "deterministic versus agentic control"
       - { id: agents.state } # ready
-      - { id: agents.memory } # ready [Q6]
-      # "tool schemas and permission boundaries": [Q7]
+      - { id: agents.memory } # ready; condition in stage guidance (Q6)
+      - { id: security.auth } # ready; moved from H (Q2); "auth around data/tools"
+      - { id: security.tool-permissions } # ready; added (Q9), placed here (Q2); candidate for "permission boundaries" [Q7]
+      - { id: security.prompt-injection } # ready; moved from H (Q2)
       - { id: agents.planning } # ready
       - { id: agents.verification } # ready
       - { id: agents.long-running } # ready; "retries and long-running tasks"
       - { id: agents.orchestration } # ready
-      - { id: agents.multi-agent } # ready [Q6]
-      - { id: agents.mcp } # ready [Q2] [Q6]
+      - { id: agents.multi-agent } # ready; condition in stage guidance (Q6)
+      - { id: agents.mcp } # ready; condition in stage guidance (Q6)
       # "trajectory/tool-use evaluation": no catalog ID [Q7]
-  - id: production-security # Phase H
-    target_level: L3 # "Target L3 in:" [Q2]
+  - id: production-security # Phase H; no stage target_level (Q2)
     entries:
       - { id: production.model-gateway } # ready
       - { id: production.observability } # ready; "tracing and replay"
       - { id: production.latency } # ready
       - { id: production.cost } # ready
+      - { id: production.caching } # ready; added (Q9)
+      - { id: production.streaming } # ready; added (Q9)
       - { id: production.versioning } # ready
       - { id: production.release-engineering } # ready; "eval/release gates"
-      # "graceful degradation": no catalog ID [Q8]
-      # "security boundaries": [Q7]
-      - { id: security.prompt-injection } # ready [Q2]
-      - { id: security.auth } # ready; "auth around data/tools"
-      # "incident learning": no catalog ID [Q8]
-      # ready routes the prose does not name: [Q9]
+      - { id: production.drift } # ready; added (Q9)
+      - { id: production.architecture } # ready; added (Q9); candidate for "graceful degradation" [Q8]
+      - { id: production.mlops-llmops } # ready; added (Q9); candidate for "incident learning" [Q8]
+      - { id: security.data-exfiltration } # ready; added (Q9); candidate for "security boundaries" [Q7]
+      - { id: security.multi-tenant } # ready; added (Q9); candidate for "security boundaries" [Q7]
+      - { id: security.sandboxing } # ready; added (Q9); candidate for "security boundaries" [Q7]
+      - { id: security.supply-chain-data } # ready; added (Q9); candidate for "security boundaries" [Q7]
+      - { id: security.guardrails } # ready; added (Q9); candidate for "security boundaries" [Q7]
   - id: specialize # Phase I; "Select from", so every entry is optional
     entries:
       - { id: specialization.llm-systems, required: false }
@@ -213,39 +229,56 @@ stages:
       - { id: specialization.ai-devtools, required: false } # "developer tools"
 ```
 
-Counts: 59 entries, 30 of them ready routes, 29 mapped. Stage titles, `guidance`, and `when` text are carried over from the prose at implementation time and are omitted above.
+Counts: 70 entries, 41 of them ready routes (every ready route in the catalog), 29 mapped. Stage titles, `guidance`, and `when` text are carried over from the prose at implementation time and are omitted above. Stage guidance also carries the prose conditions kept under Q6: chunking "when corpus/boundary failures justify it" and reranking "when candidate ordering is the bottleneck" (stage E); memory "only for information whose future value can be measured", multi-agent "only when independent specialist roles ... measurably earn their coordination cost", and MCP "only when a real interoperability requirement justifies" it (stage G). If the owner wants the prose "Target L3" visible in stage H, it goes into that stage's `guidance` text, not `target_level`.
 
 ### Ordering against the catalog
 
-Running validation rule 3 over the list above, in prose order, against the prerequisites declared in the current `competency.yaml` files gives these results. Each one needs an owner decision before the file can pass; none is resolved here.
+Running validation rule 3 over the first draft's list, in prose order, against the prerequisites declared in the current `competency.yaml` files gave these results:
 
-| Entry (stage)                                                                                                                     | Prerequisite                      | Where it is                  |
-| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ---------------------------- |
-| `ai.model-selection`, `ai.context-engineering`, `ai.structured-outputs`, `ai.tool-calling`, `ai.uncertainty-abstention-trust` (D) | `ai.evaluation`                   | later, stage F [Q1]          |
-| `retrieval.chunking`, `retrieval.reranking`, `retrieval.rag-evaluation` (E)                                                       | `ai.evaluation`                   | later, stage F [Q1]          |
-| `agents.mcp` (G)                                                                                                                  | `security.prompt-injection`       | later, stage H [Q2]          |
-| `security.prompt-injection` (H)                                                                                                   | `security.auth`                   | later in the same stage [Q2] |
-| `security.prompt-injection` (H)                                                                                                   | `security.tool-permissions`       | not on the path [Q7]         |
-| `llm.self-attention` (C), `ai.embeddings` (E)                                                                                     | `math.dot-product`                | not on the path [Q10]        |
-| `llm.self-attention` (C)                                                                                                          | `dl.softmax`                      | not on the path [Q10]        |
-| `production.latency` (H)                                                                                                          | `systems.performance-engineering` | not on the path [Q10]        |
-| `production.release-engineering` (H)                                                                                              | `systems.cloud-infrastructure`    | not on the path [Q10]        |
+| Entry (stage)                                                                                                                     | Prerequisite                      | Where it was            | Now                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------------------- | ----------------------------------------------------- |
+| `ai.model-selection`, `ai.context-engineering`, `ai.structured-outputs`, `ai.tool-calling`, `ai.uncertainty-abstention-trust` (D) | `ai.evaluation`                   | later, stage F          | resolved: `ai.evaluation` has its own stage before D  |
+| `retrieval.chunking`, `retrieval.reranking`, `retrieval.rag-evaluation` (E)                                                       | `ai.evaluation`                   | later, stage F          | resolved, as above                                    |
+| `agents.mcp` (G)                                                                                                                  | `security.prompt-injection`       | later, stage H          | resolved: prompt injection moved into G, before MCP   |
+| `security.prompt-injection` (H)                                                                                                   | `security.auth`                   | later in the same stage | resolved: auth placed first of the three security IDs |
+| `security.prompt-injection` (H)                                                                                                   | `security.tool-permissions`       | not on the path         | resolved: tool permissions added before it (Q9)       |
+| `llm.self-attention` (C), `ai.embeddings` (E)                                                                                     | `math.dot-product`                | not on the path         | open [Q10]                                            |
+| `llm.self-attention` (C)                                                                                                          | `dl.softmax`                      | not on the path         | open [Q10]                                            |
+| `production.latency` (H)                                                                                                          | `systems.performance-engineering` | not on the path         | open [Q10]                                            |
+| `production.release-engineering` (H)                                                                                              | `systems.cloud-infrastructure`    | not on the path         | open [Q10]                                            |
+| `production.streaming` (H), added under Q9                                                                                        | `systems.networking`              | not on the path         | open [Q10]                                            |
 
-Target level: stage H states L3, but `security.prompt-injection` targets L2 in its contract, so rule 6 fails on it [Q2].
+Re-running the check over the list above (2026-09-24, a script over every ready entry's `competency.yaml` prerequisites) finds no prerequisite placed later on the path. The only failures left are the five prerequisites not on the path, all decided by Q10. Every added production and security route has its prerequisites earlier: for example `production.architecture` needs `agents.orchestration` (G) and all nine earlier production routes, `security.data-exfiltration` needs `production.caching` (H) and `security.prompt-injection` (G), and `security.supply-chain-data` needs `security.sandboxing`, which needs `production.architecture`. No `order_exceptions` are needed.
+
+Target level: the first draft's stage H `target_level: L3` failed rule 6 on `security.prompt-injection` (L2). With the stage level dropped and prompt injection in stage G, no stage level sits over an L2 route. The only stage level left is the evaluation stage's L3, which `ai.evaluation` targets.
+
+### Decisions taken from the research
+
+Each decision below applies a recommendation of [.scratch/research/paths-ordering.md](../.scratch/research/paths-ordering.md) rated high or medium to high, backed by the sources in [Evidence](#how-comparable-roadmaps-order-the-same-topics), and consistent with the competency contracts. The owner can still reverse any of them in review.
+
+- **Q1. Evaluation comes after the routes that require it.** Decided: `ai.evaluation` moves into its own stage between C and D, carrying the phase F guidance ("version evaluation data... make a release decision from evidence") and its "Exit at L3". No `order_exceptions`. Its own prerequisites (`ml.experimental-design`, `software.testing`) are in stages B and A, so the move creates no new violation. The prose line "Evaluation should appear before heavy agent or production complexity" still holds.
+- **Q2. Security order and stage level.** Decided: in stage G, at the prose's "tool schemas and permission boundaries" (after `agents.memory`, which is after `agents.deterministic-vs-agentic`), the order is `security.auth` → `security.tool-permissions` → `security.prompt-injection`; `agents.mcp` stays last in G. Stage H has no `target_level`: every ready route left in H targets L3 in its own contract, so the stage value added nothing and caused the rule-6 failure. If an L2 route ever sits under a stage level, the entry-level `target_level` override is used; rule 6 is not weakened. The Knowledge Assistant's milestone order (MCP before auth and tool permissions) contradicts the same prerequisites; that is recorded as a migration issue in [RFC 0022](0022-titled-project-milestones.md#milestone-order-contradicts-the-contract-prerequisites), not fixed here.
+- **Q6. Required or conditional.** Decided: chunking, reranking, memory, multi-agent, and MCP stay required, with their prose conditions in stage `guidance`. Each route's exit evidence is the measured decision, and "not needed, here is the evidence" is a valid demonstration. `required: false` and `when` are kept for stage I and for any optional depth entries the owner adds under Q5 or Q11.
+- **Q9. Ready routes the prose does not name.** Decided: all eleven are added. `security.tool-permissions` goes into stage G (Q2); the other ten go into H in the order shown above, which satisfies every declared prerequisite. Adding `production.streaming` puts its prerequisite `systems.networking` into Q10.
 
 ### Open questions for the owner
 
-- **Q1. Evaluation comes after the routes that require it.** The prose puts AI Evaluation in phase F and says "Evaluation should appear before heavy agent or production complexity". Eight ready routes in phases D and E declare `ai.evaluation` as a prerequisite. Options: move `ai.evaluation` to the start of stage D (or its own stage before D), or keep phase order and add eight `order_exceptions` with a reason. The first matches the contracts; the second keeps the prose.
-- **Q2. Security order.** `agents.mcp` (phase G) requires `security.prompt-injection` (phase H), and `security.prompt-injection` requires `security.auth`, listed after it in the prose. Stage H says "Target L3" but the prompt-injection route is L2. Decide whether the path moves prompt injection and auth before MCP, whether the stage level applies to every entry, and whether an L2 route can sit in an L3 stage.
+These are mappings of this repository's prose onto catalog IDs, or scope choices, which the research cannot settle. Each carries the research's suggested answer so the owner can accept it in one line or replace it.
+
 - **Q3. Phase A mappings.** "Retries, timeouts, idempotency, backpressure" is mapped to `systems.distributed-systems`, and "storage and data lifecycle" to `systems.databases-storage`. The prose also says "Use the baseline scan for ... data engineering", which could mean `data.foundation` belongs in stage A. Confirm or change.
+  - _Suggested (medium):_ keep `systems.distributed-systems`; split "storage and data lifecycle" into `systems.databases-storage` (storage) and `data.foundation` (data lifecycle), and add `data.foundation` to stage A. Reason: the baseline scan's Systems section tests timeouts, retries, backoff, and idempotency as distributed-systems failures, and its Data Engineering section tests ingestion, update, deletion, freshness, and lineage, which is the Data Engineering README's scope. All three are coverage entries, so they add no ordering constraints.
 - **Q4. Phase B mappings.** "Train/validation/test design" could be `ml.experimental-design` or `ml.classical-ml`; "neural network computation" could be `dl.foundations` or `dl.backpropagation`. The list uses the first of each. Also confirm whether `math.statistics` belongs with "experimental uncertainty".
+  - _Suggested (medium for the first, low to medium for the rest):_ `ml.experimental-design` (it is a declared prerequisite of `ai.evaluation` with a bridge, and `ml.classical-ml` is broader than the phrase); add `math.statistics` next to `math.probability`; `dl.foundations` for "neural network computation", or `dl.backpropagation` if the entry should match what the baseline scan tests ("explain what backpropagation computes"). Not both.
 - **Q5. Retrieval steps without a matching ID.** The prose chain names "vector retrieval", "hybrid retrieval", and "RAG". The catalog has `retrieval.vector-search` ("Vector Search Internals"), which may be deeper than the prose step; no hybrid-retrieval ID; and `retrieval.advanced-rag` ("Advanced RAG Patterns"), which is not the same as the basic RAG step. Decide whether these steps are covered inside existing routes (then drop them) or need catalog entries (a separate RFC).
-- **Q6. Required or conditional.** The prose makes several steps conditional: chunking "when corpus/boundary failures justify it", reranking "when candidate ordering is the bottleneck", memory "only for information whose future value can be measured", multi-agent "only when independent specialist roles ... measurably earn their coordination cost", MCP "only when a real interoperability requirement justifies" it. The list above keeps them required and does not guess. Mark each as `required: false` with `when`, or keep required because the learner should be able to make the decision even when the answer is "not needed".
-- **Q7. Topics that map to several IDs.** "Tool schemas and permission boundaries" (phase G) and "security boundaries" (phase H) could be `security.tool-permissions`, `security.sandboxing`, `security.multi-tenant`, or `security.data-exfiltration`. `security.tool-permissions` is also a prerequisite of prompt injection. "Trajectory/tool-use evaluation" has no ID.
-- **Q8. Topics with no catalog ID.** "Graceful degradation" and "incident learning" (phase H). Candidates are content inside `production.architecture`, `production.mlops-llmops`, or `data.feedback-loops`, but that needs a check against those contracts, not a guess.
-- **Q9. Ready routes the prose does not name.** The prose says "Use the production milestones in the Knowledge Assistant", whose `project.yaml` includes eleven ready routes absent from the path: `production.caching`, `production.streaming`, `production.drift`, `production.architecture`, `production.mlops-llmops`, `security.tool-permissions`, `security.multi-tenant`, `security.data-exfiltration`, `security.sandboxing`, `security.supply-chain-data`, `security.guardrails`. Add them to stage H (the validator then orders them by prerequisites), or keep the path to what the prose names.
-- **Q10. Prerequisites the path does not teach.** `math.dot-product`, `dl.softmax`, `systems.performance-engineering`, and `systems.cloud-infrastructure`. Put each in `assumes` (the baseline scan covers it) or add it as an entry.
+  - _Suggested:_ drop "vector retrieval" as an entry, since `ai.embeddings` outcomes already cover embedding retrieval and its comparison with the lexical baseline; list `retrieval.vector-search` only as `required: false` for search specialists, if at all. Drop "hybrid retrieval" as an entry and keep "hybrid as needed" in stage E guidance next to `retrieval.reranking` (_AI Engineering_ treats hybrid search as dependent on "each application and its failure modes"; the reranking route's transfer task names hybrid retrieval). Keep "RAG" as a guidance line pointing at the Knowledge Assistant milestone and log a possible catalog gap (basic grounded answer generation with attribution) for a separate catalog RFC; do not map it to `retrieval.advanced-rag`. Every compared roadmap has a basic RAG step before agents, so the gap is real.
+- **Q7. Topics that map to several IDs.** "Tool schemas and permission boundaries" (phase G) and "security boundaries" (phase H) could be `security.tool-permissions`, `security.sandboxing`, `security.multi-tenant`, or `security.data-exfiltration`. "Trajectory/tool-use evaluation" has no ID. The placement of `security.tool-permissions` is decided by Q2 and Q9; what remains is which prose phrase each ID stands for.
+  - _Suggested (medium to high for the first and third, medium for the second):_ "tool schemas and permission boundaries" = `ai.tool-calling` (its outcome "Define clear tool names, descriptions, schemas...") plus `security.tool-permissions` (OWASP LLM06 mitigations match its outcomes). "Security boundaries" = `security.data-exfiltration`, `security.multi-tenant`, `security.sandboxing`, `security.guardrails`, `security.supply-chain-data`, the set Q9 adds (OWASP LLM02, LLM08, and LLM03/LLM04 map onto them). "Trajectory/tool-use evaluation": no new ID; covered by `ai.evaluation`'s transfer task and `agents.verification` ("Separate trajectory from outcome"), noted in stage G guidance.
+- **Q8. Topics with no catalog ID.** "Graceful degradation" and "incident learning" (phase H). Candidates are content inside `production.architecture`, `production.mlops-llmops`, or `data.feedback-loops`.
+  - _Suggested (high for the first, medium for the second):_ "graceful degradation" = `production.architecture` (outcome "Prevent one optional AI capability from taking down a useful degraded product path"; exit evidence "At least one degraded user experience is deliberately designed and tested"). "Incident learning" = `production.mlops-llmops` (incident lineage and the "continue, inspect, improve, or rollback decision"), with `production.observability` for diagnosis; optionally add `data.feedback-loops` as a coverage entry for the feedback half. No new ID.
+- **Q10. Prerequisites the path does not teach.** `math.dot-product`, `dl.softmax`, `systems.performance-engineering`, `systems.cloud-infrastructure`, and (after Q9) `systems.networking`. Put each in `assumes` or add it as an entry.
+  - _Suggested (medium to high for the systems items, medium for the math items):_ all five in `assumes`, with the stage A guidance or `audience` saying that assumed items are diagnosed through the dependent routes' bridges. Each already has a bridge with a diagnostic and locator in the dependent route. The baseline scan does not test dot products or softmax directly, so "the baseline covers it" would be only partly true; the bridges do cover it. Alternative: add `math.dot-product` and `dl.softmax` to stage B as coverage entries.
 - **Q11. `llm.positional-information`** is in the LLM Foundations domain but not in the phase C list. Leave it off, or add it.
+  - _Suggested (medium):_ leave it off. The baseline scan's LLM section and phase C list the same topics without it, and `llm.training` and `llm.quantization` are already left off. If it should be visible, add it `required: false` with `when: debugging long-context or context-extension behavior`.
 
 ## Alternatives considered
 
@@ -275,7 +308,7 @@ The phase guidance ("Start deterministic...", "Do not add architecture component
 - resource changes: none.
 - migration or generated-document impact:
   - add `schemas/path.schema.json`, path checks in `scripts/validate_schemas.py` and `scripts/validate_repo.py`;
-  - replace `paths/applied-ai-engineer.md` with `paths/applied-ai-engineer.yaml` after Q1 to Q11 are answered;
+  - replace `paths/applied-ai-engineer.md` with `paths/applied-ai-engineer.yaml` after the owner answers Q3, Q4, Q5, Q7, Q8, Q10, and Q11 (Q1, Q2, Q6, and Q9 are decided above);
   - update the links in `README.md`, `curriculum/README.md`, and `paths/README.md`;
   - `curriculum/presentation.yaml`: paths from `paths/*.yaml`, a `member` relation, a `sequence` block;
   - `scripts/build_site_data.py`, `schemas/site-data.schema.json`: the `sequence` block type;
@@ -284,12 +317,13 @@ The phase guidance ("Start deterministic...", "Do not add architecture component
 
 ## Review checklist
 
-- [ ] Evidence is traceable (repository rules quoted; OSSU claims verified against its README).
-- [ ] The path introduces no competency: every entry is an existing catalog ID; unmapped prose topics are listed as open questions.
-- [ ] The ordering rule matches the prerequisites in the competency contracts, and every exception carries a reason.
+- [x] Evidence is traceable (repository rules quoted; OSSU claims verified against its README; ordering evidence cited to [.scratch/research/paths-ordering.md](../.scratch/research/paths-ordering.md) and its sources).
+- [x] The path introduces no competency: every entry is an existing catalog ID (checked against `curriculum/catalog.yaml`); unmapped prose topics are listed as open questions.
+- [x] The ordering rule matches the prerequisites in the competency contracts, and every exception carries a reason. The list above has no prerequisite placed later and needs no exceptions; the five off-path prerequisites wait on Q10.
 - [ ] Coverage entries are allowed and visibly marked as mapped.
 - [ ] A path target level cannot exceed a route's own target level.
 - [ ] The prose file is replaced, not kept alongside, and every caller is updated in the same change.
 - [ ] The site renders learner states from evidence records only, with no completion percentage.
-- [ ] Q1 to Q11 are answered by the owner before the YAML file is written.
+- [x] Q1, Q2, Q6, and Q9 are decided from cited research and applied to the list.
+- [ ] Q3, Q4, Q5, Q7, Q8, Q10, and Q11 are answered by the owner before the YAML file is written.
 - [ ] Reviewer explicitly approves or requests changes before implementation.
