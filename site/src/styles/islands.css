@@ -426,8 +426,7 @@
 
 /* ---------------------------------------------------------------- Disclosures */
 
-.disclosure-trigger,
-.group-trigger {
+.disclosure-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -441,13 +440,11 @@
   cursor: pointer;
 }
 
-.disclosure-trigger .icon,
-.group-trigger .icon {
+.disclosure-trigger .icon {
   transition: transform var(--duration-control) var(--ease);
 }
 
-[data-expanded] > * > .disclosure-trigger .icon,
-[data-expanded] > * > .group-trigger .icon {
+[data-expanded] > * > .disclosure-trigger .icon {
   transform: rotate(180deg);
 }
 
@@ -1685,88 +1682,156 @@
   }
 }
 
-.group {
-  border-top: var(--border-width) solid var(--line);
+/* ---------------------------------------------------------------- Catalogue */
+
+/* A printed catalogue (DESIGN.md → Information architecture, Atlas): full width, an ink rule under
+   the column heads (or over the first row when the heads are hidden), hairlines between rows. The
+   collection indexes and the Atlas index share it. */
+.catalogue {
+  margin: var(--space-8) 0 var(--space-12);
+  table-layout: fixed;
 }
 
-.group h2 {
-  margin: 0;
-  font-size: var(--text-h3);
+.catalogue th,
+.catalogue td {
+  padding: var(--space-5) var(--space-6) var(--space-5) 0;
 }
 
-.group-trigger {
-  width: 100%;
-  min-height: 3.25rem;
-  font-size: var(--text-h3);
+.catalogue :is(th, td):last-child {
+  padding-right: 0;
 }
 
-.group-trigger .count {
-  margin-left: auto;
-  font-size: var(--text-small);
+.catalogue thead th {
+  padding-block: 0 var(--space-2);
+}
+
+@media (width >= 768px) {
+  .catalogue:not(.headed) tbody tr:first-child > * {
+    border-top: var(--border-width) solid var(--ink);
+  }
+}
+
+.catalogue thead th:first-child {
+  width: 24%;
+}
+
+.catalogue.has-bench thead th:nth-child(3) {
+  width: 13rem;
+}
+
+.catalogue.has-related thead th:last-child {
+  width: 32%;
+}
+
+/* Without a bench column the related routes take the room: a project lists dozens. */
+.catalogue.has-related:not(.has-bench) thead th:last-child {
+  width: 48%;
+}
+
+.catalogue-title {
+  border-bottom-color: var(--line);
+  font-family: var(--font-reading);
+  font-size: var(--text-lead);
   font-weight: 500;
-  color: var(--ink-muted);
-}
-
-.map-item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--target-min);
-  padding: 0;
-  border: 0;
-  background: none;
+  line-height: var(--leading-heading);
   color: var(--ink);
-  font-weight: 550;
-  text-align: left;
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-  cursor: pointer;
 }
 
-.map-item:hover {
-  color: var(--route);
-  text-decoration-color: currentcolor;
+.catalogue-asks {
+  font-family: var(--font-reading);
+  font-size: var(--text-reading);
+  line-height: 1.5;
 }
 
-.map-table tr.mapped .map-item {
+.catalogue-bench {
   color: var(--ink-muted);
 }
 
-.map-table .id {
-  display: block;
-  margin-top: var(--space-1);
-  font-size: var(--text-small);
+/* The related routes read as the prerequisite line does, without its rule; the column head names them. */
+.catalogue-related .prereq-line {
+  padding-top: 0;
+  border-top: 0;
+  line-height: 1.9;
+}
+
+.catalogue-related .prereq-lead {
+  display: none;
+}
+
+/* Many routes: one run-in line per region, its label italic like the plate's region labels. */
+.catalogue-related .prereq-groups {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.catalogue-related .prereq-group-label {
+  display: inline;
+  margin-right: var(--space-2);
+  font-family: var(--font-reading);
+  font-style: italic;
   color: var(--ink-muted);
+}
+
+.catalogue-related .prereq-group dd {
+  display: inline;
+  margin: 0;
 }
 
 .cell-label {
   display: none;
 }
 
+.untranslated {
+  display: inline-block;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width) dashed var(--line-strong);
+  border-radius: var(--radius-mark);
+  color: var(--ink-muted);
+}
+
 @media (width < 768px) {
-  .map-table thead {
+  .catalogue {
+    table-layout: auto;
+  }
+
+  .catalogue thead {
     display: none;
   }
 
-  .map-table tr,
-  .map-table td {
+  .catalogue tr,
+  .catalogue th,
+  .catalogue td {
     display: block;
   }
 
-  .map-table tr {
-    padding: var(--space-3) 0;
+  .catalogue tr {
+    padding: var(--space-5) 0;
     border-bottom: var(--border-width) solid var(--line);
   }
 
-  .map-table td {
+  .catalogue tbody tr:first-child {
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .catalogue th,
+  .catalogue td {
     padding: 0;
     border: 0;
   }
 
-  .map-table td:empty {
+  .catalogue td:empty {
     display: none;
+  }
+
+  .catalogue :is(th, td) + td {
+    margin-top: var(--space-2);
+  }
+
+  .catalogue-related .prereq-lead {
+    display: inline;
+    font-size: var(--text-small);
   }
 
   .cell-label {
@@ -1774,6 +1839,139 @@
     font-size: var(--text-small);
     color: var(--ink-muted);
   }
+}
+
+/* The Atlas index: one section per region, its label set as on the plate; the catalogue below it
+   has no visible heads, so each cell names itself (Needs, Labs) as the drawer does. */
+.gazetteer {
+  margin-top: var(--space-6);
+}
+
+.gazetteer > .untranslated {
+  margin: 0 0 var(--space-6);
+}
+
+.gazetteer-region {
+  margin-bottom: var(--space-10);
+}
+
+.gazetteer-head {
+  margin-bottom: var(--space-3);
+}
+
+.gazetteer-head .plate-region-name {
+  font-size: var(--text-h2);
+}
+
+.gazetteer-region.is-focus .plate-region-name {
+  text-decoration: underline;
+  text-decoration-color: var(--route);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.gazetteer-entries {
+  margin: 0;
+}
+
+/* The heads are hidden, so the columns carry the widths: title and facts, what it asks, needs. */
+.gazetteer-col-title {
+  width: 30%;
+}
+
+.gazetteer-col-related {
+  width: 30%;
+}
+
+.gazetteer-entries .details-line {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+.gazetteer-title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  text-decoration-color: var(--line-strong);
+}
+
+.gazetteer-title .tile-glyph {
+  flex: none;
+}
+
+tr.is-selected .gazetteer-title,
+.gazetteer-mapped a.is-selected {
+  text-decoration-color: var(--route);
+  text-decoration-thickness: 2px;
+}
+
+.gazetteer-state {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  color: var(--ink-muted);
+}
+
+/* What it asks, cut at three lines: the full passage leads the route page, one click away. */
+.gazetteer-passage {
+  display: -webkit-box;
+  max-width: var(--measure);
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.gazetteer-entries .catalogue-related .prereq-lead {
+  display: inline;
+}
+
+.gazetteer-none,
+.gazetteer-practice {
+  margin: 0;
+  color: var(--ink-muted);
+  line-height: 1.9;
+}
+
+.gazetteer-practice a {
+  font-weight: 550;
+}
+
+/* On a phone the entries stack, as the catalogue's rows do; the columns no longer apply. */
+@media (width < 768px) {
+  .gazetteer-entries,
+  .gazetteer-entries tbody {
+    display: block;
+  }
+
+  .gazetteer-entries colgroup {
+    display: none;
+  }
+}
+
+/* Mapped competencies run in under the entries: one quiet line, not rows that look like lessons. */
+.gazetteer-mapped {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-small);
+  line-height: 1.8;
+  color: var(--ink-muted);
+}
+
+.gazetteer-head + .gazetteer-mapped {
+  margin-top: 0;
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--line);
+}
+
+.gazetteer-mapped a {
+  color: var(--ink-muted);
+}
+
+.gazetteer-mapped a:hover {
+  color: var(--route);
 }
 
 /* Drawer: a flat sheet over the dimmed plate; the shadow is there because it floats. */

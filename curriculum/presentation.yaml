@@ -140,7 +140,6 @@ collections:
       target_states: { label: { en: Target, vi: Mục tiêu }, vocabulary: state }
     group_by: domain
     facets: [status, target_level]
-    list_fields: [status, target_level]
     page_when: { field: status, in: [seeded, ready] }
     progress: { tracks: true, target_field: target_states }
     relations:

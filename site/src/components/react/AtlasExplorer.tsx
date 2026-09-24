@@ -1,19 +1,15 @@
-// Atlas (DESIGN.md → Atlas): plate or list, filters from the content model, live count, and the
-// item drawer. URL parameters: ?item=<ref> opens the drawer, ?ready=1 shows ready items only,
-// ?group=<value> focuses a region, ?view=list opens the list. The server-rendered plate and list
-// work before hydration; controls stay disabled until then.
+// Atlas (DESIGN.md → Atlas): the index (a gazetteer, the default view) or the plate, filters from
+// the content model, live count, and the item drawer. URL parameters: ?item=<ref> opens the drawer,
+// ?ready=1 shows ready items only, ?group=<value> marks a region and scrolls to it, ?view=plate
+// shows the plate (?view=list, the old list view, opens the index). The server-rendered index works
+// before hydration; controls stay disabled until then.
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import {
   Button,
   CheckboxButton,
   CheckboxField,
   Dialog,
-  Disclosure,
-  DisclosureGroup,
-  DisclosurePanel,
-  Heading,
   Input,
-  type Key,
   Label,
   Menu,
   MenuItem,
@@ -30,13 +26,12 @@ import { useProgress } from "../../lib/progress-store";
 import type { FacetData, ItemDetail, RegionData, RelatedFacetData, TileData } from "../../lib/summaries";
 import Plate from "../plate/Plate";
 import PlateLegend from "../plate/PlateLegend";
-import { TileGlyph, tileFill } from "../plate/TileGlyph";
+import Gazetteer from "./Gazetteer";
 import { Icon } from "./Icon";
 import ItemDrawer from "./ItemDrawer";
-import { StateBadge } from "./StateBadge";
 
 type StateFilter = "any" | "notStarted" | "inProgress" | "done";
-type View = "plate" | "list";
+type View = "index" | "plate";
 
 interface Props {
   lang: Lang;
@@ -48,8 +43,6 @@ interface Props {
   details: Record<string, ItemDetail>;
   facets: FacetData[];
   relatedFacets: RelatedFacetData[];
-  itemLabel: string;
-  listColumns: string[];
   stateLabels: Record<string, string>;
 }
 
@@ -124,24 +117,11 @@ function FacetMenu(props: {
 }
 
 export default function AtlasExplorer(props: Props) {
-  const {
-    lang,
-    title,
-    intro,
-    atlasUrl,
-    contributeUrl,
-    regions,
-    details,
-    facets,
-    relatedFacets,
-    itemLabel,
-    listColumns,
-    stateLabels,
-  } = props;
+  const { lang, title, intro, atlasUrl, contributeUrl, regions, details, facets, relatedFacets, stateLabels } = props;
   const t = useTranslations(lang);
   const [progress] = useProgress();
   const hydrated = progress !== null;
-  const [view, setView] = useState<View>("plate");
+  const [view, setView] = useState<View>("index");
   const [query, setQuery] = useState("");
   const [readyOnly, setReadyOnly] = useState(false);
   const [facetValues, setFacetValues] = useState<Record<string, string>>({});
@@ -151,9 +131,6 @@ export default function AtlasExplorer(props: Props) {
   const [missing, setMissing] = useState<string | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [expanded, setExpanded] = useState<Set<Key>>(
-    () => new Set(regions.filter((r) => r.tiles.some((tile) => tile.href)).map((r) => r.value)),
-  );
 
   // Read the URL once after hydration: the server render has no URL parameters, so this state
   // cannot be set during render without a hydration mismatch.
@@ -161,15 +138,12 @@ export default function AtlasExplorer(props: Props) {
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
     if (params.get("ready") === "1") setReadyOnly(true);
-    if (params.get("view") === "list") setView("list");
+    if (params.get("view") === "plate") setView("plate");
     const item = params.get("item");
     if (item && details[item]) setSelected(item);
     else if (item) setMissing(item);
     const g = params.get("group");
-    if (g && regions.some((r) => r.value === g)) {
-      setGroup(g);
-      setExpanded((e) => new Set([...e, g]));
-    }
+    if (g && regions.some((r) => r.value === g)) setGroup(g);
   }, [details, regions]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -270,11 +244,6 @@ export default function AtlasExplorer(props: Props) {
     </>
   );
 
-  const visibleRegions = regions
-    .map((r) => ({ ...r, tiles: r.tiles.filter((tile) => matches.has(tile.ref)) }))
-    .filter((r) => r.tiles.length > 0);
-  const expandedKeys = filtering ? new Set<Key>(visibleRegions.map((r) => r.value)) : expanded;
-
   return (
     <div className="atlas">
       <div className="atlas-head">
@@ -286,25 +255,25 @@ export default function AtlasExplorer(props: Props) {
           <legend className="visually-hidden">{t("map.view")}</legend>
           <button
             type="button"
+            aria-pressed={view === "index"}
+            onClick={() => {
+              setView("index");
+              setParam("view", null);
+            }}
+          >
+            <Icon name="listView" />
+            {t("map.view.index")}
+          </button>
+          <button
+            type="button"
             aria-pressed={view === "plate"}
             onClick={() => {
               setView("plate");
-              setParam("view", null);
+              setParam("view", "plate");
             }}
           >
             <Icon name="plateView" />
             {t("map.view.plate")}
-          </button>
-          <button
-            type="button"
-            aria-pressed={view === "list"}
-            onClick={() => {
-              setView("list");
-              setParam("view", "list");
-            }}
-          >
-            <Icon name="listView" />
-            {t("map.view.list")}
           </button>
         </fieldset>
       </div>
@@ -363,68 +332,18 @@ export default function AtlasExplorer(props: Props) {
           focusGroup={group}
         />
       ) : (
-        <DisclosureGroup
-          allowsMultipleExpanded
-          expandedKeys={expandedKeys}
-          onExpandedChange={(keys) => !filtering && setExpanded(new Set(keys))}
-        >
-          {visibleRegions.map((r) => {
-            const ready = r.tiles.filter((tile) => tile.href).length;
-            return (
-              <Disclosure key={r.value} id={r.value} className="group">
-                <Heading level={2}>
-                  <Button slot="trigger" className="group-trigger">
-                    <Icon name="expand" />
-                    <span lang={langOf(r.label, lang)}>{r.label.value}</span>
-                    <span className="count tabular">{t("map.groupCount", { ready, total: r.tiles.length })}</span>
-                  </Button>
-                </Heading>
-                <DisclosurePanel>
-                  <table className="map-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">{itemLabel}</th>
-                        {listColumns.map((col) => (
-                          <th scope="col" key={col}>
-                            {col}
-                          </th>
-                        ))}
-                        <th scope="col">{t("map.col.state")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {r.tiles.map((tile) => {
-                        const state = progress && tile.href ? stateOf(progress, tile.ref) : null;
-                        return (
-                          <tr key={tile.ref} className={tile.href ? "has-page" : "mapped"}>
-                            <td>
-                              <button type="button" className="map-item" onClick={() => select(tile.ref)}>
-                                <TileGlyph fill={tileFill(Boolean(tile.href), state)} state={state} />
-                                <span lang={langOf(tile.title, lang)}>{tile.title.value}</span>
-                              </button>
-                              <code className="id">{tile.ref}</code>
-                            </td>
-                            {listColumns.map((col, i) => (
-                              <td key={col}>
-                                {tile.list[i] && (
-                                  <>
-                                    <span className="cell-label">{col}: </span>
-                                    {tile.list[i]}
-                                  </>
-                                )}
-                              </td>
-                            ))}
-                            <td>{state && <StateBadge state={state} label={stateLabels[state]} />}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </DisclosurePanel>
-              </Disclosure>
-            );
-          })}
-        </DisclosureGroup>
+        <Gazetteer
+          lang={lang}
+          regions={regions}
+          details={details}
+          stateLabels={stateLabels}
+          atlasUrl={atlasUrl}
+          matches={filtering ? matches : null}
+          selected={selected}
+          focusGroup={group}
+          progress={progress}
+          onSelect={select}
+        />
       )}
 
       <ModalOverlay className="bottom-sheet-overlay" isDismissable isOpen={filtersOpen} onOpenChange={setFiltersOpen}>

@@ -1,5 +1,5 @@
-// Search across everything (DESIGN.md → Information architecture), set like the index of a printed
-// atlas: one field, results under kind headings with counts, each a title link and one line of
+// Search across everything (DESIGN.md → Information architecture), found by title and listed by
+// kind: one field, results under kind headings with counts, each a title link and one line of
 // context, the matched text emphasised. The index is a static JSON asset built per language
 // (src/pages/[lang]/search/index.json.ts), fetched on load; `?q=` is read on load and kept in the
 // URL. The server render is a plain GET form with links to browse instead, so it works without
@@ -17,7 +17,7 @@ interface Props {
   /** The built index for this language. */
   indexUrl: string;
   /** Where to browse instead: the Atlas as a list, and the Library. */
-  atlasListUrl: string;
+  atlasUrl: string;
   libraryUrl: string;
 }
 
@@ -30,7 +30,7 @@ function keepInUrl(query: string) {
   window.history.replaceState(null, "", url);
 }
 
-export default function SearchPage({ lang, action, indexUrl, atlasListUrl, libraryUrl }: Props) {
+export default function SearchPage({ lang, action, indexUrl, atlasUrl, libraryUrl }: Props) {
   const t = useTranslations(lang);
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchIndex | null>(null);
@@ -166,7 +166,7 @@ export default function SearchPage({ lang, action, indexUrl, atlasListUrl, libra
           </p>
           <ul>
             <li>
-              <a href={atlasListUrl}>{t("search.atlasList")}</a>
+              <a href={atlasUrl}>{t("search.atlasIndex")}</a>
             </li>
             <li>
               <a href={libraryUrl}>{t("library.title")}</a>

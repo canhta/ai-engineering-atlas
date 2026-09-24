@@ -444,10 +444,6 @@
         "status",
         "target_level"
       ],
-      "list_fields": [
-        "status",
-        "target_level"
-      ],
       "page_when": {
         "field": "status",
         "in": [

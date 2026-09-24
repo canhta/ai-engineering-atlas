@@ -98,7 +98,7 @@ async function recordEvidence(page: Page, note: string) {
 // ---------------------------------------------------------------- Atlas
 
 test("atlas search and filters dim the plate and announce the count", async ({ page }) => {
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   await expect(count(page)).toHaveText(`Showing ${TOTAL} of ${TOTAL}`);
 
   await page.getByLabel("Search competencies").fill("retrieval");
@@ -122,7 +122,7 @@ test("?ready=1 starts with ready routes only; nothing matching shows the empty s
 });
 
 test("plate keyboard: arrows move within a region, Tab moves to the next region", async ({ page }) => {
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   const first = page.locator("#region-software-engineering .tile").first();
   await first.focus();
   await page.keyboard.press("ArrowRight");
@@ -136,7 +136,7 @@ test("plate keyboard: arrows move within a region, Tab moves to the next region"
 });
 
 test("a tile opens the drawer; Esc closes it and returns focus to the tile", async ({ page }) => {
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   await tile(page, "ai.tool-calling").focus();
   await page.keyboard.press("Enter");
   await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
@@ -168,24 +168,11 @@ test("deep links open the drawer, including the mapped-item variant", async ({ p
   await expect(drawer(page).getByRole("link", { name: "How to contribute a route" })).toBeVisible();
 });
 
-test("the list view is the plate's equivalent: disclosures and rows open the drawer", async ({ page }) => {
-  await open(page, "/en/map/");
-  await page.getByRole("button", { name: "List" }).click();
-  const trigger = page.getByRole("button", { name: /Software Engineering/ });
-  await expect(trigger).toHaveAttribute("aria-expanded", "false");
-  await trigger.focus();
-  await page.keyboard.press("Enter");
-  await expect(trigger).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByText("software.testing")).toBeVisible();
-  await page.getByRole("button", { name: "Tool Calling", exact: true }).click();
-  await expect(drawer(page).getByRole("heading", { name: "Tool Calling" })).toBeVisible();
-});
-
-test("?group= focuses a region and opens it in the list", async ({ page }) => {
+test("?group= marks a region in the index and on the plate", async ({ page }) => {
   await open(page, "/en/map/?group=systems");
-  await expect(page.locator("#region-systems")).toHaveClass(/is-focus/);
-  await open(page, "/en/map/?group=systems&view=list");
-  await expect(page.getByRole("button", { name: /^Systems/ })).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator(".gazetteer #region-systems")).toHaveClass(/is-focus/);
+  await open(page, "/en/map/?group=systems&view=plate");
+  await expect(page.locator(".plate #region-systems")).toHaveClass(/is-focus/);
 });
 
 test("home tiles lead to the atlas drawer", async ({ page }) => {
@@ -296,7 +283,7 @@ test("Home plate names every ready route as a link and keeps every mapped mark r
 });
 
 test("Atlas plate names every ready route as a button; a mapped mark opens its drawer", async ({ page }) => {
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   await namesEveryItem(page, "button");
   await tile(page, mappedItems[0].id).click();
   await expect(drawer(page).getByRole("heading", { name: titleOf(mappedItems[0]) })).toBeVisible();
@@ -308,7 +295,7 @@ test("prerequisite lines appear only on hover or focus of a tile", async ({ page
     (r) => r.type === "prerequisite" && r.to === ROUTE_REF,
   ).length;
   expect(needs).toBeGreaterThan(0);
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   const lines = page.locator(".plate-lines path");
   await expect(lines).toHaveCount(0);
   await tile(page, ROUTE_REF).hover();
@@ -320,7 +307,7 @@ test("prerequisite lines appear only on hover or focus of a tile", async ({ page
 });
 
 test("@mobile the plate stacks into readable region blocks without horizontal scroll", async ({ page }) => {
-  for (const path of ["/en/", "/en/map/"]) {
+  for (const path of ["/en/", "/en/map/?view=plate"]) {
     await open(page, path);
     await expect(tile(page, ROUTE_REF)).toBeVisible();
     await expect(tile(page, ROUTE_REF)).toHaveText(titleOf(routeItem));
@@ -787,7 +774,7 @@ test("on a tablet the route leads with its content; the field log is the bottom 
 });
 
 test("@mobile the drawer is a full-screen sheet", async ({ page }) => {
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   await tile(page, "ai.tool-calling").click();
   const d = drawer(page);
   await expect(d.getByRole("heading", { name: "Tool Calling" })).toBeVisible();
@@ -928,7 +915,7 @@ function facetFixture() {
 
 test("the filter key's facet menus work by keyboard and return focus to their button", async ({ page }) => {
   const f = facetFixture();
-  await open(page, "/en/map/");
+  await open(page, "/en/map/?view=plate");
   // No native selects: each facet is a button naming its current choice.
   await expect(page.locator(".atlas select")).toHaveCount(0);
   const button = page.getByRole("button", { name: new RegExp(`^${f.label}`) });

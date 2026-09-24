@@ -33,7 +33,6 @@ export interface Collection {
   fields: Record<string, FieldSpec>;
   group_by?: string;
   facets?: string[];
-  list_fields?: string[];
   page_when?: { field: string; in: string[] };
   progress?: { tracks: boolean; target_field?: string };
 }

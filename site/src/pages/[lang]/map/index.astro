@@ -1,10 +1,11 @@
 ---
-// Atlas (DESIGN.md → Atlas): plate and list over the tracked collection, filters, and the drawer.
+// Atlas (DESIGN.md → Atlas): the index (a gazetteer) and the plate over the tracked collection,
+// filters, and the drawer.
 import Base from "../../../layouts/Base.astro";
 import AtlasExplorer from "../../../components/react/AtlasExplorer";
 import { langPaths, useTranslations, type Lang } from "../../../i18n";
 import { collections, pageSegment, site, stateLabels, text, trackedCollection as c } from "../../../lib/atlas";
-import { facets, itemDetails, listColumns, plateRegions, relatedFacets } from "../../../lib/summaries";
+import { facets, itemDetails, plateRegions, relatedFacets } from "../../../lib/summaries";
 import { mapUrl } from "../../../lib/urls";
 
 export const getStaticPaths = langPaths;
@@ -13,6 +14,7 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 const regions = plateRegions(lang);
 const total = regions.reduce((n, r) => n + r.tiles.length, 0);
+const ready = regions.reduce((n, r) => n + r.tiles.filter((tile) => tile.href).length, 0);
 // The other collections have index pages of their own (labs, projects, paths).
 const others = [
   ...collections
@@ -27,15 +29,13 @@ const others = [
     client:load
     lang={lang}
     title={t("map.title")}
-    intro={t("map.intro", { count: total, groups: regions.length })}
+    intro={t("map.intro", { ready, mapped: total - ready, groups: regions.length })}
     atlasUrl={mapUrl(lang)}
     contributeUrl={`${site.repository}/blob/main/CONTRIBUTING.md`}
     regions={regions}
     details={itemDetails(lang)}
     facets={facets(lang)}
     relatedFacets={relatedFacets(lang)}
-    itemLabel={text(c.label, lang).value}
-    listColumns={listColumns(lang)}
     stateLabels={stateLabels(lang)}
   />
 

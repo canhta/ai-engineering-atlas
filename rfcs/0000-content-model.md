@@ -50,7 +50,6 @@ collections:
       ...
     group_by: domain            # a declared field whose values come from a vocabulary
     facets: [status, target_level]        # declared fields offered as filters
-    list_fields: [status, target_level]
     page_when: { field: status, in: [seeded, ready] }   # items that get a page; omitted = every item with blocks
     progress: { tracks: true, target_field: target_states }
 items:
@@ -122,7 +121,6 @@ collections:
       …
     group_by: domain
     facets: [status, target_level]
-    list_fields: [status, target_level]
     page_when: { field: status, in: [seeded, ready] }
     progress: { tracks: true, target_field: target_states }
     relations:

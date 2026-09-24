@@ -80,7 +80,7 @@ test("a route, a lab, a project, and a source are each found by title under thei
   }
   await field.fill("zzzz no such thing");
   await expect(status).toHaveText(en["search.none"].replace("{query}", "zzzz no such thing"));
-  await expect(page.getByRole("link", { name: en["search.atlasList"] })).toHaveAttribute("href", "/en/map/?view=list");
+  await expect(page.getByRole("link", { name: en["search.atlasIndex"] })).toHaveAttribute("href", "/en/map/");
 });
 
 test("?q= fills the field and runs the search; typing keeps it in the URL; clearing restores the empty state", async ({
@@ -165,7 +165,7 @@ test("without JavaScript the page is a plain form with links to browse instead",
   const field = page.getByRole("searchbox", { name: en["search.label"] });
   await expect(field).toHaveAttribute("name", "q");
   await expect(page.locator("form")).toHaveAttribute("action", "/en/search/");
-  await expect(page.getByRole("link", { name: en["search.atlasList"] })).toHaveAttribute("href", "/en/map/?view=list");
+  await expect(page.getByRole("link", { name: en["search.atlasIndex"] })).toHaveAttribute("href", "/en/map/");
   await expect(page.getByRole("link", { name: en["library.title"], exact: true }).last()).toHaveAttribute(
     "href",
     "/en/sources/",

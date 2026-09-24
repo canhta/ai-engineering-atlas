@@ -32,7 +32,7 @@ Footer: an ink rule above; site name, licence, How it works, Privacy, and a "Sta
 ```text
 /                            → /en/ (or the remembered language)
 /{lang}/                     Home
-/{lang}/map/                 Atlas: plate + list, filters, drawer (?item=<id> opens the drawer)
+/{lang}/map/                 Atlas: the index (a gazetteer) + plate, filters, drawer (?item=<id>)
 /{lang}/routes/<id>/         Route sheet (competencies whose page_when matches)
 /{lang}/<collection>/         Catalogue of a collection (labs, projects, paths), linked from the Atlas
 /{lang}/sources/             Library: every source the routes cite, searchable
@@ -58,7 +58,7 @@ desktop ≥ 768                                                         mobile <
 
 The bar never covers focused content: it is `--nav-height` tall, `scroll-padding-top` clears it, and sticky layers below it start at `--bar-offset` (0 on a phone, where the bar scrolls away).
 
-**Search** is a quiet tab, never a floating field or a ⌘K overlay; its page reads like the index of a printed atlas: one field, then one section per kind (the tracked collection's routes, each other collection by its label, the Library's sources) with its count over an ink rule, each entry a title link in Newsreader and one muted context line (region; "practice for" or the routes a project covers; the citing pages), matches in bold on `wash`. `searchIndex()` in `summaries.ts` builds the index, emitted as static `/{lang}/search/index.json` and fetched on load; matching (`src/lib/search.ts`) ignores case and Vietnamese diacritics; `?q=` is read on load and kept with `replaceState`. Without JavaScript: a GET form and links to the Atlas list and the Library.
+**Search** is a quiet tab, never a floating field or a ⌘K overlay; found by title and listed by kind (the Atlas index lists by region): one field, then one section per kind (the tracked collection's routes, each other collection by its label, the Library's sources) with its count over an ink rule, each entry a title link in Newsreader and one muted context line (region; "practice for" or the routes a project covers; the citing pages), matches in bold on `wash`. `searchIndex()` in `summaries.ts` builds the index, emitted as static `/{lang}/search/index.json` and fetched on load; matching (`src/lib/search.ts`) ignores case and Vietnamese diacritics; `?q=` is read on load and kept with `replaceState`. Without JavaScript: a GET form and links to the Atlas index and the Library.
 
 ## Surfaces
 
@@ -105,34 +105,33 @@ The bar never covers focused content: it is `--nav-height` tall, `scroll-padding
 
 - Legend: glyph plus label; only the glyph carries the state colour; labels stay `ink-muted`, counts `ink`. At text size (`TileGlyph`) the mapped glyph is a circle and an unassessed ready route a small landscape rectangle, the tile's shape.
 - Prerequisite lines: none at rest. Desktop only (≥ 1024): hovering or focusing a tile draws its declared prerequisite lines (from `relations`) in `route`, edge to edge, and marks the prerequisite tiles; a mark also shows its title as a tooltip (hidden from assistive tech; the name carries it). Below 1024 there are no lines.
-- Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. `locator`: one region in a route's margin column (see Route sheet). Progress summarises by region bars and has no plate.
-- Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); routes and marks are lists; arrow keys move within a region (routes, then marks), Home and End jump, Tab moves between regions (one tab stop each); the list view is the full equivalent.
+- Modes: `overview` (Home): tiles are links to `/map/?item=<id>`, so they work without JavaScript. `explore` (Atlas, `?view=plate`): tiles are buttons that open the drawer; filters dim non-matching tiles; the selected tile has a magenta ring; `?group=` underlines its region label and scrolls to it. `locator`: one region in a route's margin column (see Route sheet). Progress summarises by region bars and has no plate.
+- Accessibility: each tile is named "<title>, <status>, your state: <state>" (mapped: "<title>, <status>"); routes and marks are lists; arrow keys move within a region (routes, then marks), Home and End jump, Tab moves between regions (one tab stop each); the Atlas index is the full equivalent.
 
 ### Atlas
 
+Home shows the shape (the plate) and one route up close; the Atlas lists every route with its facts, so a learner can compare and choose without opening drawers. It opens on the **index**, a gazetteer; the plate is the second view.
+
 ```text
- Atlas                                                        [ Plate | List ]
- 116 competencies in 12 domains. Select one to see why it matters and where to start.
- [⌕ Search… ]  Target level All ▾  Your state Any ▾  Project All ▾  □ Ready routes only   Showing 19 of 116  Clear
+ Atlas                                                                    [ Index | Plate ]
+ 41 ready routes and 74 mapped competencies in 12 domains, with what each route asks and how it is checked.
+ [⌕ Search… ]  Target level All ▾  Your state Any ▾  Project All ▾  □ Ready routes only   Showing 19 of 115  Clear
  legend
- ┌──────────── plate (explore) ──────────────┐ ┌─ drawer, 40%, over the dimmed plate ─┐
- │                                            │ │ AI engineering                     ✕ │
- │   the selected tile has a magenta ring     │ │ Tool Calling                         │
- │                                            │ │ ▭ ready │ L3 deep … │ 5 sources │ …  │
- │                                            │ │ Your state  ◧ gap     Target applied │
- │                                            │ │ Why, three lines, "More" expands     │
- │                                            │ │ Needs  ▭ AI evaluation               │
- │                                            │ │        ○ API design (bridge on route)│
- │                                            │ │ Lab: evaluation harness              │
- │                                            │ │ [ Open route ]  Start diagnostic     │
- └────────────────────────────────────────────┘ └──────────────────────────────────────┘
+ AI Engineering  12 ready of 26                         italic region label and count, as on the plate
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ◧ Tool Calling                  │ Tool-enabled AI systems cross a      │ Needs ▭ AI evaluation and
+ L3 deep … │ 5 sources │ 4 tasks  │ boundary … (three lines at most)     │       ○ API design
+ Your state gap                  │                                      │ Labs Evaluation harness lab
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────
+ Mapped, no route yet: Prompt Engineering, Vector Search Internals, …   one quiet line, each a drawer link
 ```
 
-- List view: domain disclosures, one row per item with the collection's list fields and your state; the accessible equivalent of the plate.
+- Index: one section per `group_by` value in vocabulary order (`Gazetteer.tsx`, inside the Atlas island, server-rendered). The head is the plate's region label, "N ready of M". Each ready route is one row of the collection catalogue (shared styles, heads visually hidden, an ink rule over the first row): the glyph and title in Newsreader linking to the route, the details line (`detailsOf()`) under it, and the learner's state after hydration; what it asks, `passageOf()`, cut at three lines; "Needs" as the prerequisite line with maturity and state glyphs (or "Nothing is needed first."), and the items it points at in other collections (its labs) by collection label. Sources are counted, never listed (the route and drawer carry locators). Mapped competencies run in under the entries as one muted line, "Mapped, no route yet:", each name a link to `?item=` that opens the drawer in place. Below 768 rows stack as entries.
+- Plate (`?view=plate`): the plate in `explore` mode (see The plate).
 - Drawer head: the domain as a section label, the title, then the route page's details line led by the item's maturity and its glyph (no tags, no ID).
 - Mapped-item drawer: title, domain, "Mapped, no route yet. It shows where the roadmap is going.", and a link to how to contribute a route.
-- Filters: a ruled key between hairlines above the legend, not a form. Search; one quiet menu button per facet naming its current choice (the collection's facets, except the page condition field, which is the "Ready routes only" toggle, `?ready=1`; your state; one per related collection, projects); the toggle; the live count (`role="status"`); Clear. A button opens a React Aria menu of options, the current one on a magenta rule and `aria-checked`; focus returns to the button on close. No native selects; all disabled until hydration.
-- URL: `?item=` opens the drawer (an unknown id opens it with "Not found"), `?group=` focuses a region and opens it in the list, `?view=list` opens the list.
+- Filters: a ruled key between hairlines above the legend, not a form. Search; one quiet menu button per facet naming its current choice (the collection's facets, except the page condition field, which is the "Ready routes only" toggle, `?ready=1`; your state; one per related collection, projects); the toggle; the live count (`role="status"`); Clear. A button opens a React Aria menu of options, the current one on a magenta rule and `aria-checked`; focus returns to the button on close. No native selects; all disabled until hydration. Filters remove index entries and mapped names (a region left with nothing goes; its head keeps the region's own counts) and dim plate tiles.
+- URL: `?item=` opens the drawer over either view and marks its entry (an unknown id opens it with "Not found"); `?group=` scrolls to a region and underlines its label in magenta; `?view=plate` opens the plate; `?view=list` (the retired list view) opens the index.
 - Mobile: filters behind "Filters (n)" opening a sheet, the same menu buttons as full-width rows, their menus opening downward into room the sheet keeps, never over its title; the drawer is a full-screen sheet; the URL keeps `?item=`. Empty filter result: "No competency matches these filters." and Clear filters.
 
 ### Route sheet
@@ -249,7 +248,7 @@ Every field is required. "Record evidence" appears once every field is non-empty
 
 ### States every surface handles
 
-Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home tiles and specimen, Progress bars, and route pages are plain links; the Atlas needs JavaScript); Phase 2 signed out ("Sign in to use AI help").
+Before hydration (controls disabled, no learner state drawn); empty; filtered to nothing; untranslated passage (`lang="en"` and "chưa dịch / not yet translated"); storage unavailable (works until the learner leaves the page and says so once, in the field log and on Progress); import errors listed inline; unknown `?item=` ("Not found" in the drawer); JavaScript off (Home tiles and specimen, Progress bars, and route pages are plain links; the Atlas index reads and links; its filters, plate, and drawer need JavaScript); Phase 2 signed out ("Sign in to use AI help").
 
 ## Visual system
 

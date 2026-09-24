@@ -1,4 +1,4 @@
-// Plain props for the plate, drawer, filters, and list, built from the content model at build
+// Plain props for the plate, drawer, filters, and the Atlas index, built from the content model at build
 // time. Islands import only the types from here, never the model itself.
 import type { Lang } from "../i18n";
 import {
@@ -14,6 +14,7 @@ import {
   itemUrl,
   type Localized,
   pagedItems,
+  passageOf,
   relations,
   relationsTo,
   resolveRef,
@@ -44,12 +45,7 @@ export interface TileData {
   values: Record<string, string[]>;
   /** Refs of related items in other collections (for their facets). */
   relatedTo: string[];
-  /** Labelled values of the collection's list fields, in column order. */
-  list: string[];
 }
-
-/** Column headers of the list view (the collection's list fields). */
-export const listColumns = (lang: Lang) => (c.list_fields ?? []).map((f) => text(c.fields[f]?.label, lang).value);
 
 export interface RegionData {
   value: string;
@@ -66,10 +62,19 @@ export interface ItemDetail {
   /** The details line, as on the item's page. */
   details: Details;
   lead?: Localized;
+  /** What the route asks: the first passage of its lead (`passageOf()`), for the Atlas index. */
+  passage?: Localized;
   needs: { ref: string; title: Localized; href?: string; bridged: boolean }[];
   diagnosticAnchor?: string;
-  related: { label: Localized; items: { title: Localized; href?: string }[] }[];
+  related: RelatedGroup[];
+  /** Items of other collections this one points at (the labs it is practice for), by collection. */
+  practice: RelatedGroup[];
   target?: string;
+}
+
+export interface RelatedGroup {
+  label: Localized;
+  items: { title: Localized; href?: string }[];
 }
 
 export interface FacetData {
@@ -117,11 +122,6 @@ export function plateRegions(lang: Lang): RegionData[] {
           Object.keys(c.fields).map((f) => [f, fieldChips(c, item, f, lang).map((chip) => chip.value)]),
         ),
         relatedTo: relations.filter((r) => r.to === ref && others.has(refPrefix(r.from))).map((r) => r.from),
-        list: (c.list_fields ?? []).map((f) =>
-          fieldChips(c, item, f, lang)
-            .map((chip) => chip.label.value)
-            .join(", "),
-        ),
       };
     }),
   }));
@@ -140,18 +140,8 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
     const diagnostic = blocks.find((b) => b.type === "diagnostic");
     const groupField = c.group_by;
     const groupValue = groupField ? String(item.fields[groupField] ?? "") : "";
-    const relatedRefs = [
-      ...relations.filter((r) => r.type !== "prerequisite" && r.from === ref).map((r) => r.to),
-      ...relations.filter((r) => r.type !== "prerequisite" && r.to === ref).map((r) => r.from),
-    ];
-    const byCollection = new Map<string, { label: Localized; items: { title: Localized; href?: string }[] }>();
-    for (const related of relatedRefs) {
-      const found = resolveRef(related);
-      if (!found || found.collection === c) continue;
-      const entry = byCollection.get(found.collection.id) ?? { label: text(found.collection.label, lang), items: [] };
-      entry.items.push({ title: text(found.item.title, lang), href: itemUrl(lang, related) });
-      byCollection.set(found.collection.id, entry);
-    }
+    const outward = relations.filter((r) => r.type !== "prerequisite" && r.from === ref).map((r) => r.to);
+    const inward = relations.filter((r) => r.type !== "prerequisite" && r.to === ref).map((r) => r.from);
     const page = hasPage(item);
     details[ref] = {
       ref,
@@ -161,6 +151,7 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
       maturity: maturityOf(item, lang),
       details: detailsOf(c, item, lang),
       lead: lead?.type === "text" ? text(lead.body, lang) : undefined,
+      passage: passageOf(item, lang),
       needs: relationsTo("prerequisite", ref).map((r) => ({
         ref: r.from,
         title: titleOf(r.from, lang),
@@ -168,11 +159,25 @@ export function itemDetails(lang: Lang): Record<string, ItemDetail> {
         bridged: bridged.has(r.from),
       })),
       diagnosticAnchor: diagnostic?.id,
-      related: [...byCollection.values()],
+      related: byCollectionOf([...outward, ...inward], lang),
+      practice: byCollectionOf(outward, lang),
       target: page ? targetOf(c, item) : undefined,
     };
   }
   return details;
+}
+
+/** Refs of other collections' items, grouped by collection in first-seen order. */
+function byCollectionOf(refs: string[], lang: Lang): RelatedGroup[] {
+  const groups = new Map<string, RelatedGroup>();
+  for (const related of refs) {
+    const found = resolveRef(related);
+    if (!found || found.collection === c) continue;
+    const group = groups.get(found.collection.id) ?? { label: text(found.collection.label, lang), items: [] };
+    group.items.push({ title: text(found.item.title, lang), href: itemUrl(lang, related) });
+    groups.set(found.collection.id, group);
+  }
+  return [...groups.values()];
 }
 
 /** Facets offered as filters; the page condition field is the "ready only" toggle instead. */

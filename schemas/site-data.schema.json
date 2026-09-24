@@ -212,12 +212,6 @@
             "type": "string"
           }
         },
-        "list_fields": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
         "page_when": {
           "type": "object",
           "required": ["field", "in"],

@@ -1,7 +1,7 @@
 ---
 // Search across everything (DESIGN.md → Information architecture): routes, labs, projects, and
-// sources, found by title from one field, set like the index of a printed atlas. The island loads
-// the built index (./index.json.ts); without JavaScript the form and the browse links remain.
+// sources, found by title from one field and listed by kind (the Atlas index lists by region). The
+// island loads the built index (./index.json.ts); without JavaScript the form and the browse links remain.
 import Base from "../../../layouts/Base.astro";
 import SearchPage from "../../../components/react/SearchPage";
 import { langPaths, type Lang, useTranslations } from "../../../i18n";
@@ -22,7 +22,7 @@ const t = useTranslations(lang);
       lang={lang}
       action={searchUrl(lang)}
       indexUrl={`${searchUrl(lang)}index.json`}
-      atlasListUrl={`${mapUrl(lang)}?view=list`}
+      atlasUrl={mapUrl(lang)}
       libraryUrl={libraryUrl(lang)}
     />
   </div>

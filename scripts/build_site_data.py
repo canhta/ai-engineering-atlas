@@ -554,7 +554,7 @@ def check_config(presentation: dict, vocabularies: dict):
             vocab = spec.get("vocabulary")
             if vocab and vocab not in vocabularies:
                 errors.append(f"presentation: {name}.fields.{field} names unknown vocabulary '{vocab}'")
-        named = [config.get("group_by")] + list(config.get("facets", [])) + list(config.get("list_fields", []))
+        named = [config.get("group_by")] + list(config.get("facets", []))
         named += [
             (config.get("progress") or {}).get("target_field"),
             (config.get("page_when") or {}).get("field"),
@@ -607,7 +607,7 @@ def collection_model(name: str, config: dict) -> dict:
     if config.get("ref_prefix"):
         model["ref_prefix"] = config["ref_prefix"]
     model["fields"] = config.get("fields") or {}
-    for key in ("group_by", "facets", "list_fields", "page_when", "progress"):
+    for key in ("group_by", "facets", "page_when", "progress"):
         if config.get(key) is not None:
             model[key] = config[key]
     return model

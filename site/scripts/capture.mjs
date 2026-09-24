@@ -18,6 +18,7 @@ const pages = paths.length
   : [
       "/{lang}/",
       "/{lang}/map/",
+      "/{lang}/map/?view=plate",
       "/{lang}/map/?item=ai.tool-calling",
       "/{lang}/progress/",
       "/{lang}/routes/ai.tool-calling/",
