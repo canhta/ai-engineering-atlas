@@ -17099,6 +17099,18 @@
           "id": "0018",
           "path": "rfcs/0018-ai-supply-chain-and-guardrails.md"
         }
+      },
+      {
+        "date": "2026-09-24",
+        "kind": "promoted",
+        "refs": [
+          "security.safety-governance",
+          "security.privacy-legal"
+        ],
+        "decision": {
+          "id": "0019",
+          "path": "rfcs/0019-ai-governance-and-privacy-engineering.md"
+        }
       }
     ]
   }

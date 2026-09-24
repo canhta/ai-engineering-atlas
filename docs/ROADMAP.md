@@ -154,10 +154,6 @@ Coverage:
 - inference behavior;
 - open-source model basics and local serving.
 
-Ready route:
-
-- [Self-Attention](../curriculum/06-llm-foundations/self-attention/)
-
 Project integration:
 
 - [Tiny Transformer](../projects/tiny-transformer/)
@@ -224,11 +220,6 @@ Coverage:
 - distillation;
 - human feedback and product analytics.
 
-Ready routes:
-
-- [Model Selection](../curriculum/07-ai-engineering/model-selection/)
-- [AI Evaluation and Experimentation](../curriculum/07-ai-engineering/evaluation/)
-
 Project integration:
 
 - [Knowledge Assistant](../projects/knowledge-assistant/)
@@ -250,10 +241,6 @@ Coverage:
 - MCP;
 - workflow orchestration;
 - agent evaluation and failure analysis.
-
-Ready route:
-
-- [Deterministic vs Agentic Design](../curriculum/08-agents/deterministic-vs-agentic/)
 
 The default rule is to begin with a deterministic workflow and add agentic control only when the flexibility is useful and measurable.
 
@@ -302,10 +289,6 @@ Coverage:
 - legal/licensing considerations;
 - responsible AI;
 - adversarial testing.
-
-Ready route:
-
-- [Prompt Injection and Trust Boundaries](../curriculum/10-security-governance/prompt-injection/)
 
 These topics extend normal application security; they do not replace it.
 
@@ -357,3 +340,5 @@ The breadth above comes from the audited master roadmap and benchmark review. A 
 10. delayed review when relevant.
 
 Until then, it remains coverage, not finished instructional content.
+
+Which routes are ready today, by domain: [curriculum/STATUS.md](../curriculum/STATUS.md), generated from the catalog.

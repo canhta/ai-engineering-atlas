@@ -117,3 +117,7 @@ changes:
     competencies: [security.guardrails, security.supply-chain-data]
     rfc: "0018"
     evidence: 6914ab1
+  - date: 2026-09-24
+    kind: promoted
+    competencies: [security.safety-governance, security.privacy-legal]
+    rfc: "0019"
