@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **41** ready learning routes
-- **74** coverage-only competencies
+- **43** ready learning routes
+- **72** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -23,7 +23,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | AI Engineering | 26 | 12 |
 | Agents | 9 | 9 |
 | Production AI | 11 | 11 |
-| Security & Governance | 10 | 8 |
+| Security & Governance | 10 | 10 |
 | Multimodal | 3 | 0 |
 | Specializations | 8 | 0 |
 
@@ -71,7 +71,9 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | `security.auth` — Authentication and Authorization | Security & Governance | [Open route](10-security-governance/auth/) |
 | `security.multi-tenant` — Multi-Tenant Isolation | Security & Governance | [Open route](10-security-governance/multi-tenant/) |
 | `security.guardrails` — Guardrails | Security & Governance | [Open route](10-security-governance/guardrails/) |
+| `security.safety-governance` — AI Governance and Risk Management | Security & Governance | [Open route](10-security-governance/safety-governance/) |
 | `security.supply-chain-data` — AI Supply Chain and Data Security | Security & Governance | [Open route](10-security-governance/supply-chain-data/) |
+| `security.privacy-legal` — AI Privacy and Data Governance | Security & Governance | [Open route](10-security-governance/privacy-legal/) |
 
 ## Promotion rule
 

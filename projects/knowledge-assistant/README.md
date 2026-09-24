@@ -32,6 +32,8 @@ For the final Production AI synthesis, continue with the [Production Synthesis e
 
 For action authorization and sensitive-data flow, continue with the [Security Boundaries evidence contract](security-boundaries/). The model is treated as potentially mistaken or manipulated; permissions and confidentiality must still hold.
 
+For risk decisions and personal-data processing, continue with the [Governance and Privacy evidence contract](governance-and-privacy/). Deployment decisions, deletion tests, and escalations must cite the evaluation, release, and security evidence already built.
+
 The system answers questions over a changing document collection and must provide evidence for where its answers came from.
 
 The project is deliberately generic: use public technical documentation, a public-domain corpus, or your own permitted material.
@@ -879,7 +881,57 @@ At minimum prove:
 
 **Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior and probabilistic guardrails miss a case.
 
-## Milestone 38 — incident and feedback loop
+## Milestone 38 — AI risk governance
+
+Use [AI Governance and Risk Management](../../curriculum/10-security-governance/safety-governance/) and the [Governance and Privacy evidence contract](governance-and-privacy/).
+
+Turn the evidence already collected into an explicit risk decision.
+
+**Evidence:**
+
+- system/use boundary with excluded uses;
+- affected-party map with one beneficial outcome and one potential harm;
+- risk taxonomy and tolerance criteria written before scoring;
+- versioned risk register with an evidence source for each high-priority risk;
+- one foreseeable-misuse case;
+- owner for each material risk and control;
+- prevent/detect/mitigate/recover control mapping;
+- residual-risk assessment and who accepted it;
+- one materially uncertain risk and how it is tracked;
+- obligation/applicability matrix separating internal policy from external obligations;
+- one legal/compliance escalation;
+- deployment decision: ship, ship with conditions, hold, restrict, or reject;
+- post-release review triggers.
+
+**Decision:** the system ships only under a recorded decision that names its evidence, owners, residual risk, and the triggers that reopen it.
+
+## Milestone 39 — privacy and data governance
+
+Use [AI Privacy and Data Governance](../../curriculum/10-security-governance/privacy-legal/) and continue in the same [Governance and Privacy evidence contract](governance-and-privacy/).
+
+Inventory the personal-data processing the system actually performs and make its lifecycle work.
+
+**Evidence:**
+
+- data-processing inventory verified against the running system;
+- data-flow diagram;
+- personal/sensitive/inferred-data classification;
+- purpose and minimization decision per processing activity, with one collection removed;
+- storage locations and processor/provider records, including model-provider data-use settings;
+- logging/observability content policy;
+- retention and deletion policy with its basis;
+- one correction path through derived stores;
+- one end-to-end deletion test across every relevant store;
+- privacy-risk assessment kept separate from security threats;
+- one anonymity/de-identification claim supported or rejected with evidence;
+- impact-assessment trigger decision;
+- one privacy/legal escalation;
+- utility check after privacy controls;
+- material privacy risks added to the AI risk register.
+
+**Decision:** keep only the processing the purpose needs, and treat a deletion or anonymity claim as true only when a test or evidence shows it.
+
+## Milestone 40 — incident and feedback loop
 
 Inject or analyze one failure:
 
@@ -892,7 +944,9 @@ Inject or analyze one failure:
 - cross-tenant access attempt;
 - sandbox policy violation;
 - poisoned/tampered artifact;
-- guardrail false negative.
+- guardrail false negative;
+- deletion that leaves data in a derived store;
+- product or data-processing change made without governance or privacy review.
 
 Produce:
 
@@ -901,7 +955,8 @@ Produce:
 3. diagnosis;
 4. mitigation;
 5. durable regression test;
-6. follow-up metric or alert.
+6. follow-up metric or alert;
+7. governance and privacy change review with updated register and inventory versions.
 
 This is where production learning becomes part of the curriculum rather than an appendix.
 

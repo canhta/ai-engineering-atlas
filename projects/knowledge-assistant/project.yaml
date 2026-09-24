@@ -42,6 +42,8 @@ milestones:
   - supply-chain-and-data-integrity
   - guardrail-engineering
   - integrated-security-attack-path
+  - ai-risk-governance
+  - privacy-and-data-governance
   - incident-and-feedback
 competencies:
   - ai.product-framing
@@ -84,6 +86,8 @@ competencies:
   - security.sandboxing
   - security.supply-chain-data
   - security.guardrails
+  - security.safety-governance
+  - security.privacy-legal
 evidence:
   - product-brief
   - baseline-results
@@ -167,6 +171,15 @@ evidence:
   - guardrail-contract
   - guardrail-evaluation
   - guardrail-failure-matrix
+  - ai-risk-register
+  - obligation-applicability-matrix
+  - escalation-record
+  - governance-decision-record
+  - data-processing-inventory
+  - privacy-risk-assessment
+  - retention-deletion-record
+  - deletion-verification
+  - governance-change-review
   - security-audit-record
   - decision-records
   - traces
