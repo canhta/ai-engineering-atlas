@@ -47,6 +47,7 @@ schema_files = {
     "competency": SCHEMAS / "competency.schema.json",
     "project": SCHEMAS / "project.schema.json",
     "progress": SCHEMAS / "progress.schema.json",
+    "changelog": SCHEMAS / "changelog.schema.json",
 }
 schemas = {}
 
@@ -68,6 +69,17 @@ if "catalog" in schemas:
         )
     except Exception as exc:
         errors.append(f"curriculum/catalog.yaml: cannot validate: {exc}")
+
+
+if "changelog" in schemas:
+    try:
+        validate_instance(
+            load_yaml(ROOT / "curriculum" / "changelog.yaml"),
+            schemas["changelog"],
+            "curriculum/changelog.yaml",
+        )
+    except Exception as exc:
+        errors.append(f"curriculum/changelog.yaml: cannot validate: {exc}")
 
 
 if "resource" in schemas:
@@ -128,4 +140,4 @@ if errors:
         print(f"- {error}")
     sys.exit(1)
 
-print("OK: JSON Schemas validate catalog, resources, competencies, projects, and progress")
+print("OK: JSON Schemas validate catalog, change log, resources, competencies, projects, and progress")

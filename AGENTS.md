@@ -174,6 +174,7 @@ Avoid manifesto language, marketing superlatives, generic AI-generated prose, re
 
 - `make check` passes.
 - Every rule above that the change touches is met, in particular: catalog IDs, verified locators, bridges for coverage-only prerequisites, assessment matching the capability type, and maturity stated truthfully.
+- A promotion, demotion, catalog addition or removal, or lab addition or removal appends its dated event to `curriculum/changelog.yaml` (catalog changes name their Accepted RFC).
 - Nothing was generated merely to fill a template.
 
 If not, revise before committing.

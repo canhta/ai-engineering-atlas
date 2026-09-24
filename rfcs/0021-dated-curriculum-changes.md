@@ -1,6 +1,6 @@
 # RFC: Dated Curriculum Changes
 
-- Status: Draft
+- Status: Accepted (owner approval, 2026-09-24)
 - Author: Canh Ta
 - Created: 2026-09-24
 - Numbering: renumbered from 0020 on merge; 0020 is structured learning paths.
@@ -218,7 +218,7 @@ This follows the pattern in [What comparable projects do](#what-comparable-proje
 - `0.1.0` stays in `releases` as `CHANGELOG.md` and `curriculum/manifest.yaml` record it (2026-09-22), with no events, and is **not** tagged retroactively. The record names no commit as the 0.1.0 state: `CHANGELOG.md` gained "0.1.0 — 2026-09-22 / Initial public repository." in `1dda52e` (08:29:07), the same commit whose "Unreleased" section already listed "Initial repository structure", and `manifest.yaml` with `version: 0.1.0` came in `78b4784` (08:29:23), two of the twenty "chore: build curriculum repository structure" commits (`3b8ae1d` 08:29:00 to `113a5f0` 08:29:59). Under SemVer a tag would fix a claim about 0.1.0's contents that the record does not support. The validator does not read git, so nothing depends on a tag.
 - The first tag is **`v0.2.0`**: annotated, pushed explicitly (`git push` does not transfer tags), on the commit that cuts the first release through this process, after the release state is internally consistent (`docs/VERSIONING.md` step 6).
 
-Research confidence for this section: medium. The sources allow tagging after the fact; the recommendation rests on the ambiguous repository record. Whether the owner wants a 0.1.0 tag anyway is an [open question](#open-questions-for-the-owner).
+Research confidence for this section: medium. The sources allow tagging after the fact; the recommendation rests on the ambiguous repository record. The owner decided on 2026-09-24 to tag nothing (see [Owner decisions](#owner-decisions)).
 
 ### Validation rules (`scripts/validate_repo.py`, run by `make check`)
 
@@ -355,23 +355,33 @@ No per-release page, feed, or GitHub Release publishing is proposed now. A relea
 - **Workflow cost:** one appended event per promotion, lab, or removal, in the same pull request. `make check` fails if it is missing.
 - **Migration:** none for learner progress. Progress references competency IDs, which do not change.
 
-## Open questions for the owner
+## Owner decisions
 
-- **A 0.1.0 tag.** This RFC keeps 0.1.0 untagged (see [Releases and tags](#releases-and-tags)). If the owner wants one anyway, it is an owner assertion about which commit was public as 0.1.0, not something the record shows.
+- **A 0.1.0 tag: none (owner, 2026-09-24).** 0.1.0 stays in `releases` untagged, as proposed in [Releases and tags](#releases-and-tags); no tag is created retroactively, and `v0.2.0` is the first tag. The question as it was asked: a 0.1.0 tag would be an owner assertion about which commit was public as 0.1.0, not something the record shows.
   - _Suggested by the research:_ tag nothing unless the owner can name the commit that was public as 0.1.0. If a tag is wanted regardless, the defensible commit is `113a5f0`, the last "chore: build curriculum repository structure" commit (08:29:59), because it closes the batch of structure commits that the 0.1.0 entry ("Initial public repository") describes. The research could not confirm whether the repository was public at that time (`git ls-remote --tags origin` returned nothing).
+
+## Implementation outcome
+
+Approved by the owner and implemented on 2026-09-24:
+
+- `curriculum/changelog.yaml` holds the backfill above (41 promotions, the `agents.fundamentals` removal, five labs), `schemas/changelog.schema.json` validates it, and `scripts/validate_repo.py` applies rules 1–5. `make check` reads no git history.
+- `scripts/render_status.py` renders the curriculum block of `CHANGELOG.md` between `<!-- curriculum-changes:start -->` and `<!-- curriculum-changes:end -->` and fails when it is stale; the prose promotion, lab, and removal lines are gone.
+- The content model carries `changes` (`schemas/site-data.schema.json`, `curriculum/presentation.yaml` `changes` and `change_kind`). The site renders `/{lang}/changelog/`, links it from the footer, and shows each item's latest change on its page.
+- One change from the sketch above: the route line is a details line ("Promoted to ready: Sep 22, 2026 | RFC 0002", or "| Before the RFC process"), because `site/DESIGN.md` rules out middle dots.
+- No tag was created (see [Owner decisions](#owner-decisions)).
 
 ## Review checklist
 
-- [ ] The change log is the only record of curriculum change dates. `CHANGELOG.md`'s curriculum block is generated from it, and no prose copy remains.
-- [ ] Every ready catalog item has a `promoted` event with no later `demoted`, and `make check` enforces it.
-- [ ] Every event references existing catalog IDs or lab directories, and removed IDs are absent from the catalog.
-- [ ] Every non-lab event references an Accepted curriculum RFC, or is a closed `pre_rfc` event with a note.
-- [ ] `make check` does not read git history, so its result does not depend on clone depth.
+- [x] The change log is the only record of curriculum change dates. `CHANGELOG.md`'s curriculum block is generated from it, and no prose copy remains.
+- [x] Every ready catalog item has a `promoted` event with no later `demoted`, and `make check` enforces it.
+- [x] Every event references existing catalog IDs or lab directories, and removed IDs are absent from the catalog.
+- [x] Every non-lab event references an Accepted curriculum RFC, or is a closed `pre_rfc` event with a note.
+- [x] `make check` does not read git history, so its result does not depend on clone depth.
 - [x] Evidence from comparable projects is cited to [.scratch/research/changelog-and-milestones.md](../.scratch/research/changelog-and-milestones.md) and its sources.
-- [ ] Backfilled dates match the table above, and the five pre-RFC routes are labelled as such rather than attached to a later RFC.
-- [ ] The two golden routes are dated from `competency.yaml` history, not from catalog creation.
-- [ ] The site shows only what the file records: no invented release notes, no dates beyond day precision, and no "reviewed" claim for pre-RFC routes.
+- [x] Backfilled dates match the table above, and the five pre-RFC routes are labelled as such rather than attached to a later RFC.
+- [x] The two golden routes are dated from `competency.yaml` history, not from catalog creation.
+- [x] The site shows only what the file records: no invented release notes, no dates beyond day precision, and no "reviewed" claim for pre-RFC routes.
 - [x] Decide what counts as a lab addition: the day the complete lab lands on `main`, with `evidence` on the completing commit (hashes verified with `git show --stat` and `git log --name-status`); the browser runner is a site property.
 - [x] Decide whether the 0.1.0 release, which has no git tag, stays in `releases` as `CHANGELOG.md` states it, or is tagged first: kept as recorded, untagged; `v0.2.0` is the first tag.
-- [ ] Owner confirms whether a 0.1.0 tag is wanted anyway (open question above).
-- [ ] Reviewer explicitly approves or requests changes before implementation.
+- [x] Owner confirms whether a 0.1.0 tag is wanted anyway: no tag (2026-09-24).
+- [x] Reviewer explicitly approves or requests changes before implementation: approved by the owner, 2026-09-24.

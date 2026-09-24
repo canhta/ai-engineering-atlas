@@ -48,6 +48,7 @@ VALID_RESOURCE_ROLES = {
 
 manifest_path = ROOT / "curriculum" / "manifest.yaml"
 domain_ids = set()
+manifest = {}
 
 if not manifest_path.exists():
     errors.append("missing curriculum/manifest.yaml")
@@ -597,6 +598,134 @@ if progress_path.exists():
 
         if not entry.get("next_action"):
             errors.append(f"progress/progress.example.yaml: {cid} requires next_action")
+
+
+# ---------------------------------------------------------------------------
+# Curriculum change log (rfcs/0021-dated-curriculum-changes.md)
+# ---------------------------------------------------------------------------
+
+CHANGELOG_REL = "curriculum/changelog.yaml"
+# The day RFC 0001 was written: promotions made before the RFC process existed are a closed set.
+PRE_RFC_LAST_DAY = date(2026, 9, 22)
+STATUS_AFTER = {"promoted": "ready", "demoted": "coverage", "added": "coverage"}
+IN_CATALOG_KINDS = {"promoted", "demoted", "added"}
+DECIDED_KINDS = {"promoted", "demoted", "added", "removed"}
+
+
+def as_date(value, where):
+    if isinstance(value, date):
+        return value
+    try:
+        return date.fromisoformat(str(value))
+    except ValueError:
+        errors.append(f"{CHANGELOG_REL}: {where} has invalid date '{value}'")
+        return None
+
+
+def semver(value):
+    return tuple(int(part) for part in str(value).split("."))
+
+
+def rfc_status(number):
+    """The `Status:` line of the one curriculum RFC with this number, or an error string."""
+    if number == "0000":
+        return None, "0000 is not a curriculum RFC"
+    matches = sorted((ROOT / "rfcs").glob(f"{number}-*.md"))
+    if len(matches) != 1:
+        return None, f"RFC {number} resolves to {len(matches)} files in rfcs/"
+    for line in matches[0].read_text(encoding="utf-8").splitlines():
+        if line.startswith("- Status:"):
+            return line.removeprefix("- Status:").strip(), None
+    return None, f"RFC {number} has no '- Status:' line"
+
+
+changelog_path = ROOT / CHANGELOG_REL
+if not changelog_path.exists():
+    errors.append(f"missing {CHANGELOG_REL}")
+else:
+    try:
+        changelog = yaml.safe_load(changelog_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        changelog = {}
+        errors.append(f"{CHANGELOG_REL}: YAML parse error: {exc}")
+
+    # Rule 5: releases increase in version and do not go back in date; the latest is the manifest's version.
+    releases = {}
+    previous = None
+    for index, release in enumerate(changelog.get("releases") or []):
+        version, day = str(release.get("version")), as_date(release.get("date"), f"releases[{index}]")
+        releases[version] = day
+        if previous and (semver(version) <= semver(previous[0]) or (day and previous[1] and day < previous[1])):
+            errors.append(f"{CHANGELOG_REL}: release {version} must follow {previous[0]} in version and date")
+        previous = (version, day)
+    manifest_version = str(manifest.get("version"))
+    if previous and previous[0] != manifest_version:
+        errors.append(
+            f"{CHANGELOG_REL}: latest release {previous[0]} differs from curriculum/manifest.yaml "
+            f"version {manifest_version}"
+        )
+
+    replayed = {}
+    last_day = None
+    for index, event in enumerate(changelog.get("changes") or []):
+        where = f"changes[{index}]"
+        kind = event.get("kind")
+        day = as_date(event.get("date"), where)
+
+        # Rule 5: events in date order; a release covers only events on or before its date.
+        if day and last_day and day < last_day:
+            errors.append(f"{CHANGELOG_REL}: {where} dated {day} comes after an event dated {last_day}")
+        last_day = day or last_day
+        release = event.get("release")
+        if release is not None:
+            if str(release) not in releases:
+                errors.append(f"{CHANGELOG_REL}: {where} names unknown release '{release}'")
+            elif day and releases[str(release)] and releases[str(release)] < day:
+                errors.append(f"{CHANGELOG_REL}: {where} is dated after its release {release}")
+
+        # Rule 1: references exist (or, for removals, no longer exist).
+        for cid in event.get("competencies") or []:
+            if kind in IN_CATALOG_KINDS and cid not in catalog:
+                errors.append(f"{CHANGELOG_REL}: {where} {kind} '{cid}' is not in curriculum/catalog.yaml")
+            if kind == "removed" and cid in catalog:
+                errors.append(f"{CHANGELOG_REL}: {where} removed '{cid}' is still in curriculum/catalog.yaml")
+            if kind in STATUS_AFTER:
+                replayed[cid] = STATUS_AFTER[kind]
+            elif kind == "removed":
+                replayed.pop(cid, None)
+        for lab in event.get("labs") or []:
+            exists = (ROOT / "labs" / str(lab)).is_dir()
+            if kind == "lab-added" and not exists:
+                errors.append(f"{CHANGELOG_REL}: {where} lab-added '{lab}' has no labs/{lab}/ directory")
+            if kind == "lab-removed" and exists:
+                errors.append(f"{CHANGELOG_REL}: {where} lab-removed '{lab}' still has a labs/{lab}/ directory")
+
+        # Rule 3: a catalog change names an Accepted curriculum RFC.
+        rfc = event.get("rfc")
+        if rfc is not None:
+            status, problem = rfc_status(str(rfc))
+            if problem:
+                errors.append(f"{CHANGELOG_REL}: {where}: {problem}")
+            elif kind in DECIDED_KINDS and not status.startswith("Accepted"):
+                errors.append(f"{CHANGELOG_REL}: {where}: RFC {rfc} is '{status}', not Accepted")
+        elif kind in DECIDED_KINDS and not event.get("pre_rfc"):
+            errors.append(f"{CHANGELOG_REL}: {where} {kind} needs an rfc")
+
+        # Rule 4: pre_rfc is closed to events after the RFC process began, and carries a note.
+        if event.get("pre_rfc"):
+            if not event.get("note"):
+                errors.append(f"{CHANGELOG_REL}: {where} pre_rfc requires a note")
+            if day and day > PRE_RFC_LAST_DAY:
+                errors.append(f"{CHANGELOG_REL}: {where} pre_rfc is allowed only on or before {PRE_RFC_LAST_DAY}")
+
+    # Rule 2: replaying the events gives the catalog's statuses; an item with no event is coverage.
+    for cid, item in catalog.items():
+        expected = replayed.get(cid, "coverage")
+        if item.get("status") != expected:
+            errors.append(
+                f"{CHANGELOG_REL}: '{cid}' is {item.get('status')} in the catalog but {expected} after replaying "
+                "the change log; append the matching event"
+            )
 
 
 # ---------------------------------------------------------------------------

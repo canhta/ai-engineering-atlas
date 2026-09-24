@@ -69,8 +69,10 @@ Before publishing a curriculum release:
 1. `make check` is green;
 2. [curriculum/STATUS.md](../curriculum/STATUS.md) matches the catalog;
 3. ready-route sources are within their review intervals;
-4. CHANGELOG entries describe learner-facing changes;
+4. every curriculum change since the last release is an event in [curriculum/changelog.yaml](../curriculum/changelog.yaml): add the release to `releases`, set `release` on its unreleased events, set `version` in `curriculum/manifest.yaml` to match, and regenerate [CHANGELOG.md](../CHANGELOG.md) with `python scripts/render_status.py --write`;
 5. migrations are documented if evidence/progress semantics changed;
-6. tag the commit only after the release state is internally consistent.
+6. tag the commit only after the release state is internally consistent: an annotated `vX.Y.Z` tag, pushed explicitly.
+
+0.1.0 (2026-09-22) is recorded in the change log and not tagged: no commit can be shown to be the 0.1.0 state ([RFC 0021](../rfcs/0021-dated-curriculum-changes.md#releases-and-tags)). The first tag is `v0.2.0`.
 
 Do not create a release solely because many files changed.

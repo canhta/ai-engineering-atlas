@@ -48,12 +48,17 @@ A catalog item may become **ready** when it has:
 - delayed review when required;
 - project integration when required;
 - learner-facing README;
+- a `promoted` event appended to [curriculum/changelog.yaml](curriculum/changelog.yaml): the day it lands on `main` and the Accepted RFC that decided it;
 - passing repository validation.
 
 The golden examples are:
 
 - [Self-Attention](curriculum/06-llm-foundations/self-attention/)
 - [AI Evaluation and Experimentation](curriculum/07-ai-engineering/evaluation/)
+
+## Dated curriculum changes
+
+[curriculum/changelog.yaml](curriculum/changelog.yaml) records when each competency was promoted, demoted, added, or removed, and when each lab was added or removed, with the RFC that decided it ([RFC 0021](rfcs/0021-dated-curriculum-changes.md)). Append the event, oldest first, in the same pull request as the change; `make check` replays the events and fails when the result differs from the catalog. Then run `python scripts/render_status.py --write`, which regenerates the curriculum block of [CHANGELOG.md](CHANGELOG.md).
 
 ## Learner-facing source links
 

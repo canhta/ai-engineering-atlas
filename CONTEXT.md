@@ -24,6 +24,10 @@ _Avoid_: progress percentage, completion, done
 What a learner produced or showed for a competency, which is the only thing that moves a learner state.
 _Avoid_: completion, check-off
 
+**Change event**:
+A dated entry in `curriculum/changelog.yaml`: a competency promoted, demoted, added, or removed, or a lab added or removed, with the RFC that decided it. The "What changed" page and CHANGELOG.md render these.
+_Avoid_: release note, commit, update
+
 **Plate**:
 The atlas map: one tile per competency, grouped by domain.
 _Avoid_: grid, graph, skill tree

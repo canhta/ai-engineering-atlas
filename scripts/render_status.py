@@ -8,6 +8,20 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "curriculum" / "catalog.yaml"
 STATUS = ROOT / "curriculum" / "STATUS.md"
+CHANGE_LOG = ROOT / "curriculum" / "changelog.yaml"
+CHANGELOG_MD = ROOT / "CHANGELOG.md"
+CHANGES_START = "<!-- curriculum-changes:start -->"
+CHANGES_END = "<!-- curriculum-changes:end -->"
+
+# How each change kind reads in CHANGELOG.md (the site's labels live in curriculum/presentation.yaml).
+KIND_LABELS = {
+    "promoted": "Promoted to ready",
+    "demoted": "Moved back to mapped",
+    "added": "Added to the map",
+    "removed": "Removed from the map",
+    "lab-added": "Lab added",
+    "lab-removed": "Lab removed",
+}
 
 DOMAIN_LABELS = {
     "software-engineering": "Software Engineering",
@@ -103,29 +117,119 @@ def render():
     return "\n".join(lines)
 
 
+def lab_title(lab: str) -> str:
+    readme = ROOT / "labs" / lab / "README.md"
+    if readme.exists():
+        for line in readme.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# "):
+                return line[2:].strip()
+    return lab
+
+
+def rfc_link(number: str) -> str:
+    matches = sorted((ROOT / "rfcs").glob(f"{number}-*.md"))
+    return f"[RFC {number}]({matches[0].relative_to(ROOT).as_posix()})" if matches else f"RFC {number}"
+
+
+def render_changes():
+    """CHANGELOG.md with its curriculum block rendered from curriculum/changelog.yaml.
+
+    Keep a Changelog order: Unreleased first, then releases newest first; days newest first.
+    """
+    doc = yaml.safe_load(CATALOG.read_text(encoding="utf-8")) or {}
+    catalog = {item["id"]: item for item in doc.get("competencies", []) or []}
+    log = yaml.safe_load(CHANGE_LOG.read_text(encoding="utf-8")) or {}
+    releases = [(str(r["version"]), str(r["date"])) for r in log.get("releases") or []]
+    events = log.get("changes") or []
+
+    def names(event):
+        out = []
+        for cid in event.get("competencies") or []:
+            item = catalog.get(cid)
+            if item and item.get("route"):
+                out.append(f"[{item['title']}]({item['route']}/)")
+            elif item:
+                out.append(f"{item['title']} (`{cid}`)")
+            else:
+                out.append(f"`{cid}`")
+        out += [f"[{lab_title(lab)}](labs/{lab}/)" for lab in event.get("labs") or []]
+        return ", ".join(out)
+
+    def line(event):
+        if event.get("rfc"):
+            decision = f" under {rfc_link(str(event['rfc']))}"
+        elif event.get("pre_rfc"):
+            decision = " before the RFC process"
+        else:
+            decision = ""
+        text = f"- {KIND_LABELS[event['kind']]}{decision}: {names(event)}."
+        if event.get("note"):
+            text += f" {event['note']}"
+        return text
+
+    def section(heading, members):
+        lines = [f"### {heading}", ""]
+        if not members:
+            return lines + ["No curriculum changes recorded.", ""]
+        for day in sorted({str(e["date"]) for e in members}, reverse=True):
+            lines += [f"#### {day}", ""]
+            lines += [line(e) for e in reversed(members) if str(e["date"]) == day]
+            lines.append("")
+        return lines
+
+    lines = [
+        CHANGES_START,
+        "",
+        "Generated from [curriculum/changelog.yaml](curriculum/changelog.yaml) by `scripts/render_status.py`. "
+        "Do not edit by hand.",
+        "",
+    ]
+    lines += section("Unreleased", [e for e in events if not e.get("release")])
+    for version, day in reversed(releases):
+        lines += section(f"{version} — {day}", [e for e in events if str(e.get("release")) == version])
+    lines.append(CHANGES_END)
+
+    current = CHANGELOG_MD.read_text(encoding="utf-8")
+    if CHANGES_START not in current or CHANGES_END not in current:
+        print(f"CHANGELOG.md needs the markers {CHANGES_START} and {CHANGES_END}")
+        sys.exit(1)
+    before = current.split(CHANGES_START, 1)[0]
+    after = current.split(CHANGES_END, 1)[1]
+    return before + "\n".join(lines) + after
+
+
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Render curriculum/STATUS.md and CHANGELOG.md's curriculum block.")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
 
-    rendered = render()
+    outputs = [
+        (STATUS, render(), "curriculum/catalog.yaml"),
+        (CHANGELOG_MD, render_changes(), "curriculum/changelog.yaml"),
+    ]
 
     if args.write:
-        STATUS.write_text(rendered, encoding="utf-8")
-        print(f"Wrote {STATUS.relative_to(ROOT)}")
+        for path, rendered, _ in outputs:
+            path.write_text(rendered, encoding="utf-8")
+            print(f"Wrote {path.relative_to(ROOT)}")
         return
 
     if args.check:
-        current = STATUS.read_text(encoding="utf-8") if STATUS.exists() else ""
-        if current != rendered:
-            print("curriculum/STATUS.md is out of date.")
+        stale = False
+        for path, rendered, source in outputs:
+            current = path.read_text(encoding="utf-8") if path.exists() else ""
+            if current != rendered:
+                print(f"{path.relative_to(ROOT)} is out of date with {source}.")
+                stale = True
+            else:
+                print(f"OK: {path.relative_to(ROOT)} matches {source}")
+        if stale:
             print("Run: python scripts/render_status.py --write")
             sys.exit(1)
-        print("OK: curriculum/STATUS.md matches catalog.yaml")
         return
 
-    print(rendered)
+    print(outputs[0][1])
 
 
 if __name__ == "__main__":

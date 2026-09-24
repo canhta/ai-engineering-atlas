@@ -1,0 +1,119 @@
+# Dated record of curriculum changes (rfcs/0021-dated-curriculum-changes.md).
+#
+# The catalog says what is ready now; this file says when it changed and under which decision.
+# Append new events at the end, oldest first, in the same pull request that changes the catalog or
+# a lab. `make check` replays the events and fails when the result differs from catalog.yaml.
+#
+# - date: the calendar day the change lands on main (written by the author, checked by the reviewer).
+# - kind: promoted | demoted | added | removed | lab-added | lab-removed.
+# - rfc: the Accepted curriculum RFC that decided it (not for lab events).
+# - pre_rfc and note: only for the closed set of promotions made before the RFC process existed.
+# - release: a version from `releases`; an event without one is unreleased.
+# - evidence: the commit that made the change, for reviewers (backfilled events only).
+#
+# Generated from it: the "Curriculum changes" block of CHANGELOG.md (scripts/render_status.py)
+# and the site's /{lang}/changelog/ page (scripts/build_site_data.py).
+version: 1
+
+releases:
+  - { version: 0.1.0, date: 2026-09-22 }
+
+changes:
+  - { date: 2026-09-22, kind: lab-added, labs: [self-attention], evidence: 24cf142 }
+  - { date: 2026-09-22, kind: lab-added, labs: [evaluation-harness], evidence: f1f7ebb }
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [llm.self-attention]
+    pre_rfc: true
+    note: Promoted in its competency.yaml before the catalog existed; no RFC reviews this promotion.
+    evidence: 7e8ec10
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [ai.evaluation]
+    pre_rfc: true
+    note: Promoted in its competency.yaml before the catalog existed; no RFC reviews this promotion.
+    evidence: fd80d56
+  - { date: 2026-09-22, kind: lab-added, labs: [model-selection], evidence: 25bda1c }
+  - { date: 2026-09-22, kind: lab-added, labs: [agentic-design], evidence: 519c435 }
+  - { date: 2026-09-22, kind: lab-added, labs: [prompt-injection-boundaries], evidence: dd142e5 }
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [ai.model-selection, agents.deterministic-vs-agentic, security.prompt-injection]
+    pre_rfc: true
+    note: Promoted in one commit with no RFC; no RFC reviews this promotion.
+    evidence: 55cdff8
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [ai.product-framing, retrieval.search, ai.embeddings]
+    rfc: "0001"
+    evidence: 954cff8
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [retrieval.chunking, retrieval.reranking, retrieval.rag-evaluation]
+    rfc: "0002"
+    evidence: 2886e3a
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [ai.context-engineering, ai.tool-calling]
+    rfc: "0003"
+    evidence: 0b55e1a
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [ai.structured-outputs, ai.uncertainty-abstention-trust]
+    rfc: "0004"
+    evidence: a590927
+  - { date: 2026-09-22, kind: promoted, competencies: [agents.state, agents.memory], rfc: "0005", evidence: 67a40b5 }
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [agents.planning, agents.verification]
+    rfc: "0006"
+    evidence: 1b70709
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [agents.long-running, agents.orchestration]
+    rfc: "0007"
+    evidence: 090db43
+  - { date: 2026-09-22, kind: removed, competencies: [agents.fundamentals], rfc: "0008", evidence: bf4fa80 }
+  - { date: 2026-09-22, kind: promoted, competencies: [agents.multi-agent], rfc: "0008", evidence: 1e126c7 }
+  - { date: 2026-09-22, kind: promoted, competencies: [agents.mcp], rfc: "0009", evidence: 424f570 }
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [production.model-gateway, production.observability]
+    rfc: "0010"
+    evidence: 22e04ba
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [production.versioning, production.release-engineering]
+    rfc: "0011"
+    evidence: 2b4659f
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [production.cost, production.latency]
+    rfc: "0012"
+    evidence: 0bad0a4
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [production.caching, production.streaming]
+    rfc: "0013"
+    evidence: 4ace729
+  - { date: 2026-09-22, kind: promoted, competencies: [production.drift], rfc: "0014", evidence: 811f3ee }
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [production.architecture, production.mlops-llmops]
+    rfc: "0015"
+    evidence: e4d86e5
+  - date: 2026-09-22
+    kind: promoted
+    competencies: [security.tool-permissions, security.data-exfiltration]
+    rfc: "0016"
+    evidence: 14f92ed
+  - date: 2026-09-23
+    kind: promoted
+    competencies: [security.auth, security.multi-tenant, security.sandboxing]
+    rfc: "0017"
+    evidence: dd699ea
+  - date: 2026-09-23
+    kind: promoted
+    competencies: [security.guardrails, security.supply-chain-data]
+    rfc: "0018"
+    evidence: 6914ab1
