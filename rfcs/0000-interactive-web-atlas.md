@@ -264,7 +264,7 @@ This phase extends the Phase 2 Worker with stored evidence and is out of scope f
 - Should `seeded` routes appear with a "draft" label in v1, or stay hidden until ready?
 - Should the map show coverage nodes by default, or only behind a "show full coverage map" toggle?
 - Should decision-lab answers ever leave the browser (e.g. shared for peer review), or stay local until Phase 3?
-- Which model provider and model IDs does the project key use?
+- Which model provider and model IDs does the project key use? Decided 2026-09-24 by the owner: DeepSeek 4.1 Flash and OpenAI GPT 5.6 Lunar, behind the provider interface; exact API model IDs are set in Worker config.
 - SSO providers: GitHub and Google, or others (e.g. Microsoft)?
 - Budget numbers: questions per user per day, and a global monthly spending cap.
 

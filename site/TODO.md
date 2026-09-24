@@ -158,7 +158,7 @@ roadmap.sh gives every collection an index, a maintenance signal, and a shareabl
 
 ## Owner decisions still open
 
-- Model provider and model IDs for the project key
+- ~~Model provider and model IDs for the project key~~ Decided 2026-09-24: DeepSeek 4.1 Flash and OpenAI GPT 5.6 Lunar, not Claude. Confirm the exact API model IDs and each provider's API data-retention and training terms (the privacy page promises learner input is not stored) before the AI proxy slice ships
 - SSO providers beyond GitHub and Google
 - Budgets: questions per user per day, global monthly cap
 - Should decision-lab answers ever leave the browser before Phase 3
