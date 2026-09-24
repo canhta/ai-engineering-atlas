@@ -19,6 +19,7 @@ The solution should not be the default learning path. Attempt the task first.
 ## Current labs
 
 - [Self-Attention](self-attention/)
+- [Decoding and Sampling](decoding-sampling/)
 - [Evaluation Harness](evaluation-harness/)
 - [Model Selection](model-selection/)
 - [Workflow vs Agent](agentic-design/)

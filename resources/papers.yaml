@@ -86,3 +86,25 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 365
+
+  - id: paper.vllm-pagedattention
+    type: paper
+    title: Efficient Memory Management for Large Language Model Serving with PagedAttention
+    author: Woosuk Kwon et al. (SOSP 2023)
+    url: https://arxiv.org/abs/2309.06180
+    roles: [curriculum-evidence, teaching, production-reference]
+    covers: [llm.kv-cache, llm.inference, serving]
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365
+
+  - id: paper.lost-in-the-middle
+    type: paper
+    title: "Lost in the Middle: How Language Models Use Long Contexts"
+    author: Nelson F. Liu et al. (TACL 2023)
+    url: https://arxiv.org/abs/2307.03172
+    roles: [curriculum-evidence, teaching, assessment]
+    covers: [llm.context-windows, long-context]
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365

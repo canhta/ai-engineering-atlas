@@ -16,9 +16,10 @@ resources:
     author: Sebastian Raschka
     url: https://github.com/rasbt/LLMs-from-scratch
     roles: [curriculum-evidence, teaching, practice]
-    covers: [llm-foundations, llm.self-attention]
+    covers:
+      [llm-foundations, llm.self-attention, llm.tokenization, llm.decoding-sampling, llm.kv-cache, llm.context-windows]
     source_verified: true
-    last_checked: 2026-09-22
+    last_checked: 2026-09-24
     review_interval_days: 365
 
   - id: book.chip-huyen-ai-engineering

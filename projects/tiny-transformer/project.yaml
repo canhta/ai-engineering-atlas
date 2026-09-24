@@ -18,7 +18,7 @@ milestones:
   - id: tokenizer-and-embeddings
     title: Tokenizer and embeddings
     ask: Implement or configure a simple tokenizer and embedding lookup.
-    integrates: [] # F6
+    integrates: [llm.tokenization] # RFC 0023; the embedding half waits for llm.embeddings (F6)
     evidence: [experiment-results, explanation]
   - id: self-attention
     title: Self-attention
@@ -38,10 +38,10 @@ milestones:
   - id: decoding
     title: Decoding
     ask: At minimum compare deterministic decoding with one stochastic strategy.
-    integrates: [] # F6
-    evidence: [explanation]
+    integrates: [llm.decoding-sampling] # RFC 0023
+    evidence: [experiment-results, explanation]
   - id: inference-behavior
     title: Inference behavior
     ask: Measure the system rather than stopping at generation.
-    integrates: [] # F6
-    evidence: [experiment-results]
+    integrates: [llm.kv-cache, llm.inference] # RFC 0023
+    evidence: [code, tests, experiment-results, failure-analysis]

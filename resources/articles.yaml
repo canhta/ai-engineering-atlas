@@ -53,3 +53,26 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: article.hf-how-to-generate
+    type: article
+    title: "How to generate text: using different decoding methods for language generation with Transformers"
+    author: Patrick von Platen (Hugging Face)
+    url: https://huggingface.co/blog/how-to-generate
+    roles: [teaching]
+    covers: [llm.decoding-sampling]
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365
+
+  - id: article.thinking-machines-nondeterminism
+    type: article
+    title: Defeating Nondeterminism in LLM Inference
+    author: Horace He and Thinking Machines Lab
+    url: https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/
+    roles: [teaching, production-reference]
+    covers: [llm.decoding-sampling, llm.inference]
+    notes: Published 2025-09-10. Explains why temperature-0 API outputs still vary (batch-size-dependent kernels under changing server load).
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365

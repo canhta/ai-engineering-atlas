@@ -52,6 +52,8 @@ Depending on prior knowledge, this may use an autodiff framework or a small auto
 
 Implement or configure a simple tokenizer and embedding lookup.
 
+Use the [Tokenization competency](../../curriculum/06-llm-foundations/tokenization/) as the learning route for the tokenizer half. The embedding half (`llm.embeddings`) has no ready route yet.
+
 **Experiment:**
 
 - inspect sequence-length changes under at least two tokenization choices or vocabularies;
@@ -101,13 +103,19 @@ The goal is not a leaderboard score. The goal is to connect training behavior to
 
 Implement or compare decoding behavior.
 
-At minimum compare deterministic decoding with one stochastic strategy.
+Use the [Decoding and Sampling competency](../../curriculum/06-llm-foundations/decoding-sampling/) as the learning route; its [lab](../../labs/decoding-sampling/) implements the selection functions against tests.
+
+At minimum compare deterministic decoding with one stochastic strategy. If you skipped Language-model training, decode with pretrained GPT-2 weights (Raschka, _Build a Large Language Model (From Scratch)_, §5.5) instead of your own model.
+
+**Experiment:** sample several completions per setting and count distinct outputs; record the prediction first.
 
 **Evidence:** explain why the same trained model can produce different output behavior under different decoding choices.
 
 ## Inference behavior
 
 Measure the system rather than stopping at generation.
+
+Use the [KV Cache](../../curriculum/06-llm-foundations/kv-cache/) and [LLM Inference Behavior](../../curriculum/06-llm-foundations/inference/) competencies as the learning routes.
 
 Inspect at least:
 
@@ -117,7 +125,13 @@ Inspect at least:
 - memory if observable;
 - effect of repeated autoregressive decoding.
 
-When the curriculum introduces KV cache or quantization, extend this same project rather than creating a disconnected demo.
+**KV cache extension:** add a KV cache to this model. Write a test that cached and uncached greedy decoding produce identical tokens. Inject one cache bug (forget to append, wrong attention-mask length, cache not cleared between prompts) and diagnose it from where the output diverges.
+
+**Measurement:** time to first token across at least four prompt lengths, per-token latency across at least three output lengths, with and without the cache, and batch 1 against batch N. Record each prediction before running and explain each curve with prefill and decode.
+
+**Evidence:** cache code and equivalence test, the measurement tables, and the diagnosed cache bug.
+
+When the curriculum introduces quantization, extend this same project rather than creating a disconnected demo.
 
 ## Completion evidence
 

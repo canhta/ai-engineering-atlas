@@ -52,9 +52,9 @@ stages:
       - { id: llm.self-attention }
       - { id: llm.transformer } # "transformer blocks"
       - { id: llm.decoding-sampling } # "decoding"
-      - { id: llm.context-windows }
       - { id: llm.kv-cache }
       - { id: llm.inference } # "inference cost/latency"
+      - { id: llm.context-windows } # after kv-cache, its prerequisite (RFC 0023)
   - id: evaluation
     title: Evaluation as a core engineering skill
     guidance: |

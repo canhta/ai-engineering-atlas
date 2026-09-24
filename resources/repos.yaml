@@ -47,3 +47,27 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 180
+
+  - id: repo.karpathy-minbpe
+    type: repository
+    title: minbpe
+    author: Andrej Karpathy
+    url: https://github.com/karpathy/minbpe
+    roles: [practice]
+    covers: [llm.tokenization, bpe]
+    notes: exercise.md steps 1-4 (BasicTokenizer, RegexTokenizer, match tiktoken cl100k_base, special tokens); the repository code is the reference solution.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365
+
+  - id: repo.lost-in-the-middle
+    type: repository
+    title: Lost in the Middle — code and data
+    author: Nelson F. Liu et al.
+    url: https://github.com/nelson-liu/lost-in-the-middle
+    roles: [practice, assessment]
+    covers: [llm.context-windows]
+    notes: Released multi-document QA data (qa_data/10_total_documents, answer passage at position 0, 4, or 9) and evaluation scripts. It publishes inputs and scripts, not model responses.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365

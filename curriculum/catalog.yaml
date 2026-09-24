@@ -86,7 +86,13 @@ competencies:
   - { id: dl.softmax, title: Softmax and Normalized Scores, domain: deep-learning, status: coverage }
 
   # LLM Foundations
-  - { id: llm.tokenization, title: Tokenization, domain: llm-foundations, status: coverage }
+  - {
+      id: llm.tokenization,
+      title: Tokenization,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/tokenization,
+    }
   - { id: llm.embeddings, title: LLM Embeddings and Input Representations, domain: llm-foundations, status: coverage }
   - { id: llm.transformer, title: Transformer Architecture, domain: llm-foundations, status: coverage }
   - {
@@ -98,11 +104,35 @@ competencies:
     }
   - { id: llm.positional-information, title: Positional Information, domain: llm-foundations, status: coverage }
   - { id: llm.training, title: Language Model Training, domain: llm-foundations, status: coverage }
-  - { id: llm.decoding-sampling, title: Decoding and Sampling, domain: llm-foundations, status: coverage }
-  - { id: llm.context-windows, title: Context Windows, domain: llm-foundations, status: coverage }
-  - { id: llm.kv-cache, title: KV Cache, domain: llm-foundations, status: coverage }
+  - {
+      id: llm.decoding-sampling,
+      title: Decoding and Sampling,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/decoding-sampling,
+    }
+  - {
+      id: llm.context-windows,
+      title: Context Windows,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/context-windows,
+    }
+  - {
+      id: llm.kv-cache,
+      title: KV Cache,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/kv-cache,
+    }
   - { id: llm.quantization, title: Quantization and Compression, domain: llm-foundations, status: coverage }
-  - { id: llm.inference, title: LLM Inference Behavior, domain: llm-foundations, status: coverage }
+  - {
+      id: llm.inference,
+      title: LLM Inference Behavior,
+      domain: llm-foundations,
+      status: ready,
+      route: curriculum/06-llm-foundations/inference,
+    }
 
   # Applied AI Engineering
   - {

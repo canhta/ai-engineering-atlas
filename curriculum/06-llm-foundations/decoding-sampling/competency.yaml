@@ -1,0 +1,99 @@
+id: llm.decoding-sampling
+title: Decoding and Sampling
+domain: llm-foundations
+status: ready
+competency_types:
+  - mechanism
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - retained
+why: "The same trained model gives different outputs under different decoding settings. Downstream routes depend on the mechanism: evaluation measures run-to-run variance of stochastic systems (ai.evaluation) and structured outputs rely on constrained decoding (ai.structured-outputs). Without the mechanism, \"temperature 0 is deterministic\" and \"top-p makes it creative\" are slogans that fail in exactly the cases an engineer has to debug."
+curriculum_evidence:
+  - course.stanford-cs336
+  - book.raschka-llm-from-scratch
+  - course.huggingface-llm
+prerequisites:
+  - llm.tokenization
+  - dl.softmax
+prerequisite_support:
+  dl.softmax:
+    diagnostic: "Given logits [2.0, 1.0, 0.1], compute softmax at temperature 1 and at temperature 0.5, and state which way the distribution moves as temperature approaches 0."
+    source: course.stanford-cs336
+    locator: "Assignment 1 handout (cs336_assignment1_basics.pdf, version 26.0.3), section 6 \"Generating text\", paragraphs \"Softmax\" and \"Decoder tricks\" (equation 23 and the note on tau → 0)"
+    purpose: "Patch softmax and temperature scaling as used at the output layer."
+outcomes:
+  - "Explain the autoregressive loop: logits for the last position, distribution, choose a token, append, repeat until end-of-sequence or a limit."
+  - "Implement greedy, temperature, top-k, and top-p selection over a logits vector."
+  - "Predict how temperature, top-k, and top-p change the candidate set and the distribution."
+  - "Explain why beam search suits input-grounded tasks and why greedy and beam search tend to repeat in open-ended generation."
+  - "Explain why greedy decoding or temperature 0 does not by itself guarantee identical outputs from a hosted provider."
+  - "Explain constrained decoding as masking the candidate set before selection."
+diagnostic:
+  tasks:
+    - "Given a 6-token probability vector, list the candidate set for top-k=3 and for top-p=0.8."
+    - "Predict what happens to output diversity if temperature is applied to the probabilities (divide and renormalize) instead of to the logits."
+    - "Explain why a greedy decoder can loop, and name two ways out."
+    - "Explain why the same request at temperature 0 can still return different text from a hosted API."
+  pass_condition: "Skip guided instruction only if the learner answers the conceptual items and passes the decoding lab tests without the reference solution."
+learning_route:
+  mental_model:
+    - source: book.raschka-llm-from-scratch
+      locator: "Chapter 5, section 5.3 \"Decoding strategies to control randomness\": 5.3.1 \"Temperature scaling\", 5.3.2 \"Top-k sampling\", 5.3.3 \"Modifying the text generation function\"; the generation loop itself is Chapter 4, section 4.7 \"Generating text\""
+      purpose: "Temperature and top-k added one at a time to a generate function you can read end to end."
+    - source: course.stanford-cs336
+      locator: "Assignment 1 handout (version 26.0.3), section 6 \"Generating text\": paragraphs \"Softmax\", \"Decoding\", and \"Decoder tricks\", equations 21-24"
+      purpose: "Precise definitions: the one-step decoding equation, temperature-scaled softmax, and the nucleus set V(p) as the smallest set whose mass reaches p."
+    - source: article.hf-how-to-generate
+      locator: "Sections \"Greedy Search\", \"Beam search\", \"Sampling\", \"Top-K Sampling\", and \"Top-p (nucleus) sampling\""
+      purpose: "Greedy, beam search, and sampling compared on the same prompt, including repetition under greedy and beam search."
+    - source: article.thinking-machines-nondeterminism
+      locator: "Introduction (before \"The original sin: floating-point non-associativity\") and section \"Batch invariance and “determinism”\""
+      purpose: "Why temperature 0 selects the argmax in theory yet a hosted API can still return different text: the logits themselves change with server batch size."
+  guided_practice:
+    - source: book.raschka-llm-from-scratch
+      locator: "Chapter 5, section 5.3.3, run with the pretrained GPT-2 weights loaded in section 5.5 \"Loading pretrained weights from OpenAI\""
+      task: "Run generate with pretrained GPT-2 at three temperature and top-k settings on one prompt; predict each output's character before running it."
+  independent_practice:
+    - artifact: labs/decoding-sampling/
+      task: "Implement softmax with temperature, greedy, top-k, top-p, sampling, and the generation loop; pass the tests, run the diversity experiment, diagnose one injected bug, and complete the constrained-decoding transfer."
+  visual:
+    - source: visual.transformer-explainer
+      locator: "Section \"Output Probabilities\", and the Temperature and Sampling (Top-k, Top-p) controls in the top bar"
+      purpose: "Watch GPT-2's next-token distribution reshape as each control moves."
+    - source: docs.hf-generation-strategies
+      locator: "\"Basic decoding methods\": \"Greedy search\", \"Sampling\", \"Beam search\""
+      purpose: "Map each mechanism to the generate() arguments a production library exposes (do_sample, num_beams, temperature, top_k, top_p)."
+experiments:
+  - "For one prompt, sample 20 completions at three temperatures and count distinct outputs; record the prediction first."
+  - "Show a greedy repetition loop and remove it with sampling or a repetition penalty."
+  - "Mask the candidate set to a small allowed vocabulary and show that the output always complies: the mechanism behind constrained decoding."
+exit_evidence:
+  - "Decoding functions (greedy, temperature, top-k, top-p, sampling) passing tests, including the top-p boundary token and temperature 0."
+  - "One diagnosed decoding bug, with the predicted and the observed symptom."
+  - "The diversity experiment with a prediction recorded before running."
+  - "An explanation, from the mechanism, of why the same trained model produces different behavior under different decoding choices."
+transfer:
+  task: "Given a structured-output requirement such as \"the answer must be one of five labels\", explain which decoding-level control enforces it, which controls only make it more likely, and what must still be validated after generation."
+review:
+  suggested_intervals_days: [1, 7, 30]
+  retrieval_tasks:
+    - "Write the top-p selection rule from memory."
+    - "Given logits and a temperature, compute the distribution by hand."
+    - "Explain one reason temperature 0 is not a determinism guarantee."
+project_spines:
+  - foundation
+resources:
+  teaching:
+    - book.raschka-llm-from-scratch
+    - course.stanford-cs336
+    - article.hf-how-to-generate
+    - article.thinking-machines-nondeterminism
+  visual:
+    - visual.transformer-explainer
+  reference:
+    - docs.hf-generation-strategies
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

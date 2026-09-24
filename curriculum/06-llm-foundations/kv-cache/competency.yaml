@@ -1,0 +1,88 @@
+id: llm.kv-cache
+title: KV Cache
+domain: llm-foundations
+status: ready
+competency_types:
+  - mechanism
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - retained
+why: "The KV cache is why generating each new token does not recompute the whole prefix, and why long contexts and many concurrent requests exhaust accelerator memory. Provider prompt caching (production.caching) reuses this cache across requests that share a prefix; RFC 0013 separates the two and leaves the internal half to this node. An engineer who can implement and size the cache can predict when it helps, what it costs in memory, and which prompt changes invalidate it."
+curriculum_evidence:
+  - course.stanford-cs336
+  - book.raschka-llm-from-scratch
+  - paper.vllm-pagedattention
+prerequisites:
+  - llm.self-attention
+  - llm.decoding-sampling
+  - llm.transformer
+prerequisite_support:
+  llm.transformer:
+    diagnostic: "Given a model with n_layers, n_heads, and head_dim, state where K and V are computed in each transformer block and how many K and V tensors one forward pass produces."
+    source: book.raschka-llm-from-scratch
+    locator: "Chapter 4, section 4.5 \"Connecting attention and linear layers in a transformer block\" and section 4.6 \"Coding the GPT model\""
+    purpose: "Patch only the stacked-block structure needed to see that the cache is kept per layer."
+outcomes:
+  - "Explain why past K and V can be reused under causal masking and why only the newest query is needed at each step."
+  - "Implement incremental decoding with a cache and show that its output equals full recomputation."
+  - "Calculate KV-cache memory per token and per request from layers, heads, head dimension, and bytes per element."
+  - "Predict how cache memory grows with sequence length and batch size."
+  - "Explain the trade-off: less compute per step, more memory held per request."
+  - "Relate provider prompt-prefix caching to KV reuse across requests with an identical prefix."
+diagnostic:
+  tasks:
+    - "Given the cached-attention equation, state which tensors are new at step t and which are read from the cache."
+    - "Compute the per-token KV-cache size for OPT-13B (hidden size 5120, 40 layers, FP16) and check it against the PagedAttention paper's 800 KB."
+    - "Explain why changing one token early in a prompt invalidates a provider's prompt cache for everything after it."
+    - "Explain why a KV cache is used at inference time but not during training."
+  pass_condition: "Skip guided instruction only if the learner answers the conceptual items and can add a cache to a small GPT implementation with an equivalence test, without the reference."
+learning_route:
+  mental_model:
+    - source: book.raschka-llm-from-scratch
+      locator: "Bonus material ch04/03_kv-cache/README.md: sections \"How it works\" and \"KV cache implementation\" (steps 1-5: registering the cache buffers, forward pass with use_cache, clearing the cache, propagating use_cache, using the cache in generation)"
+      purpose: "The cache added to a GPT implementation you already know, one marked change at a time."
+    - source: docs.hf-kv-cache
+      locator: "Sections \"Attention matrices\", \"Cache class\", and \"Cache storage implementation\""
+      purpose: "The cached-attention equation, per-layer caching, cache tensor shapes [batch, heads, seq_len, head_dim], and the rule that the attention mask covers past plus new tokens."
+    - source: paper.vllm-pagedattention
+      locator: "Section 2.2 \"LLM Service & Autoregressive Generation\" and section 3 \"Memory Challenges in LLM Serving\" (the OPT-13B calculation: 2 × 5120 × 40 × 2 bytes = 800 KB per token)"
+      purpose: "Why KV memory, not compute, limits how many requests a server can batch, including fragmentation."
+  guided_practice:
+    - source: book.raschka-llm-from-scratch
+      locator: "Bonus material ch04/03_kv-cache/README.md: \"Simple performance comparison\" and \"KV cache advantages and disadvantages\""
+      task: "Run gpt_ch04.py and gpt_with_kv_cache.py, reproduce the tokens/sec comparison on your hardware, and confirm both produce the same text; then explain the linear memory growth the README describes."
+  independent_practice:
+    - artifact: projects/tiny-transformer/
+      task: "In the Tiny Transformer inference-behavior milestone, add a KV cache to your model (or to Raschka's gpt_ch04.py as starter state, without opening gpt_with_kv_cache.py), write a test that cached and uncached greedy decoding produce identical tokens, and diagnose one injected cache bug from the divergence."
+experiments:
+  - "Predict, then measure, tokens per second with and without the cache at two generation lengths."
+  - "Plot cache size against sequence length and compare it with your calculation."
+  - "Inject a cache bug (forget to append the new K/V, keep the attention mask at the uncached length, do not clear the cache between prompts) and diagnose it from output divergence against the uncached reference."
+exit_evidence:
+  - "Cached decoding that matches uncached decoding token for token under greedy decoding, with a test."
+  - "A KV-memory calculation for a named open model, checked against the model's published configuration."
+  - "One diagnosed injected cache bug."
+  - "An explanation of provider prompt-prefix caching in terms of KV reuse."
+transfer:
+  task: "Given a sliding-window cache (Raschka bonus README, \"Optimizing the KV Cache Implementation\", Tip 2), predict what the model can no longer attend to and which tasks would degrade, then check your prediction with a long prompt."
+review:
+  suggested_intervals_days: [1, 7, 30]
+  retrieval_tasks:
+    - "Write the cached-attention update from memory."
+    - "Compute KV memory for a new model configuration."
+    - "Explain one cache bug and the symptom it produces."
+project_spines:
+  - foundation
+resources:
+  teaching:
+    - book.raschka-llm-from-scratch
+    - docs.hf-kv-cache
+  practice:
+    - book.raschka-llm-from-scratch
+  production-reference:
+    - paper.vllm-pagedattention
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

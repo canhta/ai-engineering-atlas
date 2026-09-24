@@ -121,3 +121,8 @@ changes:
     kind: promoted
     competencies: [security.safety-governance, security.privacy-legal]
     rfc: "0019"
+  - { date: 2026-09-24, kind: lab-added, labs: [decoding-sampling] }
+  - date: 2026-09-24
+    kind: promoted
+    competencies: [llm.tokenization, llm.decoding-sampling, llm.kv-cache, llm.inference, llm.context-windows]
+    rfc: "0023"

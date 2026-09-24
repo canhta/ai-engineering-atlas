@@ -20,3 +20,39 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 365
+
+  - id: visual.karpathy-gpt-tokenizer
+    type: visual
+    title: Let's build the GPT Tokenizer
+    author: Andrej Karpathy
+    url: https://www.youtube.com/watch?v=zduSFxRajkE
+    roles: [teaching, visual]
+    covers: [llm.tokenization, bpe]
+    notes: Lecture video (2h13m) with chapter timestamps in the description; the companion exercise is repo.karpathy-minbpe.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365
+
+  - id: visual.tiktokenizer
+    type: visual
+    title: Tiktokenizer
+    author: dqbd
+    url: https://tiktokenizer.vercel.app/
+    roles: [visual]
+    covers: [llm.tokenization]
+    notes: Interactive tokenizer with a model selector, per-token boundaries, and a token count.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 180
+
+  - id: visual.transformer-explainer
+    type: visual
+    title: Transformer Explainer
+    author: Polo Club of Data Science, Georgia Tech
+    url: https://poloclub.github.io/transformer-explainer/
+    roles: [visual]
+    covers: [llm.decoding-sampling, transformers]
+    notes: GPT-2 small running in the browser; the temperature, top-k, and top-p controls reshape the output probabilities.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 365

@@ -38,9 +38,9 @@ resources:
     author: Anthropic Applied AI team
     url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
     roles: [curriculum-evidence, teaching, production-reference, reference]
-    covers: [ai.context-engineering, agents, context-management]
+    covers: [ai.context-engineering, agents, context-management, llm.context-windows]
     source_verified: true
-    last_checked: 2026-09-22
+    last_checked: 2026-09-24
     review_interval_days: 90
 
   - id: article.openai-harness-engineering
@@ -711,8 +711,9 @@ resources:
       - errors
       - saturation
       - tail-latency
+      - llm.inference
     source_verified: true
-    last_checked: 2026-09-22
+    last_checked: 2026-09-24
     review_interval_days: 180
 
   - id: docs.finops-unit-economics
@@ -1446,3 +1447,37 @@ resources:
     source_verified: true
     last_checked: 2026-09-23
     review_interval_days: 60
+
+  - id: docs.openai-tiktoken-counting
+    type: documentation
+    title: OpenAI Cookbook — How to count tokens with tiktoken
+    author: OpenAI
+    url: https://developers.openai.com/cookbook/examples/how_to_count_tokens_with_tiktoken
+    roles: [practice, production-reference]
+    covers: [llm.tokenization, token-counting]
+    notes: Section 6 states that the chat-message token count is an estimate.
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 90
+
+  - id: docs.hf-generation-strategies
+    type: documentation
+    title: Hugging Face Transformers — Generation strategies
+    author: Hugging Face
+    url: https://huggingface.co/docs/transformers/generation_strategies
+    roles: [reference]
+    covers: [llm.decoding-sampling]
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 180
+
+  - id: docs.hf-kv-cache
+    type: documentation
+    title: Hugging Face Transformers — How caching works
+    author: Hugging Face
+    url: https://huggingface.co/docs/transformers/cache_explanation
+    roles: [teaching, reference]
+    covers: [llm.kv-cache]
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 180
