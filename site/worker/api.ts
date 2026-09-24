@@ -37,6 +37,9 @@ const isProvider = (value: string): value is ProviderId => (PROVIDERS as readonl
 /** Where to go after sign-in: a path on this site, never another host or the API. */
 export function safeReturn(value: string | null): string {
   if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("\\")) return "/";
+  // URL parsing drops tabs and newlines, which would turn "/<tab>/host" into "//host".
+  // eslint-disable-next-line no-control-regex
+  if (/[\u0000-\u001f\u007f]/.test(value)) return "/";
   if (value === "/api" || value.startsWith("/api/")) return "/";
   return value;
 }
@@ -118,7 +121,9 @@ export async function handle(request: Request, env: Env, deps: Deps): Promise<Re
   if (!pending || pending.provider !== id) {
     return text(400, "Sign-in expired or did not start on this site. Go back and sign in again.", clearCookie);
   }
-  const back = new URL(pending.returnTo, url.origin).toString();
+  // The return path was checked at the start; resolving it must still land on this origin.
+  const resolved = new URL(pending.returnTo, url.origin);
+  const back = resolved.origin === url.origin ? resolved.toString() : `${url.origin}/`;
   // The learner declined at the provider: go back where they were, signed out.
   if (url.searchParams.has("error")) return redirect(back, clearCookie);
   const code = url.searchParams.get("code");

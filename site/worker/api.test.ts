@@ -222,6 +222,11 @@ test("the return path stays on this site", () => {
   for (const bad of [null, "", "https://evil.example/", "//evil.example/", "/\\evil.example", "/api/me", "en/"]) {
     assert.equal(safeReturn(bad), "/", String(bad));
   }
+  // URL parsing drops tabs and newlines, so these would resolve to //evil.example on another host.
+  for (const bad of ["/\t/evil.example/", "/\n/evil.example/", "/\r/evil.example/", "/\u0000/x"]) {
+    assert.equal(safeReturn(bad), "/", JSON.stringify(bad));
+    assert.equal(new URL(safeReturn(bad), "https://ai-eng.canhta.com").origin, "https://ai-eng.canhta.com");
+  }
 });
 
 // ------------------------------------------------------------------ OAuth callback
