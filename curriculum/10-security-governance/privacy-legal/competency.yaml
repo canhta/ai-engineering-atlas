@@ -1,0 +1,108 @@
+id: security.privacy-legal
+title: "AI Privacy and Data Governance"
+domain: security-governance
+status: ready
+competency_types:
+  - engineering-skill
+  - design-judgment
+  - production-competency
+target_level: L3
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "An AI feature processes personal data in more places than its main database: prompts, retrieved documents, model-provider calls, logs and traces, caches, vector stores, memories, analytics, feedback and human-review queues, and anything used for evaluation or tuning. Privacy problems can arise from that processing even when no security breach occurs, so securing the data is necessary but not sufficient. The engineering capability is to inventory the processing, decide purpose and minimization deliberately, make retention, correction, and deletion actually work across derived stores, treat anonymity as a claim that needs evidence, and hand privacy and legal specialists an evidence package they can review instead of an assurance that 'we do not store PII'."
+curriculum_evidence:
+  - standard.nist-privacy-framework
+  - standard.gdpr
+  - guide.edpb-opinion-28-2024
+prerequisites:
+  - ai.product-framing
+  - security.data-exfiltration
+outcomes:
+  - "Create a data-processing inventory for an AI feature."
+  - "Identify personal, sensitive, derived, and inferred data, and the data subjects and affected groups they relate to."
+  - "Record source, purpose, destination, storage, access, retention, and deletion behavior for each material processing activity."
+  - "Distinguish privacy risk from cybersecurity risk and name a privacy problem that can arise without a breach."
+  - "Make purpose-limitation and minimization decisions and reject data collection that is not necessary for the intended purpose."
+  - "Define retention and deletion behavior from product need and identified obligations rather than arbitrary defaults."
+  - "Explain how model providers, logs, vector stores, memories, analytics, and human-review queues change the data-processing ecosystem."
+  - "Distinguish de-identification, pseudonymization, and stronger anonymity claims."
+  - "Treat model anonymity as an evidence claim to be demonstrated or rejected, not an assumption from architecture."
+  - "Identify where model outputs may reveal or infer personal information."
+  - "Define correction and deletion propagation across derived stores where the product requires it."
+  - "Test one deletion or forgetting flow end to end across every relevant store."
+  - "Map relevant individual-control obligations (access, correction, deletion, objection) to concrete product behavior."
+  - "Identify when an impact assessment or specialist privacy/legal review is required, and record the trigger or the reason it is not."
+  - "Maintain a jurisdiction/applicability record without inventing legal interpretations."
+  - "Document vendor and third-party processor responsibilities, including model-provider data-use settings."
+  - "Measure whether privacy controls break required product behavior."
+diagnostic:
+  tasks:
+    - "List every place a user's question and the retrieved documents can persist in a RAG assistant with tracing, caching, and conversation memory enabled."
+    - "Give one privacy problem that can occur in a fully secure system with no breach, and name the NIST Privacy Framework function that addresses it."
+    - "A teammate says the fine-tuned model is anonymous because the training rows were deleted. State what evidence would be needed before accepting or rejecting that claim."
+    - "A user asks to have their data deleted. Name the derived stores that must be checked and how you would prove deletion happened."
+    - "Decide whether a proposed new analytics field is necessary for the product purpose, and write the minimization decision."
+  pass_condition: "Skip the mental-model sources only if the learner inventories processing beyond the primary database, separates privacy risk from security risk, makes explicit purpose and minimization decisions, can design and verify deletion across derived stores, demands evidence for anonymity claims, and escalates legal interpretation instead of supplying it."
+learning_route:
+  mental_model:
+    - source: standard.nist-privacy-framework
+      locator: "Version 1.0 (January 16, 2020): Section 1.0 subsection \"Privacy Risk Management\" with 1.2.1 \"Cybersecurity and Privacy Risk Management\" (Figure 2) and 1.2.2 \"Privacy Risk Assessment\"; Section 2.0 \"Privacy Framework Basics\" subsection \"Core\" (Figure 4); Appendix A \"Privacy Framework Core\" categories Inventory and Mapping (ID.IM-P), Risk Assessment (ID.RA-P), Data Processing Ecosystem Risk Management (ID.DE-P), Governance Policies, Processes, and Procedures (GV.PO-P), Data Processing Management (CT.DM-P), and Disassociated Processing (CT.DP-P). Version 1.1 is an initial public draft as of 2026-09-24: record which version you applied."
+      purpose: "Build the privacy model: privacy risk comes from problematic data actions across the whole processing lifecycle, overlaps with but is not the same as cybersecurity risk, and is managed through inventory, risk assessment, governance, data-processing control, communication, and protection."
+    - source: standard.gdpr
+      locator: "Article 5 \"Principles relating to processing of personal data\", Article 17 \"Right to erasure ('right to be forgotten')\", Article 25 \"Data protection by design and by default\", and Article 35 \"Data protection impact assessment\""
+      purpose: "Jurisdiction-specific example (EU/EEA): see how one binding regulation turns purpose limitation, minimization, storage limitation, erasure, privacy by design, and impact assessment into obligations, then map product behavior to them and escalate interpretation. Do not treat GDPR as a universal rule or invent legal bases or retention periods."
+    - source: guide.edpb-opinion-28-2024
+      locator: "Section 3.2 \"On the circumstances under which AI models could be considered anonymous and the related demonstration\" (3.2.1 and 3.2.2, including 3.2.2.4 \"Documentation\"); skim Sections 3.3 on legitimate interest and 3.4 on unlawfully processed development data for what they leave to case-by-case assessment"
+      purpose: "Jurisdiction-specific example (EU/EEA supervisory guidance): see why a model trained on personal data is not anonymous by default, what evidence an anonymity claim needs, and why the assessment is case by case."
+  guided_practice:
+    - task: "Trace one Knowledge Assistant question end to end and write the data-processing inventory rows it creates: request, retrieval, model-provider call, response, trace/log, cache, memory, feedback, and evaluation reuse. For each row record purpose, data categories, store, processor, access, retention, and deletion path, then mark one row you would stop collecting and why."
+  independent_practice:
+    - artifact: projects/knowledge-assistant/governance-and-privacy/
+      task: "Build the Knowledge Assistant privacy package: verified data-processing inventory and data-flow diagram, classification, purpose and minimization decisions, retention/deletion/correction record, provider data-use record, privacy-risk assessment including one anonymity claim with evidence or explicit rejection, applicability matrix with an impact-assessment trigger decision and one privacy/legal escalation, an end-to-end deletion test across every relevant store, and a utility check showing the controls preserve required behavior."
+experiments:
+  - "Delete a synthetic user's data and verify it is gone from the primary store, vector index, caches, conversation memory, logs/traces, analytics, and evaluation sets, or record why a store is out of scope and how long data persists there."
+  - "Correct a synthetic user's record and verify retrieval, cached answers, and memory stop returning the old value."
+  - "Remove one field from collection or logging and measure whether any required product behavior or diagnostic capability breaks."
+  - "Change a model-provider data-use or retention setting in configuration and verify the processing inventory and provider record detect the change."
+  - "Pseudonymize trace identifiers and test whether a combination of remaining fields can re-identify a synthetic user."
+  - "Prompt the assistant to infer personal attributes from retrieved documents and record whether outputs reveal or infer personal information beyond the stated purpose."
+  - "Introduce a new processing activity (for example, reusing conversations for evaluation) and verify it triggers a new privacy review before it runs."
+exit_evidence:
+  - "A data-processing inventory, verified against the running system, covers request, retrieval, model provider, output, logs/traces, caches, memory, analytics, feedback, and evaluation reuse where they exist."
+  - "A data-flow (source-to-sink) diagram matches the inventory."
+  - "Personal, sensitive, and inferred data are classified, and data subjects are identified."
+  - "Each material processing activity has a stated purpose and a minimization decision; at least one unnecessary collection is removed."
+  - "Storage locations and external processors/providers are listed with their responsibilities and data-use configuration."
+  - "Retention and deletion policies state their basis in product need or identified obligations rather than defaults."
+  - "One correction/update path propagates to derived stores."
+  - "One end-to-end deletion test covers every relevant store and records any store where data persists and for how long."
+  - "The logging/observability content policy states what may and may not be recorded."
+  - "The privacy-risk assessment names problematic data actions separately from security threats."
+  - "One de-identification or anonymity claim is supported with evidence or explicitly rejected."
+  - "One data-processing change is shown to trigger a new review."
+  - "The applicability matrix records jurisdiction, source, version/date, applicability assumption, unresolved interpretation, and escalation owner."
+  - "An impact-assessment (for example, DPIA) trigger is recorded, or the reason it is not required is recorded and reviewed."
+  - "At least one privacy/legal question is escalated to a named reviewer rather than resolved by the learner or a model."
+  - "A utility check shows the privacy controls preserve enough product behavior, or records the accepted trade-off."
+  - "Material privacy risks appear in the AI risk register from the governance route."
+  - "A statement that the system does not store PII, without a verified processing inventory, is not accepted as evidence."
+transfer:
+  task: "Apply the method to a different AI feature with different data, such as a voice assistant that records calls or a support agent with long-term memory, in a second jurisdiction. Rebuild the inventory, deletion propagation, and applicability matrix, and state which Knowledge Assistant decisions no longer hold."
+project_spines:
+  - ai-system
+  - production
+resources:
+  teaching:
+    - standard.nist-privacy-framework
+    - guide.edpb-opinion-28-2024
+  practice:
+    - standard.nist-privacy-framework
+  production-reference:
+    - standard.nist-privacy-framework
+    - standard.gdpr
+    - guide.edpb-opinion-28-2024
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

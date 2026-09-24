@@ -1,8 +1,10 @@
-# RFC: AI Governance and Privacy Engineering Slice
+# RFC 0019 — AI Governance and Privacy Engineering Slice
 
-- Status: Draft
+- Status: Accepted (owner approval, 2026-09-24)
 - Author: AI-assisted draft for repository owner review
 - Created: 2026-09-23
+- Reviewed: 2026-09-24
+- Review decision: Approved by the repository owner on 2026-09-24, including both learner-facing title changes
 
 ## Problem
 
@@ -507,30 +509,30 @@ Proposed artifacts:
 
 ## Promotion gate
 
-Neither route should move from `coverage` to `ready` until:
+Neither route should move from `coverage` to `ready` until the items below hold. All 22 were met on 2026-09-24; see [Review outcome](#review-outcome).
 
-1. this RFC is reviewed;
-2. the two learner-facing title changes are explicitly approved;
-3. exact source locators are rechecked during route authoring;
-4. NIST AI RMF / GenAI and Privacy Framework sources are registered after approval;
-5. jurisdiction-specific legal sources are labeled as such rather than generalized;
-6. NIST AI RMF 1.0 revision status is represented honestly;
-7. the Knowledge Assistant governance-and-privacy evidence package is inspectable;
-8. Governance evidence includes a real deployment decision and residual risk;
-9. Governance evidence includes risk ownership and review triggers;
-10. Governance distinguishes internal policy from external legal obligations;
-11. Privacy evidence includes a verified data-processing inventory;
-12. Privacy evidence includes minimization, retention, correction, and deletion;
-13. Privacy includes one end-to-end deletion/forgetting test;
-14. anonymity/de-identification claims require evidence;
-15. jurisdiction/applicability assumptions are explicit;
-16. uncertain legal interpretation routes to an appropriate reviewer rather than model-generated certainty;
-17. prerequisite-cycle validation passes;
-18. learner-facing source blocks are generated;
-19. `curriculum/STATUS.md` is regenerated;
-20. `site/src/data/atlas.json` is generated only through `scripts/build_site_data.py --write`;
-21. `make check` and `make site-check` pass;
-22. review outcome is recorded before promotion.
+- [x] 1. this RFC is reviewed;
+- [x] 2. the two learner-facing title changes are explicitly approved;
+- [x] 3. exact source locators are rechecked during route authoring;
+- [x] 4. NIST AI RMF / GenAI and Privacy Framework sources are registered after approval;
+- [x] 5. jurisdiction-specific legal sources are labeled as such rather than generalized;
+- [x] 6. NIST AI RMF 1.0 revision status is represented honestly;
+- [x] 7. the Knowledge Assistant governance-and-privacy evidence package is inspectable;
+- [x] 8. Governance evidence includes a real deployment decision and residual risk;
+- [x] 9. Governance evidence includes risk ownership and review triggers;
+- [x] 10. Governance distinguishes internal policy from external legal obligations;
+- [x] 11. Privacy evidence includes a verified data-processing inventory;
+- [x] 12. Privacy evidence includes minimization, retention, correction, and deletion;
+- [x] 13. Privacy includes one end-to-end deletion/forgetting test;
+- [x] 14. anonymity/de-identification claims require evidence;
+- [x] 15. jurisdiction/applicability assumptions are explicit;
+- [x] 16. uncertain legal interpretation routes to an appropriate reviewer rather than model-generated certainty;
+- [x] 17. prerequisite-cycle validation passes;
+- [x] 18. learner-facing source blocks are generated;
+- [x] 19. `curriculum/STATUS.md` is regenerated;
+- [x] 20. `site/src/data/atlas.json` is generated only through `scripts/build_site_data.py --write`;
+- [x] 21. `make check` and `make site-check` pass;
+- [x] 22. review outcome is recorded before promotion.
 
 ## Alternatives considered
 
@@ -622,19 +624,44 @@ Add a Knowledge Assistant `governance-and-privacy/` package and integrate govern
 
 ## Review checklist
 
-- [ ] Stable IDs remain appropriate.
-- [ ] New titles describe assessable capabilities better than the existing umbrella labels.
-- [ ] Governance and Privacy remain distinct.
-- [ ] Governance target depth L3 is appropriate.
-- [ ] Privacy target depth L3 is appropriate.
-- [ ] Governance requires a risk register, owners, evidence, controls, residual risk, and a deployment decision.
-- [ ] Governance distinguishes policy from jurisdiction-specific legal obligations.
-- [ ] Privacy distinguishes privacy risk from cybersecurity risk.
-- [ ] Privacy requires a data-processing inventory rather than a PII-only checklist.
-- [ ] Privacy requires minimization, retention, correction, deletion, and a deletion test.
-- [ ] Anonymity claims require evidence.
-- [ ] Legal applicability is recorded with jurisdiction/version/context.
-- [ ] Uncertain legal interpretation is escalated rather than invented.
-- [ ] Current NIST AI RMF revision status is represented honestly.
-- [ ] Knowledge Assistant integration extends existing evidence lineage.
-- [ ] Reviewer explicitly approves or requests changes before implementation.
+- [x] Stable IDs remain appropriate.
+- [x] New titles describe assessable capabilities better than the existing umbrella labels.
+- [x] Governance and Privacy remain distinct.
+- [x] Governance target depth L3 is appropriate.
+- [x] Privacy target depth L3 is appropriate.
+- [x] Governance requires a risk register, owners, evidence, controls, residual risk, and a deployment decision.
+- [x] Governance distinguishes policy from jurisdiction-specific legal obligations.
+- [x] Privacy distinguishes privacy risk from cybersecurity risk.
+- [x] Privacy requires a data-processing inventory rather than a PII-only checklist.
+- [x] Privacy requires minimization, retention, correction, deletion, and a deletion test.
+- [x] Anonymity claims require evidence.
+- [x] Legal applicability is recorded with jurisdiction/version/context.
+- [x] Uncertain legal interpretation is escalated rather than invented.
+- [x] Current NIST AI RMF revision status is represented honestly.
+- [x] Knowledge Assistant integration extends existing evidence lineage.
+- [x] Reviewer explicitly approves or requests changes before implementation.
+
+## Review outcome
+
+Recorded 2026-09-24, before promotion.
+
+- **Decision:** approved by the repository owner, including the titles **AI Governance and Risk Management** (`security.safety-governance`) and **AI Privacy and Data Governance** (`security.privacy-legal`). Stable IDs unchanged; no catalog node added or removed.
+- **Result:** both routes promoted to `ready`. Counts: 115 catalog, 43 ready, 72 coverage. Security & Governance is 10 / 10 ready.
+- **Prerequisites:** `ai.product-framing`, `ai.evaluation`, `production.release-engineering`, and `security.data-exfiltration` are all ready, so no prerequisite bridge is needed. `validate_repo.py` passes the prerequisite checks.
+- **Project integration:** `projects/knowledge-assistant/governance-and-privacy/` with eight templates (risk register, applicability matrix, escalation record, governance decision, data-processing inventory, privacy-risk assessment, retention/deletion record, change review). New Knowledge Assistant milestones: 38 `ai-risk-governance` and 39 `privacy-and-data-governance`. The incident-and-feedback loop becomes milestone 40 and now ends in a governance and privacy change review.
+
+### Source recheck (2026-09-24)
+
+Every locator was checked against the live source before it was committed.
+
+| Resource ID                       | Source                                          | Locators verified                                                                                                                                                          | Finding                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| --------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `standard.nist-ai-rmf-core`       | NIST AI RMF 1.0, AI RMF Core page               | Sections 5, 5.1–5.4; Tables 1–4                                                                                                                                            | The page states that AI RMF 1.0 is being updated and a revised version is in progress. The route tells learners to record the version applied.                                                                                                                                                                                                                                                                                                                                  |
+| `guide.nist-ai-rmf-playbook`      | NIST AI RMF Playbook                            | Landing-page statements that the Playbook is not a checklist and that suggestions are voluntary; entries GOVERN 1.3, GOVERN 2.1, MAP 1.1, MAP 5.1, MEASURE 3.2, MANAGE 1.3 | As described in this RFC.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `standard.nist-ai-600-1`          | NIST AI 600-1 (July 26, 2024)                   | Section 2 and 2.2, 2.4, 2.7, 2.12; Section 3 introduction and GOVERN 1.3, MAP 1.1, MAP 5.1, MEASURE 3.2, MANAGE 1.3 tables; Appendix A.1.4, A.1.8                          | Section 3 states that not every suggested action applies to every AI actor.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `standard.eu-ai-act`              | EU AI Act, consolidated text of 27.07.2026      | Articles 4, 9, 13, 26, 27, 113                                                                                                                                             | **Differs from this RFC's evidence.** Regulation (EU) 2026/1744 amended the Act. It changed Article 4 (AI literacy is now a duty to take measures that support it, with no guaranteed level) and Article 113 (Chapter III Sections 1–3 apply from 2 December 2027 for Annex III high-risk systems and 2 August 2028 for Annex I systems). The route cites the consolidated text and Article 113, and the resource note asks reviewers to check for newer consolidated versions. |
+| `standard.nist-privacy-framework` | NIST Privacy Framework 1.0 (January 16, 2020)   | 1.2.1, 1.2.2 and Figure 2; section 2.0 subsection "Core"; Appendix A categories ID.IM-P, ID.RA-P, ID.DE-P, GV.PO-P, CT.DM-P, CT.DP-P                                       | Version 1.1 is only an initial public draft. The route cites 1.0 and names the draft. The resource points to the 1.0 document (DOI) because the locators are in it; the getting-started and landing pages from this RFC were used to confirm the version status.                                                                                                                                                                                                                |
+| `standard.gdpr`                   | GDPR, Regulation (EU) 2016/679                  | Articles 5, 17, 25, 35                                                                                                                                                     | No consolidated amendment. EUR-Lex lists amendment proposals 52025PC0501 and 52025PC0837, which are recorded in the resource note. Article 17 (right to erasure) was added to the RFC's list because the route requires a deletion test.                                                                                                                                                                                                                                        |
+| `guide.edpb-opinion-28-2024`      | EDPB Opinion 28/2024 (adopted 18 December 2024) | Section 3.2 (3.2.1, 3.2.2, 3.2.2.4); Sections 3.3, 3.4                                                                                                                     | The Opinion says model anonymity is assessed case by case.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+
+Jurisdiction-specific sources (EU AI Act, GDPR, EDPB) are labeled with their jurisdiction in the resource titles, notes, and route locators. Each route requires an applicability matrix and an escalation record, and does not teach these sources as universal rules.

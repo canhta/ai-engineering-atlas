@@ -9,3 +9,90 @@ resources:
     source_verified: true
     last_checked: 2026-09-22
     review_interval_days: 90
+
+  - id: standard.nist-ai-rmf-core
+    type: standard
+    title: NIST AI Risk Management Framework 1.0 — AI RMF Core
+    author: NIST
+    url: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers: [security.safety-governance, ai-risk-management, govern, map, measure, manage]
+    notes: "AI RMF 1.0 (NIST AI 100-1, January 2023). The page states that the AI RMF 1.0 is being updated and a revised version is in progress (checked 2026-09-24); recheck the version before each review."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 90
+
+  - id: guide.nist-ai-rmf-playbook
+    type: guide
+    title: NIST AI RMF Playbook
+    author: NIST
+    url: https://airc.nist.gov/airmf-resources/playbook/
+    roles: [curriculum-evidence, teaching, practice, reference]
+    covers: [security.safety-governance, ai-risk-management, suggested-actions]
+    notes: "Voluntary suggested actions per AI RMF subcategory; the Playbook states it is neither a checklist nor a set of steps to follow in its entirety."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 90
+
+  - id: standard.nist-ai-600-1
+    type: standard
+    title: "NIST AI 600-1 — AI RMF: Generative Artificial Intelligence Profile"
+    author: NIST
+    url: https://doi.org/10.6028/NIST.AI.600-1
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.safety-governance, generative-ai-risk, risk-profile, pre-deployment-testing, incident-disclosure]
+    notes: "Published July 26, 2024. Companion profile to AI RMF 1.0."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 180
+
+  - id: standard.eu-ai-act
+    type: standard
+    title: "EU AI Act — Regulation (EU) 2024/1689, consolidated text (EU jurisdiction)"
+    author: European Parliament and Council of the European Union
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R1689-20260727
+    roles: [curriculum-evidence, production-reference, reference]
+    covers:
+      [security.safety-governance, jurisdiction-specific, eu, risk-management-system, deployer-obligations, ai-literacy]
+    notes: "Jurisdiction-specific (EU) legal source, used as an example of external obligations, not as a universal governance framework. Consolidated version of 27.07.2026, as amended by Regulation (EU) 2026/1744, which changed Article 4 and the application dates in Article 113. The consolidated text has no legal effect; the Official Journal texts are authentic. EUR-Lex lists further amendment proposals: check for a newer consolidated version before each review."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 60
+
+  - id: standard.nist-privacy-framework
+    type: standard
+    title: "NIST Privacy Framework Version 1.0 (NIST CSWP 01162020)"
+    author: NIST
+    url: https://doi.org/10.6028/NIST.CSWP.01162020
+    roles: [curriculum-evidence, teaching, practice, production-reference, reference]
+    covers: [security.privacy-legal, privacy-risk, privacy-engineering, data-inventory, disassociated-processing]
+    notes: "Version 1.0, January 16, 2020. Version 1.1 exists only as an initial public draft (NIST CSWP 40 ipd) as of 2026-09-24; see https://www.nist.gov/privacy-framework for status and the 1.0-to-1.1 Core mapping."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 90
+
+  - id: standard.gdpr
+    type: standard
+    title: "GDPR — Regulation (EU) 2016/679 (EU/EEA jurisdiction)"
+    author: European Parliament and Council of the European Union
+    url: https://eur-lex.europa.eu/eli/reg/2016/679/oj
+    roles: [curriculum-evidence, production-reference, reference]
+    covers:
+      [security.privacy-legal, jurisdiction-specific, eu, data-protection-principles, erasure, privacy-by-design, dpia]
+    notes: "Jurisdiction-specific (EU/EEA) legal source, used as an example of external obligations. No consolidated amendment as of 2026-09-24; EUR-Lex lists Commission amendment proposals 52025PC0501 and 52025PC0837. Check the current text before each review."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 90
+
+  - id: guide.edpb-opinion-28-2024
+    type: guide
+    title: "EDPB Opinion 28/2024 on certain data protection aspects related to the processing of personal data in the context of AI models"
+    author: European Data Protection Board
+    url: https://www.edpb.europa.eu/documents/opinion-of-the-board-art-64/opinion-282024-on-certain-data-protection-aspects-related-to_en
+    roles: [curriculum-evidence, teaching, production-reference, reference]
+    covers:
+      [security.privacy-legal, jurisdiction-specific, eu, model-anonymity, legitimate-interest, unlawful-processing]
+    notes: "Adopted 18 December 2024. EU/EEA supervisory guidance; the EDPB states that anonymity of AI models is assessed case by case."
+    source_verified: true
+    last_checked: 2026-09-24
+    review_interval_days: 180

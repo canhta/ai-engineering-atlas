@@ -12,6 +12,8 @@ Security and governance concerns specific to AI systems, in addition to standard
 - [Sandboxing](sandboxing/) — contain untrusted execution with explicit filesystem, network, privilege, resource, lifetime, and cleanup boundaries.
 - [AI Supply Chain and Data Security](supply-chain-data/) — inventory and verify behavior-affecting artifacts, control data/model admission, test poisoning, and trace compromised upstreams to deployed releases.
 - [Guardrails](guardrails/) — place deterministic and probabilistic checks at the workflow boundary where violations can still be prevented, then measure their errors and failure behavior.
+- [AI Governance and Risk Management](safety-governance/) — turn product context, evaluation evidence, affected-party impact, and risk tolerance into owned risks, controls, and a recorded deployment decision; map external obligations and escalate interpretation.
+- [AI Privacy and Data Governance](privacy-legal/) — inventory AI data processing, decide purpose and minimization, make retention, correction, and deletion work across derived stores, and require evidence for anonymity claims.
 
 ## Scope
 
@@ -25,7 +27,9 @@ Security and governance concerns specific to AI systems, in addition to standard
 - model, data, package, and dependency provenance
 - poisoning and supply-chain risks
 - input/output/tool guardrail placement and calibration
-- privacy, retention, and deletion
+- AI risk registers, ownership, and deployment decisions
+- privacy, retention, correction, and deletion
+- jurisdiction applicability mapping and legal escalation
 - auditability and policy enforcement
 - model and dataset licensing
 

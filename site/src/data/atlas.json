@@ -13081,11 +13081,335 @@
       {
         "id": "security.safety-governance",
         "title": {
-          "en": "AI Safety and Governance"
+          "en": "AI Governance and Risk Management"
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "design-judgment",
+            "system-operation",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/safety-governance",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "An AI system can pass its evaluation suite, security review, and release gates and still be deployed without anyone having decided which harms matter, who owns them, how much residual risk is acceptable, or what evidence would reopen the decision. AI governance turns product context, evaluation evidence, affected-party impact, foreseeable misuse, and organizational risk tolerance into explicit risk decisions, owners, treatments, and deployment conditions. Responsible AI is the outcome of that work, not a separate set of principles. Legal obligations enter as jurisdiction-specific inputs that are mapped and escalated, not as universal rules or engineer-issued legal advice."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.product-framing"
+                },
+                {
+                  "ref": "ai.evaluation"
+                },
+                {
+                  "ref": "production.release-engineering"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Define the AI system boundary, intended use, and explicitly excluded uses and contexts."
+                },
+                {
+                  "en": "Identify affected users, non-users, operators, and external parties, including at least one beneficial outcome and one potential harm."
+                },
+                {
+                  "en": "Maintain a versioned AI risk register rather than a one-off risk list."
+                },
+                {
+                  "en": "Distinguish hazard, risk, impact, likelihood, uncertainty, and control."
+                },
+                {
+                  "en": "Identify known and reasonably foreseeable misuse of the system."
+                },
+                {
+                  "en": "Map each high-priority risk to evidence (evaluation results, tests, telemetry, incidents) rather than to severity adjectives alone."
+                },
+                {
+                  "en": "Define risk tolerance, severity criteria, and escalation thresholds before scoring individual risks."
+                },
+                {
+                  "en": "Assign an accountable owner to every material risk and control."
+                },
+                {
+                  "en": "Map each material risk to prevent, detect, mitigate, and recover controls, reusing existing security and release controls where they apply."
+                },
+                {
+                  "en": "Assess residual risk after controls and record who accepted it."
+                },
+                {
+                  "en": "Document risks that cannot currently be measured well and how they are tracked anyway."
+                },
+                {
+                  "en": "Define monitoring and review triggers that reopen the risk decision."
+                },
+                {
+                  "en": "Make a concrete deployment decision (ship, ship with conditions, hold, restrict, or reject) from recorded evidence."
+                },
+                {
+                  "en": "Record accepted, mitigated, transferred, deferred, and rejected risks with rationale."
+                },
+                {
+                  "en": "Distinguish internal product-policy choices from jurisdiction-specific external legal obligations."
+                },
+                {
+                  "en": "Maintain an applicability matrix for external obligations and standards that records jurisdiction, source, version/date, applicability assumption, unresolved interpretation, and escalation owner."
+                },
+                {
+                  "en": "Route uncertain legal applicability or interpretation to specialist legal/compliance review instead of resolving it with model-generated or engineer-generated certainty."
+                },
+                {
+                  "en": "Update the risk record after an incident, product change, or new evidence."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "Given a Knowledge Assistant feature description and its evaluation report, name the affected parties, one foreseeable misuse, and the evidence that would show whether the related risk is acceptable."
+                },
+                {
+                  "en": "Explain the difference between a hazard, a risk, a control, and a residual risk using one concrete example from an AI system you know."
+                },
+                {
+                  "en": "A stakeholder says the system is 'low risk' because accuracy is 94%. Explain what that claim leaves undecided and what you would ask for."
+                },
+                {
+                  "en": "Given a claim that the EU AI Act high-risk obligations apply to an internal documentation assistant, state what facts decide applicability and who should make the interpretation."
+                },
+                {
+                  "en": "Write the deployment decision you would record if one material risk has no owner and no measurement, and explain why."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip the mental-model sources only if the learner separates hazard, risk, control, and residual risk; ties each material risk to evidence and an owner; makes an explicit deployment decision with conditions; and separates internal policy from jurisdiction-specific legal obligations that require specialist review."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.nist-ai-rmf-core",
+                  "locator": {
+                    "en": "Section 5 \"AI RMF Core\" and subsections 5.1 \"Govern\", 5.2 \"Map\", 5.3 \"Measure\", 5.4 \"Manage\", including the category and subcategory tables of each function. AI RMF 1.0 is being revised (notice on the page, checked 2026-09-24): record the version you applied."
+                  },
+                  "purpose": {
+                    "en": "Build the operating model: governance is cross-cutting, Map establishes context and impacts, Measure produces evidence, Manage allocates treatment and decides whether deployment proceeds, and all four repeat across the lifecycle."
+                  }
+                },
+                {
+                  "resource": "guide.nist-ai-rmf-playbook",
+                  "locator": {
+                    "en": "Playbook landing page introduction (\"The Playbook is neither a checklist nor set of steps to be followed in its entirety\"; \"Playbook suggestions are voluntary\"), then \"Explore the Playbook\" entries for GOVERN 1.3, GOVERN 2.1, MAP 1.1, MAP 5.1, MEASURE 3.2, and MANAGE 1.3"
+                  },
+                  "purpose": {
+                    "en": "Use suggested actions for risk tolerance, ownership, context, impact likelihood/magnitude, hard-to-measure risks, and risk response as options selected by context, not as a compliance checklist."
+                  }
+                },
+                {
+                  "resource": "standard.nist-ai-600-1",
+                  "locator": {
+                    "en": "Section 2 \"Overview of Risks Unique to or Exacerbated by GAI\" (risk dimensions and the twelve risk categories, especially 2.2 Confabulation, 2.4 Data Privacy, 2.7 Human-AI Configuration, 2.12 Value Chain and Component Integration); Section 3 \"Suggested Actions to Manage GAI Risks\" introduction and tables for GOVERN 1.3, MAP 1.1, MAP 5.1, MEASURE 3.2, MANAGE 1.3; Appendix A.1.4 \"Pre-Deployment Testing\" and A.1.8 \"Incident Disclosure\""
+                  },
+                  "purpose": {
+                    "en": "Apply the AI RMF functions to generative AI risks, and see that not every suggested action applies to every actor or system."
+                  }
+                },
+                {
+                  "resource": "standard.eu-ai-act",
+                  "locator": {
+                    "en": "Consolidated text of 27.07.2026 (as amended by Regulation (EU) 2026/1744): Article 4 \"AI literacy\", Article 9 \"Risk management system\", Article 13 \"Transparency and provision of information to deployers\", Article 26 \"Obligations of deployers of high-risk AI systems\", Article 27 \"Fundamental rights impact assessment for high-risk AI systems\", and Article 113 \"Entry into force and application\" for the dates each part applies"
+                  },
+                  "purpose": {
+                    "en": "Jurisdiction-specific example (EU): read how one binding regulation defines a lifecycle risk-management system and deployer duties, then record which facts (role, risk classification, application date) decide whether it applies. Do not generalize EU high-risk obligations to all AI products or jurisdictions."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Using the Knowledge Assistant product brief, evaluation records, and security evidence, fill one row of the AI risk register end to end: hazard, affected party, likelihood and impact rationale, evidence source, owner, prevent/detect/mitigate/recover controls, residual risk, and review trigger. Compare the row with the NIST AI RMF Map and Manage subcategories you used and note which suggested actions you chose not to apply and why."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Build the Knowledge Assistant governance package: system/use boundary, affected-party map, risk taxonomy, versioned risk register with owners and controls, one materially uncertain risk, an obligation/applicability matrix with one explicit legal/compliance escalation, and a recorded deployment decision with conditions and review triggers. Then apply one incident or product change and update the register."
+                      },
+                      "path": "projects/knowledge-assistant/governance-and-privacy/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Score the same risk twice, once with severity adjectives only and once against written tolerance criteria and evidence, and record whether the deployment decision changes."
+                },
+                {
+                  "en": "Remove the owner from one material risk and verify the decision record forces a hold or an explicit acceptance by a named person."
+                },
+                {
+                  "en": "Pick one risk with no reliable metric and design how it is tracked (proxy signal, sampling, user reports, review cadence) instead of dropping it."
+                },
+                {
+                  "en": "Change the product context (a new user group, a new data source, or a write-capable tool) and trace which register rows, controls, and applicability rows must be re-reviewed."
+                },
+                {
+                  "en": "Replay an incident from the incident-and-feedback milestone and update likelihood, controls, residual risk, and review triggers in a new register version."
+                },
+                {
+                  "en": "Take one external obligation, record the applicability assumption and the unresolved question, and write the escalation you would send to legal/compliance without answering it yourself."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "The system/use boundary names intended uses and excluded uses and contexts."
+                },
+                {
+                  "en": "An affected-party map covers users, non-users, operators, and external parties, with at least one beneficial outcome and one potential harm."
+                },
+                {
+                  "en": "The risk taxonomy and severity/tolerance criteria were written before individual risks were scored."
+                },
+                {
+                  "en": "The versioned risk register links each high-priority risk to an evidence source, not only an adjective."
+                },
+                {
+                  "en": "At least one known or reasonably foreseeable misuse case is registered and treated."
+                },
+                {
+                  "en": "Every material risk and control has a named accountable owner."
+                },
+                {
+                  "en": "Each material risk maps to prevent, detect, mitigate, and recover controls, reusing existing security and release controls where applicable."
+                },
+                {
+                  "en": "Residual risk is assessed after controls and its acceptance is attributed."
+                },
+                {
+                  "en": "At least one risk that remains materially uncertain is documented with how it is tracked."
+                },
+                {
+                  "en": "The obligation/applicability matrix records jurisdiction, source, version/date, applicability assumption, unresolved interpretation, and escalation owner, and separates internal policy from external legal obligations."
+                },
+                {
+                  "en": "At least one legal/compliance question is escalated to a named reviewer rather than resolved by the learner or a model."
+                },
+                {
+                  "en": "The deployment decision is one of ship, ship with conditions, hold, restrict, or reject, and cites the register version and evidence it used."
+                },
+                {
+                  "en": "Post-release review triggers are defined and connected to monitoring or incident signals."
+                },
+                {
+                  "en": "One incident or product change produces a new register version with the changed rows explained."
+                },
+                {
+                  "en": "A slide or list of responsible AI principles without a concrete risk decision is not accepted as evidence."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Apply the same method to a different AI system with a different risk profile, such as a customer-facing agent that can issue refunds or a screening assistant used in hiring. Rebuild the affected-party map, tolerance criteria, and applicability matrix for a second jurisdiction or sector, and state which conclusions from the Knowledge Assistant no longer hold."
+              }
+            }
+          ]
         }
       },
       {
@@ -13438,11 +13762,332 @@
       {
         "id": "security.privacy-legal",
         "title": {
-          "en": "Privacy Governance Legal and Responsible AI"
+          "en": "AI Privacy and Data Governance"
         },
         "fields": {
           "domain": "security-governance",
-          "status": "coverage"
+          "status": "ready",
+          "target_level": "L3",
+          "competency_types": [
+            "engineering-skill",
+            "design-judgment",
+            "production-competency"
+          ],
+          "target_states": [
+            "demonstrated",
+            "transferred",
+            "applied"
+          ]
+        },
+        "page": {
+          "source_path": "curriculum/10-security-governance/privacy-legal",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "why",
+              "title": {
+                "en": "Why",
+                "vi": "Vì sao cần học"
+              },
+              "body": {
+                "en": "An AI feature processes personal data in more places than its main database: prompts, retrieved documents, model-provider calls, logs and traces, caches, vector stores, memories, analytics, feedback and human-review queues, and anything used for evaluation or tuning. Privacy problems can arise from that processing even when no security breach occurs, so securing the data is necessary but not sufficient. The engineering capability is to inventory the processing, decide purpose and minimization deliberately, make retention, correction, and deletion actually work across derived stores, treat anonymity as a claim that needs evidence, and hand privacy and legal specialists an evidence package they can review instead of an assurance that 'we do not store PII'."
+              }
+            },
+            {
+              "type": "prerequisites",
+              "id": "prerequisites",
+              "title": {
+                "en": "Prerequisites",
+                "vi": "Cần biết trước"
+              },
+              "items": [
+                {
+                  "ref": "ai.product-framing"
+                },
+                {
+                  "ref": "security.data-exfiltration"
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "outcomes",
+              "title": {
+                "en": "Outcomes",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "Create a data-processing inventory for an AI feature."
+                },
+                {
+                  "en": "Identify personal, sensitive, derived, and inferred data, and the data subjects and affected groups they relate to."
+                },
+                {
+                  "en": "Record source, purpose, destination, storage, access, retention, and deletion behavior for each material processing activity."
+                },
+                {
+                  "en": "Distinguish privacy risk from cybersecurity risk and name a privacy problem that can arise without a breach."
+                },
+                {
+                  "en": "Make purpose-limitation and minimization decisions and reject data collection that is not necessary for the intended purpose."
+                },
+                {
+                  "en": "Define retention and deletion behavior from product need and identified obligations rather than arbitrary defaults."
+                },
+                {
+                  "en": "Explain how model providers, logs, vector stores, memories, analytics, and human-review queues change the data-processing ecosystem."
+                },
+                {
+                  "en": "Distinguish de-identification, pseudonymization, and stronger anonymity claims."
+                },
+                {
+                  "en": "Treat model anonymity as an evidence claim to be demonstrated or rejected, not an assumption from architecture."
+                },
+                {
+                  "en": "Identify where model outputs may reveal or infer personal information."
+                },
+                {
+                  "en": "Define correction and deletion propagation across derived stores where the product requires it."
+                },
+                {
+                  "en": "Test one deletion or forgetting flow end to end across every relevant store."
+                },
+                {
+                  "en": "Map relevant individual-control obligations (access, correction, deletion, objection) to concrete product behavior."
+                },
+                {
+                  "en": "Identify when an impact assessment or specialist privacy/legal review is required, and record the trigger or the reason it is not."
+                },
+                {
+                  "en": "Maintain a jurisdiction/applicability record without inventing legal interpretations."
+                },
+                {
+                  "en": "Document vendor and third-party processor responsibilities, including model-provider data-use settings."
+                },
+                {
+                  "en": "Measure whether privacy controls break required product behavior."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "diagnostic",
+              "id": "diagnostic",
+              "title": {
+                "en": "Diagnostic",
+                "vi": "Kiểm tra đầu vào"
+              },
+              "step": true,
+              "tasks": [
+                {
+                  "en": "List every place a user's question and the retrieved documents can persist in a RAG assistant with tracing, caching, and conversation memory enabled."
+                },
+                {
+                  "en": "Give one privacy problem that can occur in a fully secure system with no breach, and name the NIST Privacy Framework function that addresses it."
+                },
+                {
+                  "en": "A teammate says the fine-tuned model is anonymous because the training rows were deleted. State what evidence would be needed before accepting or rejecting that claim."
+                },
+                {
+                  "en": "A user asks to have their data deleted. Name the derived stores that must be checked and how you would prove deletion happened."
+                },
+                {
+                  "en": "Decide whether a proposed new analytics field is necessary for the product purpose, and write the minimization decision."
+                }
+              ],
+              "pass_condition": {
+                "en": "Skip the mental-model sources only if the learner inventories processing beyond the primary database, separates privacy risk from security risk, makes explicit purpose and minimization decisions, can design and verify deletion across derived stores, demands evidence for anonymity claims, and escalates legal interpretation instead of supplying it."
+              }
+            },
+            {
+              "type": "sources",
+              "id": "sources",
+              "title": {
+                "en": "Learning route",
+                "vi": "Tài liệu cần đọc"
+              },
+              "step": true,
+              "rows": [
+                {
+                  "resource": "standard.nist-privacy-framework",
+                  "locator": {
+                    "en": "Version 1.0 (January 16, 2020): Section 1.0 subsection \"Privacy Risk Management\" with 1.2.1 \"Cybersecurity and Privacy Risk Management\" (Figure 2) and 1.2.2 \"Privacy Risk Assessment\"; Section 2.0 \"Privacy Framework Basics\" subsection \"Core\" (Figure 4); Appendix A \"Privacy Framework Core\" categories Inventory and Mapping (ID.IM-P), Risk Assessment (ID.RA-P), Data Processing Ecosystem Risk Management (ID.DE-P), Governance Policies, Processes, and Procedures (GV.PO-P), Data Processing Management (CT.DM-P), and Disassociated Processing (CT.DP-P). Version 1.1 is an initial public draft as of 2026-09-24: record which version you applied."
+                  },
+                  "purpose": {
+                    "en": "Build the privacy model: privacy risk comes from problematic data actions across the whole processing lifecycle, overlaps with but is not the same as cybersecurity risk, and is managed through inventory, risk assessment, governance, data-processing control, communication, and protection."
+                  }
+                },
+                {
+                  "resource": "standard.gdpr",
+                  "locator": {
+                    "en": "Article 5 \"Principles relating to processing of personal data\", Article 17 \"Right to erasure ('right to be forgotten')\", Article 25 \"Data protection by design and by default\", and Article 35 \"Data protection impact assessment\""
+                  },
+                  "purpose": {
+                    "en": "Jurisdiction-specific example (EU/EEA): see how one binding regulation turns purpose limitation, minimization, storage limitation, erasure, privacy by design, and impact assessment into obligations, then map product behavior to them and escalate interpretation. Do not treat GDPR as a universal rule or invent legal bases or retention periods."
+                  }
+                },
+                {
+                  "resource": "guide.edpb-opinion-28-2024",
+                  "locator": {
+                    "en": "Section 3.2 \"On the circumstances under which AI models could be considered anonymous and the related demonstration\" (3.2.1 and 3.2.2, including 3.2.2.4 \"Documentation\"); skim Sections 3.3 on legitimate interest and 3.4 on unlawfully processed development data for what they leave to case-by-case assessment"
+                  },
+                  "purpose": {
+                    "en": "Jurisdiction-specific example (EU/EEA supervisory guidance): see why a model trained on personal data is not anonymous by default, what evidence an anonymity claim needs, and why the assessment is case by case."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "practice",
+              "id": "practice",
+              "title": {
+                "en": "Practice",
+                "vi": "Thực hành"
+              },
+              "step": true,
+              "groups": [
+                {
+                  "label": {
+                    "en": "Guided",
+                    "vi": "Có hướng dẫn"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Trace one Knowledge Assistant question end to end and write the data-processing inventory rows it creates: request, retrieval, model-provider call, response, trace/log, cache, memory, feedback, and evaluation reuse. For each row record purpose, data categories, store, processor, access, retention, and deletion path, then mark one row you would stop collecting and why."
+                      }
+                    }
+                  ]
+                },
+                {
+                  "label": {
+                    "en": "Independent",
+                    "vi": "Tự làm"
+                  },
+                  "items": [
+                    {
+                      "text": {
+                        "en": "Build the Knowledge Assistant privacy package: verified data-processing inventory and data-flow diagram, classification, purpose and minimization decisions, retention/deletion/correction record, provider data-use record, privacy-risk assessment including one anonymity claim with evidence or explicit rejection, applicability matrix with an impact-assessment trigger decision and one privacy/legal escalation, an end-to-end deletion test across every relevant store, and a utility check showing the controls preserve required behavior."
+                      },
+                      "path": "projects/knowledge-assistant/governance-and-privacy/",
+                      "ref": "project:knowledge-assistant"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list",
+              "id": "experiments",
+              "title": {
+                "en": "Experiments",
+                "vi": "Thử nghiệm"
+              },
+              "items": [
+                {
+                  "en": "Delete a synthetic user's data and verify it is gone from the primary store, vector index, caches, conversation memory, logs/traces, analytics, and evaluation sets, or record why a store is out of scope and how long data persists there."
+                },
+                {
+                  "en": "Correct a synthetic user's record and verify retrieval, cached answers, and memory stop returning the old value."
+                },
+                {
+                  "en": "Remove one field from collection or logging and measure whether any required product behavior or diagnostic capability breaks."
+                },
+                {
+                  "en": "Change a model-provider data-use or retention setting in configuration and verify the processing inventory and provider record detect the change."
+                },
+                {
+                  "en": "Pseudonymize trace identifiers and test whether a combination of remaining fields can re-identify a synthetic user."
+                },
+                {
+                  "en": "Prompt the assistant to infer personal attributes from retrieved documents and record whether outputs reveal or infer personal information beyond the stated purpose."
+                },
+                {
+                  "en": "Introduce a new processing activity (for example, reusing conversations for evaluation) and verify it triggers a new privacy review before it runs."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "list",
+              "id": "exit-evidence",
+              "title": {
+                "en": "Exit evidence",
+                "vi": "Bằng chứng hoàn thành"
+              },
+              "step": true,
+              "items": [
+                {
+                  "en": "A data-processing inventory, verified against the running system, covers request, retrieval, model provider, output, logs/traces, caches, memory, analytics, feedback, and evaluation reuse where they exist."
+                },
+                {
+                  "en": "A data-flow (source-to-sink) diagram matches the inventory."
+                },
+                {
+                  "en": "Personal, sensitive, and inferred data are classified, and data subjects are identified."
+                },
+                {
+                  "en": "Each material processing activity has a stated purpose and a minimization decision; at least one unnecessary collection is removed."
+                },
+                {
+                  "en": "Storage locations and external processors/providers are listed with their responsibilities and data-use configuration."
+                },
+                {
+                  "en": "Retention and deletion policies state their basis in product need or identified obligations rather than defaults."
+                },
+                {
+                  "en": "One correction/update path propagates to derived stores."
+                },
+                {
+                  "en": "One end-to-end deletion test covers every relevant store and records any store where data persists and for how long."
+                },
+                {
+                  "en": "The logging/observability content policy states what may and may not be recorded."
+                },
+                {
+                  "en": "The privacy-risk assessment names problematic data actions separately from security threats."
+                },
+                {
+                  "en": "One de-identification or anonymity claim is supported with evidence or explicitly rejected."
+                },
+                {
+                  "en": "One data-processing change is shown to trigger a new review."
+                },
+                {
+                  "en": "The applicability matrix records jurisdiction, source, version/date, applicability assumption, unresolved interpretation, and escalation owner."
+                },
+                {
+                  "en": "An impact-assessment (for example, DPIA) trigger is recorded, or the reason it is not required is recorded and reviewed."
+                },
+                {
+                  "en": "At least one privacy/legal question is escalated to a named reviewer rather than resolved by the learner or a model."
+                },
+                {
+                  "en": "A utility check shows the privacy controls preserve enough product behavior, or records the accepted trade-off."
+                },
+                {
+                  "en": "Material privacy risks appear in the AI risk register from the governance route."
+                },
+                {
+                  "en": "A statement that the system does not store PII, without a verified processing inventory, is not accepted as evidence."
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "text",
+              "id": "transfer",
+              "title": {
+                "en": "Transfer",
+                "vi": "Vận dụng"
+              },
+              "step": true,
+              "body": {
+                "en": "Apply the method to a different AI feature with different data, such as a voice assistant that records calls or a support agent with long-term memory, in a second jurisdiction. Rebuild the inventory, deletion propagation, and applicability matrix, and state which Knowledge Assistant decisions no longer hold."
+              }
+            }
+          ]
         }
       },
       {
@@ -14157,6 +14802,12 @@
                   "en": "integrated-security-attack-path"
                 },
                 {
+                  "en": "ai-risk-governance"
+                },
+                {
+                  "en": "privacy-and-data-governance"
+                },
+                {
                   "en": "incident-and-feedback"
                 }
               ],
@@ -14415,6 +15066,33 @@
                 },
                 {
                   "en": "guardrail-failure-matrix"
+                },
+                {
+                  "en": "ai-risk-register"
+                },
+                {
+                  "en": "obligation-applicability-matrix"
+                },
+                {
+                  "en": "escalation-record"
+                },
+                {
+                  "en": "governance-decision-record"
+                },
+                {
+                  "en": "data-processing-inventory"
+                },
+                {
+                  "en": "privacy-risk-assessment"
+                },
+                {
+                  "en": "retention-deletion-record"
+                },
+                {
+                  "en": "deletion-verification"
+                },
+                {
+                  "en": "governance-change-review"
                 },
                 {
                   "en": "security-audit-record"
@@ -14732,7 +15410,17 @@
     {
       "type": "member",
       "from": "project:knowledge-assistant",
+      "to": "security.privacy-legal"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
       "to": "security.prompt-injection"
+    },
+    {
+      "type": "member",
+      "from": "project:knowledge-assistant",
+      "to": "security.safety-governance"
     },
     {
       "type": "member",
@@ -14982,6 +15670,11 @@
     {
       "type": "prerequisite",
       "from": "ai.evaluation",
+      "to": "security.safety-governance"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.evaluation",
       "to": "security.supply-chain-data"
     },
     {
@@ -15008,6 +15701,16 @@
       "type": "prerequisite",
       "from": "ai.product-framing",
       "to": "retrieval.search"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.product-framing",
+      "to": "security.privacy-legal"
+    },
+    {
+      "type": "prerequisite",
+      "from": "ai.product-framing",
+      "to": "security.safety-governance"
     },
     {
       "type": "prerequisite",
@@ -15197,6 +15900,11 @@
     {
       "type": "prerequisite",
       "from": "production.release-engineering",
+      "to": "security.safety-governance"
+    },
+    {
+      "type": "prerequisite",
+      "from": "production.release-engineering",
       "to": "security.supply-chain-data"
     },
     {
@@ -15278,6 +15986,11 @@
       "type": "prerequisite",
       "from": "security.data-exfiltration",
       "to": "security.multi-tenant"
+    },
+    {
+      "type": "prerequisite",
+      "from": "security.data-exfiltration",
+      "to": "security.privacy-legal"
     },
     {
       "type": "prerequisite",
@@ -15905,11 +16618,23 @@
       "author": "Temporal Technologies",
       "url": "https://docs.temporal.io/"
     },
+    "guide.edpb-opinion-28-2024": {
+      "title": "EDPB Opinion 28/2024 on certain data protection aspects related to the processing of personal data in the context of AI models",
+      "type": "guide",
+      "author": "European Data Protection Board",
+      "url": "https://www.edpb.europa.eu/documents/opinion-of-the-board-art-64/opinion-282024-on-certain-data-protection-aspects-related-to_en"
+    },
     "guide.google-rules-of-ml": {
       "title": "Google — Rules of Machine Learning",
       "type": "guide",
       "author": "Martin Zinkevich, Google",
       "url": "https://developers.google.com/machine-learning/guides/rules-of-ml"
+    },
+    "guide.nist-ai-rmf-playbook": {
+      "title": "NIST AI RMF Playbook",
+      "type": "guide",
+      "author": "NIST",
+      "url": "https://airc.nist.gov/airmf-resources/playbook/"
     },
     "guide.nist-sp800-63b-4": {
       "title": "NIST SP 800-63B-4 — Authentication and Authenticator Management",
@@ -15976,6 +16701,36 @@
       "type": "paper",
       "author": "Carlos E. Jimenez et al.",
       "url": "https://arxiv.org/abs/2310.06770"
+    },
+    "standard.eu-ai-act": {
+      "title": "EU AI Act — Regulation (EU) 2024/1689, consolidated text (EU jurisdiction)",
+      "type": "standard",
+      "author": "European Parliament and Council of the European Union",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R1689-20260727"
+    },
+    "standard.gdpr": {
+      "title": "GDPR — Regulation (EU) 2016/679 (EU/EEA jurisdiction)",
+      "type": "standard",
+      "author": "European Parliament and Council of the European Union",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+    },
+    "standard.nist-ai-600-1": {
+      "title": "NIST AI 600-1 — AI RMF: Generative Artificial Intelligence Profile",
+      "type": "standard",
+      "author": "NIST",
+      "url": "https://doi.org/10.6028/NIST.AI.600-1"
+    },
+    "standard.nist-ai-rmf-core": {
+      "title": "NIST AI Risk Management Framework 1.0 — AI RMF Core",
+      "type": "standard",
+      "author": "NIST",
+      "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/"
+    },
+    "standard.nist-privacy-framework": {
+      "title": "NIST Privacy Framework Version 1.0 (NIST CSWP 01162020)",
+      "type": "standard",
+      "author": "NIST",
+      "url": "https://doi.org/10.6028/NIST.CSWP.01162020"
     },
     "standard.openid-connect-core": {
       "title": "OpenID Connect Core 1.0",

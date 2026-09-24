@@ -366,7 +366,13 @@ competencies:
       status: ready,
       route: curriculum/10-security-governance/guardrails,
     }
-  - { id: security.safety-governance, title: AI Safety and Governance, domain: security-governance, status: coverage }
+  - {
+      id: security.safety-governance,
+      title: AI Governance and Risk Management,
+      domain: security-governance,
+      status: ready,
+      route: curriculum/10-security-governance/safety-governance,
+    }
   - {
       id: security.supply-chain-data,
       title: AI Supply Chain and Data Security,
@@ -376,9 +382,10 @@ competencies:
     }
   - {
       id: security.privacy-legal,
-      title: Privacy Governance Legal and Responsible AI,
+      title: AI Privacy and Data Governance,
       domain: security-governance,
-      status: coverage,
+      status: ready,
+      route: curriculum/10-security-governance/privacy-legal,
     }
 
   # Multimodal
