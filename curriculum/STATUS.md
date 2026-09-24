@@ -5,8 +5,8 @@
 ## Summary
 
 - **115** catalog competencies
-- **43** ready learning routes
-- **72** coverage-only competencies
+- **48** ready learning routes
+- **67** coverage-only competencies
 
 A **coverage** item belongs in the audited roadmap but does not yet have the complete learner lifecycle required for a ready route.
 
@@ -19,7 +19,7 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 | Data Engineering | 6 | 0 |
 | ML Foundations | 9 | 0 |
 | Deep Learning | 5 | 0 |
-| LLM Foundations | 11 | 1 |
+| LLM Foundations | 11 | 6 |
 | AI Engineering | 26 | 12 |
 | Agents | 9 | 9 |
 | Production AI | 11 | 11 |
@@ -31,7 +31,12 @@ A **coverage** item belongs in the audited roadmap but does not yet have the com
 
 | Competency | Domain | Route |
 | --- | --- | --- |
+| `llm.tokenization` — Tokenization | LLM Foundations | [Open route](06-llm-foundations/tokenization/) |
 | `llm.self-attention` — Self-Attention | LLM Foundations | [Open route](06-llm-foundations/self-attention/) |
+| `llm.decoding-sampling` — Decoding and Sampling | LLM Foundations | [Open route](06-llm-foundations/decoding-sampling/) |
+| `llm.context-windows` — Context Windows | LLM Foundations | [Open route](06-llm-foundations/context-windows/) |
+| `llm.kv-cache` — KV Cache | LLM Foundations | [Open route](06-llm-foundations/kv-cache/) |
+| `llm.inference` — LLM Inference Behavior | LLM Foundations | [Open route](06-llm-foundations/inference/) |
 | `ai.product-framing` — AI Product and Problem Framing | AI Engineering | [Open route](07-ai-engineering/product-framing/) |
 | `ai.model-selection` — Model Selection | AI Engineering | [Open route](07-ai-engineering/model-selection/) |
 | `ai.context-engineering` — Context Engineering | AI Engineering | [Open route](07-ai-engineering/context-engineering/) |

@@ -1,0 +1,89 @@
+id: llm.inference
+title: LLM Inference Behavior
+domain: llm-foundations
+status: ready
+competency_types:
+  - mechanism
+  - engineering-skill
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - applied
+why: "production.latency and production.streaming ask learners to reason about input versus output tokens and time to first chunk. Those levers behave differently because inference has two phases: prefill processes the prompt in parallel and can be made compute-bound, while generation produces one token at a time and is memory-bound. This route supplies that model and makes the learner measure it, so provider advice such as \"generate fewer tokens\" becomes a prediction with conditions rather than a rule."
+curriculum_evidence:
+  - course.stanford-cs336
+  - course.huggingface-llm
+  - paper.vllm-pagedattention
+prerequisites:
+  - llm.kv-cache
+  - llm.decoding-sampling
+  - systems.performance-engineering
+prerequisite_support:
+  systems.performance-engineering:
+    diagnostic: "Given a request-latency histogram and a trace, distinguish mean from p50/p95/p99, identify the critical path, and state what evidence is needed before claiming a bottleneck."
+    source: docs.google-sre-monitoring
+    locator: "Sections \"The Four Golden Signals\" and \"Worrying About Your Tail (or, Instrumentation and Performance)\""
+    purpose: "Patch distribution, tail-latency, saturation, and bottleneck reasoning needed to read inference measurements, without requiring the full Performance Engineering curriculum."
+outcomes:
+  - "Explain prefill and decode, and which one dominates time to first token and which dominates per-token latency."
+  - "Explain arithmetic intensity at the level of \"prefill can be compute-bound, generation is memory-bound\"."
+  - "Distinguish time to first token, time per output token, end-to-end latency, and throughput, and explain the latency-throughput trade-off under batching."
+  - "Estimate model weight memory from parameter count and precision, and total memory as weights plus KV cache."
+  - "Measure time to first token and per-token latency as prompt length and output length vary, and explain the curves."
+  - "Predict which of a shorter prompt, a shorter output, a cached prefix, and streaming changes which metric."
+diagnostic:
+  tasks:
+    - "A request has a 4,000-token prompt and a 50-token answer; another has a 50-token prompt and a 1,000-token answer. Which has the higher time to first token, which the higher total latency, and why?"
+    - "Estimate the memory needed to load a 7B-parameter model at 16-bit precision."
+    - "Explain why batching more requests raises throughput but can raise per-request latency."
+    - "Explain why generation is memory-bound even when the accelerator has spare compute."
+  pass_condition: "Skip guided instruction only if the learner answers the conceptual items with the mechanism (not only the conclusion) and can design the prompt-length and output-length measurement without help."
+learning_route:
+  mental_model:
+    - source: course.huggingface-llm
+      locator: "Chapter 1.8 \"Deep dive into Text Generation Inference with LLMs\": sections \"The Two-Phase Inference Process\" (\"The Prefill Phase\", \"The Decode Phase\") and \"Practical Challenges and Optimization\" (\"Key Performance Metrics\", \"The Context Length Challenge\", \"The KV Cache Optimization\")"
+      purpose: "A practitioner-level map of prefill, decode, TTFT, TPOT, throughput, and memory."
+    - source: course.stanford-cs336
+      locator: "Lecture 10 (Inference), trace at cs336.stanford.edu/lectures/?trace=lecture_10: functions review_of_arithmetic_intensity, arithmetic_intensity_of_inference, and throughput_and_latency"
+      purpose: "Why prefill can be compute-bound and generation is memory-bound, what batching does to latency and throughput, and why TTFT is essentially prefill time."
+    - source: paper.vllm-pagedattention
+      locator: "Section 3 \"Memory Challenges in LLM Serving\" (already read in llm.kv-cache)"
+      purpose: "Why the number of requests a server can batch is limited by KV-cache memory."
+  guided_practice:
+    - source: course.stanford-cs336
+      locator: "Assignment 1 handout (version 26.0.3), problem transformer_accounting, part (a): parameter count and single-precision load memory of the GPT-2 XL-shaped model"
+      task: "Compute the parameter count and load memory, then redo the memory estimate at 16-bit precision and add the KV cache for one 1,024-token request."
+  independent_practice:
+    - artifact: projects/tiny-transformer/
+      task: "In the Tiny Transformer inference-behavior milestone, measure time to first token and per-token latency across at least four prompt lengths and three output lengths (your model, or GPT-2 small on CPU), with and without the KV cache, and batch 1 against batch N; record every prediction before running and explain each curve with prefill and decode."
+experiments:
+  - "Measure time to first token and per-token latency across at least four prompt lengths and three output lengths; predict the shape of each curve first."
+  - "Repeat with the KV cache disabled and explain the difference."
+  - "Batch 1 against batch N: record throughput and per-request latency."
+exit_evidence:
+  - "A measurement table and plots for prompt-length and output-length sweeps, with predictions recorded before running and a written explanation of each curve using prefill and decode."
+  - "A memory estimate (weights plus KV cache) for a stated model, request length, and batch size."
+  - "One claim from a provider latency guide (for example \"generate fewer tokens\") explained from the mechanism, with the conditions under which it does not help."
+transfer:
+  task: "Take one Knowledge Assistant trace from production.latency and state, from its input and output token counts, whether prefill or decode dominates the model-call time and which optimization to try first."
+review:
+  suggested_intervals_days: [1, 7, 30]
+  retrieval_tasks:
+    - "Sketch time to first token against prompt length and per-token latency against output length from memory."
+    - "Estimate weights-plus-cache memory for a new configuration."
+    - "Explain the latency-throughput trade-off of a larger batch."
+project_spines:
+  - foundation
+resources:
+  teaching:
+    - course.huggingface-llm
+    - course.stanford-cs336
+  practice:
+    - course.stanford-cs336
+  production-reference:
+    - paper.vllm-pagedattention
+    - docs.google-sre-monitoring
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

@@ -12,6 +12,8 @@ Generated from [curriculum/changelog.yaml](curriculum/changelog.yaml) by `script
 
 #### 2026-09-24
 
+- Promoted to ready under [RFC 0023](rfcs/0023-llm-inference-foundations.md): [Tokenization](curriculum/06-llm-foundations/tokenization/), [Decoding and Sampling](curriculum/06-llm-foundations/decoding-sampling/), [KV Cache](curriculum/06-llm-foundations/kv-cache/), [LLM Inference Behavior](curriculum/06-llm-foundations/inference/), [Context Windows](curriculum/06-llm-foundations/context-windows/).
+- Lab added: [Decoding and Sampling Lab](labs/decoding-sampling/).
 - Promoted to ready under [RFC 0019](rfcs/0019-ai-governance-and-privacy-engineering.md): [AI Governance and Risk Management](curriculum/10-security-governance/safety-governance/), [AI Privacy and Data Governance](curriculum/10-security-governance/privacy-legal/).
 
 #### 2026-09-23

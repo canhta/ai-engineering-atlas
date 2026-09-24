@@ -1,0 +1,90 @@
+id: llm.tokenization
+title: Tokenization
+domain: llm-foundations
+status: ready
+competency_types:
+  - mechanism
+  - engineering-skill
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - retained
+why: "Every production number a later route uses (cost per request, input and output tokens, context budget, cached tokens) is counted in tokens. Tokenization is a separate trained stage with its own failure modes: the same text costs different token counts across tokenizers, non-English text and code tokenize less efficiently, and special tokens can be injected through user text. An engineer who can build and inspect a tokenizer can predict these effects instead of discovering them in a bill or an incident."
+curriculum_evidence:
+  - course.stanford-cs336
+  - book.raschka-llm-from-scratch
+  - visual.karpathy-gpt-tokenizer
+prerequisites: []
+outcomes:
+  - "Explain why LLMs use subword tokens rather than characters, bytes, or words, in terms of vocabulary size and sequence length."
+  - "Trace BPE training on a small string: count adjacent pairs, merge the most frequent, repeat."
+  - "Implement BPE train, encode, and decode, and show that decode(encode(x)) == x on non-ASCII text."
+  - "Measure compression ratio (bytes per token) and show how it changes across tokenizer, language, and domain."
+  - "Count tokens for a real provider request and explain why the count is an estimate."
+  - "Diagnose a tokenization-caused failure: split digits, whitespace, special-token handling, or non-English cost."
+diagnostic:
+  tasks:
+    - "Given \"héllo 👋\", state how many UTF-8 bytes it has and why a byte-level tokenizer never produces an unknown token."
+    - "Given pair counts for a short byte sequence, perform one BPE merge by hand."
+    - "Predict whether the same paragraph in English and in Vietnamese costs the same number of tokens on one tokenizer, and why."
+    - "Explain why a user typing <|endoftext|> into a chat box is a tokenizer concern."
+  pass_condition: "Skip guided instruction only if the learner answers the conceptual items and completes minbpe exercise step 1 (BasicTokenizer) independently."
+learning_route:
+  mental_model:
+    - source: visual.karpathy-gpt-tokenizer
+      locator: "Chapters 00:14:56 \"strings in Python, Unicode code points\" through 00:57:36 \"regex patterns to force splits across categories\" (ends 01:11:38): Unicode, UTF-8, BPE walkthrough, counting and merging pairs, the training loop and compression ratio, decoding, encoding, regex splitting"
+      purpose: "Build the GPT tokenizer while watching it built, from bytes to a regex-split byte-level BPE."
+    - source: book.raschka-llm-from-scratch
+      locator: "Chapter 2, section 2.5 \"BytePair encoding\"; bonus notebook ch02/05_bpe-from-scratch/bpe-from-scratch-simple.ipynb sections 1-3 (\"The main idea behind byte pair encoding\", \"A simple BPE implementation\", \"BPE implementation walkthrough\")"
+      purpose: "The same algorithm as a readable notebook, for learners who prefer text to video."
+    - source: docs.openai-tiktoken-counting
+      locator: "Sections \"5. Comparing encodings\" and \"6. Counting tokens for chat completions API calls\""
+      purpose: "Compare encodings on the same string and count chat-message tokens, including the note that the count is an estimate."
+  guided_practice:
+    - source: repo.karpathy-minbpe
+      locator: "exercise.md, Step 1 (BasicTokenizer: train, encode, decode) and Step 2 (RegexTokenizer with the GPT-4 split pattern)"
+      task: "Implement the basic tokenizer, then the regex tokenizer, and compare the learned merges before and after regex splitting."
+  independent_practice:
+    - source: repo.karpathy-minbpe
+      locator: "exercise.md, Step 3 (match tiktoken cl100k_base encode and decode)"
+      task: "Load the GPT-4 merges into your RegexTokenizer and match tiktoken's cl100k_base output on the test string, including the byte shuffle. Strong learners may instead complete CS336 Assignment 1 problems train_bpe and tokenizer, which ship with tests."
+    - artifact: projects/tiny-transformer/
+      task: "In the Tiny Transformer tokenizer-and-embeddings milestone, compare sequence length under at least two tokenizers or vocabulary sizes on the project corpus and record the effect on input length."
+  visual:
+    - source: visual.tiktokenizer
+      locator: "Model selector, token boundaries, and token count"
+      purpose: "See token boundaries and counts change across tokenizers on your own text before predicting them."
+experiments:
+  - "Measure compression ratio (bytes per token) for one tokenizer on English prose, Vietnamese prose, Python code, and JSON; predict the order first (CS336 A1 problem tokenizer_experiments (a)-(b) is the pattern)."
+  - "Predict, then measure, the token count of the same Knowledge Assistant prompt under two tokenizers."
+  - "Reproduce two tokenization quirks from Karpathy's chapter 01:51:41 (for example arithmetic on split digits, trailing whitespace, or special tokens) and explain each from the tokenizer."
+exit_evidence:
+  - "A working BPE tokenizer with round-trip tests that include non-ASCII input."
+  - "A table of bytes per token across at least three text types, with an explanation of the differences."
+  - "One reproduced tokenization failure with a diagnosis."
+  - "An explanation of what the tokenizer does that the embedding layer does not."
+transfer:
+  task: "Given a tokenizer you have not used, such as a SentencePiece tokenizer (Karpathy chapter 01:28:42), predict how it handles raw bytes and characters outside its vocabulary, then check on real input."
+review:
+  suggested_intervals_days: [1, 7, 30]
+  retrieval_tasks:
+    - "Perform one BPE merge from memory on a new string."
+    - "Explain from memory why token counts differ across providers and languages."
+    - "Name one tokenization failure and the text that triggers it."
+project_spines:
+  - foundation
+resources:
+  teaching:
+    - visual.karpathy-gpt-tokenizer
+    - book.raschka-llm-from-scratch
+  practice:
+    - repo.karpathy-minbpe
+    - course.stanford-cs336
+  visual:
+    - visual.tiktokenizer
+  production-reference:
+    - docs.openai-tiktoken-counting
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

@@ -1,0 +1,86 @@
+id: llm.context-windows
+title: Context Windows
+domain: llm-foundations
+status: ready
+competency_types:
+  - mechanism
+  - design-judgment
+target_level: L2
+target_states:
+  - demonstrated
+  - transferred
+  - retained
+why: "ai.context-engineering is system design under a context-window constraint and leaves the constraint itself to this node (RFC 0003). The constraint has three parts an engineer must separate: the hard token limit shared by input and output, the memory and compute cost of long inputs, and the gap between the advertised window and the length a model actually uses well. Confusing them leads to requests that fail, cost more than expected, or silently ignore the evidence they were given."
+curriculum_evidence:
+  - paper.lost-in-the-middle
+  - course.stanford-cs336
+  - article.anthropic-context-engineering
+prerequisites:
+  - llm.tokenization
+  - llm.kv-cache
+outcomes:
+  - "Compute whether a request fits: prompt tokens plus requested output tokens against the model's window."
+  - "Explain why a model with learned absolute positions cannot accept inputs longer than its trained context length."
+  - "Calculate the KV-cache memory of a request at full window length."
+  - "Explain the difference between advertised context length and effective use, citing measured evidence."
+  - "Measure how answer accuracy changes with the position of relevant information in a long input."
+  - "Recommend truncation, summarization, retrieval, or reordering for a request that does not fit or does not work, with reasons."
+diagnostic:
+  tasks:
+    - "A model has a 128K-token window. A request has a 120K-token prompt and asks for 16K output tokens. What happens, and what are two fixes?"
+    - "Why does feeding 2,000 tokens into a model with context_length=1024 and learned position embeddings fail?"
+    - "Is \"the model supports 1M tokens\" evidence that it will find a fact in the middle of 1M tokens?"
+  pass_condition: "Skip guided instruction only if the learner answers all three items with the mechanism and can design the position experiment, including its sample size and the claim it can and cannot support."
+learning_route:
+  mental_model:
+    - source: book.raschka-llm-from-scratch
+      locator: "Chapter 2, section 2.8 \"Encoding word positions\" (pos_embedding_layer = Embedding(context_length, output_dim)); Chapter 4, section 4.7 \"Generating text\" (generate_text_simple crops the context \"if it exceeds the supported context size\")"
+      purpose: "Why a learned absolute-position table fixes the maximum input length, and the simplest fix: keep only the last context_length tokens."
+    - source: course.stanford-cs336
+      locator: "Assignment 1 handout (version 26.0.3), problem transformer_accounting, part (e): GPT-2 XL with the context length raised to 16,384"
+      purpose: "How total forward-pass FLOPs and each component's share change as the context grows."
+    - source: paper.lost-in-the-middle
+      locator: "Section 2.1 \"Experimental Setup\", section 2.3 \"Results and Discussion\", and section 5 \"Is More Context Is Always Better? A Case Study With Open-Domain QA\""
+      purpose: "Measured position sensitivity (accuracy is highest when the relevant passage is at the start or end), and evidence that more retrieved context is not always better."
+    - source: article.anthropic-context-engineering
+      locator: "Section \"Why context engineering is important to building capable agents\" (context rot; n² pairwise relationships)"
+      purpose: "Context as a finite attention budget, the production framing that ai.context-engineering builds on."
+  guided_practice:
+    - source: book.raschka-llm-from-scratch
+      locator: "Chapter 4, section 4.6 \"Coding the GPT model\" and section 4.7 \"Generating text\""
+      task: "Call your Tiny Transformer (or Raschka's GPTModel) with more tokens than context_length and without the crop, read the error, explain it from the position table, then fix it with truncation and state what information the fix discards."
+  independent_practice:
+    - source: repo.lost-in-the-middle
+      locator: "qa_data/10_total_documents: nq-open-10_total_documents_gold_at_0, _gold_at_4, and _gold_at_9 (.jsonl.gz); README section \"Multi-Document Question Answering Data\""
+      task: "Reproduce a small version of the position experiment: the same questions with the answer passage at position 0, 4, and 9 of 10. Default: 30 questions per position on the Knowledge Assistant's hosted model. No-cost path: the same files on a small instruction-tuned model run locally (for example with Hugging Face Transformers on CPU). Record accuracy per position, predict it first, and state what a 30-question sample can and cannot show."
+experiments:
+  - "Reproduce a small version of Lost in the Middle section 2.1 with the answer passage at the start, middle, and end; record accuracy per position and predict it first."
+  - "Compute KV-cache memory at 25%, 50%, and 100% of a named model's window."
+  - "Feed an over-length input to a model with learned absolute positions and diagnose the failure from the error."
+exit_evidence:
+  - "A fit calculation, and the over-length failure diagnosed from the error."
+  - "KV-cache memory at full window length for a named model."
+  - "A position-sensitivity results table for at least three positions and one model, with an interpretation that does not overclaim from a small sample."
+  - "A written recommendation for one Knowledge Assistant request that exceeds or underuses the window."
+transfer:
+  task: "For a long-document summarization feature, choose between single-pass long context, map-reduce summarization, and retrieval, using fit, cost, and position evidence."
+review:
+  suggested_intervals_days: [1, 7, 30]
+  retrieval_tasks:
+    - "Compute a fit or no-fit case from memory."
+    - "State the Lost in the Middle finding and one condition under which it may not hold."
+    - "Compute full-window KV memory for a new configuration."
+project_spines:
+  - foundation
+  - ai-system
+resources:
+  teaching:
+    - book.raschka-llm-from-scratch
+    - paper.lost-in-the-middle
+    - article.anthropic-context-engineering
+  practice:
+    - repo.lost-in-the-middle
+    - course.stanford-cs336
+metadata:
+  last_reviewed: 2026-09-24
+  evidence_required: true

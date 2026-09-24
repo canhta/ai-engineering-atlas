@@ -14,9 +14,18 @@ resources:
     title: Stanford CS336 — Language Modeling From Scratch
     url: https://cs336.stanford.edu/
     roles: [curriculum-evidence, teaching, practice, reference]
-    covers: [llm-systems, language-model-training, llm.self-attention]
+    covers:
+      [
+        llm-systems,
+        language-model-training,
+        llm.self-attention,
+        llm.tokenization,
+        llm.decoding-sampling,
+        llm.inference,
+        llm.context-windows,
+      ]
     source_verified: true
-    last_checked: 2026-09-22
+    last_checked: 2026-09-24
     review_interval_days: 180
 
   - id: course.huggingface-llm
@@ -24,9 +33,9 @@ resources:
     title: Hugging Face LLM Course
     url: https://huggingface.co/learn/llm-course/
     roles: [teaching, practice, reference]
-    covers: [transformers, open-source-models]
+    covers: [transformers, open-source-models, llm.inference]
     source_verified: true
-    last_checked: 2026-09-22
+    last_checked: 2026-09-24
     review_interval_days: 180
 
   - id: course.made-with-ml-evaluation
