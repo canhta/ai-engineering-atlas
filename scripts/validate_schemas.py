@@ -47,6 +47,7 @@ schema_files = {
     "competency": SCHEMAS / "competency.schema.json",
     "project": SCHEMAS / "project.schema.json",
     "progress": SCHEMAS / "progress.schema.json",
+    "path": SCHEMAS / "path.schema.json",
 }
 schemas = {}
 
@@ -110,6 +111,14 @@ if "project" in schemas:
             errors.append(f"{path.relative_to(ROOT)}: cannot validate: {exc}")
 
 
+if "path" in schemas:
+    for path in sorted((ROOT / "paths").glob("*.yaml")):
+        try:
+            validate_instance(load_yaml(path), schemas["path"], str(path.relative_to(ROOT)))
+        except Exception as exc:
+            errors.append(f"{path.relative_to(ROOT)}: cannot validate: {exc}")
+
+
 progress_path = ROOT / "progress" / "progress.example.yaml"
 if "progress" in schemas and progress_path.exists():
     try:
@@ -128,4 +137,4 @@ if errors:
         print(f"- {error}")
     sys.exit(1)
 
-print("OK: JSON Schemas validate catalog, resources, competencies, projects, and progress")
+print("OK: JSON Schemas validate catalog, resources, competencies, projects, paths, and progress")

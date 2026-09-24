@@ -2,10 +2,10 @@
 // Fails when a curriculum field name appears in site/src outside src/data/.
 //
 // Forbidden names come from the content side: every `field:` path segment, field key, and
-// payload-mapping source key (map/row/item/bridge/support) in curriculum/presentation.yaml,
-// and every property name in schemas/competency.schema.json. Names the site owns through its
-// own contracts are allowed: content-model keys and block types (schemas/site-data.schema.json)
-// and learner-progress keys and values (schemas/progress.schema.json).
+// payload-mapping source key (map/row/item/bridge/stage/entry/exception/support) in
+// curriculum/presentation.yaml, and every property name in schemas/competency.schema.json. Names the site owns through its
+// own contracts are allowed: content-model keys and block types (schemas/site-data.schema.json),
+// learner-progress keys and values (schemas/progress.schema.json), and relation types.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { parse } from "yaml";
@@ -68,7 +68,7 @@ function presentationNames(config) {
     for (const b of c.blocks ?? []) {
       if (b.field) addPath(b.field);
       if (b.support) addPath(b.support);
-      for (const key of ["map", "row", "item", "bridge"]) mappingSources(b[key]);
+      for (const key of ["map", "row", "item", "bridge", "stage", "entry", "exception"]) mappingSources(b[key]);
       for (const g of b.groups ?? []) if (g.field) addPath(g.field);
     }
     for (const k of c.ignore ?? []) names.add(k);
@@ -76,8 +76,13 @@ function presentationNames(config) {
   return names;
 }
 
+// Relation types ("prerequisite", "member") are content-model values the site reads from `relations`.
+const relationTypes = (config) =>
+  Object.values(config.collections ?? {}).flatMap((c) => (c.relations ?? []).map((r) => r.type));
+
+const presentation = parse(readFileSync(join(repo, "curriculum/presentation.yaml"), "utf8"));
 const forbidden = new Set([
-  ...presentationNames(parse(readFileSync(join(repo, "curriculum/presentation.yaml"), "utf8"))),
+  ...presentationNames(presentation),
   ...schemaNames(readJson("schemas/competency.schema.json")),
 ]);
 const allowed = new Set([
@@ -85,6 +90,7 @@ const allowed = new Set([
   ...EVIDENCE_KINDS,
   ...schemaNames(readJson("schemas/site-data.schema.json"), { values: true }),
   ...schemaNames(readJson("schemas/progress.schema.json"), { values: true }),
+  ...relationTypes(presentation),
 ]);
 for (const name of allowed) forbidden.delete(name);
 

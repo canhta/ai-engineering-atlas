@@ -1,0 +1,182 @@
+---
+// Ordered stages of references, such as a learning path (DESIGN.md → Path pages): each stage a
+// section anchored at its id, its title, its guidance (Markdown), then its entries in order with the
+// learner's state against each (StageEntries, one island per stage). The position number of a stage
+// appears in the contents rail.
+import StageEntries, { type StageEntry } from "../react/StageEntries";
+import { useTranslations, type Lang } from "../../i18n";
+import {
+  hasPage,
+  itemUrl,
+  langAttr,
+  resolveRef,
+  stateLabels,
+  text,
+  vocabularyLabel,
+  type Localized,
+  type SequenceBlock,
+} from "../../lib/atlas";
+import { renderMarkdown } from "../../lib/markdown";
+
+interface Props {
+  block: SequenceBlock;
+  lang: Lang;
+  /** Repository path of the item, for relative links in guidance. */
+  sourcePath: string;
+}
+
+const { block, lang, sourcePath } = Astro.props;
+const t = useTranslations(lang);
+const labels = stateLabels(lang);
+const titleOf = (ref: string): Localized => {
+  const found = resolveRef(ref);
+  return found ? text(found.item.title, lang) : { value: ref, lang: "en" };
+};
+// A level reads like the details line: its short code before its label ("L3 deep engineering competence").
+const levelText = (value: string) => {
+  const label = vocabularyLabel(block.vocabulary, value, lang).value;
+  return t("path.target", { level: label === value ? value : `${value} ${label}` });
+};
+
+const stages = block.stages.map((stage) => {
+  const title = text(stage.title, lang);
+  const guidance = stage.guidance ? text(stage.guidance, lang) : undefined;
+  const entries: StageEntry[] = stage.entries.map((entry) => {
+    const found = resolveRef(entry.ref);
+    const ready = found ? hasPage(found.item) : false;
+    // A stage's level applies to its ready routes only; a mapped competency has no level to reach.
+    const level = entry.level ?? (ready ? stage.level : undefined);
+    return {
+      ref: entry.ref,
+      title: titleOf(entry.ref),
+      url: itemUrl(lang, entry.ref),
+      maturity: t(ready ? "prereq.ready" : "prereq.mapped"),
+      level: level ? levelText(level) : undefined,
+      optional: entry.required ? undefined : t("path.optional"),
+      when: entry.when ? text(entry.when, lang) : undefined,
+      exceptions: (entry.exceptions ?? []).map((x) => ({
+        lead: t("path.exception"),
+        title: titleOf(x.ref),
+        reason: text(x.reason, lang),
+      })),
+    };
+  });
+  return {
+    id: stage.id,
+    title,
+    guidance,
+    html: guidance ? renderMarkdown(guidance.value, sourcePath, lang) : "",
+    entries,
+  };
+});
+---
+
+<ol class="stages">
+  {stages.map((stage) => (
+    <li id={stage.id} class="stage" aria-labelledby={`${stage.id}-title`}>
+      <h3 id={`${stage.id}-title`} class="stage-title">
+        <span lang={langAttr(stage.title, lang)}>{stage.title.value}</span>
+      </h3>
+      {stage.guidance && (
+        <div class="stage-guidance markdown reading" lang={langAttr(stage.guidance, lang)} set:html={stage.html} />
+      )}
+      <StageEntries client:idle lang={lang} stateLabels={labels} entries={stage.entries} />
+    </li>
+  ))}
+</ol>
+
+<style>
+  .stages {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Each stage reads like a section of a chapter, hairlines between them. */
+  .stage {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-8) 0;
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .stage:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .stage > * {
+    margin: 0;
+  }
+
+  .stage-title {
+    font-family: var(--font-reading);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .stage-guidance {
+    max-width: var(--measure);
+  }
+
+  .stage-guidance :global(p) {
+    margin: 0 0 var(--space-3);
+  }
+
+  .stage-guidance :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Entries: one ruled row each, the glyph and title, then one muted line of facts. */
+  .stage :global(.stage-entries) {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border-top: var(--border-width) solid var(--ink);
+    list-style: none;
+  }
+
+  .stage :global(.stage-entry) {
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+
+  .stage :global(.stage-entry:last-child) {
+    border-bottom: 0;
+  }
+
+  .stage :global(.stage-entry p) {
+    margin: 0;
+  }
+
+  /* A fixed glyph column, so a mapped circle and a ready rectangle line up their titles. */
+  .stage :global(.stage-entry-head) {
+    display: grid;
+    grid-template-columns: 1.125rem minmax(0, 1fr);
+    column-gap: var(--space-3);
+    align-items: center;
+    justify-items: start;
+    font-weight: 550;
+  }
+
+  .stage :global(.stage-entry-head .tile-glyph) {
+    justify-self: center;
+  }
+
+  .stage :global(.stage-entry-facts) {
+    margin-top: var(--space-1);
+    padding-left: calc(var(--space-3) + 1.125rem);
+  }
+
+  .stage :global(.stage-entry-facts > span + span::before) {
+    content: ", ";
+  }
+
+  .stage :global(.stage-entry-note) {
+    max-width: var(--measure);
+    margin-top: var(--space-2);
+    padding-left: calc(var(--space-3) + 1.125rem);
+    color: var(--ink-muted);
+  }
+</style>

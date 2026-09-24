@@ -291,7 +291,7 @@
       }
     },
     "block": {
-      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, form, milestones, data. Every block has type, id, and title.",
+      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, form, milestones, sequence, data. Every block has type, id, and title.",
       "type": "object",
       "required": ["type", "id", "title"],
       "properties": {
@@ -306,6 +306,7 @@
             "runner",
             "form",
             "milestones",
+            "sequence",
             "data"
           ]
         },
@@ -428,6 +429,18 @@
           },
           "then": {
             "$ref": "#/$defs/milestonesBlock"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "sequence"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/sequenceBlock"
           }
         },
         {
@@ -747,6 +760,64 @@
                 "description": "Evidence artifact IDs, shown as identifiers."
               },
               "path": { "type": "string", "minLength": 1, "description": "Repository path of the evidence package." }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sequenceBlock": {
+      "description": "Ordered stages of item references, such as a learning path (rfcs/0020-structured-learning-paths.md).",
+      "required": ["stages"],
+      "properties": {
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "vocabulary": { "type": "string", "minLength": 1, "description": "Vocabulary of every level value." },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "entries"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$",
+                "description": "Stable anchor on the page."
+              },
+              "title": { "$ref": "#/$defs/l10n" },
+              "guidance": { "$ref": "#/$defs/l10n", "description": "Markdown." },
+              "level": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Level for the stage's items that have a page."
+              },
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["ref", "required"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "ref": { "$ref": "#/$defs/ref" },
+                    "required": { "type": "boolean" },
+                    "when": { "$ref": "#/$defs/l10n" },
+                    "level": { "type": "string", "minLength": 1 },
+                    "exceptions": {
+                      "type": "array",
+                      "description": "Items placed later on purpose, each with its reason.",
+                      "items": {
+                        "type": "object",
+                        "required": ["ref", "reason"],
+                        "additionalProperties": false,
+                        "properties": { "ref": { "$ref": "#/$defs/ref" }, "reason": { "$ref": "#/$defs/l10n" } }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

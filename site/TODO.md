@@ -91,7 +91,7 @@ Last updated: 2026-09-24
 - [x] Remember the language choice: `/` opens the language of the last page viewed
 - [x] Wide tables stack into labelled rows on mobile: sources, atlas, and the Progress evidence table
 - [x] Home ready-route rows wrap unevenly at 375px (rebuilt in milestone 2)
-- [ ] Path filter: `paths/applied-ai-engineer.md` is prose; a structured path list is a curriculum change (RFC 0020, draft)
+- [x] Path filter ([RFC 0020](../rfcs/0020-structured-learning-paths.md)): `paths/*.yaml` declares a `member` relation to each entry, so the Atlas key gets a "Paths" facet from the model with no site code: choosing a path dims the plate tiles not on it and removes index entries (`tests/paths.spec.ts`)
 - [x] "Practice for" lists only tracked items pointing at another collection's item (a lab, a project); a prerequisite between routes no longer shows as practice (`atlas.test.ts`)
 - [x] The floating nav blurs what scrolls under it: the build kept only `-webkit-backdrop-filter`, which Chromium ignores, so the unprefixed declaration is the only one
 - [x] Two DESIGN.md tells removed: the trailing "Atlas →" link on collection indexes (the breadcrumb links back), and "N/M done" on Progress region rows, now "N of M demonstrated" on one shared column grid
@@ -129,7 +129,7 @@ Last updated: 2026-09-24
 roadmap.sh gives every collection an index, a maintenance signal, and a shareable profile. We have item pages but nothing that lists them: `/en/labs/` is a 404 today.
 
 - [x] Collection index pages `/{lang}/labs/`, `/{lang}/projects/`, `/{lang}/paths/`: generic, from the content model's collections, linked from the Atlas
-- [ ] Path as a screen: an ordered sequence of routes with the learner's state against each, the way a role roadmap reads. `paths/applied-ai-engineer.md` is prose today, so this is a curriculum change first (structured path list, RFC 0020, draft)
+- [x] Path as a screen ([RFC 0020](../rfcs/0020-structured-learning-paths.md)): `/{lang}/paths/<id>/` renders the path's `sequence` block, stages in the rail by title and numbered, each entry in order with ready or mapped and the learner's state after hydration, its target level and optional condition; no percentage (`tests/paths.spec.ts`). New `vi` keys for owner review: `path.optional`, `path.target`, `path.exception`; and the new paths block titles in `curriculum/presentation.yaml` (Dành cho ai, Bạn sẽ làm được, Cần biết sẵn, lộ trình này không dạy, Các giai đoạn, Tiêu chuẩn hoàn thành)
 - [x] Library `/{lang}/sources/`: every source we route through, searchable and filterable by type, each row linking to the public resource and to the routes that cite it with their locators
 - [ ] What changed `/{lang}/changelog/`: routes promoted to ready, labs added, per release. roadmap.sh's "actively maintained" signal, and the honest counterpart to our coverage numbers
 - [x] How it works `/{lang}/how/`: the learning model in learner language (states, what counts as evidence, why review comes back), linked from Home's hero and the footer (`tests/how.spec.ts`). New `vi` keys for owner review: `how.title`, `how.intro`, `how.states.title`, `how.states.note`, `how.evidence.title`, `how.evidence.intro`, `how.evidence.col`, `how.evidence.note`, `how.steps.title`, `how.steps.intro`, `how.steps.some`, `how.steps.example`, `how.review.title`, `how.review.delay`, `how.review.when`, `how.review.how`, `how.review.due`; and the new `description` (en, vi) of each `state` and `competency_type` value in `curriculum/presentation.yaml`

@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/canhta/ai-engineering-atlas/blob/main/schemas/path.schema.json",
+  "title": "AI Engineering Atlas learning path",
+  "description": "A role-oriented path over the catalog (rfcs/0020-structured-learning-paths.md): it selects, orders, and marks competencies; teaching text, sources, and evidence stay in each competency's contract. scripts/validate_repo.py checks catalog IDs, order against declared prerequisites, and target levels.",
+  "type": "object",
+  "required": ["id", "title", "audience", "target_profile", "stages", "completion"],
+  "additionalProperties": false,
+  "$defs": {
+    "level": { "enum": ["L0", "L1", "L2", "L3", "L4"] },
+    "catalogId": { "type": "string", "pattern": "^[a-z0-9.-]+$" }
+  },
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Equals the file stem." },
+    "title": { "type": "string", "minLength": 1 },
+    "audience": { "type": "string", "minLength": 1 },
+    "target_profile": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "assumes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/catalogId" },
+      "description": "Prerequisites of on-path routes that this path deliberately does not teach; never on the path."
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "description": "In path order.",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "entries"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "title": { "type": "string", "minLength": 1 },
+          "guidance": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Short Markdown carried over from reviewed prose."
+          },
+          "target_level": { "$ref": "#/$defs/level", "description": "Applies to the stage's ready entries only." },
+          "entries": {
+            "type": "array",
+            "minItems": 1,
+            "description": "In path order within the stage.",
+            "items": {
+              "type": "object",
+              "required": ["id"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "$ref": "#/$defs/catalogId" },
+                "required": { "type": "boolean", "default": true },
+                "when": { "type": "string", "minLength": 1, "description": "Only with required: false." },
+                "target_level": { "$ref": "#/$defs/level" },
+                "order_exceptions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["prerequisite", "reason"],
+                    "additionalProperties": false,
+                    "properties": {
+                      "prerequisite": { "$ref": "#/$defs/catalogId" },
+                      "reason": { "type": "string", "minLength": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "completion": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  }
+}

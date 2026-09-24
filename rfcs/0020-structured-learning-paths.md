@@ -1,12 +1,12 @@
 # RFC: Structured Learning Paths
 
-- Status: Draft
+- Status: Accepted (owner approval, 2026-09-24)
 - Author: Canh Ta
 - Created: 2026-09-24
 
 ## Problem
 
-A path is a role-oriented view over the competency graph ([paths/README.md](../paths/README.md)). The only path, [paths/applied-ai-engineer.md](../paths/applied-ai-engineer.md), is prose: nine phases (A to I) that name topics in free text, link some ready routes by folder, and never use a catalog ID.
+A path is a role-oriented view over the competency graph ([paths/README.md](../paths/README.md)). The only path, `paths/applied-ai-engineer.md` (now [paths/applied-ai-engineer.yaml](../paths/applied-ai-engineer.yaml)), was prose: nine phases (A to I) that name topics in free text, link some ready routes by folder, and never use a catalog ID.
 
 That has three consequences:
 
@@ -279,6 +279,15 @@ These are mappings of this repository's prose onto catalog IDs, or scope choices
   - _Suggested (medium to high for the systems items, medium for the math items):_ all five in `assumes`, with the stage A guidance or `audience` saying that assumed items are diagnosed through the dependent routes' bridges. Each already has a bridge with a diagnostic and locator in the dependent route. The baseline scan does not test dot products or softmax directly, so "the baseline covers it" would be only partly true; the bridges do cover it. Alternative: add `math.dot-product` and `dl.softmax` to stage B as coverage entries.
 - **Q11. `llm.positional-information`** is in the LLM Foundations domain but not in the phase C list. Leave it off, or add it.
   - _Suggested (medium):_ leave it off. The baseline scan's LLM section and phase C list the same topics without it, and `llm.training` and `llm.quantization` are already left off. If it should be visible, add it `required: false` with `when: debugging long-context or context-extension behavior`.
+
+## Implementation notes (2026-09-24)
+
+The owner accepted this RFC on 2026-09-24. `paths/applied-ai-engineer.yaml` replaces the prose file with the list above as proposed: 70 entries, 41 ready. Stage titles, guidance, and the target profile and completion lists are carried over from the prose; each `[Qn]` flag stays as a YAML comment next to its entry, and prose topics with no catalog ID ("hybrid retrieval", "RAG", "trajectory/tool-use evaluation") stay comments, with "hybrid retrieval as needed" and "RAG" still named in the stage E guidance's dependency order, as the prose had them.
+
+- **Open, as proposed.** Q3 (`systems.distributed-systems`, `systems.databases-storage`; no `data.foundation`), Q4 (`ml.experimental-design`, `dl.foundations`; no `math.statistics`), Q5 (`retrieval.vector-search` stays a required entry), Q7, Q8, and Q11 (`llm.positional-information` stays off) are implemented as the list above has them and remain the owner's to change.
+- **Q10, needed for rule 3 to pass.** The five off-path prerequisites (`math.dot-product`, `dl.softmax`, `systems.performance-engineering`, `systems.cloud-infrastructure`, `systems.networking`) are in `assumes`, the research's suggested answer and the form the schema sketch shows. The alternative (adding `math.dot-product` and `dl.softmax` to stage B as coverage entries) is a one-line change if the owner prefers it.
+- **Rule 5** reports the count of required entries with no route in the `make check` summary line.
+- **Site.** Paths render at `/{lang}/paths/<id>/` from a `sequence` block; the Atlas key gets its "Paths" facet from the `member` relation with no path-specific site code. `assumes` renders as a `prerequisites` block, so the page's prerequisite line names what the path assumes.
 
 ## Alternatives considered
 

@@ -136,6 +136,32 @@ export interface MilestonesBlock extends BlockBase {
   type: "milestones";
   items: Milestone[];
 }
+export interface SequenceEntry {
+  ref: string;
+  required: boolean;
+  /** When an optional entry applies. */
+  when?: L10n;
+  /** A value of the block's vocabulary. */
+  level?: string;
+  /** Items placed later on purpose, each with its reason. */
+  exceptions?: { ref: string; reason: L10n }[];
+}
+export interface SequenceStage {
+  /** Stable anchor on the page. */
+  id: string;
+  title: L10n;
+  /** Markdown. */
+  guidance?: L10n;
+  /** Level for the stage's items that have a page. */
+  level?: string;
+  entries: SequenceEntry[];
+}
+export interface SequenceBlock extends BlockBase {
+  type: "sequence";
+  /** Vocabulary of every level value. */
+  vocabulary?: string;
+  stages: SequenceStage[];
+}
 export interface DataBlock extends BlockBase {
   type: "data";
   value: unknown;
@@ -150,6 +176,7 @@ export type Block =
   | RunnerBlock
   | FormBlock
   | MilestonesBlock
+  | SequenceBlock
   | DataBlock;
 export const BLOCK_TYPES = [
   "text",
@@ -161,6 +188,7 @@ export const BLOCK_TYPES = [
   "runner",
   "form",
   "milestones",
+  "sequence",
   "data",
 ] as const;
 
@@ -490,10 +518,11 @@ export function resolveResource(key: string): ResolvedResource {
 
 /**
  * Sections a block holds that get their own anchor and a numbered entry in the contents rail
- * (a project's milestones), in order; [] for a block that is one section.
+ * (a project's milestones, a path's stages), in order; [] for a block that is one section.
  */
 export function sectionsOf(block: Block): { id: string; title: L10n }[] {
   if (block.type === "milestones") return block.items.map((m) => ({ id: m.id, title: m.title }));
+  if (block.type === "sequence") return block.stages.map((s) => ({ id: s.id, title: s.title }));
   return [];
 }
 

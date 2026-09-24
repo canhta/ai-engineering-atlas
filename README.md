@@ -33,7 +33,7 @@ target
 
 1. [Start here](docs/START_HERE.md) — choose a target, run the baseline scan, create a learner record.
 2. [Roadmap](docs/ROADMAP.md) — browse the audited coverage map.
-3. [Applied AI Engineer path](paths/applied-ai-engineer.md) — a reference path for the main audience.
+3. [Applied AI Engineer path](https://ai-eng.canhta.com/en/paths/applied-ai-engineer/) — a reference path for the main audience: ordered stages of catalog competencies ([source](paths/applied-ai-engineer.yaml)).
 4. [Curriculum](curriculum/) — enter domains and ready competency routes.
 5. [Projects](projects/) — integrate skills in evolving reference systems.
 6. [Progress](progress/) — record evidence instead of content completion.

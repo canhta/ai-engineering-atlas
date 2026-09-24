@@ -35,4 +35,4 @@ Do not treat a scope bullet or catalog item as finished learning content.
 
 ## Reference path
 
-For the main target audience, see [Applied AI Engineer](../paths/applied-ai-engineer.md).
+For the main target audience, see the [Applied AI Engineer path](https://ai-eng.canhta.com/en/paths/applied-ai-engineer/) ([source](../paths/applied-ai-engineer.yaml)).

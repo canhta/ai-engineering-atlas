@@ -14828,15 +14828,858 @@
       {
         "id": "applied-ai-engineer",
         "title": {
-          "en": "Applied AI Engineer Path"
+          "en": "Applied AI Engineer"
         },
         "fields": {
-          "path": "paths/applied-ai-engineer.md"
+          "path": "paths/applied-ai-engineer.yaml"
+        },
+        "page": {
+          "source_path": "paths/applied-ai-engineer.yaml",
+          "blocks": [
+            {
+              "type": "text",
+              "id": "audience",
+              "title": {
+                "en": "Audience",
+                "vi": "Dành cho ai"
+              },
+              "body": {
+                "en": "A software engineer who wants to build, evaluate, and operate AI product features. The path is gap-driven, not a fixed course sequence."
+              }
+            },
+            {
+              "type": "list",
+              "id": "target-profile",
+              "title": {
+                "en": "Target profile",
+                "vi": "Bạn sẽ làm được"
+              },
+              "items": [
+                {
+                  "en": "frame an AI problem and define a simple baseline"
+                },
+                {
+                  "en": "choose models and system patterns under quality, latency, and cost constraints"
+                },
+                {
+                  "en": "build retrieval/RAG systems and evaluate retrieval separately from generation"
+                },
+                {
+                  "en": "design and evaluate tool/agent workflows"
+                },
+                {
+                  "en": "operate AI systems with traces, release gates, security boundaries, and feedback loops"
+                },
+                {
+                  "en": "reason about enough model internals to debug system behavior and make informed trade-offs"
+                }
+              ],
+              "ordered": false
+            },
+            {
+              "type": "prerequisites",
+              "id": "assumed",
+              "title": {
+                "en": "Assumed, not taught on this path",
+                "vi": "Cần biết sẵn, lộ trình này không dạy"
+              },
+              "items": [
+                {
+                  "ref": "math.dot-product"
+                },
+                {
+                  "ref": "dl.softmax"
+                },
+                {
+                  "ref": "systems.performance-engineering"
+                },
+                {
+                  "ref": "systems.cloud-infrastructure"
+                },
+                {
+                  "ref": "systems.networking"
+                }
+              ]
+            },
+            {
+              "type": "sequence",
+              "id": "stages",
+              "title": {
+                "en": "Stages",
+                "vi": "Các giai đoạn"
+              },
+              "stages": [
+                {
+                  "id": "blocking-gaps",
+                  "title": {
+                    "en": "Remove blocking software and system gaps"
+                  },
+                  "guidance": {
+                    "en": "Use the [baseline scan](../assessments/baseline.md) for software engineering, systems, and data engineering. Do not redo fundamentals you can already demonstrate."
+                  },
+                  "entries": [
+                    {
+                      "ref": "systems.api-service-design",
+                      "required": true
+                    },
+                    {
+                      "ref": "software.testing",
+                      "required": true
+                    },
+                    {
+                      "ref": "systems.os-concurrency",
+                      "required": true
+                    },
+                    {
+                      "ref": "systems.distributed-systems",
+                      "required": true
+                    },
+                    {
+                      "ref": "systems.databases-storage",
+                      "required": true
+                    },
+                    {
+                      "ref": "systems.observability",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "ml-dl-models",
+                  "title": {
+                    "en": "ML and DL mental models"
+                  },
+                  "guidance": {
+                    "en": "Target the minimum foundation required to reason about these. If you already work comfortably here, use diagnostics and move on."
+                  },
+                  "entries": [
+                    {
+                      "ref": "ml.experimental-design",
+                      "required": true
+                    },
+                    {
+                      "ref": "math.probability",
+                      "required": true
+                    },
+                    {
+                      "ref": "dl.embeddings",
+                      "required": true
+                    },
+                    {
+                      "ref": "dl.optimization",
+                      "required": true
+                    },
+                    {
+                      "ref": "dl.foundations",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "llm-foundations",
+                  "title": {
+                    "en": "LLM foundations"
+                  },
+                  "guidance": {
+                    "en": "Reference project: [Tiny Transformer](../projects/tiny-transformer/). Use the project to inspect mechanisms, not to become an LLM researcher."
+                  },
+                  "entries": [
+                    {
+                      "ref": "llm.tokenization",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.embeddings",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.self-attention",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.transformer",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.decoding-sampling",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.context-windows",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.kv-cache",
+                      "required": true
+                    },
+                    {
+                      "ref": "llm.inference",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "evaluation",
+                  "title": {
+                    "en": "Evaluation as a core engineering skill"
+                  },
+                  "guidance": {
+                    "en": "Evaluation should appear before heavy agent or production complexity. Exit when you can version evaluation data, evaluate components separately, measure stochastic variation, analyze failures and slices, calibrate subjective evaluation where needed, and make a release decision from evidence."
+                  },
+                  "level": "L3",
+                  "entries": [
+                    {
+                      "ref": "ai.evaluation",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "application-core",
+                  "title": {
+                    "en": "AI application core"
+                  },
+                  "guidance": {
+                    "en": "The learner should be able to justify why a chosen pattern is simpler or better than an alternative.\n\nFor context and tools, preserve the same evaluation lineage from the Knowledge Assistant: first prove what information belongs in context, then add external actions behind deterministic application controls before considering agentic autonomy.\n\nBefore increasing autonomy further, make the response contract explicit and measure when the system should answer versus abstain or fall back. Treat schema validity and confidence-like signals as evidence inputs, not as proof of correctness."
+                  },
+                  "entries": [
+                    {
+                      "ref": "ai.product-framing",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.model-selection",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.prompt-engineering",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.context-engineering",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.structured-outputs",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.tool-calling",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.uncertainty-abstention-trust",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "retrieval-rag",
+                  "title": {
+                    "en": "Retrieval and RAG"
+                  },
+                  "guidance": {
+                    "en": "Build in roughly this dependency order: lexical baseline, embeddings, vector retrieval, chunking when corpus/boundary failures justify it, hybrid retrieval as needed, reranking when candidate ordering is the bottleneck, RAG, RAG evaluation, retrieval lifecycle.\n\nReference system: [Knowledge Assistant](../projects/knowledge-assistant/). Do not add architecture components without a measured failure that motivates them."
+                  },
+                  "entries": [
+                    {
+                      "ref": "retrieval.search",
+                      "required": true
+                    },
+                    {
+                      "ref": "ai.embeddings",
+                      "required": true
+                    },
+                    {
+                      "ref": "retrieval.vector-search",
+                      "required": true
+                    },
+                    {
+                      "ref": "retrieval.chunking",
+                      "required": true
+                    },
+                    {
+                      "ref": "retrieval.reranking",
+                      "required": true
+                    },
+                    {
+                      "ref": "retrieval.rag-evaluation",
+                      "required": true
+                    },
+                    {
+                      "ref": "retrieval.data-lifecycle",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "agents",
+                  "title": {
+                    "en": "Agents"
+                  },
+                  "guidance": {
+                    "en": "Start deterministic. Introduce agentic choice only when flexibility creates measurable value.\n\nBefore planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, verify real environment outcomes instead of trusting agent narration, then make long-duration runs bounded and resumable before adding orchestration complexity. Add a multi-agent topology only when independent specialist roles or context windows measurably earn their coordination cost. Add MCP only when a real interoperability requirement justifies a versioned protocol boundary over the existing direct integration."
+                  },
+                  "entries": [
+                    {
+                      "ref": "agents.deterministic-vs-agentic",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.state",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.memory",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.auth",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.tool-permissions",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.prompt-injection",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.planning",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.verification",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.long-running",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.orchestration",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.multi-agent",
+                      "required": true
+                    },
+                    {
+                      "ref": "agents.mcp",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "production-security",
+                  "title": {
+                    "en": "Production and security"
+                  },
+                  "guidance": {
+                    "en": "Use the production milestones in the [Knowledge Assistant](../projects/knowledge-assistant/)."
+                  },
+                  "entries": [
+                    {
+                      "ref": "production.model-gateway",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.observability",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.latency",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.cost",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.caching",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.streaming",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.versioning",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.release-engineering",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.drift",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.architecture",
+                      "required": true
+                    },
+                    {
+                      "ref": "production.mlops-llmops",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.data-exfiltration",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.multi-tenant",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.sandboxing",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.supply-chain-data",
+                      "required": true
+                    },
+                    {
+                      "ref": "security.guardrails",
+                      "required": true
+                    }
+                  ]
+                },
+                {
+                  "id": "specialize",
+                  "title": {
+                    "en": "Specialize"
+                  },
+                  "guidance": {
+                    "en": "Choose from job/project requirements, not completeness anxiety."
+                  },
+                  "entries": [
+                    {
+                      "ref": "specialization.llm-systems",
+                      "required": false
+                    },
+                    {
+                      "ref": "specialization.post-training-reasoning",
+                      "required": false
+                    },
+                    {
+                      "ref": "specialization.ai-platform",
+                      "required": false
+                    },
+                    {
+                      "ref": "specialization.search-retrieval",
+                      "required": false
+                    },
+                    {
+                      "ref": "multimodal.foundations",
+                      "required": false
+                    },
+                    {
+                      "ref": "multimodal.voice",
+                      "required": false
+                    },
+                    {
+                      "ref": "multimodal.document",
+                      "required": false
+                    },
+                    {
+                      "ref": "specialization.ai-devtools",
+                      "required": false
+                    }
+                  ]
+                }
+              ],
+              "vocabulary": "level"
+            },
+            {
+              "type": "list",
+              "id": "completion",
+              "title": {
+                "en": "Completion standard",
+                "vi": "Tiêu chuẩn hoàn thành"
+              },
+              "items": [
+                {
+                  "en": "several demonstrated or retained core competencies"
+                },
+                {
+                  "en": "transferred evidence in unfamiliar tasks"
+                },
+                {
+                  "en": "at least one integrated AI system"
+                },
+                {
+                  "en": "evaluation artifacts"
+                },
+                {
+                  "en": "one or more production or failure artifacts"
+                },
+                {
+                  "en": "explicit design trade-offs"
+                },
+                {
+                  "en": "evidence that unnecessary complexity was rejected as often as it was added"
+                }
+              ],
+              "ordered": false
+            }
+          ]
         }
       }
     ]
   },
   "relations": [
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.deterministic-vs-agentic"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.long-running"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.mcp"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.memory"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.multi-agent"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.orchestration"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.planning"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.state"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "agents.verification"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.context-engineering"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.embeddings"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.evaluation"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.model-selection"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.product-framing"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.prompt-engineering"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.structured-outputs"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.tool-calling"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ai.uncertainty-abstention-trust"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "dl.embeddings"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "dl.foundations"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "dl.optimization"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.context-windows"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.decoding-sampling"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.embeddings"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.inference"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.kv-cache"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.self-attention"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.tokenization"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "llm.transformer"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "math.probability"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "ml.experimental-design"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "multimodal.document"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "multimodal.foundations"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "multimodal.voice"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.architecture"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.caching"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.cost"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.drift"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.latency"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.mlops-llmops"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.model-gateway"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.observability"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.release-engineering"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.streaming"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "production.versioning"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.chunking"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.data-lifecycle"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.rag-evaluation"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.reranking"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.search"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "retrieval.vector-search"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.auth"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.data-exfiltration"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.guardrails"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.multi-tenant"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.prompt-injection"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.sandboxing"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.supply-chain-data"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "security.tool-permissions"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "software.testing"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "specialization.ai-devtools"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "specialization.ai-platform"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "specialization.llm-systems"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "specialization.post-training-reasoning"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "specialization.search-retrieval"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "systems.api-service-design"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "systems.databases-storage"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "systems.distributed-systems"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "systems.observability"
+    },
+    {
+      "type": "member",
+      "from": "path:applied-ai-engineer",
+      "to": "systems.os-concurrency"
+    },
     {
       "type": "member",
       "from": "project:knowledge-assistant",

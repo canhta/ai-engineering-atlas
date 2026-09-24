@@ -1,0 +1,158 @@
+# Applied AI Engineer path (rfcs/0020-structured-learning-paths.md; schema: schemas/path.schema.json).
+# A path selects, orders, and marks catalog competencies; teaching text, sources, and evidence stay in each
+# competency's contract. `make check` validates catalog IDs, order against declared prerequisites, and levels.
+# `[Qn]` marks a mapping the RFC leaves open for the owner; prose topics with no catalog ID are comments.
+id: applied-ai-engineer
+title: Applied AI Engineer
+audience: A software engineer who wants to build, evaluate, and operate AI product features. The path is gap-driven, not a fixed course sequence.
+target_profile:
+  - frame an AI problem and define a simple baseline
+  - choose models and system patterns under quality, latency, and cost constraints
+  - build retrieval/RAG systems and evaluate retrieval separately from generation
+  - design and evaluate tool/agent workflows
+  - operate AI systems with traces, release gates, security boundaries, and feedback loops
+  - reason about enough model internals to debug system behavior and make informed trade-offs
+# [Q10] Prerequisites of on-path routes that the path does not teach, as the research suggests; each is
+# diagnosed through the bridge in the route that needs it. The owner may instead add them as entries.
+assumes:
+  - math.dot-product
+  - dl.softmax
+  - systems.performance-engineering
+  - systems.cloud-infrastructure
+  - systems.networking
+stages:
+  - id: blocking-gaps
+    title: Remove blocking software and system gaps
+    guidance: |
+      Use the [baseline scan](../assessments/baseline.md) for software engineering, systems, and data engineering. Do not redo fundamentals you can already demonstrate.
+    entries:
+      - { id: systems.api-service-design } # "APIs"
+      - { id: software.testing } # "test boundaries"
+      - { id: systems.os-concurrency } # "async/concurrent work"
+      - { id: systems.distributed-systems } # [Q3] "retries, timeouts, idempotency, backpressure"
+      - { id: systems.databases-storage } # [Q3] "storage and data lifecycle"
+      - { id: systems.observability } # "observability and debugging"
+  - id: ml-dl-models
+    title: ML and DL mental models
+    guidance: |
+      Target the minimum foundation required to reason about these. If you already work comfortably here, use diagnostics and move on.
+    entries:
+      - { id: ml.experimental-design } # [Q4] "train/validation/test design", "experimental uncertainty"
+      - { id: math.probability } # "probability"
+      - { id: dl.embeddings } # "embeddings"
+      - { id: dl.optimization } # "optimization and training behavior"
+      - { id: dl.foundations } # [Q4] "neural network computation"
+  - id: llm-foundations
+    title: LLM foundations
+    guidance: |
+      Reference project: [Tiny Transformer](../projects/tiny-transformer/). Use the project to inspect mechanisms, not to become an LLM researcher.
+    entries:
+      - { id: llm.tokenization }
+      - { id: llm.embeddings }
+      - { id: llm.self-attention }
+      - { id: llm.transformer } # "transformer blocks"
+      - { id: llm.decoding-sampling } # "decoding"
+      - { id: llm.context-windows }
+      - { id: llm.kv-cache }
+      - { id: llm.inference } # "inference cost/latency"
+  - id: evaluation
+    title: Evaluation as a core engineering skill
+    guidance: |
+      Evaluation should appear before heavy agent or production complexity. Exit when you can version evaluation data, evaluate components separately, measure stochastic variation, analyze failures and slices, calibrate subjective evaluation where needed, and make a release decision from evidence.
+    target_level: L3
+    entries:
+      - { id: ai.evaluation }
+  - id: application-core
+    title: AI application core
+    guidance: |
+      The learner should be able to justify why a chosen pattern is simpler or better than an alternative.
+
+      For context and tools, preserve the same evaluation lineage from the Knowledge Assistant: first prove what information belongs in context, then add external actions behind deterministic application controls before considering agentic autonomy.
+
+      Before increasing autonomy further, make the response contract explicit and measure when the system should answer versus abstain or fall back. Treat schema validity and confidence-like signals as evidence inputs, not as proof of correctness.
+    entries:
+      - { id: ai.product-framing }
+      - { id: ai.model-selection }
+      - { id: ai.prompt-engineering } # "prompting"
+      - { id: ai.context-engineering }
+      - { id: ai.structured-outputs }
+      - { id: ai.tool-calling } # [Q7] candidate for "tool schemas"
+      - { id: ai.uncertainty-abstention-trust }
+  - id: retrieval-rag
+    title: Retrieval and RAG
+    guidance: |
+      Build in roughly this dependency order: lexical baseline, embeddings, vector retrieval, chunking when corpus/boundary failures justify it, hybrid retrieval as needed, reranking when candidate ordering is the bottleneck, RAG, RAG evaluation, retrieval lifecycle.
+
+      Reference system: [Knowledge Assistant](../projects/knowledge-assistant/). Do not add architecture components without a measured failure that motivates them.
+    entries:
+      - { id: retrieval.search } # "lexical baseline"
+      - { id: ai.embeddings }
+      - { id: retrieval.vector-search } # [Q5] "vector retrieval"
+      - { id: retrieval.chunking }
+      # "hybrid retrieval as needed": no catalog ID [Q5]
+      - { id: retrieval.reranking }
+      # "RAG": no catalog ID [Q5]
+      - { id: retrieval.rag-evaluation }
+      - { id: retrieval.data-lifecycle } # "retrieval lifecycle"
+  - id: agents
+    title: Agents
+    guidance: |
+      Start deterministic. Introduce agentic choice only when flexibility creates measurable value.
+
+      Before planning or long-running orchestration, make execution state durable enough to survive interruption, then add cross-session memory only for information whose future value can be measured. After that, externalize planning only when adaptive decomposition helps, verify real environment outcomes instead of trusting agent narration, then make long-duration runs bounded and resumable before adding orchestration complexity. Add a multi-agent topology only when independent specialist roles or context windows measurably earn their coordination cost. Add MCP only when a real interoperability requirement justifies a versioned protocol boundary over the existing direct integration.
+    entries:
+      - { id: agents.deterministic-vs-agentic }
+      - { id: agents.state }
+      - { id: agents.memory }
+      - { id: security.auth } # "auth around data/tools", before prompt injection (Q2)
+      - { id: security.tool-permissions } # [Q7] candidate for "permission boundaries"
+      - { id: security.prompt-injection } # before MCP (Q2)
+      - { id: agents.planning }
+      - { id: agents.verification }
+      - { id: agents.long-running } # "retries and long-running tasks"
+      - { id: agents.orchestration }
+      - { id: agents.multi-agent }
+      - { id: agents.mcp }
+      # "trajectory/tool-use evaluation": no catalog ID [Q7]
+  - id: production-security
+    title: Production and security
+    guidance: |
+      Use the production milestones in the [Knowledge Assistant](../projects/knowledge-assistant/).
+    entries:
+      - { id: production.model-gateway }
+      - { id: production.observability } # "tracing and replay"
+      - { id: production.latency }
+      - { id: production.cost }
+      - { id: production.caching }
+      - { id: production.streaming }
+      - { id: production.versioning }
+      - { id: production.release-engineering } # "eval/release gates"
+      - { id: production.drift }
+      - { id: production.architecture } # [Q8] candidate for "graceful degradation"
+      - { id: production.mlops-llmops } # [Q8] candidate for "incident learning"
+      - { id: security.data-exfiltration } # [Q7] candidate for "security boundaries"
+      - { id: security.multi-tenant } # [Q7]
+      - { id: security.sandboxing } # [Q7]
+      - { id: security.supply-chain-data } # [Q7]
+      - { id: security.guardrails } # [Q7]
+  - id: specialize
+    title: Specialize
+    guidance: |
+      Choose from job/project requirements, not completeness anxiety.
+    entries:
+      - { id: specialization.llm-systems, required: false }
+      - { id: specialization.post-training-reasoning, required: false }
+      - { id: specialization.ai-platform, required: false }
+      - { id: specialization.search-retrieval, required: false }
+      - { id: multimodal.foundations, required: false } # "multimodal/voice/document AI"
+      - { id: multimodal.voice, required: false }
+      - { id: multimodal.document, required: false }
+      - { id: specialization.ai-devtools, required: false } # "developer tools"
+completion:
+  - several demonstrated or retained core competencies
+  - transferred evidence in unfamiliar tasks
+  - at least one integrated AI system
+  - evaluation artifacts
+  - one or more production or failure artifacts
+  - explicit design trade-offs
+  - evidence that unnecessary complexity was rejected as often as it was added

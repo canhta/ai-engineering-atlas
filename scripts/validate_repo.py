@@ -556,6 +556,89 @@ for cid, route in route_competencies.items():
 
 
 # ---------------------------------------------------------------------------
+# Learning paths (rfcs/0020-structured-learning-paths.md)
+# ---------------------------------------------------------------------------
+
+LEVEL_ORDER = {level: index for index, level in enumerate(sorted(VALID_LEVELS))}
+path_count = 0
+unrouted_required = 0
+
+for path in sorted((ROOT / "paths").glob("*.yaml")):
+    rel = path.relative_to(ROOT)
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        errors.append(f"{rel}: YAML parse error: {exc}")
+        continue
+    path_count += 1
+
+    if data.get("id") != path.stem:
+        errors.append(f"{rel}: id '{data.get('id')}' must equal the file name '{path.stem}'")
+
+    assumes = data.get("assumes") or []
+    for cid in assumes:
+        if cid not in catalog:
+            errors.append(f"{rel}: assumes unknown catalog competency '{cid}'")
+
+    stages = data.get("stages") or []
+    entries = [(stage, entry) for stage in stages for entry in stage.get("entries") or []]
+    order = [entry.get("id") for _, entry in entries]
+    position = {}
+    for index, cid in enumerate(order):
+        if cid in position:
+            errors.append(f"{rel}: '{cid}' appears more than once")
+        position.setdefault(cid, index)
+        if cid in assumes:
+            errors.append(f"{rel}: '{cid}' is both an entry and assumed")
+
+    stage_ids = [stage.get("id") for stage in stages]
+    for sid in {s for s in stage_ids if stage_ids.count(s) > 1}:
+        errors.append(f"{rel}: duplicate stage id '{sid}'")
+
+    for index, (stage, entry) in enumerate(entries):
+        cid = entry.get("id")
+        where = f"{rel}: entry '{cid}'"
+        if cid not in catalog:
+            errors.append(f"{where}: unknown catalog competency")
+            continue
+        required = entry.get("required", True)
+        if entry.get("when") and required:
+            errors.append(f"{where}: 'when' is only allowed with required: false")
+
+        ready = catalog[cid].get("status") == "ready" and cid in route_competencies
+        if not ready:
+            if entry.get("target_level"):
+                errors.append(f"{where}: target_level is only allowed on a ready route")
+            if entry.get("order_exceptions"):
+                errors.append(f"{where}: order_exceptions are only allowed on a ready route")
+            if required:
+                unrouted_required += 1
+            continue
+
+        route = route_competencies[cid]["data"]
+        # A path cannot demand more than the route's own contract defines.
+        level = entry.get("target_level") or stage.get("target_level")
+        if level and LEVEL_ORDER[level] > LEVEL_ORDER.get(route.get("target_level"), -1):
+            errors.append(f"{where}: target level {level} exceeds the route's own {route.get('target_level')}")
+
+        # Walking in path order, each prerequisite comes earlier, is assumed, or is a stated exception.
+        prerequisites = route.get("prerequisites") or []
+        exceptions = {e.get("prerequisite"): e.get("reason") for e in entry.get("order_exceptions") or []}
+        for prereq in prerequisites:
+            if position.get(prereq, len(order)) < index or prereq in assumes:
+                continue
+            if exceptions.get(prereq):
+                continue
+            placed = "later on the path" if prereq in position else "not on the path"
+            errors.append(f"{where}: prerequisite '{prereq}' is {placed}; move it, assume it, or state an exception")
+        for prereq in exceptions:
+            if prereq not in prerequisites:
+                errors.append(f"{where}: order exception '{prereq}' is not a declared prerequisite")
+            elif position.get(prereq, -1) <= index:
+                errors.append(f"{where}: order exception '{prereq}' is stale; it is not later on the path")
+
+
+# ---------------------------------------------------------------------------
 # Learner progress example
 # ---------------------------------------------------------------------------
 
@@ -692,5 +775,6 @@ coverage_count = len(catalog) - ready_count
 print(
     f"OK: {len(catalog)} catalog competencies "
     f"({ready_count} ready, {coverage_count} coverage), "
-    f"{len(resource_map)} resources, {len(project_ids)} projects"
+    f"{len(resource_map)} resources, {len(project_ids)} projects, "
+    f"{path_count} {'path' if path_count == 1 else 'paths'} ({unrouted_required} required path steps have no route yet)"
 )
