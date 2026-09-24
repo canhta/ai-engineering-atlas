@@ -21,9 +21,10 @@
     "prebuild": "node scripts/fetch-pyodide-wheels.mjs",
     "pretest:labs": "node scripts/fetch-pyodide-wheels.mjs",
     "preview": "wrangler dev --ip 127.0.0.1 --port ${ATLAS_PORT:-8787}",
-    "test": "node --test \"src/**/*.test.ts\" && vitest run",
+    "test": "node --test \"src/**/*.test.ts\" && pnpm run test:worker && vitest run",
     "test:e2e": "playwright test",
-    "test:labs": "node scripts/test-labs.mjs"
+    "test:labs": "node scripts/test-labs.mjs",
+    "test:worker": "node --test \"worker/**/*.test.ts\""
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",

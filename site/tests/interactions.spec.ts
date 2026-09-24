@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
+import { isConsoleError } from "./fixtures/console";
 
 const ROUTE = "/en/routes/ai.tool-calling/";
 const ROUTE_REF = "ai.tool-calling";
@@ -74,7 +75,7 @@ async function open(page: Page, path: string) {
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

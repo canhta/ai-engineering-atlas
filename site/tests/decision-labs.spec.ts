@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { isConsoleError } from "./fixtures/console";
 
 // Decision labs render as structured rubric forms instead of a code runner (DESIGN.md → Labs: the
 // form variant; rfcs/0000-interactive-web-atlas.md → In-browser labs → Decision labs).
@@ -9,7 +10,7 @@ const AGENTIC_DESIGN = "/en/labs/agentic-design/";
 let errors: string[] = [];
 test.beforeEach(async ({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(() => {
     document.addEventListener("securitypolicyviolation", (e) =>

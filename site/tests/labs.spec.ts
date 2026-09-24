@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 import { withReference } from "../src/lib/lab-run.ts";
+import { isConsoleError } from "./fixtures/console";
 
 // Browser labs (DESIGN.md → Labs) under the real CSP and isolation headers. The first run loads
 // Pyodide from the same origin, so these tests allow for it.
@@ -13,7 +14,7 @@ const LOAD = { timeout: 90_000 };
 let errors: string[] = [];
 test.beforeEach(async ({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("worker", (w) => w.on("console", (m) => m.type() === "error" && errors.push(`worker: ${m.text()}`)));
   await page.addInitScript(() => {

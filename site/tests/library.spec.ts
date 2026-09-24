@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
+import { isConsoleError } from "./fixtures/console";
 
 // The Library as a bibliography in sections (DESIGN.md → Library). Every expected value comes from
 // the content model, never typed in: the curriculum grows, and a pinned count fails on the next
@@ -53,7 +54,7 @@ const [MOST_CITED, MOST_PAGES] = [...citing.entries()].sort((a, b) => b[1].size 
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

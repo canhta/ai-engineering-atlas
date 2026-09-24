@@ -8,7 +8,8 @@ import Icon from "../components/Icon.astro";
 import DueCount from "../components/react/DueCount";
 import { languages, useTranslations, type Lang } from "../i18n";
 import { site, text } from "../lib/atlas";
-import { homeUrl, howUrl, mapUrl, progressUrl, searchUrl, switchLang } from "../lib/urls";
+import AccountMenu from "../components/react/AccountMenu";
+import { homeUrl, howUrl, mapUrl, privacyUrl, progressUrl, searchUrl, switchLang } from "../lib/urls";
 
 interface Props {
   lang: Lang;
@@ -89,6 +90,8 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
             </li>
           ))}
         </ul>
+        {/* Renders nothing until /api/me answers, and nothing at all without the Worker's API. */}
+        <AccountMenu client:idle lang={lang} />
         <a class="topbar-repo" href={site.repository} rel="noopener">
           <Icon name="github" size={20} />
           <span class="visually-hidden">{t("footer.repository")}</span>
@@ -106,6 +109,7 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
           <strong>{siteTitle}</strong>
           <span>{t("footer.license")}</span>
           <a href={howUrl(lang)}>{t("how.title")}</a>
+          <a href={privacyUrl(lang)}>{t("footer.privacy")}</a>
           <a href={site.repository} rel="noopener">
             {t("footer.star")}
           </a>
@@ -267,8 +271,25 @@ const ownerLinks = (site.links ?? []).map((l) => ({ ...l, label: linkLabels[l.ki
     }
 
     .wordmark {
-      flex: 1 0 100%;
+      flex: 1 0 auto;
       font-size: 1.125rem;
+    }
+
+    /* Two rows: wordmark and sign-in; a zero-height break; then the tabs and languages. */
+    .topbar-inner::after {
+      content: "";
+      flex-basis: 100%;
+      order: 2;
+    }
+
+    .topbar-tabs,
+    .topbar-langs {
+      order: 3;
+    }
+
+    .topbar-inner :global(.account-trigger),
+    .topbar-inner :global(.account-error) {
+      order: 1;
     }
 
     .topbar-tab,

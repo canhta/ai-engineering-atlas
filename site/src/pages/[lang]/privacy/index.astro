@@ -1,0 +1,107 @@
+---
+// Privacy (DESIGN.md → Information architecture): what the atlas stores and sends where, set like
+// How it works (section heads in a left column, hairlines between sections). Server-rendered, no
+// island. Every sentence must stay true of worker/ and src/lib/progress-store.ts: change them together.
+import Base from "../../../layouts/Base.astro";
+import { langPaths, useTranslations, type Lang } from "../../../i18n";
+
+export const getStaticPaths = langPaths;
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} title={t("privacy.title")} description={t("privacy.intro")}>
+  <h1 class="page-title">{t("privacy.title")}</h1>
+  <p class="lead">{t("privacy.intro")}</p>
+
+  <div class="privacy">
+    <section class="privacy-section" aria-labelledby="privacy-local">
+      <h2 id="privacy-local">{t("privacy.local.title")}</h2>
+      <div class="reading">
+        <p>{t("privacy.local.body")}</p>
+      </div>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="privacy-cookie">
+      <h2 id="privacy-cookie">{t("privacy.cookie.title")}</h2>
+      <div class="reading">
+        <p>{t("privacy.cookie.body")}</p>
+        <p>{t("privacy.cookie.optional")}</p>
+      </div>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="privacy-stored">
+      <h2 id="privacy-stored">{t("privacy.stored.title")}</h2>
+      <div class="reading">
+        <ul class="privacy-list">
+          <li>{t("privacy.stored.user")}</li>
+          <li>{t("privacy.stored.sessions")}</li>
+          <li>{t("privacy.stored.usage")}</li>
+        </ul>
+        <p>{t("privacy.stored.not")}</p>
+      </div>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="privacy-sent">
+      <h2 id="privacy-sent">{t("privacy.sent.title")}</h2>
+      <div class="reading">
+        <p>{t("privacy.sent.signin")}</p>
+        <p>{t("privacy.sent.ai")}</p>
+        <p>{t("privacy.sent.host")}</p>
+      </div>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="privacy-delete">
+      <h2 id="privacy-delete">{t("privacy.delete.title")}</h2>
+      <div class="reading">
+        <p>{t("privacy.delete.body")}</p>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .privacy {
+    margin-top: var(--space-10);
+  }
+
+  .privacy-section {
+    display: grid;
+    grid-template-columns: minmax(0, 16rem) minmax(0, 46rem);
+    gap: var(--space-3) var(--space-10);
+    padding: var(--space-8) 0 var(--space-10);
+    border-top: var(--border-width) solid var(--line);
+  }
+
+  .privacy-section h2 {
+    margin: 0;
+  }
+
+  @media (width < 1024px) {
+    .privacy-section {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .privacy-section p,
+  .privacy-list {
+    margin: 0 0 var(--space-4);
+  }
+
+  .privacy-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* The stored records as a ruled list, like the How it works key. */
+  .privacy-list {
+    padding: 0;
+    list-style: none;
+    border-top: var(--border-width) solid var(--ink);
+  }
+
+  .privacy-list li {
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--line);
+  }
+</style>

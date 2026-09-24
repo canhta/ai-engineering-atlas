@@ -32,5 +32,10 @@ export default tseslint.config(
     files: ["src/**"],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
   },
+  {
+    // The Cloudflare Worker (Web APIs) and its tests (Node).
+    files: ["worker/**"],
+    languageOptions: { globals: { ...globals.serviceworker, ...globals.node } },
+  },
   prettier,
 );

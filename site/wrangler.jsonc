@@ -1,11 +1,22 @@
 {
-  // Static site served by Workers static assets. The /api/* Worker (SSO, AI proxy)
-  // is added in Phase 2; see rfcs/0000-interactive-web-atlas.md.
+  // Static site served by Workers static assets, plus the /api/* Worker (sign-in; the AI proxy
+  // comes next). See rfcs/0000-interactive-web-atlas.md and site/AGENTS.md → AI tutor and Worker.
   "name": "ai-engineering-atlas",
+  "main": "./worker/index.ts",
   "compatibility_date": "2026-09-22",
   "routes": [{ "pattern": "ai-eng.canhta.com", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
+    // Only /api/* runs the Worker first. Every other path is served as an asset with
+    // public/_headers applied (_headers never applies to a Worker response).
+    "run_worker_first": ["/api/*"],
   },
+  // Secrets (wrangler secret put): SESSION_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET,
+  // GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET. Local development reads them from .dev.vars.
+  // The D1 binding "DB" (migrations in worker/migrations/) is added here once the owner has
+  // created the database; without an ID, `wrangler deploy` would create one on its own.
+  // Until all of it is set, /api/* answers 503 and the static site is unaffected.
+  "vars": { "ALLOWED_ORIGINS": "https://ai-eng.canhta.com" },
 }

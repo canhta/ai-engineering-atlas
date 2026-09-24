@@ -227,6 +227,45 @@
   margin: var(--space-3) 0;
 }
 
+/* Sign-in in the top bar: a quiet menu button like the Atlas facets; the menu reuses theirs. */
+.account-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2.25rem;
+  max-width: 14rem;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--text-small);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-control) var(--ease);
+}
+
+.account-trigger[data-hovered],
+.account-trigger[data-pressed],
+.account-trigger[aria-expanded="true"] {
+  background: var(--wash);
+}
+
+/* Its provider items are links; in a menu they read as options, not underlined text. */
+.facet-option:is(a) {
+  text-decoration: none;
+}
+
+.account-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-error {
+  color: var(--ink-muted);
+  font-size: var(--text-small);
+}
+
 .due-count {
   display: inline-grid;
   place-items: center;

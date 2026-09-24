@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
 import { formatDate } from "../src/lib/dates.ts";
+import { isConsoleError } from "./fixtures/console";
 
 type Evidence = { id: string; recorded_at: string; kind: string; supports_state: string; note?: string };
 type Seed = { competencies: Record<string, { evidence: Evidence[] }> };
@@ -37,7 +38,7 @@ const entries = (page: Page) => log(page).locator(".log-entry");
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

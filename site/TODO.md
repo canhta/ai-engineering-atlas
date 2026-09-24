@@ -2,7 +2,7 @@
 
 Tracks delivery of the [web atlas RFC](../rfcs/0000-interactive-web-atlas.md). Mark an item done in the same change that finishes it, and add new work here before starting it.
 
-Last updated: 2026-09-23
+Last updated: 2026-09-24
 
 ## Done
 
@@ -115,11 +115,13 @@ Last updated: 2026-09-23
 
 - [x] Deterministic next-step recommendation from prerequisites and states, with tests (`src/lib/recommend.ts`; Home, Progress, field log)
 - [x] Replace fixed review intervals with `ts-fsrs`
-- [ ] Worker `/api/*`: SSO (GitHub, Google), HttpOnly session, D1 users and usage counters
-- [ ] AI proxy with the project key as a Worker secret; per-user and global budgets
+- [x] Worker `/api/*`: SSO (GitHub, Google), HttpOnly session, D1 users and usage counters (`worker/`, ticket `.scratch/phase2/issues/01-sign-in.md`): only `/api/*` runs the Worker first; OAuth with state and PKCE, server-side code exchange, opaque sessions hashed in D1, same-origin sign-out, 503 without configuration; sign-in menu in the top bar; `pnpm run test:worker`
+- [ ] Owner setup before sign-in can go live: OAuth apps, D1 database and its binding in `wrangler.jsonc`, migrations, Worker secrets (`.scratch/phase2/owner-setup.md`)
+- [ ] Owner review of the sign-in and privacy Vietnamese strings: `footer.privacy`, `account.signIn`, `account.signInWith`, `account.signedIn`, `account.signOut`, `account.signOutFailed`, `privacy.title`, `privacy.intro`, `privacy.browser.title`, `privacy.browser.body`, `privacy.cookie.title`, `privacy.cookie.body`, `privacy.cookie.optional`, `privacy.stored.title`, `privacy.stored.user`, `privacy.stored.sessions`, `privacy.stored.usage`, `privacy.stored.not`, `privacy.sent.title`, `privacy.sent.signin`, `privacy.sent.ai`, `privacy.sent.host`, `privacy.delete.title`, `privacy.delete.body`
+- [ ] AI proxy with the project key as a Worker secret; per-user and global budgets (writes the D1 `usage` table)
 - [ ] Tutor roles from the RFC (diagnostic interviewer, source guide, lab coach, evidence reviewer, review partner, next-step explainer)
 - [ ] Tutor evaluation set in CI (give-away rate, held-out independent correctness, no passing code from the coach)
-- [ ] Privacy page (en/vi)
+- [x] Privacy page (en/vi): `/{lang}/privacy/`, linked from the footer (`tests/account.spec.ts`)
 - [ ] First two experiment playgrounds, each naming its `experiments` entry
 
 ### Screens to add (from the roadmap.sh teardown, 2026-09-22)

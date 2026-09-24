@@ -4,6 +4,7 @@
 
 import { readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
+import { isConsoleError } from "./fixtures/console";
 
 type L10n = { en: string; vi?: string };
 type Model = {
@@ -38,7 +39,7 @@ const entry = (page: Page, title: string) =>
 let errors: string[] = [];
 test.beforeEach(({ page }) => {
   errors = [];
-  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+  page.on("console", (m) => isConsoleError(m) && errors.push(m.text()));
   page.on("pageerror", (e) => errors.push(e.message));
 });
 test.afterEach(() => {

@@ -6,15 +6,15 @@ Design: [web atlas RFC](../../../rfcs/0000-interactive-web-atlas.md) → AI supp
 
 **Blocked by:** None (can start immediately). Deployment is blocked on the owner creating the OAuth apps and D1 database (a guided wizard for those steps is part of this ticket's hand-off, not something the agent runs).
 
-**Status:** ready-for-agent
+**Status:** done (owner hand-off: [owner-setup.md](../owner-setup.md))
 
-- [ ] The Cloudflare Worker serves `/api/*` and passes every other path to the static assets unchanged (headers, CSP, and COOP/COEP preserved)
-- [ ] `GET /api/auth/{github,google}` starts OAuth with `state` (and PKCE where supported); the callback verifies state, exchanges the code server-side, upserts the user in D1, and sets an HttpOnly, Secure, SameSite=Lax session cookie; `POST /api/auth/signout` clears it; `GET /api/me` returns the signed-in user or 401
-- [ ] Sessions are opaque random IDs stored server-side (D1) with expiry; no provider tokens are kept after the exchange; CSRF: state-changing endpoints require POST with same-origin checks
-- [ ] D1 schema as a migration: users (id, provider, provider subject, display name, created), sessions, usage counters (user, day, count) — no learner answers, code, or progress
-- [ ] Provider credentials, session secret, and allowed origins come from Worker secrets/vars; missing configuration makes `/api/*` answer 503 with a clear message, and the site still works
-- [ ] The top bar shows "Sign in" (a small menu for GitHub/Google) or the user's name with "Sign out", only as a JavaScript enhancement; with `/api` unavailable it shows nothing
-- [ ] A privacy page `/{lang}/privacy/`, linked from the footer, in en and vi (VIETNAMESE_STYLE.md; owner review listed in site/TODO.md), stating: the only cookie is the session cookie; stored data is the user record and usage counters; learner answers and code will be sent to the model provider only when an AI action is used and are not stored, except messages the learner reports as wrong
-- [ ] Tests: Worker unit tests for OAuth state/callback (provider HTTP mocked), session create/expire/sign-out, 503 on missing config, and routing to assets; browser tests for the signed-out top bar and the privacy page; existing suites unchanged
-- [ ] `site/AGENTS.md` (Commands, AI tutor and Worker), DESIGN.md (top bar sign-in), and site/TODO.md updated in place; a `/wizard` style script or checklist for the owner's human steps (create OAuth apps with callback URLs, create D1, set secrets) is written but not run
-- [ ] `pnpm run check`, `pnpm run test:e2e`, the Worker tests, and `make check` pass; nothing is deployed
+- [x] The Cloudflare Worker serves `/api/*` and passes every other path to the static assets unchanged (headers, CSP, and COOP/COEP preserved)
+- [x] `GET /api/auth/{github,google}` starts OAuth with `state` (and PKCE where supported); the callback verifies state, exchanges the code server-side, upserts the user in D1, and sets an HttpOnly, Secure, SameSite=Lax session cookie; `POST /api/auth/signout` clears it; `GET /api/me` returns the signed-in user or 401
+- [x] Sessions are opaque random IDs stored server-side (D1) with expiry; no provider tokens are kept after the exchange; CSRF: state-changing endpoints require POST with same-origin checks
+- [x] D1 schema as a migration: users (id, provider, provider subject, display name, created), sessions, usage counters (user, day, count) — no learner answers, code, or progress
+- [x] Provider credentials, session secret, and allowed origins come from Worker secrets/vars; missing configuration makes `/api/*` answer 503 with a clear message, and the site still works
+- [x] The top bar shows "Sign in" (a small menu for GitHub/Google) or the user's name with "Sign out", only as a JavaScript enhancement; with `/api` unavailable it shows nothing
+- [x] A privacy page `/{lang}/privacy/`, linked from the footer, in en and vi (VIETNAMESE_STYLE.md; owner review listed in site/TODO.md), stating: the only cookie is the session cookie; stored data is the user record and usage counters; learner answers and code will be sent to the model provider only when an AI action is used and are not stored, except messages the learner reports as wrong
+- [x] Tests: Worker unit tests for OAuth state/callback (provider HTTP mocked), session create/expire/sign-out, 503 on missing config, and routing to assets; browser tests for the signed-out top bar and the privacy page; existing suites unchanged
+- [x] `site/AGENTS.md` (Commands, AI tutor and Worker), DESIGN.md (top bar sign-in), and site/TODO.md updated in place; a `/wizard` style script or checklist for the owner's human steps (create OAuth apps with callback URLs, create D1, set secrets) is written but not run
+- [x] `pnpm run check`, `pnpm run test:e2e`, the Worker tests, and `make check` pass; nothing is deployed
