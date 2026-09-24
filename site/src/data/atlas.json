@@ -13988,7 +13988,7 @@
               }
             },
             {
-              "type": "list",
+              "type": "milestones",
               "id": "milestones",
               "title": {
                 "en": "Milestones",
@@ -13996,405 +13996,681 @@
               },
               "items": [
                 {
-                  "en": "product-frame"
+                  "id": "product-frame",
+                  "title": {
+                    "en": "Product frame"
+                  },
+                  "ask": {
+                    "en": "Complete the AI Product and Problem Framing route and write a one-page product brief."
+                  },
+                  "refs": [
+                    "ai.product-framing"
+                  ],
+                  "evidence": [
+                    "product-brief"
+                  ],
+                  "path": "projects/knowledge-assistant/foundation"
                 },
                 {
-                  "en": "lexical-baseline"
+                  "id": "lexical-baseline",
+                  "title": {
+                    "en": "Lexical baseline"
+                  },
+                  "ask": {
+                    "en": "Build the simplest useful retrieval baseline. A keyword or lexical search is preferred over starting with RAG."
+                  },
+                  "refs": [
+                    "retrieval.search"
+                  ],
+                  "evidence": [
+                    "versioned-eval-set",
+                    "baseline-results"
+                  ],
+                  "path": "projects/knowledge-assistant/foundation"
                 },
                 {
-                  "en": "vector-retrieval"
+                  "id": "vector-retrieval",
+                  "title": {
+                    "en": "Embeddings and vector retrieval"
+                  },
+                  "ask": {
+                    "en": "Add embedding-based retrieval. Do not remove the lexical baseline. Compare them on the same query set."
+                  },
+                  "refs": [
+                    "ai.embeddings"
+                  ],
+                  "evidence": [],
+                  "path": "projects/knowledge-assistant/foundation"
                 },
                 {
-                  "en": "chunking-quality"
+                  "id": "chunking-quality",
+                  "title": {
+                    "en": "Chunking quality"
+                  },
+                  "ask": {
+                    "en": "Choose a strategy for this corpus, not a universal chunk size."
+                  },
+                  "refs": [
+                    "retrieval.chunking"
+                  ],
+                  "evidence": [
+                    "chunking-comparison"
+                  ],
+                  "path": "projects/knowledge-assistant/retrieval-quality"
                 },
                 {
-                  "en": "hybrid-and-reranking"
+                  "id": "hybrid-and-reranking",
+                  "title": {
+                    "en": "Hybrid retrieval and reranking"
+                  },
+                  "ask": {
+                    "en": "Add hybrid retrieval or reranking only when the prior failure analysis supports it."
+                  },
+                  "refs": [
+                    "retrieval.reranking"
+                  ],
+                  "evidence": [
+                    "reranking-comparison"
+                  ],
+                  "path": "projects/knowledge-assistant/retrieval-quality"
                 },
                 {
-                  "en": "rag"
+                  "id": "rag",
+                  "title": {
+                    "en": "Answer generation / RAG"
+                  },
+                  "ask": {
+                    "en": "Only after retrieval is measurable, add answer generation. Require source attribution."
+                  },
+                  "refs": [],
+                  "evidence": []
                 },
                 {
-                  "en": "rag-evaluation"
+                  "id": "rag-evaluation",
+                  "title": {
+                    "en": "RAG evaluation"
+                  },
+                  "ask": {
+                    "en": "Do not report one undifferentiated RAG score. Separate retrieval, supplied context, generation, and end-to-end evidence."
+                  },
+                  "refs": [
+                    "retrieval.rag-evaluation",
+                    "ai.evaluation"
+                  ],
+                  "evidence": [
+                    "rag-evaluation-record"
+                  ],
+                  "path": "projects/knowledge-assistant/retrieval-quality"
                 },
                 {
-                  "en": "data-lifecycle"
+                  "id": "data-lifecycle",
+                  "title": {
+                    "en": "Data lifecycle"
+                  },
+                  "refs": [],
+                  "evidence": []
                 },
                 {
-                  "en": "context-policy"
+                  "id": "context-policy",
+                  "title": {
+                    "en": "Context engineering"
+                  },
+                  "ask": {
+                    "en": "Inventory what actually reaches the model and compare context policies before adding new autonomy."
+                  },
+                  "refs": [
+                    "ai.context-engineering"
+                  ],
+                  "evidence": [
+                    "context-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/context-and-tools"
                 },
                 {
-                  "en": "tool-or-agent-workflow"
+                  "id": "tool-or-agent-workflow",
+                  "title": {
+                    "en": "Tool use or agent workflow"
+                  },
+                  "ask": {
+                    "en": "First identify a task the retrieval-only system cannot handle cleanly. Start with a deterministic workflow."
+                  },
+                  "refs": [
+                    "ai.tool-calling",
+                    "agents.deterministic-vs-agentic"
+                  ],
+                  "evidence": [
+                    "tool-contract",
+                    "tool-use-evaluation"
+                  ],
+                  "path": "projects/knowledge-assistant/context-and-tools"
                 },
                 {
-                  "en": "structured-response"
+                  "id": "structured-response",
+                  "title": {
+                    "en": "Structured response contract"
+                  },
+                  "ask": {
+                    "en": "Introduce a versioned response contract because a real downstream consumer needs one."
+                  },
+                  "refs": [
+                    "ai.structured-outputs"
+                  ],
+                  "evidence": [
+                    "response-schema-record"
+                  ],
+                  "path": "projects/knowledge-assistant/output-and-trust"
                 },
                 {
-                  "en": "abstention-policy"
+                  "id": "abstention-policy",
+                  "title": {
+                    "en": "Abstention and trust policy"
+                  },
+                  "ask": {
+                    "en": "Record the chosen answer/abstain/fallback policy and what evidence would change it."
+                  },
+                  "refs": [
+                    "ai.uncertainty-abstention-trust"
+                  ],
+                  "evidence": [
+                    "abstention-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/output-and-trust"
                 },
                 {
-                  "en": "stateful-workflow"
+                  "id": "stateful-workflow",
+                  "title": {
+                    "en": "Durable execution state"
+                  },
+                  "ask": {
+                    "en": "Take one already-justified multi-step or interruptible workflow and make its execution state explicit."
+                  },
+                  "refs": [
+                    "agents.state"
+                  ],
+                  "evidence": [
+                    "state-recovery-record"
+                  ],
+                  "path": "projects/knowledge-assistant/state-and-memory"
                 },
                 {
-                  "en": "long-term-memory"
+                  "id": "long-term-memory",
+                  "title": {
+                    "en": "Cross-session memory"
+                  },
+                  "ask": {
+                    "en": "Add memory only for a measured cross-session need."
+                  },
+                  "refs": [
+                    "agents.memory"
+                  ],
+                  "evidence": [
+                    "memory-evaluation-record"
+                  ],
+                  "path": "projects/knowledge-assistant/state-and-memory"
                 },
                 {
-                  "en": "adaptive-planning"
+                  "id": "adaptive-planning",
+                  "title": {
+                    "en": "Adaptive planning"
+                  },
+                  "ask": {
+                    "en": "Only add explicit planning for a task whose structure depends on intermediate results."
+                  },
+                  "refs": [
+                    "agents.planning"
+                  ],
+                  "evidence": [
+                    "planning-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/planning-and-verification"
                 },
                 {
-                  "en": "verification-loop"
+                  "id": "verification-loop",
+                  "title": {
+                    "en": "Verification loop"
+                  },
+                  "ask": {
+                    "en": "Define success criteria before execution and verify real outcomes rather than trusting agent narration."
+                  },
+                  "refs": [
+                    "agents.verification"
+                  ],
+                  "evidence": [
+                    "verification-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/planning-and-verification"
                 },
                 {
-                  "en": "long-running-runtime"
+                  "id": "long-running-runtime",
+                  "title": {
+                    "en": "Long-running runtime"
+                  },
+                  "ask": {
+                    "en": "Introduce a real or simulated wait/process boundary instead of keeping one worker alive."
+                  },
+                  "refs": [
+                    "agents.long-running"
+                  ],
+                  "evidence": [
+                    "long-running-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/runtime-and-orchestration"
                 },
                 {
-                  "en": "orchestrated-flow"
+                  "id": "orchestrated-flow",
+                  "title": {
+                    "en": "Orchestration"
+                  },
+                  "ask": {
+                    "en": "Keep a simpler single-flow baseline. Identify a real routing, parallelism, or dynamic-subtask problem."
+                  },
+                  "refs": [
+                    "agents.orchestration"
+                  ],
+                  "evidence": [
+                    "orchestration-experiment"
+                  ],
+                  "path": "projects/knowledge-assistant/runtime-and-orchestration"
                 },
                 {
-                  "en": "multi-agent-decision"
+                  "id": "multi-agent-decision",
+                  "title": {
+                    "en": "Multi-agent decision"
+                  },
+                  "ask": {
+                    "en": "Start from the same single-agent orchestration baseline and identify a measured limitation that independent roles or context windows may solve."
+                  },
+                  "refs": [
+                    "agents.multi-agent"
+                  ],
+                  "evidence": [
+                    "agent-contract",
+                    "multi-agent-experiment",
+                    "multi-agent-decision"
+                  ],
+                  "path": "projects/knowledge-assistant/multi-agent"
                 },
                 {
-                  "en": "mcp-interoperability"
+                  "id": "mcp-interoperability",
+                  "title": {
+                    "en": "MCP interoperability"
+                  },
+                  "ask": {
+                    "en": "Add MCP only when the Knowledge Assistant has a real interoperability need. Preserve the direct/internal integration as the baseline."
+                  },
+                  "refs": [
+                    "agents.mcp"
+                  ],
+                  "evidence": [
+                    "mcp-boundary",
+                    "mcp-test-matrix",
+                    "mcp-conformance-record"
+                  ],
+                  "path": "projects/knowledge-assistant/mcp"
                 },
                 {
-                  "en": "model-gateway-boundary"
+                  "id": "model-gateway-boundary",
+                  "title": {
+                    "en": "Model gateway boundary"
+                  },
+                  "ask": {
+                    "en": "Preserve the direct-provider path. Add a gateway only when centralized routing, reliability policy, quota, credential, or telemetry control solves a measured problem."
+                  },
+                  "refs": [
+                    "production.model-gateway"
+                  ],
+                  "evidence": [
+                    "gateway-decision-record",
+                    "gateway-contract",
+                    "gateway-failure-matrix",
+                    "production-overhead-record"
+                  ],
+                  "path": "projects/knowledge-assistant/production-boundary"
                 },
                 {
-                  "en": "observability-and-replay"
+                  "id": "observability-and-replay",
+                  "title": {
+                    "en": "Observability and diagnostic replay"
+                  },
+                  "ask": {
+                    "en": "Instrument the request path so a production failure can be explained without treating logs as a transcript dump."
+                  },
+                  "refs": [
+                    "production.observability"
+                  ],
+                  "evidence": [
+                    "telemetry-contract",
+                    "telemetry-privacy-test",
+                    "diagnostic-replay-record",
+                    "production-overhead-record"
+                  ],
+                  "path": "projects/knowledge-assistant/production-boundary"
                 },
                 {
-                  "en": "latency-engineering"
+                  "id": "latency-engineering",
+                  "title": {
+                    "en": "Latency engineering"
+                  },
+                  "ask": {
+                    "en": "Measure the existing Knowledge Assistant path before optimizing it."
+                  },
+                  "refs": [
+                    "production.latency"
+                  ],
+                  "evidence": [
+                    "latency-objective",
+                    "latency-baseline",
+                    "critical-path-record",
+                    "performance-economics-experiment",
+                    "rejected-optimization-record"
+                  ],
+                  "path": "projects/knowledge-assistant/performance-economics"
                 },
                 {
-                  "en": "cost-engineering"
+                  "id": "cost-engineering",
+                  "title": {
+                    "en": "Cost engineering"
+                  },
+                  "ask": {
+                    "en": "Optimize the cost of useful behavior rather than raw provider spend."
+                  },
+                  "refs": [
+                    "production.cost"
+                  ],
+                  "evidence": [
+                    "unit-economics-record",
+                    "performance-economics-experiment",
+                    "rejected-optimization-record"
+                  ],
+                  "path": "projects/knowledge-assistant/performance-economics"
                 },
                 {
-                  "en": "caching-engineering"
+                  "id": "caching-engineering",
+                  "title": {
+                    "en": "Caching engineering"
+                  },
+                  "ask": {
+                    "en": "Add only one cache whose reuse pattern and stale-data tolerance are justified by the measured latency/cost problem."
+                  },
+                  "refs": [
+                    "production.caching"
+                  ],
+                  "evidence": [
+                    "cache-decision-record",
+                    "cache-measurement-record",
+                    "cache-failure-matrix"
+                  ],
+                  "path": "projects/knowledge-assistant/delivery-mechanisms"
                 },
                 {
-                  "en": "streaming-delivery"
+                  "id": "streaming-delivery",
+                  "title": {
+                    "en": "Streaming delivery"
+                  },
+                  "ask": {
+                    "en": "Stream only the path where earlier partial output provides real user value."
+                  },
+                  "refs": [
+                    "production.streaming"
+                  ],
+                  "evidence": [
+                    "stream-event-contract",
+                    "stream-cancellation-record",
+                    "stream-failure-matrix"
+                  ],
+                  "path": "projects/knowledge-assistant/delivery-mechanisms"
                 },
                 {
-                  "en": "versioned-release-candidate"
+                  "id": "versioned-release-candidate",
+                  "title": {
+                    "en": "Versioned release candidate"
+                  },
+                  "ask": {
+                    "en": "Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, not one application image."
+                  },
+                  "refs": [
+                    "production.versioning"
+                  ],
+                  "evidence": [
+                    "release-manifest",
+                    "release-manifest-diff",
+                    "alias-resolution-test"
+                  ],
+                  "path": "projects/knowledge-assistant/release-lifecycle"
                 },
                 {
-                  "en": "progressive-release-and-rollback"
+                  "id": "progressive-release-and-rollback",
+                  "title": {
+                    "en": "Progressive release and rollback"
+                  },
+                  "ask": {
+                    "en": "Release a concrete candidate manifest, not a moving alias."
+                  },
+                  "refs": [
+                    "production.release-engineering"
+                  ],
+                  "evidence": [
+                    "evaluation-gate-record",
+                    "release-plan",
+                    "live-analysis-record",
+                    "rollback-record",
+                    "rollback-verification",
+                    "release-decision"
+                  ],
+                  "path": "projects/knowledge-assistant/release-lifecycle"
                 },
                 {
-                  "en": "drift-monitoring"
+                  "id": "drift-monitoring",
+                  "title": {
+                    "en": "Drift monitoring"
+                  },
+                  "ask": {
+                    "en": "Monitor the released Knowledge Assistant for meaningful change without treating every distribution shift as a quality incident."
+                  },
+                  "refs": [
+                    "production.drift"
+                  ],
+                  "evidence": [
+                    "drift-contract",
+                    "drift-window-record",
+                    "drift-threshold-backtest",
+                    "segmented-drift-record",
+                    "drift-investigation-record",
+                    "drift-response-playbook"
+                  ],
+                  "path": "projects/knowledge-assistant/drift-monitoring"
                 },
                 {
-                  "en": "architecture-synthesis"
+                  "id": "architecture-synthesis",
+                  "title": {
+                    "en": "Architecture synthesis"
+                  },
+                  "ask": {
+                    "en": "Review the whole Knowledge Assistant as one production system."
+                  },
+                  "refs": [
+                    "production.architecture"
+                  ],
+                  "evidence": [
+                    "architecture-driver-record",
+                    "production-topology",
+                    "architecture-failure-matrix",
+                    "architecture-decision-set"
+                  ],
+                  "path": "projects/knowledge-assistant/production-synthesis"
                 },
                 {
-                  "en": "operating-lifecycle-synthesis"
+                  "id": "operating-lifecycle-synthesis",
+                  "title": {
+                    "en": "Operating lifecycle synthesis"
+                  },
+                  "ask": {
+                    "en": "Map the full operating loop around the selected architecture."
+                  },
+                  "refs": [
+                    "production.mlops-llmops"
+                  ],
+                  "evidence": [
+                    "operating-lifecycle-map",
+                    "automation-boundary-record",
+                    "production-readiness-review"
+                  ],
+                  "path": "projects/knowledge-assistant/production-synthesis"
                 },
                 {
-                  "en": "authentication-authorization-boundary"
+                  "id": "authentication-authorization-boundary",
+                  "title": {
+                    "en": "Authentication and authorization boundary"
+                  },
+                  "ask": {
+                    "en": "Build identity and resource authorization before relying on agent-level controls."
+                  },
+                  "refs": [
+                    "security.auth"
+                  ],
+                  "evidence": [
+                    "authentication-boundary-contract",
+                    "token-session-validation-record"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "multi-tenant-isolation"
+                  "id": "multi-tenant-isolation",
+                  "title": {
+                    "en": "Multi-tenant isolation"
+                  },
+                  "ask": {
+                    "en": "Run the Knowledge Assistant with at least two synthetic tenants."
+                  },
+                  "refs": [
+                    "security.multi-tenant"
+                  ],
+                  "evidence": [
+                    "tenant-context-contract",
+                    "tenant-isolation-matrix"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "tool-permission-boundary"
+                  "id": "tool-permission-boundary",
+                  "title": {
+                    "en": "Tool permission boundary"
+                  },
+                  "ask": {
+                    "en": "Reduce the tool surface before testing prompt injection."
+                  },
+                  "refs": [
+                    "security.tool-permissions"
+                  ],
+                  "evidence": [
+                    "tool-capability-inventory",
+                    "tool-permission-matrix",
+                    "approval-policy"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "data-exfiltration-boundary"
+                  "id": "data-exfiltration-boundary",
+                  "title": {
+                    "en": "Data exfiltration boundary"
+                  },
+                  "ask": {
+                    "en": "Map protected data before testing how an attacker might move it."
+                  },
+                  "refs": [
+                    "security.data-exfiltration"
+                  ],
+                  "evidence": [
+                    "sensitive-data-flow-map",
+                    "exfiltration-sink-policy"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "sandboxed-execution"
+                  "id": "sandboxed-execution",
+                  "title": {
+                    "en": "Sandboxed execution"
+                  },
+                  "ask": {
+                    "en": "Add one intentionally untrusted execution task only after its runtime boundary is explicit."
+                  },
+                  "refs": [
+                    "security.sandboxing"
+                  ],
+                  "evidence": [
+                    "sandbox-contract",
+                    "sandbox-failure-matrix"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "supply-chain-and-data-integrity"
+                  "id": "supply-chain-and-data-integrity",
+                  "title": {
+                    "en": "Supply-chain and data integrity"
+                  },
+                  "ask": {
+                    "en": "Inventory every external artifact that can change production behavior and prove how it is admitted."
+                  },
+                  "refs": [
+                    "security.supply-chain-data"
+                  ],
+                  "evidence": [
+                    "ai-supply-chain-inventory",
+                    "artifact-admission-record",
+                    "poisoning-test-record"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "guardrail-engineering"
+                  "id": "guardrail-engineering",
+                  "title": {
+                    "en": "Guardrail engineering"
+                  },
+                  "ask": {
+                    "en": "Place checks on the boundary where a violation can still be prevented."
+                  },
+                  "refs": [
+                    "security.guardrails"
+                  ],
+                  "evidence": [
+                    "guardrail-contract",
+                    "guardrail-evaluation",
+                    "guardrail-failure-matrix"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "integrated-security-attack-path"
+                  "id": "integrated-security-attack-path",
+                  "title": {
+                    "en": "Integrated security attack path"
+                  },
+                  "ask": {
+                    "en": "Inject adversarial retrieved or tool content and treat model output as compromised."
+                  },
+                  "refs": [
+                    "security.prompt-injection"
+                  ],
+                  "evidence": [
+                    "security-boundary-failure-matrix",
+                    "security-tests"
+                  ],
+                  "path": "projects/knowledge-assistant/security-boundaries"
                 },
                 {
-                  "en": "incident-and-feedback"
+                  "id": "incident-and-feedback",
+                  "title": {
+                    "en": "Incident and feedback loop"
+                  },
+                  "ask": {
+                    "en": "Inject or analyze one failure. Produce detection evidence, user impact, diagnosis, mitigation, a durable regression test, and a follow-up metric or alert."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "incident-analysis",
+                    "regression-tests"
+                  ]
                 }
-              ],
-              "ordered": true
-            },
-            {
-              "type": "list",
-              "id": "evidence",
-              "title": {
-                "en": "Evidence",
-                "vi": "Bằng chứng"
-              },
-              "items": [
-                {
-                  "en": "product-brief"
-                },
-                {
-                  "en": "baseline-results"
-                },
-                {
-                  "en": "versioned-eval-set"
-                },
-                {
-                  "en": "experiment-results"
-                },
-                {
-                  "en": "chunking-comparison"
-                },
-                {
-                  "en": "reranking-comparison"
-                },
-                {
-                  "en": "rag-evaluation-record"
-                },
-                {
-                  "en": "context-experiment"
-                },
-                {
-                  "en": "tool-contract"
-                },
-                {
-                  "en": "tool-use-evaluation"
-                },
-                {
-                  "en": "response-schema-record"
-                },
-                {
-                  "en": "abstention-experiment"
-                },
-                {
-                  "en": "state-recovery-record"
-                },
-                {
-                  "en": "memory-evaluation-record"
-                },
-                {
-                  "en": "planning-experiment"
-                },
-                {
-                  "en": "verification-experiment"
-                },
-                {
-                  "en": "long-running-experiment"
-                },
-                {
-                  "en": "orchestration-experiment"
-                },
-                {
-                  "en": "agent-contract"
-                },
-                {
-                  "en": "multi-agent-experiment"
-                },
-                {
-                  "en": "multi-agent-decision"
-                },
-                {
-                  "en": "mcp-boundary"
-                },
-                {
-                  "en": "mcp-test-matrix"
-                },
-                {
-                  "en": "mcp-conformance-record"
-                },
-                {
-                  "en": "gateway-decision-record"
-                },
-                {
-                  "en": "gateway-contract"
-                },
-                {
-                  "en": "gateway-failure-matrix"
-                },
-                {
-                  "en": "telemetry-contract"
-                },
-                {
-                  "en": "telemetry-privacy-test"
-                },
-                {
-                  "en": "diagnostic-replay-record"
-                },
-                {
-                  "en": "production-overhead-record"
-                },
-                {
-                  "en": "latency-objective"
-                },
-                {
-                  "en": "latency-baseline"
-                },
-                {
-                  "en": "critical-path-record"
-                },
-                {
-                  "en": "unit-economics-record"
-                },
-                {
-                  "en": "performance-economics-experiment"
-                },
-                {
-                  "en": "rejected-optimization-record"
-                },
-                {
-                  "en": "cache-decision-record"
-                },
-                {
-                  "en": "cache-measurement-record"
-                },
-                {
-                  "en": "cache-failure-matrix"
-                },
-                {
-                  "en": "stream-event-contract"
-                },
-                {
-                  "en": "stream-cancellation-record"
-                },
-                {
-                  "en": "stream-failure-matrix"
-                },
-                {
-                  "en": "release-manifest"
-                },
-                {
-                  "en": "release-manifest-diff"
-                },
-                {
-                  "en": "alias-resolution-test"
-                },
-                {
-                  "en": "evaluation-gate-record"
-                },
-                {
-                  "en": "release-plan"
-                },
-                {
-                  "en": "live-analysis-record"
-                },
-                {
-                  "en": "rollback-record"
-                },
-                {
-                  "en": "rollback-verification"
-                },
-                {
-                  "en": "drift-contract"
-                },
-                {
-                  "en": "drift-window-record"
-                },
-                {
-                  "en": "drift-threshold-backtest"
-                },
-                {
-                  "en": "segmented-drift-record"
-                },
-                {
-                  "en": "drift-investigation-record"
-                },
-                {
-                  "en": "drift-response-playbook"
-                },
-                {
-                  "en": "architecture-driver-record"
-                },
-                {
-                  "en": "production-topology"
-                },
-                {
-                  "en": "architecture-failure-matrix"
-                },
-                {
-                  "en": "architecture-decision-set"
-                },
-                {
-                  "en": "operating-lifecycle-map"
-                },
-                {
-                  "en": "automation-boundary-record"
-                },
-                {
-                  "en": "production-readiness-review"
-                },
-                {
-                  "en": "authentication-boundary-contract"
-                },
-                {
-                  "en": "token-session-validation-record"
-                },
-                {
-                  "en": "tenant-context-contract"
-                },
-                {
-                  "en": "tenant-isolation-matrix"
-                },
-                {
-                  "en": "tool-capability-inventory"
-                },
-                {
-                  "en": "tool-permission-matrix"
-                },
-                {
-                  "en": "approval-policy"
-                },
-                {
-                  "en": "sensitive-data-flow-map"
-                },
-                {
-                  "en": "exfiltration-sink-policy"
-                },
-                {
-                  "en": "security-boundary-failure-matrix"
-                },
-                {
-                  "en": "sandbox-contract"
-                },
-                {
-                  "en": "sandbox-failure-matrix"
-                },
-                {
-                  "en": "ai-supply-chain-inventory"
-                },
-                {
-                  "en": "artifact-admission-record"
-                },
-                {
-                  "en": "poisoning-test-record"
-                },
-                {
-                  "en": "guardrail-contract"
-                },
-                {
-                  "en": "guardrail-evaluation"
-                },
-                {
-                  "en": "guardrail-failure-matrix"
-                },
-                {
-                  "en": "security-audit-record"
-                },
-                {
-                  "en": "decision-records"
-                },
-                {
-                  "en": "traces"
-                },
-                {
-                  "en": "security-tests"
-                },
-                {
-                  "en": "release-decision"
-                },
-                {
-                  "en": "incident-analysis"
-                },
-                {
-                  "en": "regression-tests"
-                }
-              ],
-              "ordered": false
+              ]
             }
           ]
         }
@@ -14425,7 +14701,7 @@
               }
             },
             {
-              "type": "list",
+              "type": "milestones",
               "id": "milestones",
               "title": {
                 "en": "Milestones",
@@ -14433,60 +14709,116 @@
               },
               "items": [
                 {
-                  "en": "experiment-contract"
+                  "id": "experiment-contract",
+                  "title": {
+                    "en": "Experiment contract"
+                  },
+                  "ask": {
+                    "en": "Before writing model code, record: corpus and license, vocabulary/tokenization choice, context length, model size, training budget, one simple baseline, and metrics to record."
+                  },
+                  "refs": [],
+                  "evidence": []
                 },
                 {
-                  "en": "training-mechanics"
+                  "id": "training-mechanics",
+                  "title": {
+                    "en": "Training mechanics"
+                  },
+                  "ask": {
+                    "en": "Build or inspect enough numerical machinery to explain one training step."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "explanation",
+                    "failure-analysis"
+                  ]
                 },
                 {
-                  "en": "tokenizer-and-embeddings"
+                  "id": "tokenizer-and-embeddings",
+                  "title": {
+                    "en": "Tokenizer and embeddings"
+                  },
+                  "ask": {
+                    "en": "Implement or configure a simple tokenizer and embedding lookup."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "experiment-results",
+                    "explanation"
+                  ]
                 },
                 {
-                  "en": "self-attention"
+                  "id": "self-attention",
+                  "title": {
+                    "en": "Self-attention"
+                  },
+                  "ask": {
+                    "en": "Implement simplified causal self-attention."
+                  },
+                  "refs": [
+                    "llm.self-attention"
+                  ],
+                  "evidence": [
+                    "code",
+                    "tests",
+                    "visualization",
+                    "experiment-results"
+                  ]
                 },
                 {
-                  "en": "transformer-block"
+                  "id": "transformer-block",
+                  "title": {
+                    "en": "Transformer block"
+                  },
+                  "ask": {
+                    "en": "Compose attention, residual connections, normalization, and a feed-forward network. Break one residual or normalization path and diagnose training behavior."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "code",
+                    "failure-analysis"
+                  ]
                 },
                 {
-                  "en": "language-model-training"
+                  "id": "language-model-training",
+                  "title": {
+                    "en": "Language-model training"
+                  },
+                  "ask": {
+                    "en": "Train the small model enough to verify the pipeline."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "experiment-results"
+                  ]
                 },
                 {
-                  "en": "decoding"
+                  "id": "decoding",
+                  "title": {
+                    "en": "Decoding"
+                  },
+                  "ask": {
+                    "en": "At minimum compare deterministic decoding with one stochastic strategy."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "explanation"
+                  ]
                 },
                 {
-                  "en": "inference-behavior"
+                  "id": "inference-behavior",
+                  "title": {
+                    "en": "Inference behavior"
+                  },
+                  "ask": {
+                    "en": "Measure the system rather than stopping at generation."
+                  },
+                  "refs": [],
+                  "evidence": [
+                    "experiment-results"
+                  ]
                 }
-              ],
-              "ordered": true
-            },
-            {
-              "type": "list",
-              "id": "evidence",
-              "title": {
-                "en": "Evidence",
-                "vi": "Bằng chứng"
-              },
-              "items": [
-                {
-                  "en": "code"
-                },
-                {
-                  "en": "tests"
-                },
-                {
-                  "en": "visualization"
-                },
-                {
-                  "en": "experiment-results"
-                },
-                {
-                  "en": "failure-analysis"
-                },
-                {
-                  "en": "explanation"
-                }
-              ],
-              "ordered": false
+              ]
             }
           ]
         }
@@ -14564,11 +14896,6 @@
       "type": "member",
       "from": "project:knowledge-assistant",
       "to": "ai.evaluation"
-    },
-    {
-      "type": "member",
-      "from": "project:knowledge-assistant",
-      "to": "ai.model-selection"
     },
     {
       "type": "member",

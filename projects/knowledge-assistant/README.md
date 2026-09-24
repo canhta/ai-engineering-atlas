@@ -93,7 +93,7 @@ This follows the same discipline as Made With ML's product-first approach: probl
 
 ---
 
-## Milestone 0 — lexical baseline
+## Lexical baseline
 
 Use the [Search and Retrieval](../../curriculum/07-ai-engineering/search-retrieval/) route and build the simplest useful retrieval baseline.
 
@@ -108,7 +108,7 @@ A keyword or lexical search is preferred over starting with RAG.
 
 **Decision:** what failure justifies adding semantic retrieval?
 
-## Milestone 1 — embeddings and vector retrieval
+## Embeddings and vector retrieval
 
 Use the [Embeddings for AI Applications](../../curriculum/07-ai-engineering/embeddings/) route and add embedding-based retrieval.
 
@@ -125,7 +125,7 @@ Compare them on the same query set.
 
 **Evidence:** identify query types where each method wins or fails.
 
-## Milestone 2 — chunking quality
+## Chunking quality
 
 Use the [Chunking](../../curriculum/07-ai-engineering/chunking/) route.
 
@@ -140,7 +140,7 @@ Change chunk boundaries only because the Round 1 failure analysis or corpus stru
 
 **Decision:** choose a strategy for this corpus, not a universal chunk size.
 
-## Milestone 3 — hybrid retrieval and reranking
+## Hybrid retrieval and reranking
 
 Use the [Reranking](../../curriculum/07-ai-engineering/reranking/) route when candidate ordering remains a measured problem.
 
@@ -152,7 +152,7 @@ Add hybrid retrieval or reranking only when the prior failure analysis supports 
 - inspect false positives and false negatives;
 - record the quality/latency trade-off.
 
-## Milestone 4 — answer generation / RAG
+## Answer generation / RAG
 
 Only after retrieval is measurable, add answer generation.
 
@@ -166,7 +166,7 @@ Separate evaluation into:
 
 This prevents generation quality from hiding retrieval failures.
 
-## Milestone 5 — RAG evaluation
+## RAG evaluation
 
 Use both the [RAG Evaluation](../../curriculum/07-ai-engineering/rag-evaluation/) route and the general [AI Evaluation competency](../../curriculum/07-ai-engineering/evaluation/).
 
@@ -189,7 +189,7 @@ Include:
 
 Create a release decision from the results.
 
-## Milestone 6 — data lifecycle
+## Data lifecycle
 
 Make the corpus change.
 
@@ -204,7 +204,7 @@ If the chosen scenario has permissions, add ACL-aware retrieval and test that un
 
 **Failure exercise:** intentionally create a stale or incorrectly indexed document and diagnose it.
 
-## Milestone 7 — context engineering
+## Context engineering
 
 Use the [Context Engineering](../../curriculum/07-ai-engineering/context-engineering/) route.
 
@@ -219,7 +219,7 @@ Inventory what actually reaches the model and compare context policies before ad
 
 **Decision:** record what is deliberately kept, excluded, loaded just in time, or compacted.
 
-## Milestone 8 — tool use or agent workflow
+## Tool use or agent workflow
 
 Use the [Tool Calling](../../curriculum/07-ai-engineering/tool-calling/) route for the tool boundary.
 
@@ -246,7 +246,7 @@ Start with a deterministic workflow. Introduce agentic control only when flexibi
 - failure recovery;
 - explicit decision to stay deterministic or justify later agentic control.
 
-## Milestone 9 — structured response contract
+## Structured response contract
 
 Use the [Structured Outputs](../../curriculum/07-ai-engineering/structured-outputs/) route.
 
@@ -262,7 +262,7 @@ Introduce a versioned response contract because a real downstream consumer needs
 - one schema migration decision;
 - comparison with the prior free-form baseline.
 
-## Milestone 10 — abstention and trust policy
+## Abstention and trust policy
 
 Use the [Uncertainty Abstention and Trust](../../curriculum/07-ai-engineering/uncertainty-abstention-trust/) route.
 
@@ -281,7 +281,7 @@ Do not use model self-reported confidence as the policy by default.
 
 **Decision:** record the chosen answer/abstain/fallback policy and what evidence would change it.
 
-## Milestone 11 — durable execution state
+## Durable execution state
 
 Use the [Agent State](../../curriculum/08-agents/state/) route.
 
@@ -302,7 +302,7 @@ Take one already-justified multi-step or interruptible workflow and make its exe
 
 **Decision:** explain why transcript-only continuity is insufficient.
 
-## Milestone 12 — cross-session memory
+## Cross-session memory
 
 Use the [Agent Memory](../../curriculum/08-agents/memory/) route.
 
@@ -320,7 +320,7 @@ Add memory only for a measured cross-session need.
 
 **Decision:** keep, change, or remove memory from evidence.
 
-## Milestone 13 — adaptive planning
+## Adaptive planning
 
 Use the [Planning](../../curriculum/08-agents/planning/) route.
 
@@ -337,7 +337,7 @@ Only add explicit planning for a task whose structure depends on intermediate re
 
 **Decision:** keep, simplify, or remove explicit planning from evidence.
 
-## Milestone 14 — verification loop
+## Verification loop
 
 Use the [Verification](../../curriculum/08-agents/verification/) route.
 
@@ -357,7 +357,7 @@ Define success criteria before execution and verify real outcomes rather than tr
 
 **Decision:** keep, simplify, or remove each verifier stage.
 
-## Milestone 15 — long-running runtime
+## Long-running runtime
 
 Use the [Long-Running Agents](../../curriculum/08-agents/long-running/) route.
 
@@ -379,7 +379,7 @@ Introduce a real or simulated wait/process boundary instead of keeping one worke
 
 **Decision:** keep, simplify, or remove the durable runtime from evidence.
 
-## Milestone 16 — orchestration
+## Orchestration
 
 Use the [AI Workflow Orchestration](../../curriculum/08-agents/orchestration/) route.
 
@@ -399,7 +399,7 @@ Keep a simpler single-flow baseline.
 
 **Decision:** keep single flow, use orchestration, or defer multi-agent architecture.
 
-## Milestone 17 — multi-agent decision
+## Multi-agent decision
 
 Use the [Multi-Agent Systems](../../curriculum/08-agents/multi-agent/) route.
 
@@ -420,7 +420,7 @@ Do not add agents because the architecture diagram looks more capable. Start fro
 
 **Decision:** keep the multi-agent topology, simplify it, or return to single-agent orchestration.
 
-## Milestone 18 — MCP interoperability
+## MCP interoperability
 
 Use the [Model Context Protocol](../../curriculum/08-agents/mcp/) route.
 
@@ -443,7 +443,7 @@ Add MCP only when the Knowledge Assistant has a real interoperability need acros
 
 **Decision:** keep MCP, simplify the exposed surface, or return to the direct integration.
 
-## Milestone 19 — model gateway boundary
+## Model gateway boundary
 
 Use the [Model Provider and Gateway Architecture](../../curriculum/09-production-ai/model-gateway/) route and the [Production Boundary evidence contract](production-boundary/).
 
@@ -464,7 +464,7 @@ Preserve the direct-provider path. Add a gateway only when centralized routing, 
 
 **Decision:** keep the gateway, simplify it, or return to direct provider integration.
 
-## Milestone 20 — observability and diagnostic replay
+## Observability and diagnostic replay
 
 Use the [AI Observability and Request Replay](../../curriculum/09-production-ai/observability/) route and continue in the same [Production Boundary evidence contract](production-boundary/).
 
@@ -487,7 +487,7 @@ Instrument the request path so a production failure can be explained without tre
 
 **Decision:** keep only telemetry that is actionable, privacy-safe, and worth its overhead.
 
-## Milestone 21 — latency engineering
+## Latency engineering
 
 Use the [Latency Engineering](../../curriculum/09-production-ai/latency/) route and the [Performance & Economics evidence contract](performance-economics/).
 
@@ -511,7 +511,7 @@ Measure the existing Knowledge Assistant path before optimizing it.
 
 **Decision:** keep only the change that improves the declared latency objective without violating quality, error, or tail-latency constraints.
 
-## Milestone 22 — cost engineering
+## Cost engineering
 
 Use the [Cost Engineering](../../curriculum/09-production-ai/cost/) route and continue in the same [Performance & Economics evidence contract](performance-economics/).
 
@@ -535,7 +535,7 @@ Optimize the cost of useful behavior rather than raw provider spend.
 
 **Decision:** keep the configuration with better unit economics under the quality, latency, and reliability contract rather than the lowest nominal price.
 
-## Milestone 23 — caching engineering
+## Caching engineering
 
 Use the [AI Caching](../../curriculum/09-production-ai/caching/) route and the [Delivery Mechanisms evidence contract](delivery-mechanisms/).
 
@@ -559,7 +559,7 @@ Add only one cache whose reuse pattern and stale-data tolerance are justified by
 
 **Decision:** keep the cache only when measured value exceeds freshness, correctness, security, and operational risk.
 
-## Milestone 24 — streaming delivery
+## Streaming delivery
 
 Use the [Streaming](../../curriculum/09-production-ai/streaming/) route and continue in the same [Delivery Mechanisms evidence contract](delivery-mechanisms/).
 
@@ -582,7 +582,7 @@ Stream only the path where earlier partial output provides real user value.
 
 **Decision:** keep streaming only when TTFC/user-experience benefit justifies the protocol, failure, safety, and cancellation complexity.
 
-## Milestone 25 — versioned release candidate
+## Versioned release candidate
 
 Use the [Model Prompt and Retrieval Versioning](../../curriculum/09-production-ai/versioning/) route and the [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -607,7 +607,7 @@ Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, 
 
 **Decision:** keep only identity fields that make evaluation, incident diagnosis, replay, and rollback more precise; avoid redundant version metadata that does not change behavior.
 
-## Milestone 26 — progressive release and rollback
+## Progressive release and rollback
 
 Use the [AI Release Engineering](../../curriculum/09-production-ai/release-engineering/) route and continue in the same [Release Lifecycle evidence contract](release-lifecycle/).
 
@@ -630,7 +630,7 @@ Release a concrete candidate manifest, not a moving alias.
 
 **Decision:** promote, pause, abort, roll back, or simplify the rollout process from evidence rather than deployment completion alone.
 
-## Milestone 27 — drift monitoring
+## Drift monitoring
 
 Use the [Drift Monitoring and Response](../../curriculum/09-production-ai/drift/) route and the [Drift Monitoring evidence contract](drift-monitoring/).
 
@@ -654,7 +654,7 @@ Monitor the released Knowledge Assistant for meaningful change without treating 
 
 **Decision:** alert and act only when the drift signal is actionable under the quality/product contract; otherwise investigate, recalibrate, or remove it.
 
-## Milestone 28 — architecture synthesis
+## Architecture synthesis
 
 Use the [AI Production Architecture](../../curriculum/09-production-ai/architecture/) route and the [Production Synthesis evidence contract](production-synthesis/).
 
@@ -676,7 +676,7 @@ Review the whole Knowledge Assistant as one production system.
 
 **Decision:** choose the smallest topology that satisfies the declared product and operational constraints.
 
-## Milestone 29 — operating lifecycle synthesis
+## Operating lifecycle synthesis
 
 Use the [MLOps and LLMOps](../../curriculum/09-production-ai/mlops-llmops/) route and continue in the same [Production Synthesis evidence contract](production-synthesis/).
 
@@ -701,7 +701,7 @@ Map the full operating loop around the selected architecture.
 
 **Decision:** automate only the transitions that reduce risk, lead time, or toil without weakening evidence or required human judgment.
 
-## Milestone 30 — authentication and authorization boundary
+## Authentication and authorization boundary
 
 Use [Authentication and Authorization](../../curriculum/10-security-governance/auth/) and the [Security Boundaries evidence contract](security-boundaries/).
 
@@ -721,7 +721,7 @@ Build identity and resource authorization before relying on agent-level controls
 
 **Decision:** authenticated identity is only input to authorization; every protected request still requires an explicit resource decision.
 
-## Milestone 31 — multi-tenant isolation
+## Multi-tenant isolation
 
 Use [Multi-Tenant Isolation](../../curriculum/10-security-governance/multi-tenant/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -743,7 +743,7 @@ Run the Knowledge Assistant with at least two synthetic tenants.
 
 **Decision:** tenant context must survive every shared layer; login and role checks alone do not prove isolation.
 
-## Milestone 32 — tool permission boundary
+## Tool permission boundary
 
 Use the [Tool Permissions](../../curriculum/10-security-governance/tool-permissions/) route and the [Security Boundaries evidence contract](security-boundaries/).
 
@@ -765,7 +765,7 @@ Reduce the tool surface before testing prompt injection.
 
 **Decision:** the model may propose an action, but deterministic downstream policy decides whether that action exists and is authorized.
 
-## Milestone 33 — data exfiltration boundary
+## Data exfiltration boundary
 
 Use the [Data Exfiltration](../../curriculum/10-security-governance/data-exfiltration/) route and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -787,7 +787,7 @@ Map protected data before testing how an attacker might move it.
 
 **Decision:** sensitive data may reach only the sources, transformations, stores, and sinks explicitly allowed by application policy.
 
-## Milestone 34 — sandboxed execution
+## Sandboxed execution
 
 Use [Sandboxing](../../curriculum/10-security-governance/sandboxing/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -811,7 +811,7 @@ Add one intentionally untrusted execution task only after its runtime boundary i
 
 **Decision:** an allowed execution tool runs inside the smallest filesystem, network, privilege, resource, and lifetime envelope that can complete the task.
 
-## Milestone 35 — supply-chain and data integrity
+## Supply-chain and data integrity
 
 Use [AI Supply Chain and Data Security](../../curriculum/10-security-governance/supply-chain-data/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -834,7 +834,7 @@ Inventory every external artifact that can change production behavior and prove 
 
 **Decision:** no external model/data/runtime artifact becomes trusted production behavior merely because it has a familiar name or repository origin.
 
-## Milestone 36 — guardrail engineering
+## Guardrail engineering
 
 Use [Guardrails](../../curriculum/10-security-governance/guardrails/) and continue in the same [Security Boundaries evidence contract](security-boundaries/).
 
@@ -857,7 +857,7 @@ Place checks on the boundary where a violation can still be prevented.
 
 **Decision:** keep a guardrail only when its placement, timing, error trade-off, and failure behavior materially reduce risk beyond the deterministic controls already present.
 
-## Milestone 37 — integrated security attack path
+## Integrated security attack path
 
 Reuse [Prompt Injection and Trust Boundaries](../../curriculum/10-security-governance/prompt-injection/) together with the other ready security routes.
 
@@ -879,7 +879,7 @@ At minimum prove:
 
 **Decision:** the security boundary passes only when deterministic controls remain correct even when malicious content successfully influences model behavior and probabilistic guardrails miss a case.
 
-## Milestone 38 — incident and feedback loop
+## Incident and feedback loop
 
 Inject or analyze one failure:
 

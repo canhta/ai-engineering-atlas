@@ -119,6 +119,23 @@ export interface FormBlock extends BlockBase {
   type: "form";
   fields: FormField[];
 }
+export interface Milestone {
+  /** Stable anchor on the page. */
+  id: string;
+  title: L10n;
+  /** What the milestone asks; omitted while undecided. */
+  ask?: L10n;
+  /** Items the milestone integrates. */
+  refs: string[];
+  /** Evidence artifact IDs. */
+  evidence: string[];
+  /** Repository path of the evidence package. */
+  path?: string;
+}
+export interface MilestonesBlock extends BlockBase {
+  type: "milestones";
+  items: Milestone[];
+}
 export interface DataBlock extends BlockBase {
   type: "data";
   value: unknown;
@@ -132,6 +149,7 @@ export type Block =
   | PracticeBlock
   | RunnerBlock
   | FormBlock
+  | MilestonesBlock
   | DataBlock;
 export const BLOCK_TYPES = [
   "text",
@@ -142,6 +160,7 @@ export const BLOCK_TYPES = [
   "practice",
   "runner",
   "form",
+  "milestones",
   "data",
 ] as const;
 
@@ -467,6 +486,15 @@ export function resolveResource(key: string): ResolvedResource {
     host: url ? new URL(url).hostname.replace(/^www\./, "") : "",
     kind: entry?.type,
   };
+}
+
+/**
+ * Sections a block holds that get their own anchor and a numbered entry in the contents rail
+ * (a project's milestones), in order; [] for a block that is one section.
+ */
+export function sectionsOf(block: Block): { id: string; title: L10n }[] {
+  if (block.type === "milestones") return block.items.map((m) => ({ id: m.id, title: m.title }));
+  return [];
 }
 
 /** Anchor of a prerequisite bridge on a page. */

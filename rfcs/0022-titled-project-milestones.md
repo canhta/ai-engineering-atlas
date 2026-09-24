@@ -1,6 +1,6 @@
 # RFC: Titled Project Milestones
 
-- Status: Draft
+- Status: Accepted (owner approval, 2026-09-24)
 - Author: Canh Ta
 - Created: 2026-09-24
 - Extends: [content model RFC](0000-content-model.md)
@@ -333,6 +333,15 @@ At a high level; the layout belongs to a site spec under `site/DESIGN.md`, like 
 - The project page reads like a route page: the contents rail lists the milestones by title, numbered by position (the only place a milestone number appears); each milestone section shows its title, the ask, an "Integrates" line set like the prerequisite line (route titles with the learner's state glyphs after hydration, mapped competencies unlinked), its evidence (a record already listed under an earlier milestone carries "shared with <that milestone's title>"), and a link to the package README. Each section has the anchor `#<id>`.
 - Collection index: `passageOf()` for a project keeps using `purpose`; the "brings together" column is unchanged, since it reads the `member` relation.
 - Evidence IDs still render as identifiers. Titling them is the same problem at a smaller scale and is out of scope; the page can set them as artifact names in the mono face until then.
+
+## Implementation notes (2026-09-24)
+
+The owner accepted this RFC on 2026-09-24. The migration shipped with the open questions still open, and every one of them stays visible in `make check` output as a warning until it is decided:
+
+- **Kept flagged, not filled.** F1 (`rag`: `integrates` and `evidence` empty), F2 (`data-lifecycle`: no `ask`, `integrates`, or `evidence`), F3 (`incident-and-feedback`: `integrates` empty), F4 (`vector-retrieval`: `evidence` empty), F5 (`integrated-security-attack-path` integrates only the linked `security.prompt-injection`), F6 (Tiny Transformer: `integrates` empty on every milestone but `self-attention`; `experiment-contract` has no evidence), F9 (the chunking ask comes from the **Decision** line; the "Round 1" sentence is unchanged). The milestone order issue is not fixed: the Knowledge Assistant keeps its README order.
+- **Schema, to keep a gap visible instead of filled.** `ask` is optional and `evidence` may be empty in `schemas/project.schema.json`; `scripts/validate_repo.py` warns on a missing `ask`, an empty `integrates`, or an empty `evidence`, as Validation 7 does for `integrates`.
+- **F7.** `agents.deterministic-vs-agentic` joins `tool-or-agent-workflow` and the stale "Milestone 6" link now points at `#tool-use-or-agent-workflow`, as proposed above. `ai.model-selection` has no milestone yet, so under the derived union it has left the Knowledge Assistant. The applied-integration check reports it as a warning rather than an error, because its README already names the Knowledge Assistant: a ready route targeting `applied` whose README names a project on a matching spine, while no milestone of that project integrates it, is an owner question. A route that names no such project still fails.
+- **Evidence left out by the derived union.** `experiment-results`, `decision-records`, and `traces` (the unplaced-evidence decision) and `security-audit-record` (F5: the text does not say which milestone produces it) are no longer in the Knowledge Assistant. Attaching `security-audit-record` to a milestone is part of deciding F5.
 
 ## Alternatives considered
 

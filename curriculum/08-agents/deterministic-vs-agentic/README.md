@@ -98,6 +98,6 @@ Explain why different autonomy levels may be appropriate.
 
 ## 6. Applied evidence
 
-Use this decision in the [Knowledge Assistant](../../../projects/knowledge-assistant/) Milestone 6 or another real system.
+Use this decision in the Knowledge Assistant's [Tool use or agent workflow](../../../projects/knowledge-assistant/#tool-use-or-agent-workflow) milestone or another real system.
 
 Keep the baseline, failure analysis, traces, and comparison that justified the final architecture.

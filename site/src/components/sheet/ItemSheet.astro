@@ -21,6 +21,7 @@ import {
   pageSegment,
   repoUrl,
   resolveRef,
+  sectionsOf,
   stateLabels,
   targetOf,
   text,
@@ -100,9 +101,15 @@ const practisedBy: PrereqEntry[] = trackedItemsPointingAt(ref).map((i) => ({
 const bench = blocks.find((b) => b.type === "runner" || b.type === "form");
 const reading = blocks.filter((b) => b !== bench);
 
+// A block that holds sections (a project's milestones) lists them in the rail, numbered by position;
+// other blocks list themselves, numbered when they are steps.
 let stepNumber = 0;
-const railEntries: RailEntry[] = blocks.map((b) => {
+const blockSteps = new Map<string, number>();
+const railEntries: RailEntry[] = blocks.flatMap((b): RailEntry[] => {
+  const sections = sectionsOf(b);
+  if (sections.length > 0) return sections.map((s) => ({ id: s.id, title: text(s.title, lang), step: ++stepNumber }));
   const step = b.step ? ++stepNumber : undefined;
+  if (step) blockSteps.set(b.id, step);
   const track: RailEntry["track"] =
     b.type === "diagnostic" && target
       ? { answers: b.tasks.length }
@@ -111,7 +118,7 @@ const railEntries: RailEntry[] = blocks.map((b) => {
         : b.type === "list" && b.step && target
           ? { evidence: true }
           : undefined;
-  return { id: b.id, title: text(b.title, lang), step, track };
+  return [{ id: b.id, title: text(b.title, lang), step, track }];
 });
 ---
 
@@ -213,9 +220,9 @@ const railEntries: RailEntry[] = blocks.map((b) => {
               aria-labelledby={`${b.id}-title`}
             >
               <h2 id={`${b.id}-title`} lang={langAttr(text(b.title, lang), lang)}>
-                {railEntries[i].step && (
+                {blockSteps.has(b.id) && (
                   <span class="block-step tabular" aria-hidden="true">
-                    {railEntries[i].step}
+                    {blockSteps.get(b.id)}
                   </span>
                 )}
                 {text(b.title, lang).value}

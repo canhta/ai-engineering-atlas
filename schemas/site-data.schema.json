@@ -291,12 +291,23 @@
       }
     },
     "block": {
-      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, form, data. Every block has type, id, and title.",
+      "description": "Block types: text, list, prerequisites, diagnostic, sources, practice, runner, form, milestones, data. Every block has type, id, and title.",
       "type": "object",
       "required": ["type", "id", "title"],
       "properties": {
         "type": {
-          "enum": ["text", "list", "prerequisites", "diagnostic", "sources", "practice", "runner", "form", "data"]
+          "enum": [
+            "text",
+            "list",
+            "prerequisites",
+            "diagnostic",
+            "sources",
+            "practice",
+            "runner",
+            "form",
+            "milestones",
+            "data"
+          ]
         },
         "id": {
           "type": "string",
@@ -405,6 +416,18 @@
           },
           "then": {
             "$ref": "#/$defs/formBlock"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "milestones"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/milestonesBlock"
           }
         },
         {
@@ -686,6 +709,45 @@
               { "if": { "properties": { "type": { "const": "choice" } } }, "then": { "required": ["options"] } },
               { "if": { "properties": { "type": { "const": "table" } } }, "then": { "required": ["columns"] } }
             ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "milestonesBlock": {
+      "description": "A project's titled milestones in order (rfcs/0022-titled-project-milestones.md).",
+      "required": ["items"],
+      "properties": {
+        "type": true,
+        "id": true,
+        "title": true,
+        "step": true,
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "refs", "evidence"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$",
+                "description": "Stable anchor on the page."
+              },
+              "title": { "$ref": "#/$defs/l10n" },
+              "ask": { "$ref": "#/$defs/l10n", "description": "What the milestone asks; omitted while undecided." },
+              "refs": {
+                "type": "array",
+                "items": { "$ref": "#/$defs/ref" },
+                "description": "Items the milestone integrates."
+              },
+              "evidence": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 },
+                "description": "Evidence artifact IDs, shown as identifiers."
+              },
+              "path": { "type": "string", "minLength": 1, "description": "Repository path of the evidence package." }
+            }
           }
         }
       },

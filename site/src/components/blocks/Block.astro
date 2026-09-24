@@ -23,6 +23,7 @@ import LabRunner, { type LabCompetency } from "../react/LabRunner";
 import Bibliography from "../react/Bibliography";
 import DataBlock from "./DataBlock.astro";
 import ListBlock from "./ListBlock.astro";
+import MilestonesBlock from "./MilestonesBlock.astro";
 import PracticeBlock from "./PracticeBlock.astro";
 import PrerequisitesBlock from "./PrerequisitesBlock.astro";
 import TextBlock from "./TextBlock.astro";
@@ -114,6 +115,7 @@ const formTitle = block.type === "form" ? text(resolveRef(itemRef)?.item.title, 
 {block.type === "list" && <ListBlock block={block} lang={lang} />}
 {block.type === "prerequisites" && <PrerequisitesBlock block={block} lang={lang} />}
 {block.type === "practice" && <PracticeBlock block={block} lang={lang} />}
+{block.type === "milestones" && <MilestonesBlock block={block} lang={lang} />}
 {block.type === "sources" && <Bibliography client:load lang={lang} labelledBy={headingId} entries={sourceEntries} />}
 {block.type === "diagnostic" &&
   (target ? (

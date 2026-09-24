@@ -2,175 +2,268 @@ id: project.knowledge-assistant
 title: Knowledge Assistant
 spines: [ai-system, production]
 purpose: "Evolve one evidence-driven knowledge system from baseline search to reliable operation."
+# Milestones in README order (rfcs/0022-titled-project-milestones.md). `title` equals the README `##` heading;
+# `ask` is cut from that section. The project's competencies and evidence are the union of the milestone
+# fields. `integrates: []`, an empty `evidence`, or a missing `ask` is an open owner question (F1–F7 in the
+# RFC) and is reported by `make check` until it is decided.
 milestones:
-  - product-frame
-  - lexical-baseline
-  - vector-retrieval
-  - chunking-quality
-  - hybrid-and-reranking
-  - rag
-  - rag-evaluation
-  - data-lifecycle
-  - context-policy
-  - tool-or-agent-workflow
-  - structured-response
-  - abstention-policy
-  - stateful-workflow
-  - long-term-memory
-  - adaptive-planning
-  - verification-loop
-  - long-running-runtime
-  - orchestrated-flow
-  - multi-agent-decision
-  - mcp-interoperability
-  - model-gateway-boundary
-  - observability-and-replay
-  - latency-engineering
-  - cost-engineering
-  - caching-engineering
-  - streaming-delivery
-  - versioned-release-candidate
-  - progressive-release-and-rollback
-  - drift-monitoring
-  - architecture-synthesis
-  - operating-lifecycle-synthesis
-  - authentication-authorization-boundary
-  - multi-tenant-isolation
-  - tool-permission-boundary
-  - data-exfiltration-boundary
-  - sandboxed-execution
-  - supply-chain-and-data-integrity
-  - guardrail-engineering
-  - integrated-security-attack-path
-  - incident-and-feedback
-competencies:
-  - ai.product-framing
-  - ai.model-selection
-  - retrieval.search
-  - ai.embeddings
-  - retrieval.chunking
-  - retrieval.reranking
-  - retrieval.rag-evaluation
-  - ai.evaluation
-  - ai.context-engineering
-  - ai.tool-calling
-  - ai.structured-outputs
-  - ai.uncertainty-abstention-trust
-  - agents.deterministic-vs-agentic
-  - agents.state
-  - agents.memory
-  - agents.planning
-  - agents.verification
-  - agents.long-running
-  - agents.orchestration
-  - agents.multi-agent
-  - agents.mcp
-  - production.model-gateway
-  - production.observability
-  - production.latency
-  - production.cost
-  - production.caching
-  - production.streaming
-  - production.versioning
-  - production.release-engineering
-  - production.drift
-  - production.architecture
-  - production.mlops-llmops
-  - security.auth
-  - security.multi-tenant
-  - security.tool-permissions
-  - security.prompt-injection
-  - security.data-exfiltration
-  - security.sandboxing
-  - security.supply-chain-data
-  - security.guardrails
-evidence:
-  - product-brief
-  - baseline-results
-  - versioned-eval-set
-  - experiment-results
-  - chunking-comparison
-  - reranking-comparison
-  - rag-evaluation-record
-  - context-experiment
-  - tool-contract
-  - tool-use-evaluation
-  - response-schema-record
-  - abstention-experiment
-  - state-recovery-record
-  - memory-evaluation-record
-  - planning-experiment
-  - verification-experiment
-  - long-running-experiment
-  - orchestration-experiment
-  - agent-contract
-  - multi-agent-experiment
-  - multi-agent-decision
-  - mcp-boundary
-  - mcp-test-matrix
-  - mcp-conformance-record
-  - gateway-decision-record
-  - gateway-contract
-  - gateway-failure-matrix
-  - telemetry-contract
-  - telemetry-privacy-test
-  - diagnostic-replay-record
-  - production-overhead-record
-  - latency-objective
-  - latency-baseline
-  - critical-path-record
-  - unit-economics-record
-  - performance-economics-experiment
-  - rejected-optimization-record
-  - cache-decision-record
-  - cache-measurement-record
-  - cache-failure-matrix
-  - stream-event-contract
-  - stream-cancellation-record
-  - stream-failure-matrix
-  - release-manifest
-  - release-manifest-diff
-  - alias-resolution-test
-  - evaluation-gate-record
-  - release-plan
-  - live-analysis-record
-  - rollback-record
-  - rollback-verification
-  - drift-contract
-  - drift-window-record
-  - drift-threshold-backtest
-  - segmented-drift-record
-  - drift-investigation-record
-  - drift-response-playbook
-  - architecture-driver-record
-  - production-topology
-  - architecture-failure-matrix
-  - architecture-decision-set
-  - operating-lifecycle-map
-  - automation-boundary-record
-  - production-readiness-review
-  - authentication-boundary-contract
-  - token-session-validation-record
-  - tenant-context-contract
-  - tenant-isolation-matrix
-  - tool-capability-inventory
-  - tool-permission-matrix
-  - approval-policy
-  - sensitive-data-flow-map
-  - exfiltration-sink-policy
-  - security-boundary-failure-matrix
-  - sandbox-contract
-  - sandbox-failure-matrix
-  - ai-supply-chain-inventory
-  - artifact-admission-record
-  - poisoning-test-record
-  - guardrail-contract
-  - guardrail-evaluation
-  - guardrail-failure-matrix
-  - security-audit-record
-  - decision-records
-  - traces
-  - security-tests
-  - release-decision
-  - incident-analysis
-  - regression-tests
+  - id: product-frame
+    title: Product frame
+    ask: Complete the AI Product and Problem Framing route and write a one-page product brief.
+    integrates: [ai.product-framing]
+    evidence: [product-brief]
+    package: foundation/
+  - id: lexical-baseline
+    title: Lexical baseline
+    ask: Build the simplest useful retrieval baseline. A keyword or lexical search is preferred over starting with RAG.
+    integrates: [retrieval.search]
+    evidence: [versioned-eval-set, baseline-results]
+    package: foundation/
+  - id: vector-retrieval
+    title: Embeddings and vector retrieval
+    ask: Add embedding-based retrieval. Do not remove the lexical baseline. Compare them on the same query set.
+    integrates: [ai.embeddings]
+    evidence: [] # F4: no evidence ID names the embedding retrieval record
+    package: foundation/
+  - id: chunking-quality
+    title: Chunking quality
+    ask: Choose a strategy for this corpus, not a universal chunk size.
+    integrates: [retrieval.chunking]
+    evidence: [chunking-comparison]
+    package: retrieval-quality/
+  - id: hybrid-and-reranking
+    title: Hybrid retrieval and reranking
+    ask: Add hybrid retrieval or reranking only when the prior failure analysis supports it.
+    integrates: [retrieval.reranking]
+    evidence: [reranking-comparison]
+    package: retrieval-quality/
+  - id: rag
+    title: Answer generation / RAG
+    ask: Only after retrieval is measurable, add answer generation. Require source attribution.
+    integrates: [] # F1: no catalog node for basic grounded answer generation
+    evidence: [] # F1: no evidence ID names the RAG artifact
+  - id: rag-evaluation
+    title: RAG evaluation
+    ask: Do not report one undifferentiated RAG score. Separate retrieval, supplied context, generation, and end-to-end evidence.
+    integrates: [retrieval.rag-evaluation, ai.evaluation]
+    evidence: [rag-evaluation-record]
+    package: retrieval-quality/
+  - id: data-lifecycle
+    title: Data lifecycle
+    # ask: F2, the section's opening sentence does not state an ask
+    integrates: [] # F2: the section links no route
+    evidence: [] # F2: no evidence ID names the freshness or stale-index record
+  - id: context-policy
+    title: Context engineering
+    ask: Inventory what actually reaches the model and compare context policies before adding new autonomy.
+    integrates: [ai.context-engineering]
+    evidence: [context-experiment]
+    package: context-and-tools/
+  - id: tool-or-agent-workflow
+    title: Tool use or agent workflow
+    ask: First identify a task the retrieval-only system cannot handle cleanly. Start with a deterministic workflow.
+    integrates: [ai.tool-calling, agents.deterministic-vs-agentic] # the second per F7's proposed resolution
+    evidence: [tool-contract, tool-use-evaluation]
+    package: context-and-tools/
+  - id: structured-response
+    title: Structured response contract
+    ask: Introduce a versioned response contract because a real downstream consumer needs one.
+    integrates: [ai.structured-outputs]
+    evidence: [response-schema-record]
+    package: output-and-trust/
+  - id: abstention-policy
+    title: Abstention and trust policy
+    ask: Record the chosen answer/abstain/fallback policy and what evidence would change it.
+    integrates: [ai.uncertainty-abstention-trust]
+    evidence: [abstention-experiment]
+    package: output-and-trust/
+  - id: stateful-workflow
+    title: Durable execution state
+    ask: Take one already-justified multi-step or interruptible workflow and make its execution state explicit.
+    integrates: [agents.state]
+    evidence: [state-recovery-record]
+    package: state-and-memory/
+  - id: long-term-memory
+    title: Cross-session memory
+    ask: Add memory only for a measured cross-session need.
+    integrates: [agents.memory]
+    evidence: [memory-evaluation-record]
+    package: state-and-memory/
+  - id: adaptive-planning
+    title: Adaptive planning
+    ask: Only add explicit planning for a task whose structure depends on intermediate results.
+    integrates: [agents.planning]
+    evidence: [planning-experiment]
+    package: planning-and-verification/
+  - id: verification-loop
+    title: Verification loop
+    ask: Define success criteria before execution and verify real outcomes rather than trusting agent narration.
+    integrates: [agents.verification]
+    evidence: [verification-experiment]
+    package: planning-and-verification/
+  - id: long-running-runtime
+    title: Long-running runtime
+    ask: Introduce a real or simulated wait/process boundary instead of keeping one worker alive.
+    integrates: [agents.long-running]
+    evidence: [long-running-experiment]
+    package: runtime-and-orchestration/
+  - id: orchestrated-flow
+    title: Orchestration
+    ask: Keep a simpler single-flow baseline. Identify a real routing, parallelism, or dynamic-subtask problem.
+    integrates: [agents.orchestration]
+    evidence: [orchestration-experiment]
+    package: runtime-and-orchestration/
+  - id: multi-agent-decision
+    title: Multi-agent decision
+    ask: Start from the same single-agent orchestration baseline and identify a measured limitation that independent roles or context windows may solve.
+    integrates: [agents.multi-agent]
+    evidence: [agent-contract, multi-agent-experiment, multi-agent-decision]
+    package: multi-agent/
+  - id: mcp-interoperability
+    title: MCP interoperability
+    ask: Add MCP only when the Knowledge Assistant has a real interoperability need. Preserve the direct/internal integration as the baseline.
+    integrates: [agents.mcp]
+    evidence: [mcp-boundary, mcp-test-matrix, mcp-conformance-record]
+    package: mcp/
+  - id: model-gateway-boundary
+    title: Model gateway boundary
+    ask: Preserve the direct-provider path. Add a gateway only when centralized routing, reliability policy, quota, credential, or telemetry control solves a measured problem.
+    integrates: [production.model-gateway]
+    evidence: [gateway-decision-record, gateway-contract, gateway-failure-matrix, production-overhead-record]
+    package: production-boundary/
+  - id: observability-and-replay
+    title: Observability and diagnostic replay
+    ask: Instrument the request path so a production failure can be explained without treating logs as a transcript dump.
+    integrates: [production.observability]
+    evidence: [telemetry-contract, telemetry-privacy-test, diagnostic-replay-record, production-overhead-record]
+    package: production-boundary/
+  - id: latency-engineering
+    title: Latency engineering
+    ask: Measure the existing Knowledge Assistant path before optimizing it.
+    integrates: [production.latency]
+    evidence:
+      [
+        latency-objective,
+        latency-baseline,
+        critical-path-record,
+        performance-economics-experiment,
+        rejected-optimization-record,
+      ]
+    package: performance-economics/
+  - id: cost-engineering
+    title: Cost engineering
+    ask: Optimize the cost of useful behavior rather than raw provider spend.
+    integrates: [production.cost]
+    evidence: [unit-economics-record, performance-economics-experiment, rejected-optimization-record]
+    package: performance-economics/
+  - id: caching-engineering
+    title: Caching engineering
+    ask: Add only one cache whose reuse pattern and stale-data tolerance are justified by the measured latency/cost problem.
+    integrates: [production.caching]
+    evidence: [cache-decision-record, cache-measurement-record, cache-failure-matrix]
+    package: delivery-mechanisms/
+  - id: streaming-delivery
+    title: Streaming delivery
+    ask: Stream only the path where earlier partial output provides real user value.
+    integrates: [production.streaming]
+    evidence: [stream-event-contract, stream-cancellation-record, stream-failure-matrix]
+    package: delivery-mechanisms/
+  - id: versioned-release-candidate
+    title: Versioned release candidate
+    ask: Treat the deployed Knowledge Assistant as a set of behavior-defining artifacts, not one application image.
+    integrates: [production.versioning]
+    evidence: [release-manifest, release-manifest-diff, alias-resolution-test]
+    package: release-lifecycle/
+  - id: progressive-release-and-rollback
+    title: Progressive release and rollback
+    ask: Release a concrete candidate manifest, not a moving alias.
+    integrates: [production.release-engineering]
+    evidence:
+      [
+        evaluation-gate-record,
+        release-plan,
+        live-analysis-record,
+        rollback-record,
+        rollback-verification,
+        release-decision,
+      ]
+    package: release-lifecycle/
+  - id: drift-monitoring
+    title: Drift monitoring
+    ask: Monitor the released Knowledge Assistant for meaningful change without treating every distribution shift as a quality incident.
+    integrates: [production.drift]
+    evidence:
+      [
+        drift-contract,
+        drift-window-record,
+        drift-threshold-backtest,
+        segmented-drift-record,
+        drift-investigation-record,
+        drift-response-playbook,
+      ]
+    package: drift-monitoring/
+  - id: architecture-synthesis
+    title: Architecture synthesis
+    ask: Review the whole Knowledge Assistant as one production system.
+    integrates: [production.architecture]
+    evidence: [architecture-driver-record, production-topology, architecture-failure-matrix, architecture-decision-set]
+    package: production-synthesis/
+  - id: operating-lifecycle-synthesis
+    title: Operating lifecycle synthesis
+    ask: Map the full operating loop around the selected architecture.
+    integrates: [production.mlops-llmops]
+    evidence: [operating-lifecycle-map, automation-boundary-record, production-readiness-review]
+    package: production-synthesis/
+  - id: authentication-authorization-boundary
+    title: Authentication and authorization boundary
+    ask: Build identity and resource authorization before relying on agent-level controls.
+    integrates: [security.auth]
+    evidence: [authentication-boundary-contract, token-session-validation-record]
+    package: security-boundaries/
+  - id: multi-tenant-isolation
+    title: Multi-tenant isolation
+    ask: Run the Knowledge Assistant with at least two synthetic tenants.
+    integrates: [security.multi-tenant]
+    evidence: [tenant-context-contract, tenant-isolation-matrix]
+    package: security-boundaries/
+  - id: tool-permission-boundary
+    title: Tool permission boundary
+    ask: Reduce the tool surface before testing prompt injection.
+    integrates: [security.tool-permissions]
+    evidence: [tool-capability-inventory, tool-permission-matrix, approval-policy]
+    package: security-boundaries/
+  - id: data-exfiltration-boundary
+    title: Data exfiltration boundary
+    ask: Map protected data before testing how an attacker might move it.
+    integrates: [security.data-exfiltration]
+    evidence: [sensitive-data-flow-map, exfiltration-sink-policy]
+    package: security-boundaries/
+  - id: sandboxed-execution
+    title: Sandboxed execution
+    ask: Add one intentionally untrusted execution task only after its runtime boundary is explicit.
+    integrates: [security.sandboxing]
+    evidence: [sandbox-contract, sandbox-failure-matrix]
+    package: security-boundaries/
+  - id: supply-chain-and-data-integrity
+    title: Supply-chain and data integrity
+    ask: Inventory every external artifact that can change production behavior and prove how it is admitted.
+    integrates: [security.supply-chain-data]
+    evidence: [ai-supply-chain-inventory, artifact-admission-record, poisoning-test-record]
+    package: security-boundaries/
+  - id: guardrail-engineering
+    title: Guardrail engineering
+    ask: Place checks on the boundary where a violation can still be prevented.
+    integrates: [security.guardrails]
+    evidence: [guardrail-contract, guardrail-evaluation, guardrail-failure-matrix]
+    package: security-boundaries/
+  - id: integrated-security-attack-path
+    title: Integrated security attack path
+    ask: Inject adversarial retrieved or tool content and treat model output as compromised.
+    integrates: [security.prompt-injection] # F5: the README link; whether the other security routes belong here is open
+    evidence: [security-boundary-failure-matrix, security-tests]
+    package: security-boundaries/
+  - id: incident-and-feedback
+    title: Incident and feedback loop
+    ask: Inject or analyze one failure. Produce detection evidence, user impact, diagnosis, mitigation, a durable regression test, and a follow-up metric or alert.
+    integrates: [] # F3: the section links no route and the catalog has no incident-response node
+    evidence: [incident-analysis, regression-tests]

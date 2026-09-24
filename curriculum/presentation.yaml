@@ -224,11 +224,14 @@ collections:
       path: { label: { en: Repository path, vi: Đường dẫn repo } }
       spines: { label: { en: Spines, vi: Nhóm } }
     relations:
-      - { type: member, field: competencies, direction: out }
+      - { type: member, field: "milestones[].integrates", direction: out }
     blocks:
       - { id: purpose, field: purpose, type: text, title: { en: Purpose, vi: Mục đích } }
-      - { id: milestones, field: milestones, type: list, ordered: true, title: { en: Milestones, vi: Các mốc } }
-      - { id: evidence, field: evidence, type: list, title: { en: Evidence, vi: Bằng chứng } }
+      - id: milestones
+        field: milestones
+        type: milestones
+        item: { id: id, title: title, ask: ask, refs: integrates, evidence: evidence, path: package }
+        title: { en: Milestones, vi: Các mốc }
     ignore: [id, title]
 
   paths:

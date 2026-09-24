@@ -86,6 +86,7 @@ Every block has `type`, `id` (stable anchor), and `title: L10n`, and may have `s
 | `practice`      | `groups: [{ label: L10n, items: [{ text: L10n, ref?, path?, resource?, locator?: L10n }] }]`                                         | links to labs, repository paths, and resources                                                                                                                                                                                                           |
 | `runner`        | `runtime: pyodide`, `editable`, `run`, `reference`, `files: { name: text }`, `packages?: string[]`                                   | edit `editable`, run `run` as `__main__` in the browser, show the result, reveal `reference` on a confirmed request, record evidence for the tracked items that point at this item                                                                       |
 | `form`          | `fields: [{ id, label: L10n, type: text\|longtext\|choice\|table, help?: L10n, options?: L10n[], columns?: [{ id, label: L10n }] }]` | a decision lab's `browser: {runtime: form}` contract; the learner fills each field (a local draft), "Record evidence" once every field is non-empty (kind `decision`, `review_method: self`), "Export answers" downloads the filled template as Markdown |
+| `milestones`    | `items: [{ id, title: L10n, ask?: L10n, refs: ref[], evidence: string[], path? }]`                                                   | each item is a section anchored at `id` and a numbered rail entry; `refs` link like the prerequisite line with the learner's state; `path` links the evidence package in the repository ([RFC 0022](0022-titled-project-milestones.md))                  |
 | `data`          | `value: any JSON`                                                                                                                    | generic fallback, rendered as nested lists                                                                                                                                                                                                               |
 
 A lab's `browser:` contract carries one runtime: `pyodide` (a `runner` block) or `form` (a `form` block, for the two decision labs). `presentation.yaml` declares both block specs against the same `browser` field; the adapter emits only the block whose `runtime` matches and skips the other, so the labs collection needs no per-lab special-casing.
@@ -148,7 +149,8 @@ collections:
                        {id: form, step: true, field: browser, type: form,
                         map: {runtime: runtime, fields: fields}, title: L10n}] }
   projects: { label: L10n, ref_prefix: project, items_from: "projects/*/project.yaml", title: title,
-              relations: [{type: member, field: competencies, direction: out}], blocks: [purpose, milestones, evidence], … }
+              relations: [{type: member, field: "milestones[].integrates", direction: out}],
+              blocks: [purpose, {id: milestones, type: milestones, item: {id: id, title: title, ask: ask, refs: integrates, evidence: evidence, path: package}}], … }
   paths:    { label: L10n, ref_prefix: path, items_from: "paths/*.md", exclude: [README.md], fields: {path: …} }
 ```
 

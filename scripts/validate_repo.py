@@ -7,6 +7,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 errors = []
+warnings = []
 
 VALID_LEVELS = {"L0", "L1", "L2", "L3", "L4"}
 VALID_ROUTE_STATUS = {"incomplete", "seeded", "ready"}
@@ -444,20 +445,24 @@ for cid, item in catalog.items():
 
 
 # ---------------------------------------------------------------------------
-# Reference projects
+# Reference projects (rfcs/0022-titled-project-milestones.md)
 # ---------------------------------------------------------------------------
 
-PROJECT_REQUIRED = {
-    "id",
-    "title",
-    "spines",
-    "purpose",
-    "milestones",
-    "competencies",
-    "evidence",
-}
+PROJECT_REQUIRED = {"id", "title", "spines", "purpose", "milestones"}
 project_ids = set()
 projects = []
+
+
+def h2_headings(markdown: str) -> list[str]:
+    """`## ` headings outside fenced code blocks, in order."""
+    headings, fenced = [], False
+    for line in markdown.splitlines():
+        if line.startswith("```"):
+            fenced = not fenced
+        elif not fenced and line.startswith("## "):
+            headings.append(line[3:].strip())
+    return headings
+
 
 for path in sorted((ROOT / "projects").rglob("project.yaml")):
     rel = path.relative_to(ROOT)
@@ -471,7 +476,10 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
     for field in sorted(PROJECT_REQUIRED - data.keys()):
         errors.append(f"{rel}: missing '{field}'")
 
-    projects.append({"data": data, "path": path})
+    milestones = [m for m in data.get("milestones") or [] if isinstance(m, dict)]
+    # A project's competencies are the union of what its milestones integrate.
+    competencies = {cid for m in milestones for cid in m.get("integrates") or []}
+    projects.append({"data": data, "path": path, "competencies": competencies})
 
     pid = data.get("id")
     if pid:
@@ -483,16 +491,45 @@ for path in sorted((ROOT / "projects").rglob("project.yaml")):
         if spine not in VALID_SPINES:
             errors.append(f"{rel}: invalid spine '{spine}'")
 
-    for cid in data.get("competencies", []) or []:
-        if cid not in catalog:
-            errors.append(f"{rel}: unknown catalog competency '{cid}'")
+    seen_milestones = set()
+    for milestone in milestones:
+        mid = milestone.get("id")
+        where = f"{rel}: milestone '{mid}'"
+        if mid in seen_milestones:
+            errors.append(f"{rel}: duplicate milestone id '{mid}'")
+        seen_milestones.add(mid)
 
-    if not path.with_name("README.md").exists():
+        for cid in milestone.get("integrates") or []:
+            if cid not in catalog:
+                errors.append(f"{where}: unknown catalog competency '{cid}'")
+
+        package = milestone.get("package")
+        if package and not (path.parent / package / "README.md").is_file():
+            errors.append(f"{where}: package '{package}' has no README.md in {rel.parent}")
+
+        # Open owner questions stay visible in every run until an RFC decides them.
+        gaps = [name for name in ("ask", "integrates", "evidence") if not milestone.get(name)]
+        if gaps:
+            warnings.append(f"{where}: {', '.join(gaps)} not decided yet (owner question)")
+
+    readme = path.with_name("README.md")
+    if not readme.exists():
         errors.append(f"{rel}: project requires README.md")
+    elif milestones:
+        # One `## <title>` per milestone, in milestone order, with no other `##` heading between them.
+        headings = h2_headings(readme.read_text(encoding="utf-8"))
+        titles = [str(m.get("title")) for m in milestones]
+        start = headings.index(titles[0]) if titles[0] in headings else 0
+        found = headings[start : start + len(titles)]
+        for title, heading in zip(titles, found + [None] * (len(titles) - len(found)), strict=True):
+            if title != heading:
+                errors.append(f"{rel}: milestone '{title}' must equal the README's next ## heading, found '{heading}'")
+                break
 
 
-# Ready competencies that target applied evidence must be integrated into
-# at least one declared project on a matching project spine.
+# Ready competencies that target applied evidence must be integrated by a milestone of at least
+# one project on a matching spine. A route whose README already names such a project, while no
+# milestone of it integrates the route yet, is an open owner question (a warning), not an error.
 for cid, route in route_competencies.items():
     data = route["data"]
     if data.get("status") != "ready":
@@ -501,20 +538,21 @@ for cid, route in route_competencies.items():
         continue
 
     required_spines = set(data.get("project_spines") or [])
-    matches = []
+    candidates = [p for p in projects if required_spines & set(p["data"].get("spines") or [])]
+    if any(cid in p["competencies"] for p in candidates):
+        continue
 
-    for project in projects:
-        pdata = project["data"]
-        if cid not in (pdata.get("competencies") or []):
-            continue
-        if required_spines & set(pdata.get("spines") or []):
-            matches.append(pdata.get("id"))
-
-    if not matches:
-        errors.append(
-            f"{route['path'].relative_to(ROOT)}: target state applied requires "
-            "a project.yaml that declares this competency on a matching spine"
-        )
+    route_readme = route["path"].with_name("README.md")
+    readme_text = route_readme.read_text(encoding="utf-8") if route_readme.exists() else ""
+    named = [p["data"].get("id") for p in candidates if f"/projects/{p['path'].parent.name}/" in readme_text]
+    message = (
+        f"{route['path'].relative_to(ROOT)}: target state applied requires "
+        "a project milestone that integrates this competency on a matching spine"
+    )
+    if named:
+        warnings.append(f"{message}; its README names {', '.join(named)} (owner question)")
+    else:
+        errors.append(message)
 
 
 # ---------------------------------------------------------------------------
@@ -635,6 +673,12 @@ for rid in sorted(ready_source_ids):
 # ---------------------------------------------------------------------------
 # Result
 # ---------------------------------------------------------------------------
+
+if warnings:
+    print("Open owner questions (warnings):\n")
+    for warning in warnings:
+        print(f"- {warning}")
+    print()
 
 if errors:
     print("Validation failed:\n")

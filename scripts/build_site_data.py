@@ -405,6 +405,34 @@ def block_form(spec, value, content, ctx):
     return {"fields": fields}, consumed
 
 
+def block_milestones(spec, value, content, ctx):
+    """Titled milestones of a project, in order: what each asks, integrates, and produces."""
+    mapping = spec["item"]
+    field = spec["field"]
+    items = []
+    for i, entry in enumerate(value if isinstance(value, list) else []):
+        where = f"{field}[{i}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{ctx.label}: {where} must be a mapping")
+            continue
+        item = {
+            "id": str(entry.get(mapping["id"]) or ""),
+            "title": ctx.text(entry.get(mapping["title"]), f"{where}.{mapping['title']}"),
+        }
+        if entry.get(mapping["ask"]) is not None:
+            item["ask"] = ctx.text(entry[mapping["ask"]], f"{where}.{mapping['ask']}")
+        item["refs"] = [ctx.resolver.ref(ref, ctx.label) for ref in entry.get(mapping["refs"]) or []]
+        item["evidence"] = [str(e) for e in entry.get(mapping["evidence"]) or []]
+        path = entry.get(mapping["path"])
+        if path:
+            repo_path = f"{ctx.source_path}/{str(path).strip('/')}"
+            if not (ROOT / repo_path).is_dir():
+                errors.append(f"{ctx.label}: {where}.{mapping['path']} '{path}' does not exist")
+            item["path"] = repo_path
+        items.append(item)
+    return {"items": items}, [f"{field}[].{k}" for k in mapping.values()]
+
+
 def block_data(spec, value, content, ctx):
     return {"value": value}, [spec["field"]]
 
@@ -418,6 +446,7 @@ BLOCK_TYPES = {
     "practice": block_practice,
     "runner": block_runner,
     "form": block_form,
+    "milestones": block_milestones,
     "data": block_data,
 }
 

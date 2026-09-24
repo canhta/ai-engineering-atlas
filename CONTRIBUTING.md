@@ -127,6 +127,8 @@ A milestone should identify:
 - failure work;
 - resulting evidence or decision.
 
+Each milestone is an entry in the project's `project.yaml` (`id`, `title`, `ask`, `integrates`, `evidence`, optional `package`; [schema](schemas/project.schema.json)). Its `title` equals the milestone's `##` heading in the project README, in the same order; headings carry no number. Link to a milestone by its heading anchor, never by a number. The project's competencies and evidence are the union of its milestones' fields.
+
 Prefer extending an existing reference system when it creates a useful learning progression.
 
 ## Pull requests
